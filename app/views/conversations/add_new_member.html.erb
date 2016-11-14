@@ -1,0 +1,60 @@
+<nav class="navbar navbar-inverse navbar-fixed-top main-app-header main-app-conversation-new-header">
+	<div class="container-fluid">
+		<div class="navbar-header main-app-header main-app-conversation-new-header pull-left">
+			<a class="mybtn btn btn-link btn-xs pull-left" href="/"><i class="material-icons">&#xE317;</i></a>
+			<div class="media pull-left">
+				<div class="media-body add-new-member-media chat-show-media">
+					<h4 class="media-heading"> Create New Member </h4>
+				</div>
+			</div>
+		</div>
+	</div>
+</nav>	
+<div class="container add-new-member-container">
+	<h3 class="text-muted">Select Institute to add member to</h3>
+	<div class="form-group">
+		<% options = [["Select Institute to add member to", ""]] %>
+		<% @institutes.each do |institute| %>
+			<% options << [institute.institute_name.truncate(30), institute.id] %>
+		<% end %>
+		<%= select_tag :institute, options_for_select(options, ["Select Institute to add member to", ""]), class: "form-control" %>
+	</div>	
+	<div class="add-member-form-div">
+
+	</div>
+</div>	
+
+<script type="text/javascript">
+	$('select').on('change', function (e) {
+	    //var optionSelected = $("option:selected", this);
+	    var valueSelected = this.value;
+	   	if(valueSelected){
+	   		$.ajax({
+				url: '/institutes/' + valueSelected + '/add_new_member.js',
+				type: "GET",
+				beforeSend: function(data) {
+					var csfrToken = $("meta[name='csrf-token']").attr("content");
+					data.setRequestHeader('X-CSRF-Token', csfrToken);
+				},
+				success: function(data) {
+					$('.add-member-form-div').html(data);
+					$('#profile-pic-uploadBtn').on('change', function(event) {
+						alert("changed");
+						var files = event.target.files;
+						var image = files[0]
+						var reader = new FileReader();
+						reader.onload = function(file) {
+							alert("changing image");
+						  $('#user-profile-picture-inner-target').find('img').attr("src",(file.target.result));
+						}
+						reader.readAsDataURL(image);
+					});
+				}
+			});	
+	   	}else{
+	   		$('.add-member-form-div').html("");
+	   	}
+	   	
+	});
+
+</script>

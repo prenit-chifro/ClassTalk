@@ -1,0 +1,22 @@
+<% if(notice.can_user_edit_notice(current_user)) %>
+	<a href="/notices/<%= notice.id %>/edit">
+		<i class="material-icons notices-icon notices-edit-icon">&#xE254;</i>
+	</a>	
+	<%= link_to notice_path(notice), method: :delete do %>
+		<i class="material-icons notices-icon notices-delete-icon" >&#xE872;</i>	
+	<% end %>
+<% end %>
+
+<div class="sticky-notices-tag">
+	<p class="institute-notice"><%= notice.institute.institute_name %></p>
+	<h2><%= notice.title %></h2>
+	<p><%= notice.description %></p>		
+</div>
+<div class="text-right notice-signature">
+	<span class="pull-left"><%= get_month_date_year(notice.created_at) %></span>
+	<br>
+	<%= notice.notice_creator.first_name %> <%= notice.notice_creator.last_name %><br>
+	<%= notice.notice_creator.details %>
+</div>
+
+

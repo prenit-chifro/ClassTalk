@@ -1,0 +1,15 @@
+$("#new-message-text-field").val("");
+$('.custom-file-input').val("");
+
+<% script_string = render partial: "messages/publish_message_partial", locals: {conversation: @conversation, message: @new_message} %>
+<% publish_to(conversation_path(@conversation), script_string) %>
+
+<% @conversation.other_participants(current_user).each do |participant| %>
+	<% conversation_small_partial = j render( partial: "conversations/conversation_small", locals: {conversation: @conversation, user: participant}) %>
+	<% script_string = render partial: "messages/conversation_small_publication_partial", locals: {conversation: @conversation, conversation_small_partial: conversation_small_partial} %>
+	<% publish_to(user_path(participant), script_string) %>
+<% end %>
+
+<% publish_message_on_android_notification(@new_message, @conversation) %>
+
+

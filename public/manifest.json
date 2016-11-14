@@ -1,0 +1,19 @@
+{
+  "manifest_version": 1.0,
+  "version": "1.",
+  "default_locale": "en",
+  "name": "ClassNest",
+  "short_name": "ClassNest",
+  "icons": [{
+    "src": "images/app_logo_small.png",
+    "sizes": "48x48",
+    "type": "image/png"
+  }],
+  "start_url": "/",
+  "display": "standalone",
+  "permissions": [
+    "background"
+  ],
+  "gcm_sender_id": "411131764027",
+  "gcm_user_visible_only": true
+}

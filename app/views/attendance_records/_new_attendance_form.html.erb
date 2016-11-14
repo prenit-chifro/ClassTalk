@@ -1,0 +1,49 @@
+	<%= form_tag grade_section_attendance_records_path(grade_section), remote: true, id: "attendance_form" do %>
+	<div class="modal-body attendance-body">
+		<ul class="list-inline">
+			<% class_students.each do |student| %>
+				<li class="student-in-attendance">
+					<div class="inner-list">
+						<label for="students" class="radio text-center">
+							<% if(attendance_record.blank?) %>
+								<input type="checkbox" id="Students" name="present_student_ids[]"value="<%= student.id %>" checked="true">
+							<% else %>
+								<input type="checkbox" id="Students" name="present_student_ids[]"value="<%= student.id %>" checked=<%= attendance_record.present_student_ids.split(",").include?(student.id) %>>
+							<% end %>
+							<img src="<%= student.profile_picture.media.url(:thumb) %>"" class="img-circle" >
+							
+							<p>
+								<small class="student-name-in-attendance"><%= student.first_name %> <%= student.last_name %></small>
+								<!--<small>Roll Number: 1000</small> -->
+							</p>
+							<span class="checkbox-style-block checkbox-style-block-<%= student.id %>"></span>
+						</label>
+					</div>
+				</li>
+			<% end %>			
+		</ul>
+
+	</div>
+	<div class="modal-footer attendance-modal-footer">
+		<% if(attendance_record.blank?) %>
+			<div class="form-control btn btn-info pull-left" style="width:100px" onClick="sendAttendanceForm();">Save</div>
+			<p class="text-muted">Total <%= class_students.length %> Students</p>
+			<p class="present-student"><span class="present-student-count-span"><%= class_students.length %></span> Present</p>
+			<p class="absent-student"><span class="absent-student-count-span">0</span> Absent</p>
+		<% else %>
+			<div class="form-control btn btn-info pull-left" style="width:100px" onClick="sendAttendanceForm();">Update</div>
+			<p class="text-muted">Total <%= class_students.length %> Students</p>
+			<p class="present-student"><span class="present-student-count-span"><%= attendance_record.present_student_ids.split(",").length %></span> Present</p>
+			<p class="absent-student"><span class="absent-student-count-span"><%= class_students.length - attendance_record.present_student_ids.split(",").length %></span> Absent</p>
+		<% end %>		
+	</div>
+<% end %>
+
+<script>
+	var widthFooterList = Math.floor(100 / $("ul.footer-list li").size());
+	$("ul.footer-list li").css('width', widthFooterList + "%");
+
+	function sendAttendanceForm(){
+		$("#attendance_form").submit();
+	};
+</script>

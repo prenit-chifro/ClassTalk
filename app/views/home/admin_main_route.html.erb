@@ -1,0 +1,527 @@
+<% content_for :heading do %>
+	Admin Home
+<% end %>
+<div class="container-width classRoute" style="margin-top:69px;">	
+	<ul class="nav nav-tabs" role="tablist" id="tablist">		
+		<li><a data-toggle="tab" href="#all-classes-analytics">Classes</a></li>
+		<li class="active"><a data-toggle="tab" href="#all-attendance-analytics">Attendance</a></li>
+		<li><a data-toggle="tab" href="#all-events-analytics">Calendar</a></li>
+		<li><a data-toggle="tab" href="#all-notices-analytics">Notices</a></li>
+		<li><a data-toggle="tab" href="#all-institute-analytics">Institute Details</a></li>
+	</ul>
+	<div class="tab-content admin-home-content" style="">
+		<div class="tab-pane" id="all-classes-analytics">
+			<ul class="list-unstyled list-inline text-center">
+				<li>
+					<div class="ch-item">	
+						<div class="ch-info">
+							<h3>100 Students</h3>
+							<p>10 Subjects<a href="#">1</a></p>
+						</div>
+						<div class="ch-thumb">
+							<span>Class 1</span>
+							<span>3 Sctions</span>
+						</div>
+					</div>
+					<button class="btn btn-info"><%= link_to admin_class_page_route_path do %>Go To Class 1<% end %></button>
+				</li>
+				<li>
+					<div class="ch-item">	
+						<div class="ch-info">
+							<h3>100 Students</h3>
+							<p>10 Subjects<a href="#">2</a></p>
+						</div>
+						<div class="ch-thumb">
+							<span>Class 2</span>
+							<span>3 Sctions</span>
+						</div>
+					</div>
+					<button class="btn btn-info"><%= link_to admin_class_page_route_path do %>Go To Class 2<% end %></button>
+				</li>
+				<li>
+					<div class="ch-item">	
+						<div class="ch-info">
+							<h3>100 Students</h3>
+							<p>10 Subjects<a href="#">3</a></p>
+						</div>
+						<div class="ch-thumb">
+							<span>Class 3</span>
+							<span>3 Sctions</span>
+						</div>
+					</div>
+					<button class="btn btn-info"><%= link_to admin_class_page_route_path do %>Go To Class 3<% end %></button>
+				</li>
+				<li>
+					<div class="ch-item">	
+						<div class="ch-info">
+							<h3>100 Students</h3>
+							<p>10 Subjects<a href="#">4</a></p>
+						</div>
+						<div class="ch-thumb">
+							<span>Class 4</span>
+							<span>3 Sctions</span>
+						</div>
+					</div>
+					<button class="btn btn-info"><%= link_to admin_class_page_route_path do %>Go To Class 4<% end %></button>
+				</li>
+				<li>
+					<div class="ch-item">	
+						<div class="ch-info">
+							<h3>100 Students</h3>
+							<p>10 Subjects<a href="#">5</a></p>
+						</div>
+						<div class="ch-thumb">
+							<span>Class 5</span>
+							<span>3 Sctions</span>
+						</div>
+					</div>
+					<button class="btn btn-info"><%= link_to admin_class_page_route_path do %>Go To Class 5<% end %></button>
+				</li>
+				<li>
+					<div class="ch-item">	
+						<div class="ch-info">
+							<h3>100 Students</h3>
+							<p>10 Subjects<a href="#">6</a></p>
+						</div>
+						<div class="ch-thumb">
+							<span>Class 6</span>
+							<span>3 Sctions</span>
+						</div>
+					</div>
+					<button class="btn btn-info"><%= link_to admin_class_page_route_path do %>Go To Class 6<% end %></button>
+				</li>
+			</ul>
+		</div>
+		<div class="tab-pane active" id="all-attendance-analytics">
+			<h3>Institute Students Attendance</h3>
+			<div class="container">
+				<div class="col-sm-6 col-xs-6">
+					<div class="form-group">
+						<div class='input-group date' id='datetimepicker11'>
+							<input type='text' class="form-control" />
+							<span class="input-group-addon">
+								<i class="fa fa-calendar" aria-hidden="true"></i>								
+							</span>
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-6 col-xs-6">
+					<div class="form-group">
+						<div class='input-group date' id='datetimepicker12'>
+							<input type='text' class="form-control" />
+							<span class="input-group-addon">
+								<i class="fa fa-calendar" aria-hidden="true"></i>								
+							</span>
+						</div>
+					</div>
+				</div>
+			</div>			
+			<div id="chart_div" style="max-width:400px;margin: 0 auto;"></div>
+			<div class="form-group">
+				<label for="sel1">Select Class:</label>
+				<select class="form-control" id="sel1">
+					<option>Class 1</option>
+					<option>Class 2</option>
+					<option>Class 3</option>
+					<option>Class 4</option>
+				</select>
+			</div>
+			<div class="form-group">
+				<label for="sel1">Select Section:</label>
+				<select class="form-control" id="sel1">
+					<option>Section A</option>
+					<option>Section B</option>
+					<option>Section C</option>
+					<option>Section D</option>
+				</select>
+			</div>
+			<h3>Class 1A Students Attendance</h3>
+			<div id="chart_div_class" style="max-width:400px;margin: 0 auto;"></div>
+		</div>
+		<div class="tab-pane" id="all-events-analytics">
+			<div class="calendar"></div>
+		</div>
+		<div class="tab-pane" id="all-notices-analytics" style="padding:30px;">
+			<p class="text-center">Go To Notice Board</p>
+			<ul class="list-unstyled sticky-notices">
+				<li>
+					<div class="all-notices-div">
+						<a href="#">
+							<i class="material-icons notices-icon notices-edit-icon">&#xE254;</i>
+						</a>	
+						<i class="material-icons notices-icon notices-delete-icon" >&#xE872;</i>	
+						<div class="sticky-notices-tag">
+							<p class="institute-notice">DAV Public School</p>
+							<h2>Sports Day</h2>
+							<p>Tommorow at 10:30 a.m</p>		
+						</div>
+						<div class="text-right notice-signature">
+							<span class="pull-left">11/10/2016</span>
+							<br>
+							Signed By: Gaurav Alawadhi<br>
+							School Admin
+						</div>
+					</div>
+				</li>	
+				<li>
+					<div class="all-notices-div">
+						<a href="#">
+							<i class="material-icons notices-icon notices-edit-icon">&#xE254;</i>
+						</a>	
+						<i class="material-icons notices-icon notices-delete-icon" >&#xE872;</i>	
+						<div class="sticky-notices-tag">
+							<p class="institute-notice">DAV Public School</p>
+							<h2>Sports Day</h2>
+							<p>Tommorow at 10:30 a.m</p>		
+						</div>
+						<div class="text-right notice-signature">
+							<span class="pull-left">11/10/2016</span>
+							<br>
+							Signed By: Gaurav Alawadhi<br>
+							School Admin
+						</div>
+					</div>
+				</li>	
+				<li>
+					<div class="all-notices-div">
+						<a href="#">
+							<i class="material-icons notices-icon notices-edit-icon">&#xE254;</i>
+						</a>	
+						<i class="material-icons notices-icon notices-delete-icon" >&#xE872;</i>	
+						<div class="sticky-notices-tag">
+							<p class="institute-notice">DAV Public School</p>
+							<h2>Sports Day</h2>
+							<p>Tommorow at 10:30 a.m</p>		
+						</div>
+						<div class="text-right notice-signature">
+							<span class="pull-left">11/10/2016</span>
+							<br>
+							Signed By: Gaurav Alawadhi<br>
+							School Admin
+						</div>
+					</div>
+				</li>	
+			</ul>	
+		</div>
+		<div class="tab-pane" id="all-institute-analytics">
+			<p class="text-center">Go To Messages</p>
+		    <div id="map"></div>
+			<div class="detect-div"></div>
+			<div class="container-width tabs-container">
+				<div class="tabs-wrapper">		
+					<div class="chat-show-tabs-upper-div">
+						<ul class="nav nav-tabs list" role="tablist" id="tablist">
+							<li class="active"><a data-toggle="tab" href="#admin-institute-contacts">Contacts</a></li>
+							<li><a data-toggle="tab" href="#admin-institute-teachers">Techers</a></li>
+						</ul>
+					</div>	
+					<div class="tab-content" style="margin-top:50px;">
+						<div class="tab-pane active" id="admin-institute-contacts">
+							<div class="well well-sm">
+								<div class="media jumbotron-media">
+									<div class="media-left media-middle">
+										<a href="#">
+											<%= image_tag "default_profile_picture.png" , class:"img-rounded img-xs"%>
+										</a>
+									</div>
+									<div class="media-body media-middle">
+										<h5 class="media-heading">Rohit</h5>
+										<p>Principal</p>
+										<p>Email id: davAdmin@gmail.com</p>
+										<span class="pull-right"><i class="material-icons" style="color: #ea5b31;">&#xE0C9;</i></span>
+									</div>				
+								</div>
+							</div>
+							<div class="well well-sm">
+								<div class="media jumbotron-media">
+									<div class="media-left media-middle">
+										<a href="#">
+											<%= image_tag "default_profile_picture.png" , class:"img-rounded img-xs"%>
+										</a>
+									</div>
+									<div class="media-body media-middle">
+										<h5 class="media-heading">Aruna</h5>
+										<p>School Admin</p>
+										<p>Contact Number:8888888888</p>
+										<span class="pull-right"><i class="material-icons" style="color: #ea5b31;">&#xE0C9;</i></span>
+									</div>				
+								</div>
+							</div>
+						</div>
+						<div class="tab-pane" id="admin-institute-teachers">
+							<div class="well well-sm">
+								<div class="media jumbotron-media">
+									<div class="media-left media-middle">
+										<a href="#">
+											<%= image_tag "default_profile_picture.png" , class:"img-rounded img-xs"%>
+										</a>
+									</div>
+									<div class="media-body media-middle">
+										<h5 class="media-heading">Gaurav Kumar</h5>
+										<p>English Teacher</p>
+										<p>Email Id:abc@gmail.com</p>
+										<p>Contact Number:8888888888</p>
+										<span class="pull-right"><i class="material-icons" style="color: #ea5b31;">&#xE0C9;</i></span>
+									</div>				
+								</div>
+							</div>
+							<div class="well well-sm">
+								<div class="media jumbotron-media">
+									<div class="media-left media-middle">
+										<a href="#">
+											<%= image_tag "default_profile_picture.png" , class:"img-rounded img-xs"%>
+										</a>
+									</div>
+									<div class="media-body media-middle">
+										<h5 class="media-heading">Gaurav Kumar</h5>
+										<p>English Teacher</p>
+										<p>Email Id:abc@gmail.com</p>
+										<p>Contact Number:8888888888</p>
+										<span class="pull-right"><i class="material-icons" style="color: #ea5b31;">&#xE0C9;</i></span>
+									</div>				
+								</div>
+							</div>
+							<div class="well well-sm">
+								<div class="media jumbotron-media">
+									<div class="media-left media-middle">
+										<a href="#">
+											<%= image_tag "default_profile_picture.png" , class:"img-rounded img-xs"%>
+										</a>
+									</div>
+									<div class="media-body media-middle">
+										<h5 class="media-heading">Gaurav Kumar</h5>
+										<p>English Teacher</p>
+										<p>Email Id:abc@gmail.com</p>
+										<p>Contact Number:8888888888</p>
+										<span class="pull-right"><i class="material-icons" style="color: #ea5b31;">&#xE0C9;</i></span>
+									</div>				
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>	
+		</div>
+
+	</div>
+		
+</div>	
+<script>
+	$(".classRoute").parents("div.wrapper").find(".navbar-default").css("box-shadow", "none");
+</script>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBygb2VxPHEs8rV8j7dgreRvpowydmGrow&libraries=places" async defer></script>
+<script type="text/javascript">
+
+	$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+		var target = $(this).attr('href');
+		if(target == "#all-institute-analytics"){
+			initMap();
+		}
+	});
+    google.charts.load('current', {'packages':['corechart']});
+    google.charts.setOnLoadCallback(drawChart);
+   
+	function drawChart() {
+
+		var data = new google.visualization.DataTable();
+		data.addColumn('string', '');
+		data.addColumn('number', '');
+		data.addRows([
+		  ['Present Students', 400],
+		  ['Absent Students', 300]
+		]);
+
+		var options = {
+			width: 400,
+			height: 240,
+			title: 'Institute Students Analytics',
+			titlePosition: 'none',
+			colors: ['#5dd4b7', '#ea5b31'],
+			is3D: true
+		};
+
+		var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+		chart.draw(data, options);
+	}
+	google.charts.load('current', {'packages':['corechart']});
+    google.charts.setOnLoadCallback(drawClassChart);
+   
+	function drawClassChart() {
+
+		var data = new google.visualization.DataTable();
+		data.addColumn('string', '');
+		data.addColumn('number', '');
+		data.addRows([
+		  ['Present Students', 400],
+		  ['Absent Students', 300]
+		]);
+
+		var options = {
+			width: 400,
+			height: 240,
+			title: 'Institute Students Analytics',
+			titlePosition: 'none',
+			colors: ['#5dd4b7', '#ea5b31'],
+			is3D: true
+		};
+
+		var chart = new google.visualization.PieChart(document.getElementById('chart_div_class'));
+		chart.draw(data, options);
+	}
+	
+	
+
+	var markers = [
+		["DAV Public School, Gurgaon", 29.5038646, 75.4734163]
+	];
+	
+	function initMap() {
+		var mapProp = {
+			center:new google.maps.LatLng(29.5038646,75.4734163),
+			zoom:7,
+			mapTypeId:google.maps.MapTypeId.ROADMAP
+		};
+		var map=new google.maps.Map(document.getElementById("map"),mapProp);
+
+		 var infowindow = new google.maps.InfoWindow(), marker, i;
+		for (i = 0; i < markers.length; i++) {
+			marker = new google.maps.Marker({
+				position: new google.maps.LatLng(markers[i][1], markers[i][2]),
+				map: map
+			});
+			google.maps.event.addListener(marker, 'click', (function(marker, i) {
+				return function() {
+					infowindow.setContent('' + markers[i][0]);
+					infowindow.open(map, marker);
+				}
+			})(marker, i));
+		}
+	}
+	var randomColors = ["#35a5a5",'#8cc4c4','#8b5861',"#d7b26f"];
+	$(".ch-thumb").each(function(index) {
+        var len = randomColors.length;
+        var randomNum = Math.floor(Math.random()*len);
+        $(this).css("backgroundColor",randomColors[randomNum]);
+        randomColors.slice(randomNum, 1);
+    });
+
+    </script>
+	<script type="text/javascript">
+		$(function () {
+			$('#datetimepicker11, #datetimepicker12').datetimepicker({
+				icons: {
+                    time: "fa fa-clock-o",
+                    date: "fa fa-calendar",
+                    up: "fa fa-arrow-up",
+                    down: "fa fa-arrow-down"
+                }
+			});
+		});
+		$('.calendar').each(function(){
+    var calendar = $(this);
+    calendar.fullCalendar({
+      header: {
+        left: 'prev,next today',
+        center: 'title',
+        right: 'month,agendaWeek,agendaDay, list'
+      },
+      defaultView: "list",
+      firstDay: 1,
+      slotDuration: "01:00:00",
+      scrollTime: "07:00:00",
+      eventSources: [
+      	{	
+      		googleCalendarApiKey: 'AIzaSyBygb2VxPHEs8rV8j7dgreRvpowydmGrow',
+		   	url: 'https://www.google.com/calendar/feeds/indian__en%40holiday.calendar.google.com/public/basic',
+
+		    color: 'red',   // an option!
+		    textColor: 'black' // an option!
+		}
+
+      ],
+      editable: true,
+      selectable: true,
+      selectHelper: true,
+      eventClick: function(event, jsEvent, view) {
+      		if(event.edit_url){
+      			$.ajax({
+		        	url: event.edit_url,
+		        	complete: function(data){
+		        		if(data.status == "200"){
+		        			eval(data.responseText);
+		        		}
+		        	}
+		        });
+      		}else{
+      			window.open(event.url);
+      		}
+            
+	        return false;
+      },
+      dayClick: function(date, jsEvent, view) {
+      	$.ajax({
+        	url: "events/new.js?start_time= " + date.format() + '&end_time= ' + date.format(),
+        	complete: function(data){
+        		if(data.status == "200"){
+        			eval(data.responseText);
+        		}
+        	}
+        });
+      },
+      select: function(start, end) {
+        $.ajax({
+        	url: "events/new.js?start_time=" + start.format() + '&end_time=' + end.format(),
+        	complete: function(data){
+        		if(data.status == "200"){
+        			eval(data.responseText);
+        		}
+        	}
+        });
+
+        calendar.fullCalendar('unselect');
+      },
+      eventDrop: function(event,dayDelta,minuteDelta,allDay,revertFunc) {
+      	if(event.update_url){
+      		if (confirm("update this event?")) {
+	          	$.ajax({
+	      			url: event.update_url + "&start_time=" + event.start.format() + "&end_time=" + event.end.format(),
+		      		method: "PATCH",
+		        	complete: function(data){
+		        		if(data.status == "200"){
+		        			eval(data.responseText);
+		        		}
+		        	}	
+	      		});
+	        }
+      		
+      		
+      	}else{
+
+      	}
+      },
+      eventResize: function(event, delta, revertFunc) {
+	    if(event.update_url){
+	    	if (confirm("update this event?")) {
+	          	$.ajax({
+	      			url: event.update_url + "&start_time=" + event.start.format() + "&end_time=" + event.end.format(),
+		      		method: "PATCH",
+		        	complete: function(data){
+		        		if(data.status == "200"){
+		        			eval(data.responseText);
+		        		}
+		        	}	
+	      		});
+	        }
+      		
+      	}else{
+      		
+      	} 
+	        
+
+	  }
+  	});
+  });  
+
+
+	</script>

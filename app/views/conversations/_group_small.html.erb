@@ -1,0 +1,22 @@
+<div class="media mar-btm open-contact-on-click-element-parent">
+	<div class="media-left media-middle open-contact-on-click-element">
+		<img src ="<%= group.get_conversation_image_url_to_show_to_user(current_user, :thumb) %>" class="media-object img-circle <%= group.id %>" >
+	</div>
+	<div class="media-body media-middle next-page-link" data-request-type="GET" data-next-page-link-address="<%= conversation_path(group) %>">
+		<h4 class="media-heading"> <span class="media-heading-content"><%= group.get_conversation_name_to_show_to_user(current_user) %> </span></h4>
+		<p class="text-muted"> <%= group.participants.length %> Participants</p>	
+	</div>
+	<div class="icon-short-profile-modal-main-div"  style="display:none;">
+		<ul class="icon-short-profile-modal list-inline display_inline text-center">
+			<li>
+				<%= link_to conversation_path(group) do %>
+					<i class="material-icons">&#xE0C9;</i></li>
+				<% end %>
+				
+			<li>
+				<%= link_to edit_conversation_path(group) do %>
+					<i class="material-icons">&#xE89E;</i></li>
+				<% end %>	
+		</ul>
+	</div>
+</div>

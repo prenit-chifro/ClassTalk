@@ -1,0 +1,342 @@
+<% content_for :heading do %>
+	Messages
+<% end %>
+
+<div class="container" style="margin-top:77px;">
+	<div class="row">
+		<div class="media main-media">
+			<div class="media-left">
+				<a href="#">
+					<%= image_tag "default_profile_picture.png" , class:"img-circle img-xs"%>
+				</a>
+			</div>
+			<div class="media-body media-middle">
+				<h4 class="media-heading text-muted">Parent of Atul (class1A)<span class="pull-right">12:47 p.m</span></h4>
+				<p>My kid won't be in school</p>
+				<span class="pull-left">Gaurav</span>
+				<span class="pull-right"><%= link_to messages_route_path do %>More<% end %></span>
+			</div>
+			
+		</div>
+		<div class="media main-media">
+			<div class="media-left">
+				<a href="#">
+					<%= image_tag "default_profile_picture.png" , class:"img-circle img-xs"%>
+				</a>
+			</div>
+			<div class="media-body media-middle">
+				<h4 class="media-heading text-muted">Class 1A<span class="pull-right">12:47 p.m</span></h4>
+				<p>Teacher Posted homework.</p>
+				<span class="pull-left">Gaurav</span>
+				<span class="pull-right"><%= link_to another_route_path do %>More<% end %></span>
+			</div>
+			
+		</div>
+
+		<div class="media main-media">
+			<div class="media-left">
+				<a href="#">
+					<%= image_tag "default_profile_picture.png" , class:"img-circle img-xs"%>
+				</a>
+			</div>
+			<div class="media-body">
+				<h4 class="media-heading text-muted">Science 1A<span class="pull-right">12:47 p.m</span></h4>
+				<p>Science Teacher posted ClassWork.</p>
+				<span class="pull-left">Prenit Wankhede</span>
+				<span class="pull-right"><%= link_to subject_route_path do %>More<% end %></span>
+			</div>
+		</div>
+		<div class="media main-media">
+			<div class="media-left">
+				<a href="#">
+					<%= image_tag "default_profile_picture.png" , class:"img-circle img-xs"%>
+				</a>
+			</div>
+			<div class="media-body media-middle">
+				<h4 class="media-heading text-muted">D.A.V School<span class="pull-right">12:47 p.m</span></h4>
+				<p>School Admin Posted Events.</p>
+				<span class="pull-left">Prenit</span>
+				<span class="pull-right"><%= link_to institute_information_route_path do %>More<% end %></span>
+			</div>
+		</div>
+	</div>
+	<i class="material-icons personal-add-icon" data-toggle="modal" data-target="#customMessageModal">&#xE147;</i>
+	<div id="customMessageModal" class="modal fade" role="dialog">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<form onsubmit="return false;" class="search-form">
+						<div class="form-group has-feedback">
+							<i class="material-icons search-attendance-icon">&#xE8B6;</i> 
+							<input type="text" class="form-control" name="search" id="search">
+						</div>
+					</form>
+					<h4 class="modal-title">Send Message</h4>
+					<span class="checkbox-counter text-muted"></span>
+				</div>
+				<div class="modal-body">
+					
+					<div class="">
+						<ul class="list-unstyled teachers-list">
+							<li>
+								<h6 class="teachers-list-heading">Class 1A<i class="material-icons arrow-up-icon pull-right">&#xE316;</i></h6>
+								<div class="toggle-teachers-classes classRoute">
+									<ul class="nav nav-tabs" role="tablist" id="tablist">
+										<li class="active"><a data-toggle="tab" href="#all-teachers">Teachers</a></li>
+										<li><a data-toggle="tab" href="#all-contacts">Contacts</a></li>
+										<li><a data-toggle="tab" href="#all-parents">Parents</a></li>
+										<li><a data-toggle="tab" href="#all-students">Students</a></li>
+									</ul>
+									<div class="tab-content" style="">
+										<div class="tab-pane active" id="all-teachers">
+											<ul class="list-unstyled list-inline">
+												<li>
+													<div class="well well-sm">
+														<label class="modal-label" for="teachers">
+															<div class="media jumbotron-media">
+																<input type="checkbox" id="teachers" name="teachers-checkbox">
+																<div class="media-left media-middle">
+																	<%= image_tag "default_profile_picture.png", class:"img-rounded img-xs" %>
+																	<span class="checkbox-style-block"></span>
+																</div>
+																<div class="media-body media-middle">
+																	<h5 class="media-heading">Gaurav</h5>
+																	<small class="">Maths Teacher</small>														
+																</div>
+															</div>
+														</label>
+													</div>
+												</li>
+												<li>
+													<div class="well well-sm">
+														<label class="modal-label" for="teachers-1">
+															<div class="media jumbotron-media">
+																<input type="checkbox" id="teachers-1" name="teachers-checkbox">
+																<div class="media-left media-middle">
+																	<%= image_tag "default_profile_picture.png", class:"img-rounded img-xs" %>
+																	<span class="checkbox-style-block"></span>
+																</div>
+																<div class="media-body media-middle">
+																	<h5 class="media-heading">Prenit</h5>
+																	<small class="">Science Teacher</small>														
+																</div>
+															</div>
+														</label>
+													</div>
+												</li>
+												<li>
+													<div class="well well-sm">
+														<label class="modal-label" for="teachers-2">
+															<div class="media jumbotron-media">
+																<input type="checkbox" id="teachers-2" name="teachers-checkbox">
+																<div class="media-left media-middle">
+																	<%= image_tag "default_profile_picture.png", class:"img-rounded img-xs" %>
+																	<span class="checkbox-style-block"></span>
+																</div>
+																<div class="media-body media-middle">
+																	<h5 class="media-heading">Teacher Name</h5>
+																	<small class="">Subject</small>														
+																</div>
+															</div>
+														</label>
+													</div>
+												</li>
+											</ul>
+
+										</div>
+										<div class="tab-pane" id="all-contacts">
+											<ul class="list-unstyled list-inline">
+												<li>
+													<div class="well well-sm">
+														<label class="modal-label" for="teachers-4">
+															<div class="media jumbotron-media">
+																<input type="checkbox" id="teachers-4" name="teachers-checkbox">
+																<div class="media-left media-middle">
+																	<%= image_tag "default_profile_picture.png", class:"img-rounded img-xs" %>
+																	<span class="checkbox-style-block"></span>
+																</div>
+																<div class="media-body media-middle">
+																	<h5 class="media-heading">Rohit</h5>
+																	<small class="">Principal</small>														
+																</div>
+															</div>
+														</label>
+													</div>
+												</li>
+												<li>
+													<div class="well well-sm">
+														<label class="modal-label" for="teachers-5">
+															<div class="media jumbotron-media">
+																<input type="checkbox" id="teachers-5" name="teachers-checkbox">
+																<div class="media-left media-middle">
+																	<%= image_tag "default_profile_picture.png", class:"img-rounded img-xs" %>
+																	<span class="checkbox-style-block"></span>
+																</div>
+																<div class="media-body media-middle">
+																	<h5 class="media-heading">Aruna</h5>
+																	<small class="">School Admin</small>														
+																</div>
+															</div>
+														</label>
+													</div>
+												</li>
+											</ul>	
+										</div>
+										<div class="tab-pane" id="all-parents">
+											<ul class="list-unstyled list-inline">
+												<li>
+													<div class="well well-sm">
+														<label class="modal-label" for="teachers-6">
+															<div class="media jumbotron-media">
+																<input type="checkbox" id="teachers-6" name="teachers-checkbox">
+																<div class="media-left media-middle">
+																	<%= image_tag "default_profile_picture.png", class:"img-rounded img-xs" %>
+																	<span class="checkbox-style-block"></span>
+																</div>
+																<div class="media-body media-middle">
+																	<h5 class="media-heading">Rohit</h5>
+																	<small class="">Father of Arun</small>														
+																</div>
+															</div>
+														</label>
+													</div>
+												</li>
+												<li>
+													<div class="well well-sm">
+														<label class="modal-label" for="teachers-7">
+															<div class="media jumbotron-media">
+																<input type="checkbox" id="teachers-7" name="teachers-checkbox">
+																<div class="media-left media-middle">
+																	<%= image_tag "default_profile_picture.png", class:"img-rounded img-xs" %>
+																	<span class="checkbox-style-block"></span>
+																</div>
+																<div class="media-body media-middle">
+																	<h5 class="media-heading">Sunil</h5>
+																	<small class="">Father of Amit</small>														
+																</div>
+															</div>
+														</label>
+													</div>
+												</li>
+											</ul>	
+										</div>
+										<div class="tab-pane" id="all-students">
+											<ul class="list-unstyled list-inline">
+												<li>
+													<div class="well well-sm">
+														<label class="modal-label" for="teachers-8">
+															<div class="media jumbotron-media">
+																<input type="checkbox" id="teachers-8" name="teachers-checkbox">
+																<div class="media-left media-middle">
+																	<%= image_tag "default_profile_picture.png", class:"img-rounded img-xs" %>
+																	<span class="checkbox-style-block"></span>
+																</div>
+																<div class="media-body media-middle">
+																	<h5 class="media-heading">Arun</h5>
+																	<small class="">Student of Class 1A</small>														
+																</div>
+															</div>
+														</label>
+													</div>
+												</li>
+												<li>
+													<div class="well well-sm">
+														<label class="modal-label" for="teachers-9">
+															<div class="media jumbotron-media">
+																<input type="checkbox" id="teachers-9" name="teachers-checkbox">
+																<div class="media-left media-middle">
+																	<%= image_tag "default_profile_picture.png", class:"img-rounded img-xs" %>
+																	<span class="checkbox-style-block"></span>
+																</div>
+																<div class="media-body media-middle">
+																	<h5 class="media-heading">Amit</h5>
+																	<small class="">Student of Class 2A</small>														
+																</div>
+															</div>
+														</label>
+													</div>
+												</li>
+											</ul>	
+										</div>
+									</div>	
+								</div>
+							</li>
+						</ul>
+					</div>
+					
+				</div>
+				<div class="modal-footer">
+					<div class="form-group">
+						<textarea class="form-control" rows="4" id="comment"></textarea>
+					</div>
+					<div class="attachment-send-button">
+						<p class="pull-left"><i class="material-icons">&#xE226;</i></p>
+						<p class="pull-right"><i class="material-icons">&#xE3B0;</i></p>
+						<button class="btn btn-danger">Send</button>
+					</div>	
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<footer class="footer text-center">
+	<div class="container-width">
+		<ul class="list-inline footer-list">
+			<li>Calender<i class="material-icons calender-icon">&#xE8B5;</i></li>
+			<li data-toggle="modal" data-target="#attendance-modal">Attendance<i class="material-icons attendance-icon">&#xE85D;</i></li>
+			<li><%= link_to teacher_notice_route_path do %>Notices<i class="material-icons notice-icon">&#xE616;</i><% end %></li>
+		</ul>
+	</div>
+</footer>
+<div class="modal fade" id="attendance-modal" role="dialog">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">						
+			<div class="modal-header">
+				<div class="">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<form onsubmit="return false;" class="search-form">
+						<div class="form-group has-feedback">
+							<i class="material-icons search-attendance-icon">&#xE8B6;</i> 
+							<input type="text" class="form-control" name="search" id="search">
+						</div>
+					</form>
+					<h4 class="modal-title">
+						Class 1A Attendance <%= link_to teacher_attendance_route_path, class:"link-attendance" do %> View Past Records <% end %><span style="float: right; margin-right: 20px">12:47</span>
+					</h4>
+				</div>	
+			</div>
+			<div class="modal-body attendance-body">
+				<ul class="list-inline">
+					
+					<li class="student-in-attendance">
+						<div class="inner-list">
+							<label for="students" class="radio text-center modal-label">
+								<input type="checkbox" id="students" name="teachers-checkbox">
+								<%= image_tag "default_profile_picture.png", class:"img-circle" %>
+								
+								<p>
+									<small class="student-name-in-attendance">Gaurav Kumar</small>
+									<br>
+									<small style="font-size:8px;">Roll Number: 1000</small> 
+								</p>
+								<span class="checkbox-style-block checkbox-style-block-1"></span>
+							</label>
+						</div>
+					</li>
+				
+				</ul>	
+			</div>
+			<div class="modal-footer attendance-modal-footer">
+				<div class="form-control btn btn-info pull-left" style="width:100px">Save</div>
+				<p class="text-muted">Total 40 Students</p>
+				<p class="present-student"><span class="present-student-count-span">40</span> Present</p>
+				<p class="absent-student"><span class="absent-student-count-span">0</span> Absent</p>				
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+	var widthFooterList = Math.floor(100 / $("ul.footer-list li").size());
+	$("ul.footer-list li").css('width', widthFooterList + "%");
+</script>
