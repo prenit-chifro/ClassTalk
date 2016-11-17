@@ -23,7 +23,8 @@ class ApplicationController < ActionController::Base
 					if(!current_user.is_registration_complete and request.fullpath != complete_registration_user_path(current_user))
 						redirect_to complete_registration_user_path(current_user)
 					end
-
+					@institute = current_user.institutes.first
+					@institute_conversation = Conversation.find_by(institute_id: @institute.id, grade_id: nil, section_id: nil, subject_id: nil) if !@institute.blank?
 				else
 					authenticate_user!
 				end

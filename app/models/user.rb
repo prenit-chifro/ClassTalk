@@ -62,10 +62,10 @@ class User < ApplicationRecord
 
 	def details
 		if(self.role == "Principal")
-			return "Principal of #{self.institutes.first.institute_name}"
+			return "Principal"
 		end
 		if(self.role == "Institute Admin")
-			return "Institute Admin of #{self.institutes.first.institute_name}"
+			return "Institute Admin"
 		end
 		if(self.role == "Teacher")
 			return "#{self.teaching_sections_subjects_models.first.subject.subject_name if !self.teaching_sections_subjects_models.blank?} Teacher"

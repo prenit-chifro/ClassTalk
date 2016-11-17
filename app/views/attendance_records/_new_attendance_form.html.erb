@@ -1,4 +1,6 @@
-	<%= form_tag grade_section_attendance_records_path(grade_section), remote: true, id: "attendance_form" do %>
+<%= form_tag institute_attendance_records_path(institute), remote: true, id: "attendance_form" do %>
+	<%= hidden_field_tag :grade_id, grade.id %>
+	<%= hidden_field_tag :section_id, section.id %>
 	<div class="modal-body attendance-body">
 		<ul class="list-inline">
 			<% class_students.each do |student| %>
@@ -40,9 +42,6 @@
 <% end %>
 
 <script>
-	var widthFooterList = Math.floor(100 / $("ul.footer-list li").size());
-	$("ul.footer-list li").css('width', widthFooterList + "%");
-
 	function sendAttendanceForm(){
 		$("#attendance_form").submit();
 	};

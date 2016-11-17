@@ -1,0 +1,33 @@
+<% content_for :heading do %>
+	Class <%= @grade.grade_name %>
+<% end %>
+
+<ul class="list-unstyled list-inline text-center">
+	<% if(!@grade_section_models.blank?) %>
+		<% @grade_section_models.each do |grade_section_model| %>
+			<% section = grade_section_model.section %>
+			<% subjects_count = section.sections_subjects.where(institute_id: @institute.id).count %>
+			
+			<% teachers_count =  section.sections_members.where(institute_id: @institute.id, member_role: "Teacher").count %>
+			<% students_count =  section.sections_members.where(institute_id: @institute.id, member_role: "Student").count %>
+			<% parents_count =  section.sections_members.where(institute_id: @institute.id, member_role: "Parent").count %>
+
+			<li>
+				<div class="ch-item">	
+					<div class="ch-info">
+						<h3><%= teachers_count %> Teachers</h3>
+						
+						<p><%= students_count %> Students<br><%= parents_count %> Parents<a href="<%= institute_grade_section_path(@institute, @grade, section) %>"><%= section.section_name %></a></p>
+					</div>
+					<div class="ch-thumb">
+						<span>Section <%= section.section_name %></span>
+						<span><%= subjects_count %> Subjects</span>
+					</div>
+				</div>
+				<button class="btn btn-info"><%= link_to institute_grade_section_path(@institute, @grade, section) do %>Go To Section <%= section.section_name %><% end %></button>
+			</li>
+			
+		<% end %>
+	<% end %>
+	
+</ul>

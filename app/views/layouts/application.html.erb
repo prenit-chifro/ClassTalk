@@ -18,37 +18,24 @@
 						<button type="button" class="navbar-toggle collapsed pull-left hamburger-menu hamburger-menu-left-arrow" data-toggle="collapse" id="navbar-toggle-button">
 							<span></span>
 						</button>
-						<a class="navbar-brand" href="#"><%= yield :heading %></a>
+						<a class="navbar-brand" href="javascript:void(0);"><%= yield :heading %></a>
 					</div>
 					<div id="navbar" class="navbar-collapse pull-left navbar-fixed-small-screen">
 						<ul class="nav navbar-nav left-self-image">
-							<li><a href="#"><%= image_tag "default_profile_picture.png" , class:"img-xss"%><span>Profile</span></a>
-							
+							<li><a href="/users/<%= current_user.id %>"><img src="<%= current_user.profile_picture.media.url(:medium) %>"  class="img-circle img-xss"><span>Profile</span></a></li>
 							<li class="main_toggle_menu">
-								<a href="javascript:void(0)"><i class="material-icons menu-inner-icon">&#xE156;</i><span>Messages</span><i class="material-icons arrow-up-icon">&#xE313;</i></a>
-								<ul class="submenu list-unstyled" style="display:none;">
-									<li><a href="#">Inbox</a></li>
-									<li><a href="#">Sent</a></li>
-								</ul>
+								<a href="/conversations"><i class="material-icons menu-inner-icon">&#xE156;</i><span>My Messages</span></a>
 							</li>			
-							<li><a href="#"><i class="material-icons menu-inner-icon">&#xE86E;</i><span>My Classes</span></a></li>
-							<li><a href="#"><i class="material-icons menu-inner-icon">&#xE85D;</i><span>Attendance</span></a></li>
+							<li><a href="<%= institute_grades_path(@institute) %>"><i class="material-icons menu-inner-icon">&#xE86E;</i><span>My Classes</span></a></li>
+							<li><a href="/attendance_records"><i class="material-icons menu-inner-icon">&#xE85D;</i><span>My Attendance</span></a></li>
 							<li class="main_toggle_menu">
-								<a href="javascript:void(0)"><i class="material-icons menu-inner-icon">&#xE146;</i><span>Custom Categories</span><i class="material-icons arrow-up-icon">&#xE313;</i></a>
-								<ul class="submenu list-unstyled" style="display:none;">
-									<li><a href="#">Classwork</a></li>
-									<li><a href="#">Homework</a></li>
-								</ul>
+								<a href="<%= my_classwork_institute_path(@institute) %>"><i class="material-icons menu-inner-icon">&#xE146;</i><span>Custom Categories</span></a>
 							</li>			
-							<li><a href="#"><i class="material-icons menu-inner-icon">&#xE616;</i><span>Notices</span></a></li>
+							<li><a href="<%= institute_notices_path(@institute) %>"><i class="material-icons menu-inner-icon">&#xE616;</i><span>My Notices</span></a></li>
 							<li class="main_toggle_menu">
-								<a href="javascript:void(0)"><i class="material-icons menu-inner-icon">&#xE8A3;</i><span>Calendar/Day Plan</span><i class="material-icons arrow-up-icon">&#xE313;</i></a>
-								<ul class="submenu list-unstyled" style="display:none;">
-									<li><a href="#">Calendar</a></li>
-									<li><a href="#">Day Plan</a></li>
-								</ul>
+								<a href="<%= institute_events_path(@institute) %>"><i class="material-icons menu-inner-icon">&#xE8A3;</i><span>Calendar/Day Plan</span></a>								
 							</li>
-							<li><a href="#"><i class="material-icons menu-inner-icon">&#xE0C6;</i><span>Help</span></a></li>						
+							<li><a href="javascript:void(0)"><i class="material-icons menu-inner-icon">&#xE0C6;</i><span>Help</span></a></li>						
 						</ul>
 					</div>
 					<ul class="nav navbar-nav navbar-right pull-right right-self-image" style="margin-right: 3px;">
@@ -56,13 +43,13 @@
 							<a class="navbar-brand right-menu" href="javascript:void(0)">Teacher<i class="material-icons arrow-up-icon" style="vertical-align:middle;">&#xE313;</i></a>
 							<ul class="right-menu-toggle" id="right-menu-toggle-id" style="display:none;">
 								<li class="main-image text-center">
-									<a href="#">
-										<%= image_tag "default_profile_picture.png" , class:"img-circle img-xs"%>
+									<a href="users/<%= current_user.id %>">
+										<img src="<%= current_user.profile_picture.media.url(:thumb) %>" class="img-circle img-xs" >
 										<br>
-										<span>Gaurav</span>
+										<span><%= current_user.first_name.capitalize %></span>
 									</a>
 								</li>
-								<li class="main-school-name text-center"><%= link_to institute_information_route_path do %>Dav School<% end %></li>
+								<li class="main-school-name text-center"><%= link_to conversation_path(@institute_conversation) do %><%= @institute_conversation.conversation_name %><% end %></li>
 							</ul>						
 						</li>							
 					</ul>

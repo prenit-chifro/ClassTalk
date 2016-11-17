@@ -11,15 +11,9 @@ class ConversationsController < ApplicationController
 
 	def index
 		@conversations = current_user.participating_conversations.order(updated_at: :desc)
-		@groups = @conversations.map{|c| c if (c.is_group)}.compact
 		
-		@contacts = []
 		@sections = current_user.sections
-		@sections.each do |section|
-			other_section_members = section.get_other_members_for_user(current_user)
-			@contacts = @contacts + other_section_members
-		end
-		@contacts = @contacts.compact.uniq
+		
 		@unread_conversation_ids_array = []
 		@conversations.each do |conversation|
 			conversation_participant_model = conversation.get_conversation_participant_model_for_participant(current_user)
@@ -33,16 +27,44 @@ class ConversationsController < ApplicationController
 			end
 		end
 
-		@assigned_classteacher_grades_sections_model = current_user.assigned_classteacher_grades_sections_models.first
-		if(!@assigned_classteacher_grades_sections_model.blank?)
-			@todays_attendance_record = @assigned_classteacher_grades_sections_model.attendance_records.find_by(date: Date.today)
-
-			@institute = @assigned_classteacher_grades_sections_model.institute
-			@grade = @assigned_classteacher_grades_sections_model.grade
-			@section = @assigned_classteacher_grades_sections_model.section
-			@class_students =  @section.get_members_with_given_roles_for_institute_and_grade_with_role(@institute, @grade, "Student")
+		if(current_user.role == "Principal")
+			@institute = current_user.institutes.first
+			@admins = @institute.get_members_with_given_roles(["Institute Admin"])
+			@teachers = @institute.get_members_with_given_roles(["Teacher"])
 		end
-		
+
+		if(current_user.role == "Institute Admin")
+			@institute = current_user.institutes.first
+			
+			@principal = @institute.get_members_with_given_roles(["Principal"])
+			@admins = @institute.get_members_with_given_roles(["Institute Admin"])
+			@teachers = @institute.get_members_with_given_roles(["Teacher"])
+			@institutes_grades_sections_models = @institute.institutes_grades_sections_models
+			
+		end
+
+		if(current_user.role == "Teacher")
+			@principal = @institute.get_members_with_given_roles(["Principal"])
+			@admins = @institute.get_members_with_given_roles(["Institute Admin"])
+			@teachers = @institute.get_members_with_given_roles(["Teacher"])
+			@teaching_section_subject_models = current_user.teaching_sections_subjects_models
+
+			@assigned_classteacher_grades_sections_model = current_user.assigned_classteacher_grades_sections_models.first
+			if(!@assigned_classteacher_grades_sections_model.blank?)
+				@todays_attendance_record = @assigned_classteacher_grades_sections_model.attendance_records.find_by(date: Date.today)
+
+				@institute = @assigned_classteacher_grades_sections_model.institute
+				@grade = @assigned_classteacher_grades_sections_model.grade
+				@section = @assigned_classteacher_grades_sections_model.section
+				@class_students =  @section.get_members_with_given_roles_for_institute_and_grade_with_role(@institute, @grade, "Student")
+			end
+
+		end
+
+		if(current_user.role == "Student" or current_user.role == "Parent")
+			@admins = @institute.get_members_with_given_roles(["Institute Admin"])
+			@teachers = @institute.get_members_with_given_roles(["Teacher"])
+		end
 	end
 	
 	def new
@@ -121,17 +143,45 @@ class ConversationsController < ApplicationController
 							(@participants - @conversation.participants).each do |participant|
 								@conversation.add_participant(participant.id, current_user.id)
 							end
-							redirect_to conversation_path(@conversation)
-							return
-						
+							
 						end
 					end
-					
-					@conversation = current_user.created_conversations.create
-					@participants.each do |participant|
-						@conversation.add_participant(participant.id, current_user.id)	
+					if(@conversation.blank?)
+						@conversation = current_user.created_conversations.create
+						@participants.each do |participant|
+							@conversation.add_participant(participant.id, current_user.id)	
+						end	
 					end
-					redirect_to conversation_path(@conversation)
+
+					if(!params[:message].blank? or !params[:attached_files].blank?)
+						@new_message = @conversation.messages.create(content: params[:message], category: params[:message_category], creator_id: current_user.id)
+		
+						attached_files = params[:attached_files]
+						if (!attached_files.blank?)
+							attached_files.each do |file|
+								new_attachment = @new_message.attachments.new()
+								new_attachment.media = file
+
+								if(!params[:attachment_category].blank?)
+									new_attachment.category = params[:attachment_category] 
+									if( "Image, Video, Link".include?(params[:attachment_category]) )
+										@conversation.message_categories = "" if @conversation.message_categories.blank?
+										if(!@conversation.message_categories.include?(params[:message_category]))
+											@new_message.update(category: "Media")	
+										end
+									else	
+										@new_message.update(category: params[:attachment_category])	if @new_message.category != params[:attachment_category]
+									end	
+								end
+
+								new_attachment.save
+							end
+						end
+						@conversation.update_attributes(last_message_id: @new_message.id)
+						render_to_string "messages/create.js"
+					end
+
+					redirect_to conversation_path(@conversation), format: :js
 					
 				else
 					@conversation = current_user.participating_conversations.where(id: params[:conversation_id]).first
@@ -192,9 +242,39 @@ class ConversationsController < ApplicationController
 	def show
 		
 		if(!@conversation.blank?)
+			if(@conversation.is_institute_conversation)
+				@institute = Institute.find_by(id: @conversation.institute_id)
+				
+				@contacts = @institute.get_members_with_given_roles(["Principal", "Institute Admin"])
+				@teachers = @institute.get_members_with_given_roles(["Teacher"])
+				@students = @institute.get_members_with_given_roles(["Student"])
+				@parents = @institute.get_members_with_given_roles(["Parent"])
+			end
+
+			if(@conversation.is_section_conversation)
+				@institute = Institute.find_by(id: @conversation.institute_id)
+				@grade = Grade.find_by(id: @conversation.grade_id)
+				@section = Section.find_by(id: @conversation.section_id)
+				
+				@classteacher = @section.get_classteacher_for_institute_and_grade(@institute, @grade)
+				@section_subject_models = @section.sections_subjects.where(institute_id: @institute.id)
+				@students = @section.get_members_with_given_roles_for_institute_and_grade_with_role(@institute, @grade, ["Student"])
+				@parents = @section.get_members_with_given_roles_for_institute_and_grade_with_role(@institute, @grade, ["Parent"])
+			end
+
+			if(@conversation.is_subject_conversation)
+				@institute = Institute.find_by(id: @conversation.institute_id)
+				@grade = Grade.find_by(id: @conversation.grade_id)
+				@section = Section.find_by(id: @conversation.section_id)
+				@subject = Subject.find_by(id: @conversation.subject_id)
+
+				@subjectteacher = @section.get_subject_teacher_for_institute_and_grade_and_subject(@institute, @grade, @subject)
+				@students = @section.get_members_with_given_roles_for_institute_and_grade_with_role(@institute, @grade, ["Student"])
+				@parents = @section.get_members_with_given_roles_for_institute_and_grade_with_role(@institute, @grade, ["Parent"])
+			end
 
 			@conversation_participant_model = @conversation.get_conversation_participant_model_for_participant(current_user)
-			@messages = @conversation.messages.where("created_at > ?", @conversation_participant_model.created_at).order(created_at: :desc)
+			@messages = @conversation.messages.where("created_at >= ?", @conversation_participant_model.created_at).order(created_at: :desc)
 			if(params[:page] and params[:page].to_i >= 2)
 				
 				if( !params[:message_category].blank? )
@@ -211,14 +291,7 @@ class ConversationsController < ApplicationController
 						render "show", layout: false
 						return
 					end
-					if(params[:message_category] == "Chat_Request")
-						@Chat_Request_messages = @messages.where(category: "Chat_Request")
-						@Chat_Request_messages = @Chat_Request_messages.page(params[:page]).per(20).to_a.reverse!
-						set_seen_status_to_recieved_messages(@Messages_category_messages)
-						render "show", layout: false
-						return
-					end				
-
+					
 					if(!@conversation.message_categories.blank? and @conversation.message_categories.include?(params[:message_category]))
 						@conversation.message_categories.split(", ").each do |category|
 							instance_variable_set("@" + category + "_messages", @messages.where(category: category))
@@ -236,18 +309,16 @@ class ConversationsController < ApplicationController
 
 				if(!@conversation.message_categories.blank?)
 					@conversation.message_categories.split(", ").each do |category|
-						instance_variable_set("@" + category + "_messages", @messages.where(category: category))
-						instance_variable_set("@" + category + "_messages", Kaminari.paginate_array(instance_variable_get("@" + category + "_messages")).page(1).per(10))
+						instance_variable_set("@" + category + "_messages", @messages.where(category: category).page(1).per(10))
+						
 						set_seen_status_to_recieved_messages(instance_variable_get("@" + category + "_messages"))
 					end
 					
 				end
-				@Chat_Request_messages = @messages.where(category: "Chat_Request")
-				@Media_category_messages = Message.includes(:attachments).where.not(attachments: { attachable_id: nil }).where(id: @messages.map(&:id))
+				
+				@Media_category_messages = Message.includes(:attachments).where.not(attachments: { attachable_id: nil }).where(id: @messages.map(&:id)).page(1).per(10)
 
-				@Messages_category_messages = @messages.page(1).per(20).to_a.reverse!
-				@Media_category_messages = Kaminari.paginate_array(@Media_category_messages).page(1).per(10)
-				@Chat_Request_messages = Kaminari.paginate_array(@Chat_Request_messages).page(1).per(10)
+				@Messages_category_messages = @messages.page(1).per(10)				
 					
 				set_seen_status_to_recieved_messages(@Messages_category_messages)
 				set_seen_status_to_recieved_messages(@Media_category_messages)

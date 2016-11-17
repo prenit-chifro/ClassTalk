@@ -139,6 +139,30 @@ class Conversation < ApplicationRecord
 		Section.find_by(id: self.section_id)
 	end
 
+	def is_subject_conversation 
+		if(!self.is_custom_group and !self.subject_id.blank?)
+			return true
+		else
+			return false
+		end
+	end
+
+	def is_section_conversation 
+		if(!self.is_custom_group and self.subject_id.blank? and !self.section_id.blank?)
+			return true
+		else
+			return false
+		end
+	end
+
+	def is_institute_conversation 
+		if(!self.is_custom_group and self.subject_id.blank? and self.section_id.blank? and !self.institute_id.blank?)	
+			return true
+		else
+			return false
+		end
+	end
+
 	def other_participants user
 		if(self.is_custom_group == false)
 			if(user.role == "Parent" or user.role == "Student")
@@ -207,6 +231,15 @@ class Conversation < ApplicationRecord
 		else
 			self.banner_image.media.url(style)
 		end	
+	end
+
+	def get_url_for_banner_image_for_user user
+		if(!self.is_group and self.participants.length == 2)
+			"/users/#{self.other_participants(user).first.id}"
+		else
+			"/conversations/#{self.id}"
+		end
+		
 	end
 	
 	after_create :create_banner_image_for_conversation
