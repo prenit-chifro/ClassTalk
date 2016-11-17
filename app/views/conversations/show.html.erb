@@ -11,7 +11,7 @@
 	<% end %>
 
 	<% if(@conversation.is_custom_group == false) %>
-		<div class="container-width classRoute" style="margin-top:69px;">
+		<div class="container-width classRoute" style="margin-top:50px;">
 			<ul class="nav nav-tabs" role="tablist" id="tablist">
 				<% if(@conversation.is_institute_conversation) %>
 					<li class="active"><a data-toggle="tab" href="#all-contacts">Contacts</a></li>
@@ -19,7 +19,6 @@
 					<% if(["Principal", "Institute Admin", "Teacher"].include?(current_user.role)) %>
 						<li><a data-toggle="tab" href="#all-students">Students</a></li>	
 						<li><a data-toggle="tab" href="#all-parents">Parents</a></li>
-
 					<% end %>
 					<li><a data-toggle="tab" href="#all-locations">Location</a></li>
 				<% end %>
@@ -208,11 +207,16 @@
 				<% if(@conversation.is_subject_conversation) %>
 					<div class="tab-pane active" id="all-subjectteachers">
 						<% if(!current_user.role.include?("Student") and !current_user.role.include?("Parent")) %>
+							
 							<%= link_to add_new_member_institute_path(@institute) do %>
-								<i class="material-icons">&#xE7FE;</i>
+								<div class="pull-left add-member">
+									<span>Add Participient</span><i class="material-icons">&#xE7FE;</i>
+								</div>	
 							<% end %>
 							<%= link_to new_conversation_path(conversation_id: @conversation.id) do %>
-								<i class="material-icons">&#xE7FE;</i>
+								<div class="pull-right add-member">
+									<span>Create New Contact</span><i class="material-icons">&#xE7FE;</i>
+								</div>	
 							<% end %>
 						<% end %>
 						
@@ -223,10 +227,14 @@
 						<div class="tab-pane" id="all-students">
 							<% if(!current_user.role.include?("Student") and !current_user.role.include?("Parent")) %>
 								<%= link_to add_new_member_institute_path(@institute) do %>
-									<i class="material-icons">&#xE7FE;</i>
+									<div class="pull-left add-member">
+										<span>Add Participient</span><i class="material-icons">&#xE7FE;</i>
+									</div>	
 								<% end %>
 								<%= link_to new_conversation_path(conversation_id: @conversation.id) do %>
-									<i class="material-icons">&#xE7FE;</i>
+									<div class="pull-right add-member">
+										<span>Create New Contact</span><i class="material-icons">&#xE7FE;</i>
+									</div>
 								<% end %>
 							<% end %>
 							<% if(!@students.blank?) %>
@@ -241,10 +249,14 @@
 						<div class="tab-pane" id="all-parents">
 							<% if(!current_user.role.include?("Student") and !current_user.role.include?("Parent")) %>
 								<%= link_to add_new_member_institute_path(@institute) do %>
-									<i class="material-icons">&#xE7FE;</i>
+									<div class="pull-left add-member">
+										<span>Add Participient</span><i class="material-icons">&#xE7FE;</i>
+									</div>	
 								<% end %>
 								<%= link_to new_conversation_path(conversation_id: @conversation.id) do %>
-									<i class="material-icons">&#xE7FE;</i>
+									<div class="pull-right add-member">
+										<span>Create New Contact</span><i class="material-icons">&#xE7FE;</i>
+									</div>
 								<% end %>
 							<% end %>
 							<% if(!@parents.blank?) %>
@@ -282,7 +294,7 @@
 						<% end %>
 					<% end %>
 					<li class="custom-events">
-						<a data-toggle="tab" href="#all-custom-events"><span><i class="material-icons">&#xE145;</i></span><span>New Category</span></a>
+						<a data-toggle="tab" href="#all-custom-events"><span><i class="material-icons" style="font-size:12px;">&#xE145;</i></span><span>New Category</span></a>
 					</li>
 				</ul>
 			</div>	
@@ -329,7 +341,7 @@
 								</div>
 							</div>
 							<div class="col-xs-3">
-								<%= submit_tag :Add, class:"btn btn-success-custom btn-block new-category-name" %>
+								<%= submit_tag :Add, class:"btn btn-success-custom btn-success btn-block new-category-name" %>
 							</div>
 						<% end %>
 					</div>
@@ -339,7 +351,7 @@
 							<% @conversation.message_categories.split(", ").each do |category| %>												
 								<li class="<%= category %>-Message-category-remove-link-li">													
 									<%= link_to delete_message_category_conversation_path(@conversation, message_category: category), method: :delete,id:"#{category}-new-category-name", remote: true do %>
-										<%= button_tag :Delete, class:"btn btn-success-custom btn-block new-category-name" do %>
+										<%= button_tag :Delete, class:"btn btn-success-custom btn-success btn-block new-category-name" do %>
 											<span><%= category %> </span>
 											<span class="close-icon">&times;</span>
 										<% end %>
@@ -352,9 +364,9 @@
 			</div>
 		</div>
 	</div>
-
-	<i class="material-icons personal-add-icon" data-toggle="modal" data-target="#customMessageModal">&#xE147;</i>
-
+	<span class="personal-message-icon">
+		<i class="material-icons" data-toggle="modal" data-target="#customMessageModal">&#xE0C9;</i>
+	</span>
 	<div id="customMessageModal" class="modal fade" role="dialog">
 		<div class="modal-dialog">
 			<div class="modal-content">
@@ -419,8 +431,8 @@
 						<div class="attachment-send-button">
 							<p class="pull-left"><i class="material-icons attachment-icon" id="attach-icon">&#xE226;</i></p>
 							
-							<label class="file-label" for="conversation-chat-image">
-								<p class="pull-right"><i class="material-icons">&#xE3B0;</i></p>
+							<label class="pull-right file-label" for="conversation-chat-image" style="width:10%;">
+								<p class="" style="width:100%;border-left:1px solid #cacaca;"><i class="material-icons">&#xE3B0;</i></p>
 								<%= file_field_tag "attached_files[]",:id=>"conversation-chat-image", :class=>"custom-file-input", multiple: true, onchange: "fileChanged(this);" %>	
 							</label>
 							

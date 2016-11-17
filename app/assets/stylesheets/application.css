@@ -359,7 +359,10 @@ label.file-label > input[type=file]{
 .hamburger-menu span::before {
     top: -8px;
 }
-
+:focus{
+	outline:none !important;
+	outline:0 !important;
+}
 .hamburger-menu span::after {
 	bottom: -8px;
 }
@@ -402,7 +405,7 @@ label.file-label > input[type=file]{
 
 .hamburger-menu-left-arrow.is-active span::after {
 	bottom: 0;
-	transform: translateX(13px) translateY(-1px) rotate(-45deg)	;
+	transform: translateX(13px) translateY(-2px) rotate(-45deg)	;
 }
 .main_toggle_menu >a i.arrow-up-icon{
 	float:right;
@@ -483,11 +486,46 @@ ul.submenu>li:last-child a{
 .personal-add-icon{
     position: fixed;
     bottom: 53px;
-    right: 11px;
-    font-size: 65px !important;
+    right: 11px;    
     color: #ea5b31;
     z-index: 1000;
+    font-size: 65px !important;
+	cursor: pointer;
+}
+span.personal-message-icon{
+	display: block;
+    background: #ea5b31;
+    width: 50px;
+    height: 50px;
+    position: fixed;
+    bottom: 53px;
+    right: 11px;
+    z-index: 1000;
     cursor: pointer;
+    text-align: center;
+    line-height: 5;
+    border-radius: 50%;
+    box-shadow: 1px 1px 1px #b5b5b5;
+}
+span.personal-message-icon i{
+	font-size: 25px !Important;
+    color: #fff;
+}
+div.add-member{
+	background: #8c8c8c;
+    color: #fff;
+    padding: 10px;
+    font-size: 13px;
+    box-shadow: 1px 1px 1px #afacac;
+}
+div.add-member>i{
+	vertical-align: middle;
+    margin-left: 10px;
+    font-size: 18px;
+}
+ul.index-conversation-modal div.classRoute>ul{
+	box-shadow:1px 1px 1px #afacac;
+	background: #5a2e2e;
 }
  /*dropdown-submenu*/
 
@@ -641,7 +679,7 @@ div[id*="all"]{
     margin-top: -10px;
 }
 
-.tabs-container ul{
+.tabs-container div.chat-show-tabs-upper-div ul{
 	margin: 0;
     background: #8c8c8c;
 }
@@ -660,14 +698,17 @@ div[id*="all"]{
 .scroller-fixed.scroller-left{
     left: 0;
 }
-.tabs-container ul>li.active>a, .tabs-container ul>li.active>a:focus, .tabs-container ul>li.active>a:hover{
+.tabs-container div.chat-show-tabs-upper-div ul>li.active>a, 
+.tabs-container div.chat-show-tabs-upper-div ul>li.active>a:focus, 
+.tabs-container div.chat-show-tabs-upper-div ul>li.active>a:hover
+{
 	border:none;
 	border-radius:0;
     background-color: #eee;
 	margin-right:0;
 	color:#8c8c8c;
 }
-.tabs-container ul>li>a{
+.tabs-container div.chat-show-tabs-upper-div ul>li>a{
 	border:none;
 	border-radius:0;
 	margin-right:0;
@@ -676,7 +717,9 @@ div[id*="all"]{
 	-webkit-transition:all 1s;
 	-moz-transition:all 1s;
 }
-.tabs-container ul>li>a:focus, .tabs-container ul>li>a:hover{
+.tabs-container div.chat-show-tabs-upper-div ul>li>a:focus, 
+.tabs-container ul>li>a:hover
+{
 	background-color:#eee;
 	color: #c3c3c3;
 }
@@ -1175,6 +1218,16 @@ div.toggle-teachers-classes > ul>li label{
 	position: relative;
 	cursor: default;
 	box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+	margin-bottom: 10px;
+    margin-top: 10px;
+}
+.btn-custom-info{
+	background-color: #ea5b31;
+    border-color: #ea5b31;
+}
+.btn-custom-info a{
+	color:#fff;
+	text-decoration:none;
 }
 .ch-thumb {	
 	width: 100%;
@@ -1454,11 +1507,22 @@ ul.sticky-notices li:nth-child(even) .notice-icon{
 	-webkit-transform:rotate(4deg);
 	-moz-transform:rotate(4deg);
 }
-
+.mybtn i{
+	color:#fff;
+}
+.new-group-submit-button{
+	position: fixed;
+    top: 50px;
+    right: 15px;
+    background: none;
+    box-shadow: none;
+    border: none;
+    color: #fff;
+}
 div.sticky-notes-new{
 	text-decoration:none;
 	color:#000;
-	background:#cfc;
+	background:#afafaf;
 	display:block;
 	max-width:450px;
 	margin:0 auto;
@@ -1555,11 +1619,11 @@ ul.right-menu-toggle li a:hover{
 	}
 	.ch-thumb span{
 		margin-top: -31px;
-		margin-left: -28px;
+		margin-left: -45px;
 		font-size: 18px;
 	}
 	.ch-thumb span + span{
-		margin-left: -32px;
+		margin-left: -35px;
 		font-size: 14px;
 	}
 	.ch-info h3{

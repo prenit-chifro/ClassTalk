@@ -1,52 +1,52 @@
-<nav class="navbar navbar-inverse navbar-fixed-top main-app-header main-app-conversation-new-header">
-	<div class="container-fluid">
+<div class="classRoute">
+	<div class="container-fluid" style="margin-top:50px;border-bottom:1px solid #e7e7e7;background: #ea5b31;">
 		<div class="navbar-header main-app-header main-app-conversation-new-header pull-left">
-			<a class="mybtn btn btn-link btn-xs pull-left" href="/notices"><i class="material-icons">&#xE317;</i></a>
+			<a class="mybtn btn btn-link btn-xs pull-left" href="<%= institute_notices_path(@institute) %>"><i class="material-icons">&#xE317;</i></a>
 		</div>	
 	</div>
-</nav>
-<div class="container">
-	<div class="sticky-notes-new">
-	<%= form_tag notices_path, remote: true do %>
-		
-		<div class="institute-select-div">
-			<% options = [["Select Institute",""]] %>
-			<div class="form-group event-institute-select-div">
-				<% @institutes.each do |institute| %>
-					<% options << [institute.institute_name.truncate(20),institute.id] %>
-				<% end %>
-				<%= select_tag :institute_id, options_for_select(options, ["Select Institute",""]), class: "form-control event-institute-input" %>
+    
+	<div class="container">
+		<div class="sticky-notes-new">
+		<%= form_tag institute_notices_path, remote: true do %>
+			
+			<div class="institute-select-div">
+				<% options = [["Select Institute",""]] %>
+				<div class="form-group event-institute-select-div">
+					<% @institutes.each do |institute| %>
+						<% options << [institute.institute_name.truncate(20),institute.id] %>
+					<% end %>
+					<%= select_tag :institute_id, options_for_select(options, ["Select Institute",""]), class: "form-control event-institute-input" %>
+				</div>
+				<div class="all-classes" style="display: none">
+					<input type="checkbox" name="all_sections" id="all-sections-checkbox">		
+				</div>	
+				<div class="all-classes-sections">
+					<% @institutes.each do |institute| %>
+						<div class="event-institute-grade-section-select-div" data-institute-id="<%= institute.id %>" style="display: none">
+							<% institute_grade_section_models = institute.institutes_grades_sections_models %>
+							Select Classes:
+							<% institute_grade_section_models.each do |grade_section| %>
+								<%= check_box_tag "grade_section_ids[]", grade_section.id, false, class:"grade-section-checkbox-input"  %> Class <%= grade_section.grade.grade_name %> <%= grade_section.section.section_name %>
+							<% end %>
+						</div>
+					<% end %>
+				</div>	
 			</div>
-			<div class="all-classes" style="display: none">
-				<input type="checkbox" name="all_sections" id="all-sections-checkbox">		
-			</div>	
-			<div class="all-classes-sections">
-				<% @institutes.each do |institute| %>
-					<div class="event-institute-grade-section-select-div" data-institute-id="<%= institute.id %>" style="display: none">
-						<% institute_grade_section_models = institute.institutes_grades_sections_models %>
-						Select Classes:
-						<% institute_grade_section_models.each do |grade_section| %>
-							<%= check_box_tag "grade_section_ids[]", grade_section.id, false, class:"grade-section-checkbox-input"  %> Class <%= grade_section.grade.grade_name %> <%= grade_section.section.section_name %>
-						<% end %>
-					</div>
-				<% end %>
-			</div>	
-		</div>
 
-		<div class="form-group">
-			<%= text_field_tag :title, nil, placeholder: "Notice Heading", class: "form-control" %>
-		</div>
-		<div class="form-group">
-			<%= text_area_tag :description, nil, placeholder: "Notice Text", class: "form-control" %>
-		</div>
-		
-		<%= button_tag(type:"submit",class: "new-group-submit-button") do %>
-			<i class="material-icons">&#xE876;</i>
+			<div class="form-group">
+				<%= text_field_tag :title, nil, placeholder: "Notice Heading", class: "form-control" %>
+			</div>
+			<div class="form-group">
+				<%= text_area_tag :description, nil, placeholder: "Notice Text", class: "form-control" %>
+			</div>
+			
+			<%= button_tag(type:"submit",class: "new-group-submit-button") do %>
+				<i class="material-icons">&#xE876;</i>
+			<% end %>
 		<% end %>
-	<% end %>
+		</div>	
 	</div>	
-</div>	
-
+</div>
 <script type="text/javascript">
 	$(".event-institute-input").change(function(){
 		$(".all-classes").show();
@@ -62,7 +62,9 @@
 		$(".grade-section-checkbox-input").prop("checked", $(this).prop("checked"));
 	});
 	if (window.location.href.indexOf("notices") > -1) {
-		$('body').css('background-color', '#009688');
+		$('body').css('background-color', 'rgb(212, 212, 212)');
 	}
+	$(".classRoute").parents("div.wrapper").find(".navbar-default").css("box-shadow", "none");
+	$(".classRoute").parents("div.wrapper").find(".navbar-default").css("border-bottom", "1px solid #e7e7e7"); 
 
 </script>

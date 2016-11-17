@@ -2,7 +2,7 @@
 	<a href="/notices/<%= notice.id %>/edit">
 		<i class="material-icons notices-icon notices-edit-icon">&#xE254;</i>
 	</a>	
-	<%= link_to notice_path(notice), method: :delete do %>
+	<%= link_to institute_notices_path(@institute), method: :delete do %>
 		<i class="material-icons notices-icon notices-delete-icon" >&#xE872;</i>	
 	<% end %>
 <% end %>
@@ -18,6 +18,3 @@
 	<%= notice.notice_creator.first_name %> <%= notice.notice_creator.last_name %><br>
 	<%= notice.notice_creator.details %>
 </div>
-
-
-
