@@ -1,0 +1,2 @@
+<% script_string = render partial: "messages/destroy_message_publication_partial", locals: {conversation: @conversation, message: @message} %>
+<% publish_to(conversation_path(@conversation), script_string) %>

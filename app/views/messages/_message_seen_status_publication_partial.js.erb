@@ -1,0 +1,7 @@
+var currentUserId = $('meta[name=current-user-id]').attr("content");
+var message_creator_id = "<%= message.creator_id %>";
+if(currentUserId == message_creator_id){
+	messageDiv = $('.message-div[data-message-id=' + <%= message.id %> + ']');
+	checkDiv = $(messageDiv).find(".double-checkmark");
+	checkDiv.css("display", "inline-block");
+}

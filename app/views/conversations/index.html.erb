@@ -1,0 +1,149 @@
+<nav class="navbar navbar-inverse navbar-fixed-top main-app-header main-app-index-header">
+	<div class="container-fluid">
+		<div class="navbar-header pull-left">
+			<a class="navbar-brand" href="/">ClassTalk</a>		
+		</div>
+		<% if(!@class_students.blank?) %>
+			<div class="modal fade" id="attendance-modal" role="dialog">
+				<div class="modal-dialog modal-lg">
+					<div class="modal-content">						
+						<div class="modal-header">
+							<div class="col-md-6">
+								<button type="button" class="close" data-dismiss="modal">&times;</button>
+								<form onsubmit="return false;" class="search-form">
+									<div class="form-group has-feedback">
+										<i class="material-icons search-attendance-icon">&#xE8B6;</i> 
+										<input type="text" class="form-control" name="search" id="search">
+									</div>
+								</form>
+								<h4 class="modal-title">
+									Class <%= @grade.grade_name %><%= @section.section_name %> Attendance <span style="float: right; margin-right: 20px"><%= Time.now.strftime("%v") %></span>
+								</h4>
+							</div>	
+						</div>
+						<%= render partial: "attendance_records/new_attendance_form", locals: {grade_section: @assigned_classteacher_grades_sections_model, class_students: @class_students, attendance_record: @todays_attendance_record} %>
+					</div>
+				</div>
+			</div>
+		<% end %>
+		
+		<ul class="nav navbar-nav navbar-right pull-right display_inline">
+			<li class="chat-tab-icon" style="display:none;">
+				<%= link_to new_conversation_path do %>
+					<i class="material-icons">&#xE0C9;</i>
+				<% end %>
+			</li>
+			<li class="contact-tab-icon" style="display:none;">
+				<% if(!current_user.role.include?("Student") and !current_user.role.include?("Parent")) %>
+					<%= link_to add_new_member_conversations_path do %>
+						<i class="material-icons">&#xE7FE;</i>
+					<% end %>
+				<% end %>
+				
+			</li>
+			<li class="group-tab-icon" style="display:none;">
+				<% if(!current_user.role.include?("Student") and !current_user.role.include?("Parent")) %>
+					<%= link_to new_group_conversations_path do %>
+						<i class="material-icons">&#xE7F0;</i>
+					<% end %>
+				<% end %>
+				
+			</li>
+			<li class="dot-menu-show"><span id="dropdownToggle" class=" dropdownToggle"></span></li>
+		</ul>
+		<ul class="dropdownMenu">
+			<% if(user_signed_in?) %>
+				<li class="text-center">
+					<%= link_to user_path(current_user) do %>
+						<img src="<%= current_user.profile_picture.media.url(:thumb) %>" class="img-circle img-sm">
+					<% end %>
+				</li>
+				<li class="text-center">
+					<%= link_to user_path(current_user) do %>
+						<span>My Profile</span>
+					<% end %>
+				</li>
+				<li class="text-center">
+					<%= link_to "Logout", destroy_user_session_path, method: :delete %>
+				</li>				
+			<% end %>			
+		</ul>
+	</div>
+</nav>
+
+<div class="chat-index">
+	<ul class="nav nav-tabs main-app-tabs" role="tablist" id="tablist">
+		<li class="active">
+			<a data-toggle="tab" href="#chats">
+				Chats
+				<% if(!@unread_conversation_ids_array.blank?) %>
+					<% if(@unread_conversation_ids_array.length > 0) %>
+						<span class="dot-unread unread-conversation-no" style="display: inline-block;"> <%= @unread_conversation_ids_array.length %> </span> 
+					<% else %>
+						<span class="dot-unread unread-conversation-no" style="display: none;">0</span>
+					<% end %>
+					<span class="unread-conversation-ids" style="display: none;"><%= @unread_conversation_ids_array.join(", ") %></span>	
+				<% else %>
+					<span class="dot-unread unread-conversation-no" style="display: none;">0</span>
+					<span class="unread-conversation-ids" style="display: none;">""</span>	
+				<% end %> 
+			</a>
+		</li>
+		<li><a data-toggle="tab" href="#contacts">Contacts</a></li>
+		<li><a data-toggle="tab" href="#groups">Groups</a></li>
+	</ul>
+	<div class="swipe-area">
+		<div class="tab-content pad-all">
+			<div id="chats" class="tab-pane active all-small-conversations">
+				<% if(!@conversations.blank?) %>
+					<% @conversations.each do |conversation| %>
+						<%= render partial: "conversation_small", locals: {conversation: conversation, user: current_user} %>
+					<% end %>
+				<% end %>
+				
+			</div>
+			<div id="contacts" class="tab-pane">
+				<% if(!@contacts.blank?) %>
+					<% @contacts.each do |contact| %>						
+							<%= render partial: "contact", locals: {contact: contact} %>				
+					<% end %>
+				<% end %>
+				
+			</div>
+			<div id="groups" class="tab-pane">
+				<% if(!@groups.blank?) %>
+					<% @groups.each do |group| %>
+						<%= render partial: "group_small", locals: {group: group} %>
+					<% end %>
+				<% end %>				
+			</div>
+		</div>
+	</div>
+</div>
+<footer class="footer text-center">
+	<div class="container-width">
+		<ul class="list-inline footer-list">
+			<li onclick="App.openCalender();"><i class="material-icons calender-icon">&#xE8B5;</i></li>
+			<% if(!@class_students.blank?) %>
+
+				<li data-toggle="modal" data-target="#attendance-modal">
+					<i class="material-icons attendance-icon">&#xE85D;</i>				
+				</li>
+			<% end %>
+			<%= link_to notices_path do %>
+				<li>
+					<i class="material-icons notice-icon">&#xE616;</i>
+				</li>
+			<% end %>
+			
+		</ul>
+	</div>
+</footer>
+
+<div class="month-calendar-div" style="display: none;">
+	<div class="calendar"></div>
+</div>
+<script>
+	var widthFooterList = Math.floor(100 / $("ul.footer-list li").size());
+	$("ul.footer-list li").css('width', widthFooterList + "%");
+</script>

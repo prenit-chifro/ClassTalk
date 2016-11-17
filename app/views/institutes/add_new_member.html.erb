@@ -1,0 +1,196 @@
+<div class="container">
+	<div class="row">
+		<%= form_tag add_new_member_institute_path(@institute), multipart: true, method: "POST", class: "form-complete-register new-member-form", "autocomplete"=>"off", remote: true do %>
+			<div class="col-md-3 text-center">
+				<div id="user-profile-picture-target">
+					<div id="user-profile-picture-inner-target" class="user-profile-picture-inner-target">
+						<%= image_tag "default_profile_picture.png", class: "img-circle" %>
+					</div>	
+					<label class="file-label" for="profile-pic-uploadBtn">
+						<span class="file-label-class"><i class="material-icons">&#xE439;</i></span>
+						<%= file_field_tag :profile_picture, :id=>"profile-pic-uploadBtn" %>
+					</label>
+				</div>
+			</div>
+			<div class="col-md-9 text-center">
+				<h3 class="text-muted text-left">Complete Institute Member Profile</h3>
+				<div class="form-group">
+					<%= text_field_tag :first_name, nil, placeholder: "First Name", class: "form-control", "autocomplete"=>"off", required: true %>					
+				</div>				
+				<div class="form-group">
+					<%= text_field_tag :last_name, nil, placeholder: "Last Name", class: "form-control", "autocomplete"=>"off" %>
+				</div>
+				<div class="form-group phone-number-group">
+					<%= number_field_tag :isd_code, 91, placeholder: "ISD code", class: "form-control isd-control", "autocomplete"=>"off" %>
+					<%= number_field_tag :mobile_no, nil, placeholder: "Mobile Number", class: "form-control","autocomplete"=>"off" %>
+				</div>
+				<div class="form-group">
+					<%= email_field_tag :email, nil, placeholder: "Email", class: "form-control", "autocomplete"=>"off" %>
+				</div>
+				<div class="form-inline form-inline-select">
+					<div class="form-group">
+						<%= select_tag :gender, options_for_select([["His/Her Gender", ""], ["Male", "male"], ["Female", "female"]], ["His/Her Gender", ""]), {class: "form-control", id: "new-member-gender", required: true} %>
+					</div>
+					<div class="form-group">
+						<%= select_tag :role, options_for_select([["His/Her Role ", ""], ["Institute Admin", "Institute Admin"], ["Principal", "Principal"], ["Teacher", "Teacher"], ["Student", "Student"], ["Parent", "Parent"]],["His/Her Role", ""]), {class: "form-control", id: "school-circle-primary-role-field-new-circle", required: true}  %>
+					</div>
+				</div>	
+				<div class="student-parent-section-div" style="display: none">
+					<div class="text-center text-muted">In</div>
+					<div class="form-inline form-inline-select">
+						<div class="form-group">
+							<% options = [["Grade", ""]] %>
+							<% @institute.grades.all.each do |grade| %>
+								<% options << ["Grade #{grade.grade_name}", grade.grade_name] %>
+							<% end %>
+							<%= select_tag :student_parent_grade_name, options_for_select(options,["Grade", ""]), {class:"form-control", id: "student-parent-division-name-input"}  %>
+						</div>
+						<div class="form-group">
+							<% options = [["Section", ""]] %>
+							<% Section.all.each do |section| %>
+								<% options << ["Section #{section.section_name}", section.section_name] %>
+							<% end %>
+							<%= select_tag :student_parent_section_name, options_for_select(options,["Section", ""]), {class:"form-control", id: "student-parent-division-name-input"}  %>
+						</div>
+					</div>
+				</div>
+				<div class="teachers-full-div">
+					<div class="teachers-classteacher-section-div" style="display: none">
+						<div class="text-center text-muted">He/She is ClassTeacher of</div>
+						<div class="form-inline form-inline-select">
+							<div class="form-group">
+								<% options = [["He/She is ClassTeacher of", ""]] %>
+								<% @institute.grades.all.each do |grade| %>
+									<% options << ["Grade #{grade.grade_name}", grade.grade_name] %>
+								<% end %>
+								<%= select_tag :classteacher_grade_name, options_for_select(options,["He/She is ClassTeacher of", ""]), {class:"form-control", id: "classteacher-grade-name-input"}  %>
+							</div>
+							<div class="form-group">
+								<% options = [["Secton", ""]] %>
+								<% Section.all.each do |section| %>
+									<% options << ["Section #{section.section_name}", section.section_name] %>
+								<% end %>
+								<%= select_tag :classteacher_section_name, options_for_select(options,["Section", ""]), {class:"form-control", id: "classteacher-section-name-input"}  %>
+							</div>
+						</div>
+					</div>
+					
+					<div class="teachers-grades-div text-left" style="display: none;">
+						<div class="text-center text-muted">Select Classes and Subjects he/she teaches</div>
+						<% @institute.grades.each do |grade| %>
+							<div class="main-grade">
+								<ul class="detectul">
+									<li class="listitems"> 
+										<div class="checkbox">
+											<label for="teachers-grades-division-<%= grade.id %>" class="grades-division">
+												<%= check_box_tag "grade_names[]", grade.grade_name, false, { class: "checkbox teachers-grade-names-input", id:"teachers-grades-division-#{grade.id}"} %>
+												<span>Grade <%= grade.grade_name %></span>
+												<span><i class="material-icons circle-arrow-down-icon" style="top:9px;right:6px;font-size:27px;color: #fff;">&#xE313;</i></span>
+											</label>	
+										</div>
+									</li>
+								</ul>									
+								<div class="division-criterias" style="display:none;">
+									<div class="division-section">
+										<span class="text-muted division-criteria-style division-criteria-subject-style">All Sections: </span>
+										<input type="checkbox" name="subject-selector" class="all-sections" id="teachers-all-sections"/>
+										
+										<div class="division-upper-sections">	
+
+											<% Section.all.each do |section| %>
+												<%= check_box_tag "grades[#{grade.grade_name}][section_names][]", section.section_name, false, {"data-role" => "none", class: "grade-section-names-input"} %>
+												<span>Section <%= section.section_name %></span>
+											<% end %>
+										</div>
+									</div>
+									
+									<div class="division-subjects">	
+										<span class="text-muted division-criteria-style division-criteria-subject-style">All subjects: </span>
+										<input type="checkbox" name="subject-selector" class="teachers-all-subjects" id="teachers-all-subjects"/>
+										
+										<div class="division-upper-subjects">	
+											<% Subject.all.each do |subject| %>		
+												<label for="grade-subject-names-input-<%= subject.subject_name %>-<%= grade.id %>" class="labelForSubjects">
+													<div class="division-inner-subjects">											
+														<%= check_box_tag "grades[#{grade.grade_name}][subject_names][]", subject.subject_name, false, {"data-role" => "none", class: "grade-subject-names-input grade-subject-names-input-#{subject.subject_name}", id: "grade-subject-names-input-#{subject.subject_name}-#{grade.id}"} %>
+														<span><%= subject.subject_name %></span>
+													</div>		
+												</label>
+											<% end %>
+										</div>								
+									</div>	
+								</div>
+							</div>
+						<% end %>
+					</div>
+				</div>	
+			</div>
+			<div class="col-md-6 col-md-offset-3">
+				<div class="form-group form-button-register">
+					<%= button_tag(type:"submit", class: "form-control btn btn-login", data: {disable_with: "Saving"}) do %>
+						Save
+					<% end %>
+				</div>
+			</div>	
+		<% end %>
+	</div>
+</div>	
+<script type="text/javascript">
+	$(document).on('change','.teachers-grade-names-input',function(){
+		if($(this).is(':checked')) {
+			$(this).parents(".main-grade").find(".division-criterias").slideDown();
+			$(this).parents("ul.detectul").find(".circle-arrow-down-icon").addClass("arrow-circle-up");
+		} else {
+			$(this).parents(".main-grade").find(".division-criterias").slideUp();
+			$(this).parents("ul.detectul").find(".circle-arrow-down-icon").removeClass("arrow-circle-up");
+		}
+	});
+	$(".teachers-all-subjects").change(function (e) {
+		$(this).parents(".main-grade").find(".division-upper-subjects input:checkbox").prop('checked', $(this).prop("checked"));
+		e.preventDefault();
+	});
+
+	$("#teachers-all-sections").change(function(e){
+		$(this).parents(".main-grade").find(".division-upper-sections input:checkbox").prop('checked', $(this).prop("checked"));
+	});
+	
+	$('#school-circle-primary-role-field-new-circle').change(function(){
+	
+		
+		if($(this).val() == '' || $(this).val() == 'Principal' || $(this).val() == 'Institute Admin'){ 
+			$('.student-parent-section-div').slideUp();
+			$('.student-parent-section-div select').attr("required", false);
+			
+			$('.teachers-grades-div').slideUp(); 
+			$('.teachers-grades-div select').attr("required", false);
+			$('.teachers-classteacher-section-div').css("display","none"); 
+			$('.teachers-classteacher-section-div select').attr("required", false);
+		}
+		
+		if($(this).val() == 'Student' || $(this).val() == 'Parent'){
+
+			$('.student-parent-section-div').slideDown();
+			$('.student-parent-section-div').attr("required", true);
+			
+			$('.teachers-grades-div').slideUp(); 
+			$('.teachers-grades-div select').attr("required", false);
+			$('.teachers-classteacher-section-div').css("display","none"); 
+			$('.teachers-classteacher-section-div select').attr("required", false);
+			
+		}
+		
+		if($(this).val() == 'Teacher'){
+
+			$('.teachers-grades-div').slideDown(); 
+			$('.teachers-grades-div select').attr("required", true);
+			$('.teachers-classteacher-section-div').css("display","block"); 
+			$('.teachers-classteacher-section-div select').attr("required", true);
+			
+			$('.student-parent-grade-div').slideUp(); 
+			$('.student-parent-grade-div').attr("required", false);
+			$('.student-parent-section-div').slideUp();
+			$('.student-parent-section-div').attr("required", false);
+		}
+		
+	});
+</script>

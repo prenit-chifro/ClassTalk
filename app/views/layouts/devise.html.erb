@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>ClassTalk</title>
+		<%= csrf_meta_tags %>
+
+		<%= stylesheet_link_tag "application", media: "all", "data-turbolinks-track": "reload" %>
+		<%= stylesheet_link_tag "//fonts.googleapis.com/css?family=Julius+Sans+One" %>
+		<%= javascript_include_tag "application", "data-turbolinks-track": "reload" %>
+		<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=0">
+	</head>
+	<body>
+		<div class="wrapper">
+		    
+			<%= yield %>
+		</div>
+	</body>
+</html>

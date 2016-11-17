@@ -1,0 +1,31 @@
+<%= form_tag event_path(event), method: :patch, remote: true do %>
+	<%= event.institute.institute_name + ": " if !event.institute_id.blank? %> <%= event.grade_section_models.map{|model| "Class #{model.grade.grade_name} #{model.section.section_name}" }.join(", ") if !event.grade_section_ids.blank? %>
+	<div class="form-group">
+		<%= text_field_tag :title, event.title, placeholder: :Title, class: "form-control" %>
+	</div>
+	<div class="form-group">
+		<%= text_area_tag :description, event.description, placeholder: :Description, class: "form-control" %>
+	</div>
+	<div class="form-group">
+		<label>Event Start Date-Time:</label>
+		<%= datetime_field_tag :start_time, event.start_time.strftime("%Y-%m-%dT%H:%M"), class:"form-control" %> 
+	</div>
+	<div class="form-group">
+		<label>Event End Date-Time:</label>
+		<%= datetime_field_tag :end_time, event.end_time.strftime("%Y-%m-%dT%H:%M"), class:"form-control" %>
+	</div>
+	<div class="form-group form-inline new-event-checkbox">
+		<label>All Day Event?</label>
+		<%= check_box_tag :is_all_day_event, nil, event.is_all_day_event %>
+	</div>	
+	<% if(!event.participant_ids.blank?) %>
+		<% event.participants.each do |participant|%>
+			<%= check_box_tag "participant_ids[]", true, true %> <%= render partial: "conversations/contact", locals: {contact: participant} %>
+		<% end %>
+	<% end %>
+	<div class="form-group form-button-register">
+		<%= button_tag(type:"submit", class: "form-control btn btn-login") do %>
+			Update
+		<% end %>
+	</div>
+<% end %>

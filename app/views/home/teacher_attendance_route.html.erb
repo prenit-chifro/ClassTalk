@@ -1,0 +1,195 @@
+<% content_for :heading do %>
+	Class 1A
+<% end %>
+<div id="all-attendance-analytics" style="max-height:inherit;margin-top:70px;">
+	<h3>Class 1A Attendance</h3>
+	<div class="container">
+		<div class="col-sm-6 col-xs-6">
+			<div class="form-group">
+				<div class='input-group date' id='datetimepicker11'>
+					<input type='text' class="form-control" />
+					<span class="input-group-addon">
+						<i class="fa fa-calendar" aria-hidden="true"></i>								
+					</span>
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-6 col-xs-6">
+			<div class="form-group">
+				<div class='input-group date' id='datetimepicker12'>
+					<input type='text' class="form-control" />
+					<span class="input-group-addon">
+						<i class="fa fa-calendar" aria-hidden="true"></i>								
+					</span>
+				</div>
+			</div>
+		</div>
+	</div>			
+	<div class="form-group">
+		<label for="sel1">Select Class:</label>
+		<select class="form-control" id="sel1">
+			<option>Class 1</option>
+			<option>Class 2</option>
+			<option>Class 3</option>
+			<option>Class 4</option>
+		</select>
+	</div>
+	<div class="form-group">
+		<label for="sel1">Select Section:</label>
+		<select class="form-control" id="sel1">
+			<option>Section A</option>
+			<option>Section B</option>
+			<option>Section C</option>
+			<option>Section D</option>
+		</select>
+	</div>
+	<div id="chart_div_class" style="max-width:400px;margin: 0 auto;"></div>
+</div>
+
+<script>
+	google.charts.load('current', {'packages':['corechart']});
+	google.charts.setOnLoadCallback(drawClassChart);
+   
+	function drawClassChart() {
+
+		var data = new google.visualization.DataTable();
+		data.addColumn('string', '');
+		data.addColumn('number', '');
+		data.addRows([
+		  ['Present Students', 400],
+		  ['Absent Students', 300]
+		]);
+
+		var options = {
+			width: 400,
+			height: 240,
+			title: 'Institute Students Analytics',
+			titlePosition: 'none',
+			colors: ['#5dd4b7', '#ea5b31'],
+			is3D: true
+		};
+
+		var chart = new google.visualization.PieChart(document.getElementById('chart_div_class'));
+		chart.draw(data, options);
+	}
+	
+</script>
+
+	<script type="text/javascript">
+		$(function () {
+			$('#datetimepicker11, #datetimepicker12').datetimepicker({
+				icons: {
+                    time: "fa fa-clock-o",
+                    date: "fa fa-calendar",
+                    up: "fa fa-arrow-up",
+                    down: "fa fa-arrow-down"
+                }
+			});
+		});
+		$('.calendar').each(function(){
+    var calendar = $(this);
+    calendar.fullCalendar({
+      header: {
+        left: 'prev,next today',
+        center: 'title',
+        right: 'month,agendaWeek,agendaDay'
+      },
+      defaultView: "agendaWeek",
+      firstDay: 1,
+      slotDuration: "01:00:00",
+      scrollTime: "07:00:00",
+      eventSources: [
+      	{	
+      		googleCalendarApiKey: 'AIzaSyBygb2VxPHEs8rV8j7dgreRvpowydmGrow',
+		   	url: 'https://www.google.com/calendar/feeds/indian__en%40holiday.calendar.google.com/public/basic',
+
+		    color: 'red',   // an option!
+		    textColor: 'black' // an option!
+		}
+
+      ],
+      editable: true,
+      selectable: true,
+      selectHelper: true,
+      eventClick: function(event, jsEvent, view) {
+      		if(event.edit_url){
+      			$.ajax({
+		        	url: event.edit_url,
+		        	complete: function(data){
+		        		if(data.status == "200"){
+		        			eval(data.responseText);
+		        		}
+		        	}
+		        });
+      		}else{
+      			window.open(event.url);
+      		}
+            
+	        return false;
+      },
+      dayClick: function(date, jsEvent, view) {
+      	$.ajax({
+        	url: "events/new.js?start_time= " + date.format() + '&end_time= ' + date.format(),
+        	complete: function(data){
+        		if(data.status == "200"){
+        			eval(data.responseText);
+        		}
+        	}
+        });
+      },
+      select: function(start, end) {
+        $.ajax({
+        	url: "events/new.js?start_time=" + start.format() + '&end_time=' + end.format(),
+        	complete: function(data){
+        		if(data.status == "200"){
+        			eval(data.responseText);
+        		}
+        	}
+        });
+
+        calendar.fullCalendar('unselect');
+      },
+      eventDrop: function(event,dayDelta,minuteDelta,allDay,revertFunc) {
+      	if(event.update_url){
+      		if (confirm("update this event?")) {
+	          	$.ajax({
+	      			url: event.update_url + "&start_time=" + event.start.format() + "&end_time=" + event.end.format(),
+		      		method: "PATCH",
+		        	complete: function(data){
+		        		if(data.status == "200"){
+		        			eval(data.responseText);
+		        		}
+		        	}	
+	      		});
+	        }
+      		
+      		
+      	}else{
+
+      	}
+      },
+      eventResize: function(event, delta, revertFunc) {
+	    if(event.update_url){
+	    	if (confirm("update this event?")) {
+	          	$.ajax({
+	      			url: event.update_url + "&start_time=" + event.start.format() + "&end_time=" + event.end.format(),
+		      		method: "PATCH",
+		        	complete: function(data){
+		        		if(data.status == "200"){
+		        			eval(data.responseText);
+		        		}
+		        	}	
+	      		});
+	        }
+      		
+      	}else{
+      		
+      	} 
+	        
+
+	  }
+  	});
+  });  
+
+
+	</script>

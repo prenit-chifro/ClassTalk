@@ -1,0 +1,78 @@
+var conversationBigDiv = $('.conversation-big[data-conversation-id=' + '<%= conversation.id %>' + ']');
+	
+if(conversationBigDiv.length != 0){
+	$('.temp-message').remove();
+	
+	messagesDiv =  $('.conversation-big[data-conversation-id=' + '<%= conversation.id %>' + ']').find('.Messages-category-messages');
+	if(messagesDiv){
+		messagesDiv.append('<%= j render( partial: "messages/message", locals: {conversation: conversation, message: message} ) %> ');
+	}
+
+	<% if(message.category != "Messages") %>
+		categoryMessagesDiv = $('.conversation-big[data-conversation-id=' + '<%= conversation.id %>' + ']').find('.<%= message.category %>-category-messages');
+		if(categoryMessagesDiv){
+			categoryMessagesDiv.append('<%= j render( partial: "messages/message", locals: {conversation: conversation, message: message} ) %> ');
+		}
+	<% end %>
+
+	<% if(message.category != "Media" and !message.attachments.blank?) %>
+		meediaMessagesDiv = $('.conversation-big[data-conversation-id=' + '<%= conversation.id %>' + ']').find('.Media-category-messages');
+		if(meediaMessagesDiv){
+			meediaMessagesDiv.append('<%= j render( partial: "messages/message", locals: {conversation: conversation, message: message} ) %> ');
+		}
+	<% end %>	
+	App.scrollToBottomOfPage();
+	
+	var lastmessageDiv = $('.message-div[data-message-id=' + <%= message.id %> + ']');
+	if(lastmessageDiv){
+		
+		var profilePictureDiv = lastmessageDiv.find('.message-participant-profile-picture');
+		var messageBodyDiv = lastmessageDiv.find('.message-body');
+		var statusDiv = lastmessageDiv.find('.checkmark');
+		var currentUserId = $('meta[name=current-user-id]').attr("content");
+		var message_creator_id = "<%= message.creator_id %>";
+
+		if(currentUserId == message_creator_id){
+
+			lastmessageDiv.addClass("cretor-message");
+			lastmessageDiv.removeClass("recipient-message");
+			
+			profilePictureDiv.addClass("media-right");
+			profilePictureDiv.removeClass("media-left");
+
+			messageBodyDiv.removeClass("speech-left");
+			messageBodyDiv.addClass("speech-right");
+			
+
+		}else{
+			<% if(message.category == "Chat_Request") %>
+				$('<button class="accept-request-button"><%= link_to accept_request_conversation_path(id: @conversation.id, requestor_id: message.creator_id, acceptor_id: current_user.id), method: :post, remote: :true do %> Accept <% end %></button>').insertBefore(lastmessageDiv.find(".speech-time"));
+			<% end %>
+			
+			message_class = "recipient-message";
+			lastmessageDiv.addClass("recipient-message");
+			lastmessageDiv.removeClass("cretor-message");
+
+			profilePictureDiv.addClass("media-left");
+			profilePictureDiv.removeClass("media-right");
+			
+			messageBodyDiv.removeClass("speech-right");
+			messageBodyDiv.addClass("speech-left");
+			
+			statusDiv.remove();
+			
+			$.ajax({
+				url: "<%= set_seen_user_id_conversation_message_path(conversation, message) %>",
+				type: "POST",
+				beforeSend: function(data) {
+					var csfrToken = $("meta[name='csrf-token']").attr("content");
+					data.setRequestHeader('X-CSRF-Token', csfrToken);
+				},
+				success: function(data) {
+					return;
+				}
+			});
+		}
+	}
+	
+}

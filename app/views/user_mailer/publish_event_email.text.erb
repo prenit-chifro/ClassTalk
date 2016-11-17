@@ -1,0 +1,12 @@
+Welcome to FamilyNest
+
+<%= "#{@event.get_event_creator_name(@receiver)} #{@event.get_event_action_name(@receiver)}" %>
+
+<% if (@event.circle_id.blank?)%>
+	Vist "https://familynest.co" for more details.
+<% else %>
+	Vist "<%= "https://familynest.co/circles/#{@event.circle_id}" %>" for more details.
+<% end %>
+
+
+Have a great day

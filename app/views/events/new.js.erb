@@ -1,0 +1,2 @@
+$('#myModal').find('.modal-body').html('<%= j render partial: "new", locals: {institutes: @institutes, start_time: params[:start_time], end_time: params[:end_time]} %>');
+$('#myModal').modal('show');

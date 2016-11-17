@@ -1,0 +1,65 @@
+<% if(!params[:page].blank? and params[:page].to_i >= 2) %>
+	<% @notices.each do |notice| %>
+		<%= render partial: "notice", locals: {notice: notice} %>
+	<% end %>
+
+<% else %>
+	<nav class="navbar navbar-inverse navbar-fixed-top main-app-header main-app-conversation-new-header notices-header">
+		<div class="container-fluid">
+			<div class="navbar-header main-app-header main-app-conversation-new-header pull-left">
+				<a class="mybtn btn btn-link btn-xs pull-left" href="/"><i class="material-icons">&#xE317;</i></a>
+				<button class="btn btn-info load-earlier-notices" onclick="loadEarlierNotices();"> Load Earlier Notice </button>
+			</div>
+			<ul class="nav navbar-nav navbar-right main-app-show-header pull-right display_inline">
+				<% if(current_user.role != "Student" and current_user.role != "Parent") %>
+					<li>
+						<a href="/notices/new">
+							<i class="material-icons">&#xE145;</i>					
+						</a>					
+					</li>	
+				<% end %>		
+			</ul>
+		</div>
+	</nav>	
+	<div class="all-notices-div" style="margin-top:56px;">
+		<ul class="list-unstyled sticky-notices">
+			<% @notices.each do |notice| %>
+				<li class="next-page-link" data-request-type="GET" data-next-page-link-address="/notices/<%= notice.id %>">
+					<%= render partial: "notice", locals: {notice: notice} %>
+				</li>	
+			<% end %>	
+		</ul>	
+	</div>
+	<script type="text/javascript">
+		var pageNo = 2;
+		var resultLoaded = false;
+		
+		function loadEarlierNotices(){
+			
+			if(resultLoaded != true){
+					$.ajax({
+					url: "<%= notices_path %>?page="+ pageNo, 
+					type: "GET",
+					success: function(data) {
+						if(data.trim().length == 0) {
+							
+							resultLoaded = true;
+						} else {
+							$(".all-notice-div").append(data);
+							resultLoaded = false;
+							pageNo++;
+						}
+
+					}
+				});
+					
+			}
+				
+		}
+
+		if (window.location.href.indexOf("notices") > -1) {
+			$('body').css('background-color', '#009688');
+		}
+	</script>
+<% end %>
+
