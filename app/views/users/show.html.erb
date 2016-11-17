@@ -1,41 +1,84 @@
-<nav class="navbar navbar-inverse navbar-fixed-top main-app-header main-app-conversation-new-header">
-	<div class="container-fluid">
-		<div class="navbar-header main-app-header main-app-conversation-new-header pull-left">
-			<a class="mybtn btn btn-link btn-xs pull-left" href="/"><i class="material-icons">&#xE317;</i></a>
+<% content_for :heading do %>
+	<%= @user.first_name %> <%= @user.last_name %>
+<% end %>
+<div class="container" style="margin-top:90px;">
+	<div class="row">
+		<div class="user-details">
+            <div class="user-image">
+                <img src="<%= @user.profile_picture.media.url(:medium) %>" class="img-circle img-xs"%>
+            </div>
+            <div class="user-info-block">
+                <div class="user-heading">
+                    <span class="help-block"><%= @user.details %></span>
+                </div>
+				<div class="user-body">
+                    <div class="">
+                        <div id="information">
+                    	
+							<div class="personal-infromation">
+								<% if(@user.role == "Teacher") %>
+	                        		<% if(!@assigned_classteacher_grades_sections_model.blank?) %>
+	                        			<p>ClassTeacher of Class <%= @assigned_classteacher_grades_sections_model.grade.grade_name %><%= @assigned_classteacher_grades_sections_model.section.section_name %></p>
+	                        		<% end %>
+	                        		<% if(!@teaching_sections_subjects_models.blank?) %>
+	                        			<p>Teaches <%= @teaching_sections_subjects_models.map{|ss| ss.subject.subject_name}.uniq.join(", ") %> in Class <%= @teaching_sections_subjects_models.map{|ss| ss.grade.grade_name + ss.section.section_name}.uniq.join(", ") %></p>
+	                        		<% end %>
+	                        	<% end %>
+	                        	
+								<h4>Personal Information</h4>
+								<p>Email Id: <span class="pull-right"> <%= @user.email %> </span></p>
+								<p>Mobile no: <span class="pull-right"> <%= @user.mobile_no %> </span></p>
+							</div>	
+							<% if(@user.id == current_user.id) %>					
+								<p>
+									<%= link_to root_path do %>
+										My Messages
+									<% end %>
+								</p>
+								<p class="my-classes-teacher">
+									<%= link_to institute_grades_path(@institute) do %>
+										My Classes
+									<% end %>	
+								</p>
+								<p>
+									<%= link_to attendance_records_path do %>
+										Attendance
+									<% end %>
+								</p>							
+								<p>
+									<%= link_to notices_path do %>
+										Notices
+									<% end %>
+								</p>
+							<% end %>	
+							
+                        </div>
+                        <% if(user_signed_in? and @user.id == current_user.id) %>
+							<div class="log-out">
+								<%= link_to destroy_user_session_path, method: :delete do %>
+									<button type="button" class="btn btn-danger">LogOut</button>
+								<% end %>
+								
+							</div>
+						<% end %>
+						
+                    </div>
+                </div>
+			</div>
 		</div>
-		<ul class="nav navbar-nav navbar-right main-app-show-header pull-right display_inline" style="padding-right: 16px;">
-			<% if(@user.id == current_user.id) %>
-				<li>
-				<%= link_to edit_user_path(@user) do %>
-					<i class="material-icons">&#xE254;</i>
-				<% end %>					
-				</li>
-			<% end %>
-		</ul>
 	</div>
-</nav>
-<div class="container-width conversation-user-container">
-	<div class="row new-group-row">
-		<div class="col-lg-12 text-center">
-			<div id="new-group-profile-picture-target">
-				<div id="new-group-profile-picture-inner-target" class="new-group-profile-picture-inner-target">
-					<img src="<%= @user.profile_picture.media.url(:medium)  %>" class="img-responsive"> 
-				</div>	
-			</div>			
-		</div>		
-	</div>
-	<div class="text-muted text-center">
-		<h4><%= @user.first_name %> <%= @user.last_name %></h4>
-	</div>
-	
-	<div class="text-muted pad-hor mar-btm visible-to-current-user">
-		<h4>About <%= "#{'You' if current_user.id == @user.id}" %><%= "#{@user.first_name + ' ' + @user.last_name if current_user.id != @user.id}" %></h4>
-		<p><%= @user.details %></p>
-		<% if(@user.id == current_user.id) %>
-			<div class="text-muted" style="margin-bottom:10px;">This is only visible to your account.</div>
-			<p>Email: <span class="pull-right"><%= @user.email %></span></p>
-			<p>Contact no: <span class="pull-right"><%= "+#{@user.isd_code if !@user.mobile_no.blank?}""#{@user.mobile_no}" %></span></p>
-		<% end %>
-		
-	</div>
-</div>
+</div>	
+<script>
+	$(".my-classes-teacher").click(function(e){
+		$(this).find(".arrow-up-icon").toggleClass("arrow-down-icon");
+		$(".my-classes-teacher-toggle").slideToggle();
+	});
+	if($(".inner-toggle-my-teacher-classes").css("display")=="none"){
+		$("hr.line-hr").addClass("display_none");
+	}
+	$(".inner-subject-toggle").click(function(e){
+		$(this).toggleClass("arrow-down-icon");
+		$(this).parents("ul.my-classes-teacher-toggle li").find("hr").toggleClass("display_none");
+		$(this).parents("ul.my-classes-teacher-toggle li").find(".inner-toggle-my-teacher-classes").slideToggle();
+	});
+</script>

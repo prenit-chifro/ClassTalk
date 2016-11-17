@@ -10,6 +10,10 @@ class UsersController < ApplicationController
   end
 
   def show
+    if(@user.role == "Teacher")
+      @assigned_classteacher_grades_sections_model = @user.assigned_classteacher_grades_sections_models.first
+      @teaching_sections_subjects_models = @user.teaching_sections_subjects_models
+    end
   end
 
   def edit

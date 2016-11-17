@@ -1,63 +1,34 @@
-<% if(message.creator_id != current_user.id) %>
-	<% message_class = "recipient-message" %>
-	<% media_class = "media-left"%>
-	<% speech_class = "speech-left" %>
-<% else %>
-	<% message_class = "cretor-message" %>
-	<% media_class = "media-right"%>
-	<% speech_class = "speech-right" %>
-<% end %>	
-	
-<li class="mar-btm message-div message <%= message_class %>" data-message-id="<%= message.id %>">
-	<div class="<%= media_class %> message-participant-profile-picture">
-		<img src="<%= message.message_creator.profile_picture.media.url(:thumb) %>" class="media-object img-circle img-sm" >
-	</div>
-	<div class="media-body message-body pad-hor <%= speech_class %>">
-		<div class="speech">
-			<a href="#" class="media-heading"><%= message.message_creator.first_name %> sent a <%= "#{message.category if message.category.last != 's'}" %> <%= "#{message.category[0..(message.category.length-2)] if message.category.last == 's'}" %> </a>
-			<p><%= message.content %></p>
-			<% if(!message.attachments.blank?) %>
-				<% message.attachments.each do |attachment| %>
-					<p>
-						<% if(attachment.is_image_type?) %>
-							<img  height="200" width = "200" src="<%= attachment.media.url(:thumb) %>" > 
-						<% end %>
-
-						<% if(attachment.is_video_type?) %>
-							<%= videojs_rails sources: { "#{attachment.media.content_type.split('/').last}" => attachment.media.url(:medium)}, setup: "{}", controls: true, width:"300", height: "200" %>
-
-						<% end %>
-
-						<% if(attachment.is_document_type?) %>
-							<iframe width="200" height= "200" src="https://docs.google.com/gview?url=https://classtalk.in<%= attachment.media.url %>&embedded=true&chrome=true"></iframe>
-						<% end %>
-					</p>
-				<% end %>	
-			<% end %>
-
-			<% if(message.category == "Chat_Request" and message.creator_id != current_user.id) %>
-				<button class="accept-request-button btn btn-info">
-					<%= link_to accept_request_conversation_path(id: @conversation.id, requestor_id: message.creator_id, acceptor_id: current_user.id), method: :post, remote: :true do %> 
-						Accept 
-					<% end %>
-				</button>
-			<% end %>
-			<p class="speech-time"> 
-					<% if message.creator_id == current_user.id %>
-						<span class="checkmark" style="display:inline-block;"></span>
-					
-						<% participant_ids_array = conversation.participants.where.not(id: message.creator_id).map{|participant| participant.id } %>
-						<% message.seen_user_ids = "" if message.seen_user_ids.blank? %>
-						<% seen_user_ids_array = message.seen_user_ids.split(", ").map{|id| id.to_i}.uniq %>
-						<% if(seen_user_ids_array.sort == participant_ids_array.sort) %>
-							<span class="checkmark double-checkmark" style="display:inline-block;"></span>
-						<% else %>
-							<span class="checkmark double-checkmark" style="display:none;"></span>
-						<% end %>
-					<% end %>
-					
-				<%= get_am_pm_time(message.created_at) %> 
-			</p>
+<div class="messages-media">
+	<div class="media main-media">
+		<div class="media-left pull-right">
+			<a href="#">
+				<img src="<%= message.message_creator.profile_picture.media.url(:thumb) %>" class="img-circle img-xs">
+			</a>
+		</div>
+		<div class="media-body media-middle">
+			<h5 class="media-heading text-muted"><%= message.message_creator.details %><span class="pull-right"><%= get_am_pm_time(message.created_at) %></span></h5>
+			<span class="pull-left"><%= message.message_creator.first_name %></span>
 		</div>
 	</div>
-</li>
+	<div class="media-content text-muted">
+		<%= message.content %>
+	</div>
+	<% if(!message.attachments.blank?) %>
+		<% message.attachments.each do |attachment| %>
+			<p>
+				<% if(attachment.is_image_type?) %>
+					<img src="<%= attachment.media.url(:thumb) %>" > 
+				<% end %>
+
+				<% if(attachment.is_video_type?) %>
+					<%= videojs_rails sources: { "#{attachment.media.content_type.split('/').last}" => attachment.media.url(:medium)}, setup: "{}", controls: true, width:"300", height: "200" %>
+
+				<% end %>
+
+				<% if(attachment.is_document_type?) %>
+					<iframe width="200" height= "200" src="https://docs.google.com/gview?url=https://classtalk.in<%= attachment.media.url %>&embedded=true&chrome=true"></iframe>
+				<% end %>
+			</p>
+		<% end %>	
+	<% end %>
+</div>

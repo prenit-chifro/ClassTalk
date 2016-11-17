@@ -1,10 +1,10 @@
 class AttendanceRecordsController < ApplicationController
 
-	before_action :set_grade_section
+	before_action :set_institute
 
-	def set_grade_section
-		@grade_section = GradeSection.find_by(id: params[:grade_section_id])
-		head :ok and return if @grade_section.blank?
+	def set_institute
+		@institute = Institute.find_by(id: params[:institute_id])
+		head :ok and return if @institute.blank?
 	end 
 
 	def index
@@ -17,9 +17,8 @@ class AttendanceRecordsController < ApplicationController
 
 	def create
 		if(!params[:present_student_ids].blank?)
-			@institute = @grade_section.institute
-			@grade = @grade_section.grade
-			@section = @grade_section.section
+			@grade = Grade.find_by(params[:grade_id])
+			@section = Section.find_by(id: params[:section_id])
 			@class_students =  @section.get_members_with_given_roles_for_institute_and_grade_with_role(@institute, @grade, "Student")
 
 			@todays_attendance_record = @grade_section.attendance_records.find_by(date: Date.today) 

@@ -203,6 +203,7 @@ $(document).on("turbolinks:load", function(){
 	}
 	
 	$(".attachment-icon").on("click", toggleAttachIcons);
+	
 	function toggleAttachIcons(){
 		$(".attachment-toggle-show").slideToggle("slow");
 	}
