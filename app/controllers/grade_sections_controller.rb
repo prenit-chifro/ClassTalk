@@ -1,2 +1,0 @@
-class GradeSectionsController < ApplicationController
-end
