@@ -11,7 +11,7 @@ class ConversationsController < ApplicationController
 
 	def index
 		@conversations = current_user.participating_conversations.order(updated_at: :desc)
-		
+		@sent_conversations = @conversations.where(creator_id: current_user.id)
 		@sections = current_user.sections
 		
 		@unread_conversation_ids_array = []
@@ -68,65 +68,46 @@ class ConversationsController < ApplicationController
 	end
 	
 	def new
-		@contacts = []
-		@sections = current_user.sections
-		@sections.each do |section|
-			other_section_members = section.get_other_members_for_user(current_user)
-			@contacts = @contacts + other_section_members
+		if(current_user.role == "Principal")
+			@institute = current_user.institutes.first
+			@admins = @institute.get_members_with_given_roles(["Institute Admin"])
+			@teachers = @institute.get_members_with_given_roles(["Teacher"])
 		end
-		@contacts = @contacts.compact.uniq
-	end
 
-	def send_request
-		if(!params[:request_message].blank? and @conversation.can_user_send_message(current_user) == false)	
+		if(current_user.role == "Institute Admin")
+			@institute = current_user.institutes.first
 			
-				if(@conversation.requestor_ids.blank?)
-					@conversation.requestor_ids = current_user.id
-				else
-					@conversation.requestor_ids = @conversation.requestor_ids + ", #{current_user.id}"
-				end
-				@new_message = @conversation.messages.create(creator_id: current_user.id, content: params[:request_message], category: "Chat_Request")
-				
-				@new_attachment = @new_message.attachments.create(media: current_user.profile_picture.media)
-				@conversation.update(updated_at: @new_message.created_at, last_message_id: @new_message.id)
-				
-				render "messages/create", layout: false
+			@principal = @institute.get_members_with_given_roles(["Principal"])
+			@admins = @institute.get_members_with_given_roles(["Institute Admin"])
+			@teachers = @institute.get_members_with_given_roles(["Teacher"])
+			@institutes_grades_sections_models = @institute.institutes_grades_sections_models
 			
 		end
-	end
 
-	def accept_request
-		if(!params[:requestor_id].blank? and !params[:acceptor_id].blank?)
-			@requestor = User.find_by(id: params[:requestor_id])
-			if(@conversation.can_user_send_message(@requestor) == false)	
-				
-				@requestor = User.find_by(id: params[:requestor_id])
-							
-				if(@conversation.requestor_ids.include?(", #{@requestor.id}"))
-					requestor_string = @conversation.requestor_ids.gsub(", #{@requestor.id}", "")
-					requestor_string = "" if @conversation.requestor_ids.include?("#{@requestor.id}")
-				else
-					requestor_string = ""
-				end
-				@new_message = @conversation.messages.create(creator_id: @requestor.id, content: "Hey I accepted chat request from #{@requestor.first_name} #{@requestor.last_name}", category: "Request_Acceptance")
-				@conversation.update(requestor_ids: requestor_string, updated_at: @new_message.created_at, last_message_id: @new_message.id)
-				
-				@request_messages = @conversation.messages.where(creator_id: @requestor.id, category: "Chat_Request")
-				@request_messages.each do |message|
-					@message = message
-					render_to_string 'messages/destroy.js'
-					message.destroy
-				end
-				
-				render "messages/create", layout: false
+		if(current_user.role == "Teacher")
+			@principal = @institute.get_members_with_given_roles(["Principal"])
+			@admins = @institute.get_members_with_given_roles(["Institute Admin"])
+			@teachers = @institute.get_members_with_given_roles(["Teacher"])
+			@teaching_section_subject_models = current_user.teaching_sections_subjects_models
 
-			else
-				@already_accepted = true
-			end	
-			
+			@assigned_classteacher_grades_sections_model = current_user.assigned_classteacher_grades_sections_models.first
+			if(!@assigned_classteacher_grades_sections_model.blank?)
+				@todays_attendance_record = current_user.created_attendance_records.find_by(date: Date.today)
+
+				@institute = @assigned_classteacher_grades_sections_model.institute
+				@grade = @assigned_classteacher_grades_sections_model.grade
+				@section = @assigned_classteacher_grades_sections_model.section
+				@class_students =  @section.get_members_with_given_roles_for_institute_and_grade_with_role(@institute, @grade, "Student")
+			end
+
+		end
+
+		if(current_user.role == "Student" or current_user.role == "Parent")
+			@admins = @institute.get_members_with_given_roles(["Institute Admin"])
+			@teachers = @institute.get_members_with_given_roles(["Teacher"])
 		end
 	end
-	
+
 	def create
 		
 		if(!params[:participant_ids].blank?)
@@ -210,13 +191,44 @@ class ConversationsController < ApplicationController
 
 	def new_group
 		if(request.get?)
-			@contacts = []
-			@sections = current_user.sections
-			@sections.each do |section|
-				other_section_members = section.get_other_members_for_user(current_user)
-				@contacts = @contacts + other_section_members
+			if(current_user.role == "Principal")
+				@institute = current_user.institutes.first
+				@admins = @institute.get_members_with_given_roles(["Institute Admin"])
+				@teachers = @institute.get_members_with_given_roles(["Teacher"])
 			end
-			@contacts = @contacts.compact.uniq
+
+			if(current_user.role == "Institute Admin")
+				@institute = current_user.institutes.first
+				
+				@principal = @institute.get_members_with_given_roles(["Principal"])
+				@admins = @institute.get_members_with_given_roles(["Institute Admin"])
+				@teachers = @institute.get_members_with_given_roles(["Teacher"])
+				@institutes_grades_sections_models = @institute.institutes_grades_sections_models
+				
+			end
+
+			if(current_user.role == "Teacher")
+				@principal = @institute.get_members_with_given_roles(["Principal"])
+				@admins = @institute.get_members_with_given_roles(["Institute Admin"])
+				@teachers = @institute.get_members_with_given_roles(["Teacher"])
+				@teaching_section_subject_models = current_user.teaching_sections_subjects_models
+
+				@assigned_classteacher_grades_sections_model = current_user.assigned_classteacher_grades_sections_models.first
+				if(!@assigned_classteacher_grades_sections_model.blank?)
+					@todays_attendance_record = current_user.created_attendance_records.find_by(date: Date.today)
+
+					@institute = @assigned_classteacher_grades_sections_model.institute
+					@grade = @assigned_classteacher_grades_sections_model.grade
+					@section = @assigned_classteacher_grades_sections_model.section
+					@class_students =  @section.get_members_with_given_roles_for_institute_and_grade_with_role(@institute, @grade, "Student")
+				end
+
+			end
+
+			if(current_user.role == "Student" or current_user.role == "Parent")
+				@admins = @institute.get_members_with_given_roles(["Institute Admin"])
+				@teachers = @institute.get_members_with_given_roles(["Teacher"])
+			end
 			render "new_group"
 
 		elsif(request.post?) 

@@ -56,20 +56,325 @@
 						</div>
 					<% end %>
 					
-					<% if(!@contacts.blank?) %>
-						<% @contacts.each do |contact| %>
+					<ul class="list-unstyled teachers-list index-conversation-modal">
+						<% if(current_user.role == "Principal") %>
 							<li>
-								<div class="inner-list">
-									<label for="contact-new-group-<%= contact.id %>" class="radio participant-checkbox-label">
-										<%= check_box_tag "participant_ids[]", contact.id, false,class:"contact-new-group-page", id:"contact-new-group-#{contact.id}" %>
-										<%= render partial: "contact", locals: {contact: contact} %>
-										<span class="checkbox-style-block checkbox-style-block-<%= contact.id %>"></span>
-									</label>										
-								</div>
-								
-							</li>	
+								<h6 class="teachers-list-heading">Staff<i class="material-icons arrow-up-icon pull-right">&#xE316;</i></h6>
+								<div class="container-width classRoute">
+									<ul class="nav nav-tabs" role="tablist" id="tablist">
+										<li class="active"><a data-toggle="tab" href="#all-admins">Admins</a></li>
+										<li><a data-toggle="tab" href="#all-teachers">Teachers</a></li>
+									</ul>
+									<div class="tab-content" style="">
+										<div class="tab-pane active" id="all-admins">
+											<ul class="list-unstyled list-inline">
+												<% if(!@admins.blank?) %>
+													<% @admins.each do |admin| %>
+														<% if(admin.id != current_user.id) %>
+															<li>
+																<label for="contact-new-group-<%= admin.id %>" class="modal-label">
+																	<%= check_box_tag "participant_ids[]", admin.id, false,class:"contact-new-group-page", id:"contact-new-group-#{admin.id}" %>
+																	<%= render partial: "conversations/contact", locals: {contact: admin} %>
+																	<span class="checkbox-style-block checkbox-style-block-<%= admin.id %>"></span>																	
+																</label>																	
+															</li>
+														<% end %>	
+													<% end %>
+												<% end %>														
+											</ul>
+										</div>
+										<div class="tab-pane active" id="all-teachers">
+											<ul class="list-unstyled list-inline">
+												<% if(!@teachers.blank?) %>
+													<% @teachers.each do |teacher| %>
+														<% if(teacher.id != current_user.id) %>
+															<li>
+																<label for="contact-new-group-<%= teacher.id %>" class="modal-label">
+																	<%= check_box_tag "participant_ids[]", teacher.id, false,class:"contact-new-group-page", id:"contact-new-group-#{teacher.id}" %>
+																	<%= render partial: "conversations/contact", locals: {contact: teacher} %>
+																	<span class="checkbox-style-block checkbox-style-block-<%= teacher.id %>"></span>
+																</label>									
+															</li>
+														<% end %>	
+													<% end %>
+												<% end %>														
+											</ul>
+										</div>
+									</div>	
+								</div>	
+							</li>
 						<% end %>
-					<% end %>
+
+						<% if(current_user.role == "Institute Admin") %>
+							<li>
+								<h6 class="teachers-list-heading">Staff<i class="material-icons arrow-up-icon pull-right">&#xE316;</i></h6>
+								<div class="container-width classRoute">
+									<ul class="nav nav-tabs" role="tablist" id="tablist">
+										<li class="active"><a data-toggle="tab" href="#all-principals">Principal</a></li>
+										<li><a data-toggle="tab" href="#all-admins">Admins</a></li>
+										<li><a data-toggle="tab" href="#all-teachers">Teachers</a></li>												
+									</ul>
+									<div class="tab-content" style="">
+										<div class="tab-pane active" id="all-principals">
+											<ul class="list-unstyled list-inline">
+												<% if(!@principal.blank?) %>
+													<% if(@principal.id != current_user.id) %>
+														<li>
+															<label for="contact-new-group-<%= @principal.id %>" class="modal-label">
+																<%= check_box_tag "participant_ids[]", @principal.id, false,class:"contact-new-group-page", id:"contact-new-group-#{@principal.id}" %>						
+																<%= render partial: "conversations/contact", locals: {contact: @principal} %>
+																<span class="checkbox-style-block checkbox-style-block-<%= @principal.id %>"></span>																
+															</label>																
+														</li>
+													<% end %>
+												<% end %>														
+											</ul>
+										</div>
+										<div class="tab-pane" id="all-admins">
+											<ul class="list-unstyled list-inline">
+												<% if(!@admins.blank?) %>
+													<% @admins.each do |admin| %>																
+														<% if(admin.id != current_user.id) %>
+															<li>
+																<label for="contact-new-group-<%= admin.id %>" class="modal-label">
+																	<%= check_box_tag "participant_ids[]", admin.id, false,class:"contact-new-group-page", id:"contact-new-group-#{admin.id}" %>
+																	<%= render partial: "conversations/contact", locals: {contact: admin} %>
+																	<span class="checkbox-style-block checkbox-style-block-<%= admin.id %>"></span>
+																</label>	
+															</li>
+														<% end %>	
+													<% end %>
+												<% end %>														
+											</ul>
+										</div>												
+										<div class="tab-pane" id="all-teachers">
+											<ul class="list-unstyled list-inline">
+												<% if(!@teachers.blank?) %>
+													<% @teachers.each do |teacher| %>
+														<% if(teacher.id != current_user.id) %>
+															<li>
+																<label for="contact-new-group-<%= teacher.id %>" class="modal-label">
+																	<%= check_box_tag "participant_ids[]", teacher.id, false,class:"contact-new-group-page", id:"contact-new-group-#{teacher.id}" %>
+																	<%= render partial: "conversations/contact", locals: {contact: teacher} %>
+																	<span class="checkbox-style-block checkbox-style-block-<%= teacher.id %>"></span>																	
+																</label>									
+															</li>
+														<% end %>	
+													<% end %>
+												<% end %>														
+											</ul>
+										</div>												
+									</div>
+								</div>
+							</li>
+
+							<% if(!@institutes_grades_sections_models.blank?) %>
+								<% @institutes_grades_sections_models.each do |grade_section_model|%>
+									<% grade = grade_section_model.grade %>
+									<% section = grade_section_model.section %>
+									<% students = section.get_members_with_given_roles_for_institute_and_grade_with_role(@institute, grade, ["Student"]) %>
+									<% parents = section.get_members_with_given_roles_for_institute_and_grade_with_role(@institute, grade, ["Parent"]) %>
+
+									<li>
+										<h6 class="teachers-list-heading">Class <%= grade.grade_name + section.section_name %><i class="material-icons arrow-up-icon pull-right">&#xE316;</i></h6>
+										<div class="container-width classRoute">
+											<ul class="nav nav-tabs" role="tablist" id="tablist">
+												<li class="active"><a data-toggle="tab" href="#all-parents">Parents</a></li>
+												<li><a data-toggle="tab" href="#all-students">Students</a></li>														
+											</ul>
+											<div class="tab-content" style="">
+												<div class="tab-pane active" id="all-parents">
+													<ul class="list-unstyled list-inline">
+														<% if(!parents.blank?) %>
+															<% parents.each do |parent| %>
+																<% if(parent.id != current_user.id) %>
+																	<li>
+																		<label for="contact-new-group-<%= parent.id %>" class="modal-label">
+																			<%= check_box_tag "participant_ids[]", parent.id, false,class:"contact-new-group-page", id:"contact-new-group-#{parent.id}" %>
+																			<%= render partial: "conversations/contact", locals: {contact: parent} %>
+																			<span class="checkbox-style-block checkbox-style-block-<%= parent.id %>"></span>
+																		</label>										
+																	</li>
+																<% end %>	
+															<% end %>
+														<% end %>																
+													</ul>
+												</div>
+												<div class="tab-pane" id="all-students">
+													<ul class="list-unstyled list-inline">
+														<% if(!students.blank?) %>
+															<% students.each do |student| %>
+																<% if(student.id != current_user.id) %>
+																	<li>
+																		<label for="contact-new-group-<%= student.id %>" class="modal-label">
+																			<%= check_box_tag "participant_ids[]", student.id, false,class:"contact-new-group-page", id:"contact-new-group-#{student.id}" %>
+																			<%= render partial: "conversations/contact", locals: {contact: student} %>
+																			<span class="checkbox-style-block checkbox-style-block-<%= student.id %>"></span>
+																		</label>											
+																	</li>
+																<% end %>	
+															<% end %>
+														<% end %>															
+													</ul>
+												</div>												
+											</div>
+										</div>
+									</li>
+								<% end %>
+							<% end %>
+						<% end %>
+
+						<% if(current_user.role == "Teacher") %>
+							<li>
+								<h6 class="teachers-list-heading">Staff<i class="material-icons arrow-up-icon pull-right">&#xE316;</i></h6>
+								<div class="container-width classRoute">
+									<ul class="nav nav-tabs" role="tablist" id="tablist">												
+										<li class="active"><a data-toggle="tab" href="#all-admins">Admin</a></li>
+										<li><a data-toggle="tab" href="#all-teachers">Teachers</a></li>												
+									</ul>
+									<div class="tab-content" style="">
+										<div class="tab-pane active" id="all-admins">
+											<ul class="list-unstyled list-inline">
+												<% if(!@admins.blank?) %>
+													<% @admins.each do |admin| %>
+														<% if(admin.id != current_user.id) %>
+															<li>
+																<label for="contact-new-group-<%= admin.id %>" class="modal-label">
+																	<%= check_box_tag "participant_ids[]", admin.id, false,class:"contact-new-group-page", id:"contact-new-group-#{admin.id}" %>
+																	<%= render partial: "conversations/contact", locals: {contact: admin} %>
+																	<span class="checkbox-style-block checkbox-style-block-<%= admin.id %>"></span>
+																</label>																	
+															</li>
+														<% end %>	
+													<% end %>
+												<% end %>														
+											</ul>
+										</div>
+										<div class="tab-pane" id="all-teachers">
+											<ul class="list-unstyled list-inline">
+												<% if(!@teachers.blank?) %>
+													<% @teachers.each do |teacher| %>
+														<% if(teacher.id != current_user.id) %>
+															<li>
+																<label for="contact-new-group-<%= teacher.id %>" class="modal-label">
+																	<%= check_box_tag "participant_ids[]", teacher.id, false,class:"contact-new-group-page", id:"contact-new-group-#{teacher.id}" %>
+																	<%= render partial: "conversations/contact", locals: {contact: teacher} %>
+																	<span class="checkbox-style-block checkbox-style-block-<%= teacher.id %>"></span>
+																</label>
+															</li>
+														<% end %>	
+													<% end %>
+												<% end %>														
+											</ul>
+										</div>
+									</div>	
+								</div>	
+							</li>
+							<% if(!@teaching_section_subject_models.blank?) %>
+								<% @teaching_section_subject_models.each do |section_subject_model|%>
+									<% grade = section_subject_model.grade %>
+									<% section = section_subject_model.section %>
+									<% students = section.get_members_with_given_roles_for_institute_and_grade_with_role(@institute, grade, "Student") %>
+									<% parents = section.get_members_with_given_roles_for_institute_and_grade_with_role(@institute, grade, "Parent") %>
+
+									<li>
+										<h6 class="teachers-list-heading">Class <%= grade.grade_name + section.section_name %><i class="material-icons arrow-up-icon pull-right">&#xE316;</i></h6>
+										<div class="container-width classRoute">
+											<ul class="nav nav-tabs" role="tablist" id="tablist">
+												<li class="active"><a data-toggle="tab" href="#all-parents">Parents</a></li>
+												<li><a data-toggle="tab" href="#all-students">Students</a></li>														
+											</ul>
+											<div class="tab-content" style="">
+												<div class="tab-pane active" id="all-parents">
+													<ul class="list-unstyled list-inline">
+														<% if(!parents.blank?) %>
+															<% parents.each do |parent| %>
+																<% if(parent.id != current_user.id) %>
+																	<li>
+																		<label for="contact-new-group-<%= parent.id %>" class="modal-label">
+																			<%= check_box_tag "participant_ids[]", parent.id, false,class:"contact-new-group-page", id:"contact-new-group-#{parent.id}" %>											
+																			<%= render partial: "conversations/contact", locals: {contact: parent} %>
+																			<span class="checkbox-style-block checkbox-style-block-<%= parent.id %>"></span>
+																		</label>
+																	</li>
+																<% end %>	
+															<% end %>
+														<% end %>
+													</ul>
+												</div>
+												<div class="tab-pane" id="all-students">
+													<ul class="list-unstyled list-inline">
+														<% if(!students.blank?) %>
+															<% students.each do |student| %>
+																<% if(student.id != current_user.id) %>
+																	<li>
+																		<label for="contact-new-group-<%= student.id %>" class="modal-label">
+																			<%= check_box_tag "participant_ids[]", student.id, false,class:"contact-new-group-page", id:"contact-new-group-#{student.id}" %>							
+																			<%= render partial: "conversations/contact", locals: {contact: student} %>
+																			<span class="checkbox-style-block checkbox-style-block-<%= student.id %>"></span>
+																		</label>																			
+																	</li>
+																<% end %>	
+															<% end %>
+														<% end %>																
+													</ul>
+												</div>														
+											</div>
+										</div>
+									</li>
+
+								<% end %>
+							<% end %>
+						<% end %>
+
+						<% if(current_user.role == "Parent" or current_user.role == "Student") %>
+							<li>
+								<h6 class="teachers-list-heading">Staff<i class="material-icons arrow-up-icon pull-right">&#xE316;</i></h6>
+								<div class="container-width classRoute">
+									<ul class="nav nav-tabs" role="tablist" id="tablist">
+										<li class="active"><a data-toggle="tab" href="#all-admins">Admin</a></li>
+										<li class="active"><a data-toggle="tab" href="#all-teachers">Teachers</a></li>
+									</ul>
+									<div class="tab-content" style="">
+										<div class="tab-pane active" id="all-admins">
+											<ul class="list-unstyled list-inline">
+												<% if(!@admins.blank?) %>
+													<% @admins.each do |admin| %>
+														<% if(admin.id != current_user.id) %>
+															<li>
+																<label for="contact-new-group-<%= admin.id %>" class="modal-label">
+																	<%= check_box_tag "participant_ids[]", admin.id, false,class:"contact-new-group-page", id:"contact-new-group-#{admin.id}" %>
+																	<%= render partial: "conversations/contact", locals: {contact: admin} %>
+																	<span class="checkbox-style-block checkbox-style-block-<%= admin.id %>"></span>
+																</label>																	
+															</li>
+														<% end %>	
+													<% end %>
+												<% end %>														
+											</ul>
+										</div>
+										<div class="tab-pane active" id="all-teachers">
+											<ul class="list-unstyled list-inline">
+												<% if(!@teachers.blank?) %>
+													<% @teachers.each do |teacher| %>
+														<% if(teacher.id != current_user.id) %>
+															<li>
+																<label for="contact-new-group-<%= teacher.id %>" class="modal-label">
+																	<%= check_box_tag "participant_ids[]", teacher.id, false,class:"contact-new-group-page", id:"contact-new-group-#{teacher.id}" %>
+																	<%= render partial: "conversations/contact", locals: {contact: teacher} %>
+																	<span class="checkbox-style-block checkbox-style-block-<%= teacher.id %>"></span>
+																</label>
+															</li>
+														<% end %>	
+													<% end %>
+												<% end %>														
+											</ul>
+										</div>
+									</div>
+								</div>	
+							</li>
+						<% end %>
+					</ul>
 				</ul>
 			</div>		
 			<%= button_tag(type:"submit", class: "new-group-submit-button") do %>

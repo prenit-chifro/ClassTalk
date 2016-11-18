@@ -17,12 +17,13 @@
 		<% message.attachments.each do |attachment| %>
 			<p>
 				<% if(attachment.is_image_type?) %>
-					<img src="<%= attachment.media.url(:thumb) %>" > 
+					<img height="200" width="200" src="<%= attachment.media.url(:thumb) %>" > 
 				<% end %>
 
 				<% if(attachment.is_video_type?) %>
-					<%= videojs_rails sources: { "#{attachment.media.content_type.split('/').last}" => attachment.media.url(:medium)}, setup: "{}", controls: true, width:"300", height: "200" %>
-
+					<video width="300" height="200" controls class="video-js vjs-default-skin">
+						<source src="<%= attachment.media.url(:medium) %>" type="video/<%= attachment.media.content_type.split('/').last %>" >
+		  			</video>
 				<% end %>
 
 				<% if(attachment.is_document_type?) %>

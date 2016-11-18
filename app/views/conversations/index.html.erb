@@ -10,12 +10,22 @@
 		<div class="tab-pane active" id="all-inbox-messages">
 			<% if(!@conversations.blank?) %>
 				<% @conversations.each do |conversation| %>
-					<%= render partial: "conversations/conversation_small", locals: {conversation: conversation} %>
+					<%= link_to conversation_path(conversation) do %>
+						<%= render partial: "conversations/conversation_small", locals: {conversation: conversation} %>
+					<% end %>
+					
 				<% end %>
 			<% end %>
 		</div>
 		<div class="tab-pane" id="all-sent-messages">
-
+		<% if(!@sent_conversations.blank?) %>
+				<% @sent_conversations.each do |conversation| %>
+					<%= link_to conversation_path(conversation) do %>
+						<%= render partial: "conversations/conversation_small", locals: {conversation: conversation} %>
+					<% end %>
+					
+				<% end %>
+			<% end %>
 		</div>
 	</div>	
 </div>

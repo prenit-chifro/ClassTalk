@@ -29,7 +29,7 @@
 							</li>	
 							<% if(!@institute.blank?) %>
 								<li><a href="<%= institute_grades_path(@institute) %>"><i class="material-icons menu-inner-icon">&#xE86E;</i><span>My Classes</span></a></li>
-								<li><a href="<%= institute_attendance_records_path(@institute) %><i class="material-icons menu-inner-icon">&#xE85D;</i><span>My Attendance</span></a></li>
+								<li><a href="<%= institute_attendance_records_path(@institute) %>"><i class="material-icons menu-inner-icon">&#xE85D;</i><span>My Attendance</span></a></li>
 								<li class="main_toggle_menu">
 									<a href="<%= my_classwork_institute_path(@institute) %>"><i class="material-icons menu-inner-icon">&#xE146;</i><span>Custom Categories</span></a>
 								</li>			
@@ -47,7 +47,7 @@
 					<ul class="nav navbar-nav navbar-right pull-right right-self-image" style="margin-right: 3px;">
 
 						<li>
-							<a class="navbar-brand right-menu" href="javascript:void(0)">Teacher<i class="material-icons arrow-up-icon" style="vertical-align:middle;">&#xE313;</i></a>
+							<a class="navbar-brand right-menu" href="javascript:void(0)"><%= current_user.role %><i class="material-icons arrow-up-icon" style="vertical-align:middle;">&#xE313;</i></a>
 							<ul class="right-menu-toggle" id="right-menu-toggle-id" style="display:none;">
 								<li class="main-image text-center">
 									<a href="/users/<%= current_user.id %>">

@@ -1,30 +1,69 @@
-<div class="media main-media">
-	<div class="media-left">
-		<a href="<%= conversation.get_url_for_banner_image_for_user(current_user) %>">
-			<img src="<%= conversation.get_conversation_image_url_to_show_to_user(current_user, :thumb) %>" class="img-circle img-xs">
-		</a>
-	</div>
-	<div class="media-body media-middle">
-		<h4 class="media-heading text-muted"><%= conversation.get_conversation_name_to_show_to_user(current_user).truncate(25) %><span class="pull-right"><%= get_am_pm_time(conversation.updated_at) %></span>
+<div class="messages-media">
+	<div class="media main-media">
+		<div class="media-left pull-right">
+
+				<% if(!conversation.last_message_id.blank?) %>
+					<img src="<%= conversation.last_message.message_creator.profile_picture.media.url(:thumb) %>" class="img-circle img-xs">
+				<% else %>
+					<img src="<%= conversation.get_conversation_image_url_to_show_to_user(current_user, :thumb) %>" class="img-circle img-xs">
+				<% end %>
+				
+			
+		</div>
+		<div class="media-body media-middle">
+			<h4 class="media-heading text-muted"><%= conversation.get_conversation_name_to_show_to_user(current_user).truncate(25) %>
+
 		</h4>
 
-		<% if(!conversation.last_message.blank?) %>
-			<% if(!conversation.last_message.attachments.blank?) %>
-				<p>New <%= conversation.last_message.category %></p>
+			<h5 class="media-heading text-muted">
+				<% if(!conversation.last_message_id.blank?) %>
+					<%= conversation.last_message.message_creator.details %>
+				<% else %>
+						
+				<% end %>	
+				<span class="pull-right">
+					<% if(!conversation.last_message_id.blank?) %>
+						<%= get_am_pm_time(conversation.last_message.created_at) %>
+					<% else %>
+						<%= get_am_pm_time(conversation.created_at) %>
+					<% end %>
+					
+				</span>
+			</h5>
+			<% if(!conversation.last_message_id.blank?) %>
+				<span class="pull-left"><%= conversation.last_message.message_creator.first_name %></span>
 			<% end %>
-			<p><%= conversation.last_message.content if !conversation.last_message.content.blank? %></p>	
-		<% else %>
-			<p> Send first message </p>
-		<% end %>
-
-		<% if(!conversation.last_message.blank?) %>
-			<span class="pull-left"><%= conversation.last_message.message_creator.first_name %></span>
-		<% else %>
-
-		<% end %>
-		
-		
-		<span class="pull-right"><%= link_to conversation_path(conversation) do %>More<% end %></span>
+			
+		</div>
 	</div>
+	<div class="media-content text-muted">
+		<% if(!conversation.last_message_id.blank?) %>
+			<%= conversation.last_message.content %>
+		<% else %>
+			Send your first message	
+		<% end %>
+		
+	</div>
+	<% if(!conversation.last_message_id.blank?) %>
+		<% if(!conversation.last_message.attachments.blank?) %>
+			<% conversation.last_message.attachments.each do |attachment| %>
+				<p>
+					<% if(attachment.is_image_type?) %>
+						<img src="<%= attachment.media.url(:thumb) %>" > 
+					<% end %>
+
+					<% if(attachment.is_video_type?) %>
+						<video width="300" height="200" controls class="video-js vjs-default-skin">
+							<source src="<%= attachment.media.url(:medium) %>" type="video/<%= attachment.media.content_type.split('/').last %>" >
+			  			</video>
+					<% end %>
+
+					<% if(attachment.is_document_type?) %>
+						<iframe width="200" height= "200" src="https://docs.google.com/gview?url=https://classtalk.in<%= attachment.media.url %>&embedded=true&chrome=true"></iframe>
+					<% end %>
+				</p>
+			<% end %>	
+		<% end %>
+	<% end %>
 	
 </div>
