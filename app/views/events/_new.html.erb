@@ -1,29 +1,23 @@
-<%= form_tag events_path, remote: true do %>
+<%= form_tag institute_events_path(@institute), remote: true do %>
 	<div class="form-group form-inline new-event-checkbox">
-		<%= select_tag :is_official, options_for_select([["Personal or Official", ""],["Personal", "false"],["Official", true]],["Personal or Official", ""]), class: "personal-or-institute-event-input form-control" %>
+		<%= select_tag :is_official, options_for_select([["Personal or Official", ""],["Personal", "false"],["Official", true]],["Personal or Official", ""]), class: "personal-or-institute-event-input form-control", required: true %>
 	</div>
 
 	<div class="institute-select-div" style="display: none">
-		<% options = [["Select Institute",""]] %>
-		<div class="event-institute-select-div">
-			<% institutes.each do |institute| %>
-				<% options << [institute.institute_name.truncate(20),institute.id] %>
-			<% end %>
-			<%= select_tag :institute_id, options_for_select(options, ["Select Institute",""]), class: "event-institute-input" %>
-		</div>
+		<%= hidden_field_tag :institute_id, @institute.id %>
 		<input type="checkbox" name="all_sections" id="all-sections-checkbox" style="display: none">
-		<% institutes.each do |institute| %>
-			<div class="event-institute-grade-section-select-div" data-institute-id="<%= institute.id %>" style="display: none">
+		
+			<div class="event-institute-grade-section-select-div" data-institute-id="<%= @institute.id %>" style="display: none">
 				
-						<% institute_grade_section_models = institute.institutes_grades_sections %>
+						<% institute_grade_section_models = @institute.institutes_grades_sections_models %>
 						Select Classes:
 						<% institute_grade_section_models.each do |grade_section| %>
-							<%= check_box_tag "grade_section_ids[]", grade_section.id, false, class:"grade-section-checkbox-input", "data-institute-id" => institute.id  %> Class <%= grade_section.grade.grade_name %> <%= grade_section.section.section_name %>
+							<%= check_box_tag "grade_section_ids[]", grade_section.id, false, class:"grade-section-checkbox-input", "data-institute-id" => @institute.id  %> Class <%= grade_section.grade.grade_name %> <%= grade_section.section.section_name %>
 						<% end %>
 				
 					
 			</div>
-		<% end %>		
+		
 	</div>
 
 	<div class="form-group">

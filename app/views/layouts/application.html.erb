@@ -18,13 +18,14 @@
 						<button type="button" class="navbar-toggle collapsed pull-left hamburger-menu hamburger-menu-left-arrow" data-toggle="collapse" id="navbar-toggle-button">
 							<span></span>
 						</button>
-						<a class="navbar-brand" href="javascript:void(0);"><%= yield :heading %></a>
+						<span class="navbar-brand"><%= yield :heading %></span>
 					</div>
 					<div id="navbar" class="navbar-collapse pull-left navbar-fixed-small-screen">
 						<ul class="nav navbar-nav left-self-image">
 							<li><a href="/users/<%= current_user.id %>"><img src="<%= current_user.profile_picture.media.url(:medium) %>"  class="img-circle img-xss"><span>Profile</span></a></li>
 							<li class="main_toggle_menu">
 								<a href="/conversations"><i class="material-icons menu-inner-icon">&#xE156;</i><span>My Messages</span></a>
+
 							</li>	
 							<% if(!@institute.blank?) %>
 								<li><a href="<%= institute_grades_path(@institute) %>"><i class="material-icons menu-inner-icon">&#xE86E;</i><span>My Classes</span></a></li>
@@ -36,6 +37,9 @@
 								<li class="main_toggle_menu">
 									<a href="<%= institute_events_path(@institute) %>"><i class="material-icons menu-inner-icon">&#xE8A3;</i><span>Calendar/Day Plan</span></a>								
 								</li>
+								<li>
+									<a href="<%= institute_timetable_slots_path(@institute) %>"><i class="material-icons menu-inner-icon">&#xE8A3;</i><span>Day Plan</span></a>								
+								</li>
 							<% end %>							
 							<li><a href="javascript:void(0)"><i class="material-icons menu-inner-icon">&#xE0C6;</i><span>Help</span></a></li>						
 						</ul>
@@ -46,7 +50,7 @@
 							<a class="navbar-brand right-menu" href="javascript:void(0)">Teacher<i class="material-icons arrow-up-icon" style="vertical-align:middle;">&#xE313;</i></a>
 							<ul class="right-menu-toggle" id="right-menu-toggle-id" style="display:none;">
 								<li class="main-image text-center">
-									<a href="users/<%= current_user.id %>">
+									<a href="/users/<%= current_user.id %>">
 										<img src="<%= current_user.profile_picture.media.url(:thumb) %>" class="img-circle img-xs" >
 										<br>
 										<span><%= current_user.first_name.capitalize %></span>

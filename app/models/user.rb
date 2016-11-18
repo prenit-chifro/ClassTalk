@@ -62,6 +62,8 @@ class User < ApplicationRecord
 
 	has_many :apple_web_notification_subscriptions, class_name: :AppleWebNotificationSubscription, foreign_key: :user_id, inverse_of: :subscriber, dependent: :destroy
 
+	has_many :teaching_timetable_slots, class_name: :TimetableSlot, foreign_key: :teacher_id, inverse_of: :teacher
+
 	def details
 		if(self.role == "Principal")
 			return "Principal"

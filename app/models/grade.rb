@@ -14,6 +14,8 @@ class Grade < ApplicationRecord
 
 	has_many :attendance_records, class_name: :AttendanceRecord, foreign_key: :grade_id, inverse_of: :grade
 
+	has_many :timetable_slots, class_name: :TimetableSlot, foreign_key: :grade_id, inverse_of: :grade, dependent: :destroy
+
 	def get_sections_for_institute institute
 		Section.where(id: self.grades_sections.where(institute_id: institute.id).map(&:section_id))
 	end
