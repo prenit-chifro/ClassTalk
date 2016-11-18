@@ -15,52 +15,44 @@
 		    <nav class="navbar navbar-default navbar-fixed-top">
 				<div class="container-width">
 					<div class="navbar-header pull-left">
-						<button type="button" class="navbar-toggle collapsed pull-left" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-							<span class="sr-only">Toggle navigation</span>
-							<span class="icon-bar top-bar"></span>
-							<span class="icon-bar middle-bar"></span>
-							<span class="icon-bar bottom-bar"></span>
+						<button type="button" class="navbar-toggle collapsed pull-left hamburger-menu hamburger-menu-left-arrow" data-toggle="collapse" id="navbar-toggle-button">
+							<span></span>
 						</button>
 						<a class="navbar-brand" href="javascript:void(0);"><%= yield :heading %></a>
 					</div>
-					<div id="navbar" class="navbar-collapse collapse pull-left navbar-fixed-small-screen">
+					<div id="navbar" class="navbar-collapse pull-left navbar-fixed-small-screen">
 						<ul class="nav navbar-nav left-self-image">
-							<li class="self-image text-center">
-								<a href="/users/<%= current_user.id %>">
-									<img src="<%= current_user.profile_picture.media.url(:medium) %>"  class="img-circle img-sm">
-									<br>
-									<span><%= current_user.first_name.capitalize %> <%= current_user.last_name.capitalize %></span>
-									<br>
-									<span class="school-name"><%= current_user.details %></span>
-								</a>
-							</li>
-							
-							<li>
-								<a href="/conversations">My Messages</a>
+							<li><a href="/users/<%= current_user.id %>"><img src="<%= current_user.profile_picture.media.url(:medium) %>"  class="img-circle img-xss"><span>Profile</span></a></li>
+							<li class="main_toggle_menu">
+								<a href="/conversations"><i class="material-icons menu-inner-icon">&#xE156;</i><span>My Messages</span></a>
 							</li>			
-							<li>
-								<a href="<%= institute_grades_path(@institute) %>">My Classes</a>
-							</li>
-							<li><a href="/attendance_records">My Attendance</a></li>
-							<li>
-								<a href="<%= my_classwork_institute_path(@institute) %>">My ClassWork</a>
+							<li><a href="<%= institute_grades_path(@institute) %>"><i class="material-icons menu-inner-icon">&#xE86E;</i><span>My Classes</span></a></li>
+							<li><a href="/attendance_records"><i class="material-icons menu-inner-icon">&#xE85D;</i><span>My Attendance</span></a></li>
+							<li class="main_toggle_menu">
+								<a href="<%= my_classwork_institute_path(@institute) %>"><i class="material-icons menu-inner-icon">&#xE146;</i><span>Custom Categories</span></a>
 							</li>			
-							<li><a href="<%= institute_notices_path(@institute) %>">My Notices</a></li>
-							<li><a href="<%= institute_events_path(@institute) %>">My Calendar/Day Plan</a></li>
-							
-							
-							<li><a href="">Help</a></li>						
+							<li><a href="<%= institute_notices_path(@institute) %>"><i class="material-icons menu-inner-icon">&#xE616;</i><span>My Notices</span></a></li>
+							<li class="main_toggle_menu">
+								<a href="<%= institute_events_path(@institute) %>"><i class="material-icons menu-inner-icon">&#xE8A3;</i><span>Calendar/Day Plan</span></a>								
+							</li>
+							<li><a href="javascript:void(0)"><i class="material-icons menu-inner-icon">&#xE0C6;</i><span>Help</span></a></li>						
 						</ul>
-					</div><!--/.nav-collapse -->
+					</div>
 					<ul class="nav navbar-nav navbar-right pull-right right-self-image" style="margin-right: 3px;">
-						<li class="main-school-name"><%= link_to conversation_path(@institute_conversation) do %><%= @institute_conversation.conversation_name %><% end %></li>
-						<li class="main-image text-center">
-							<a href="/users/<%= current_user.id %>">
-								<img src="<%= current_user.profile_picture.media.url(:thumb) %>" class="img-circle img-sm" >
-								<br>
-								<span><%= current_user.first_name.capitalize %></span>
-							</a>
-						</li>
+
+						<li>
+							<a class="navbar-brand right-menu" href="javascript:void(0)">Teacher<i class="material-icons arrow-up-icon" style="vertical-align:middle;">&#xE313;</i></a>
+							<ul class="right-menu-toggle" id="right-menu-toggle-id" style="display:none;">
+								<li class="main-image text-center">
+									<a href="users/<%= current_user.id %>">
+										<img src="<%= current_user.profile_picture.media.url(:thumb) %>" class="img-circle img-xs" >
+										<br>
+										<span><%= current_user.first_name.capitalize %></span>
+									</a>
+								</li>
+								<li class="main-school-name text-center"><%= link_to conversation_path(@institute_conversation) do %><%= @institute_conversation.conversation_name %><% end %></li>
+							</ul>						
+						</li>							
 					</ul>
 				</div>
 			</nav>

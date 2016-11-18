@@ -300,6 +300,7 @@ ActiveRecord::Schema.define(version: 20161109100225) do
     t.string   "category"
     t.boolean  "content_available",                  default: false
     t.text     "notification",      limit: 65535
+    t.index ["app_id", "delivered", "failed", "deliver_after"], name: "index_rapns_notifications_multi", using: :btree
     t.index ["delivered", "failed"], name: "index_rpush_notifications_multi", using: :btree
   end
 
