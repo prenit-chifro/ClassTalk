@@ -121,11 +121,15 @@
 					<div class="tab-pane active" id="all-classteachers">
 						<% if(!current_user.role.include?("Student") and !current_user.role.include?("Parent")) %>
 							<%= link_to add_new_member_institute_path(@institute) do %>
-								<i class="material-icons">&#xE7FE;</i>
+								<div class="pull-left add-member">
+									<span>Add Participient</span><i class="material-icons">&#xE7FE;</i>
+								</div>
 							<% end %>
 
 							<%= link_to new_conversation_path(conversation_id: @conversation.id) do %>
-								<i class="material-icons">&#xE7FE;</i>
+								<div class="pull-right add-member">
+									<span>Create New Contact</span><i class="material-icons">&#xE7FE;</i>
+								</div>
 							<% end %>
 						<% end %>
 				
@@ -137,10 +141,14 @@
 						<div class="tab-pane" id="all-students">
 							<% if(!current_user.role.include?("Student") and !current_user.role.include?("Parent")) %>
 								<%= link_to add_new_member_institute_path(@institute) do %>
-									<i class="material-icons">&#xE7FE;</i>
+									<div class="pull-left add-member">
+										<span>Add Participient</span><i class="material-icons">&#xE7FE;</i>
+									</div>
 								<% end %>
 								<%= link_to new_conversation_path(conversation_id: @conversation.id) do %>
-									<i class="material-icons">&#xE7FE;</i>
+									<div class="pull-right add-member">
+										<span>Create New Contact</span><i class="material-icons">&#xE7FE;</i>
+									</div>
 								<% end %>
 							<% end %>
 							<% if(!@students.blank?) %>
@@ -151,14 +159,17 @@
 
 							
 						</div>
-
 						<div class="tab-pane" id="all-parents">
 							<% if(!current_user.role.include?("Student") and !current_user.role.include?("Parent")) %>
 								<%= link_to add_new_member_institute_path(@institute) do %>
-									<i class="material-icons">&#xE7FE;</i>
+									<div class="pull-left add-member">
+										<span>Add Participient</span><i class="material-icons">&#xE7FE;</i>
+									</div>
 								<% end %>
 								<%= link_to new_conversation_path(conversation_id: @conversation.id) do %>
-									<i class="material-icons">&#xE7FE;</i>
+									<div class="pull-right add-member">
+										<span>Create New Contact</span><i class="material-icons">&#xE7FE;</i>
+									</div>
 								<% end %>
 							<% end %>
 
@@ -185,14 +196,14 @@
 											<div class="ch-info">
 												<h3>Subject Teacher></h3>
 												
-												<p><%= subject_teacher.first_name if !subject_teacher.blank?%> <%= subject_teacher.last_name  if !subject_teacher.blank? %><a href="<%= institute_grade_section_subject_path(@institute, @grade, @section, subject) %>"><%= subject.subject_name %></a></p>
+												<p><%= subject_teacher.first_name if !subject_teacher.blank?%> <%= subject_teacher.last_name  if !subject_teacher.blank? %><a href="<%= institute_grade_section_subject_path(@institute, @grade, @section, subject) %>" style="font-size:6px;"><%= subject.subject_name %></a></p>
 											</div>
 											<div class="ch-thumb">
-												<span><%= subject.subject_name %></span>
+												<span style="font-size:14px;margin-left:-32px;"><%= subject.subject_name %></span>
 												<span><%= students_count %> Students</span>
 											</div>
 										</div>
-										<button class="btn btn-info"><%= link_to institute_grade_section_subject_path(@institute, @grade, @section, subject) do %>Go To <%= subject.subject_name %><% end %></button>
+										<button class="btn btn-info btn-custom-info"><%= link_to institute_grade_section_subject_path(@institute, @grade, @section, subject) do %>Go To <%= subject.subject_name %><% end %></button>
 									</li>
 									
 								<% end %>
@@ -665,4 +676,13 @@
 	</script>
 
 <% end %>
+<script>
+	var randomColors = ["#35a5a5",'#8cc4c4','#8b5861',"#d7b26f"];
+	$(".ch-thumb").each(function(index) {
+        var len = randomColors.length;
+        var randomNum = Math.floor(Math.random()*len);
+        $(this).css("backgroundColor",randomColors[randomNum]);
+        randomColors.slice(randomNum, 1);
+    });
 
+</script>
