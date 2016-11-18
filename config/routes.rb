@@ -22,6 +22,8 @@ Rails.application.routes.draw do
 
       resources :events
 
+      resources :timetable_slots
+
       resources :notices
 
       resources :attendance_records

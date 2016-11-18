@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161109100225) do
+ActiveRecord::Schema.define(version: 20161118074130) do
 
   create_table "android_devices", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "gcm_registration_id"
@@ -300,7 +300,6 @@ ActiveRecord::Schema.define(version: 20161109100225) do
     t.string   "category"
     t.boolean  "content_available",                  default: false
     t.text     "notification",      limit: 65535
-    t.index ["app_id", "delivered", "failed", "deliver_after"], name: "index_rapns_notifications_multi", using: :btree
     t.index ["delivered", "failed"], name: "index_rpush_notifications_multi", using: :btree
   end
 
@@ -350,6 +349,20 @@ ActiveRecord::Schema.define(version: 20161109100225) do
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
     t.index ["subject_name"], name: "index_subjects_on_subject_name", using: :btree
+  end
+
+  create_table "timetable_slots", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer  "institute_id"
+    t.integer  "grade_id"
+    t.integer  "section_id"
+    t.integer  "creator_id"
+    t.date     "date"
+    t.time     "start_time"
+    t.time     "end_time"
+    t.integer  "subject_id"
+    t.integer  "teacher_id"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
   end
 
   create_table "users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|

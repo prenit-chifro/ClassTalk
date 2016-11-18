@@ -14,6 +14,8 @@ class Section < ApplicationRecord
 
 	has_many :attendance_records, class_name: :AttendanceRecord, foreign_key: :section_id, inverse_of: :section
 
+	has_many :timetable_slots, class_name: :TimetableSlot, foreign_key: :section_id, inverse_of: :section, dependent: :destroy
+
 	def get_classteacher_for_institute_and_grade institute, grade
 		self.sections_grades.find_by(institute_id: institute.id, grade_id: grade.id).classteacher
 	end

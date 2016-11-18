@@ -8,8 +8,8 @@ json.array! @events do |event|
 	json.end event.end_time.strftime(date_format)
 	json.allDay event.is_all_day_event ? true : false
 
-	json.url event_path(event)
-	json.update_url event_path(event, method: :patch)
-	json.edit_url edit_event_path(event)
+	json.url institute_event_path(@institute, event)
+	json.update_url institute_event_path(@institute, event, method: :patch)
+	json.edit_url edit_institute_event_path(@institute, event)
 
 end
