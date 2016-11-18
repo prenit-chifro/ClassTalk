@@ -1,0 +1,124 @@
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBygb2VxPHEs8rV8j7dgreRvpowydmGrow&libraries=places" async defer></script>
+
+<div class="container">
+	<div class="col-sm-6 col-xs-6">
+		<div class="form-group">
+			<div class='input-group date' id='startDatetimepicker'>
+				<input type='text' class="form-control" />
+				<span class="input-group-addon">
+					<i class="fa fa-calendar" aria-hidden="true"></i>								
+				</span>
+			</div>
+		</div>
+	</div>
+	<div class="col-sm-6 col-xs-6">
+		<div class="form-group">
+			<div class='input-group date' id='endDatetimepicker'>
+				<input type='text' class="form-control" />
+				<span class="input-group-addon">
+					<i class="fa fa-calendar" aria-hidden="true"></i>								
+				</span>
+			</div>
+		</div>
+	</div>
+	<button onClick="fetchAttendanceData()"> Go </button>
+</div>
+
+<% if(!@assigned_classteacher_grades_sections_model.blank?) %>
+	<% content_for :heading do %>
+		Class <%= @grade.grade_name %> <%= @section.section_name %> Attendance
+	<% end %>
+
+	<h3>Class <%= @grade.grade_name %><%= @section.section_name %> Students Attendance   <%= params[:start_date].strftime("%b %d") %> - <%= params[:end_date].strftime("%b %d") %></h3>
+
+	<div id="chart_div_class" style="max-width:400px;margin: 0 auto;">
+		
+	</div>
+
+	<div class="table-responsive">
+		<table class="table">
+			<thead>
+			  	<tr>
+			    	<th>Student</th>
+		    		<% (@attendance_records.first.date..@attendance_records.last.date).to_a.each do |date| %>
+		    			<th><%= date.strftime("%b %d") %></th>	
+		    		<% end %>
+			  	</tr>
+			</thead>
+			<tbody>
+			  	<% @class_students.each do |student| %>
+			  		<tr>
+				    	<td><%= student.first_name %></td>
+				    	<% (@attendance_records.first.date..@attendance_records.last.date).to_a.each do |date| %>
+				    		<% date_attendance_record = @attendance_records.find_by(date: date) %>
+				    		<% if(!date_attendance_record.blank? and date_attendance_record.present_student_ids.split(", ").include?(student.id.to_s)) %>
+				    			<th class="info">Present</th>		
+				    		<% else %>
+				    			<th class="warning">Absent</th>		
+				    		<% end %>
+			    			
+			    		<% end %>
+				    
+				  	</tr>
+			  	<% end %>
+			  	
+			</tbody>
+		</table>
+	</div>
+<% else %>
+	You dont have any class assigned to you. 
+<% end %>
+
+<script type="text/javascript">
+
+	$('#startDatetimepicker, #endDatetimepicker').datetimepicker({
+		defaultDate: new Date(),
+        format: 'DD/MM/YYYY'
+   	});
+
+    google.charts.load('current', {'packages':['corechart']});
+
+    <% if(!@attendance_records.blank?) %>
+    	google.charts.setOnLoadCallback(drawClassChart);
+    <% end %>
+      
+	function drawClassChart() {
+
+		var data = new google.visualization.DataTable();
+		<% if(@total_students > 0) %>
+			var rowsArray = [
+				  ['Present Students (in %)', <%= 100*@total_present_students/@total_students %>],
+				  ['Absent Students (in %)', <%= 100*@total_absent_students/@total_students %>]
+			];
+		<% else %>
+			var rowsArray = [
+				  ['Present Students (in %)', 0],
+				  ['Absent Students (in %)', 0]
+			];
+		<% end %>
+		
+
+		data.addColumn('string', '');
+		data.addColumn('number', '');
+		data.addRows(rowsArray);
+
+		var options = {
+			width: 400,
+			height: 240,
+			title: 'Class <%= @grade.grade_name %><%= @section.section_name %> Attendance',
+			titlePosition: 'none',
+			colors: ['#5dd4b7', '#ea5b31'],
+			is3D: true
+		};
+
+		var chart = new google.visualization.PieChart(document.getElementById('chart_div_class'));
+		chart.draw(data, options);
+	}
+
+	function fetchAttendanceData(){
+		start_date = $('#startDatetimepicker').data('date');
+		end_date = $('#endDatetimepicker').data('date');
+		Turbolinks.visit('/institutes/<%= @institute.id %>/attendance_records?start_date=' + start_date + '&end_date=' + end_date);
+	}
+</script>

@@ -1,0 +1,134 @@
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBygb2VxPHEs8rV8j7dgreRvpowydmGrow&libraries=places" async defer></script>
+
+<div class="container">
+	<div class="col-sm-6 col-xs-6">
+		<div class="form-group">
+			<div class='input-group date' id='datetimepicker11'>
+				<input type='text' class="form-control" />
+				<span class="input-group-addon">
+					<i class="fa fa-calendar" aria-hidden="true"></i>								
+				</span>
+			</div>
+		</div>
+	</div>
+	<div class="col-sm-6 col-xs-6">
+		<div class="form-group">
+			<div class='input-group date' id='datetimepicker12'>
+				<input type='text' class="form-control" />
+				<span class="input-group-addon">
+					<i class="fa fa-calendar" aria-hidden="true"></i>								
+				</span>
+			</div>
+		</div>
+	</div>
+	<button> Go </button>
+</div>
+
+<% if(current_user.role == "Institute Admin") %>
+	<% content_for :heading do %>
+		Attendance
+	<% end %>
+
+	<div id="chart_div" style="max-width:400px;margin: 0 auto;">
+
+	</div>
+
+	<div class="form-group">
+		<label for="sel1">Select Class:</label>
+		<select class="form-control" id="sel1">
+			<option>Class 1</option>
+			<option>Class 2</option>
+			<option>Class 3</option>
+			<option>Class 4</option>
+		</select>
+	</div>
+	<div class="form-group">
+		<label for="sel1">Select Section:</label>
+		<select class="form-control" id="sel1">
+			<option>Section A</option>
+			<option>Section B</option>
+			<option>Section C</option>
+			<option>Section D</option>
+		</select>
+	</div>
+
+	<h3>Class 1A Students Attendance</h3>
+	<div id="chart_div_class" style="max-width:400px;margin: 0 auto;"></div>
+
+<% end %>
+
+<% if(current_user.role == "Teacher" and !@assigned_classteacher_grades_sections_model.blank?) %>
+	<% content_for :heading do %>
+		Class <%= @grade.grade_name %> <%= @section.section_name %> Attendance
+	<% end %>
+
+	<div id="chart_div_class" style="max-width:400px;margin: 0 auto;">
+		
+	</div>
+<% end %>
+
+
+
+<script type="text/javascript">
+	
+	$('#datetimepicker11, #datetimepicker12').datetimepicker({
+		icons: {
+            time: "fa fa-clock-o",
+            date: "fa fa-calendar",
+            up: "fa fa-arrow-up",
+            down: "fa fa-arrow-down"
+        }
+   	});
+
+    google.charts.load('current', {'packages':['corechart']});
+
+    google.charts.setOnLoadCallback(drawChart);
+    google.charts.setOnLoadCallback(drawClassChart);
+   
+   
+	function drawChart() {
+
+		var data = new google.visualization.DataTable();
+		data.addColumn('string', '');
+		data.addColumn('number', '');
+		data.addRows([
+		  ['Present Students', 400],
+		  ['Absent Students', 300]
+		]);
+
+		var options = {
+			width: 400,
+			height: 240,
+			title: 'Institute Students Analytics',
+			titlePosition: 'none',
+			colors: ['#5dd4b7', '#ea5b31'],
+			is3D: true
+		};
+
+		var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+		chart.draw(data, options);
+	}
+
+	function drawClassChart() {
+
+		var data = new google.visualization.DataTable();
+		data.addColumn('string', '');
+		data.addColumn('number', '');
+		data.addRows([
+		  ['Present Students', 400],
+		  ['Absent Students', 300]
+		]);
+
+		var options = {
+			width: 400,
+			height: 240,
+			title: 'Institute Students Analytics',
+			titlePosition: 'none',
+			colors: ['#5dd4b7', '#ea5b31'],
+			is3D: true
+		};
+
+		var chart = new google.visualization.PieChart(document.getElementById('chart_div_class'));
+		chart.draw(data, options);
+	}
+</script>
