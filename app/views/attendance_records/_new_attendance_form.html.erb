@@ -8,9 +8,11 @@
 					<div class="inner-list">
 						<label for="students" class="radio text-center">
 							<% if(attendance_record.blank?) %>
-								<input type="checkbox" id="Students" name="present_student_ids[]"value="<%= student.id %>" checked="true">
+								<%= check_box_tag "present_student_ids[]", student.id, true, id: "Students" %>
+								
 							<% else %>
-								<input type="checkbox" id="Students" name="present_student_ids[]"value="<%= student.id %>" checked=<%= attendance_record.present_student_ids.split(",").include?(student.id) %>>
+								<%= check_box_tag "present_student_ids[]", student.id, attendance_record.present_student_ids.split(", ").include?(student.id.to_s), id: "Students" %>
+
 							<% end %>
 							<img src="<%= student.profile_picture.media.url(:thumb) %>"" class="img-circle" >
 							

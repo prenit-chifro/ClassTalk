@@ -115,3 +115,7 @@ end
 # For firefox calendar and font
 	gem 'bootstrap3-datetimepicker-rails', '~> 4.14.30'
 	gem 'font-awesome-rails'
+
+# For Bootstrap
+	gem 'bootstrap-sass', '~> 3.3.6'
+	

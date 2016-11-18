@@ -12,6 +12,8 @@ class Section < ApplicationRecord
 	
 	has_many :sections_members, class_name: :SectionMember, foreign_key: :section_id, inverse_of: :section, dependent: :destroy
 
+	has_many :attendance_records, class_name: :AttendanceRecord, foreign_key: :section_id, inverse_of: :section
+
 	def get_classteacher_for_institute_and_grade institute, grade
 		self.sections_grades.find_by(institute_id: institute.id, grade_id: grade.id).classteacher
 	end

@@ -56,14 +56,18 @@ ActiveRecord::Schema.define(version: 20161109100225) do
   end
 
   create_table "attendance_records", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.integer  "grade_section_id"
+    t.integer  "institute_id"
+    t.integer  "grade_id"
+    t.integer  "section_id"
     t.string   "present_student_ids", default: ""
     t.date     "date"
+    t.integer  "creator_id"
     t.datetime "created_at",                       null: false
     t.datetime "updated_at",                       null: false
     t.index ["date"], name: "index_attendance_records_on_date", using: :btree
-    t.index ["grade_section_id"], name: "index_attendance_records_on_grade_section_id", using: :btree
-    t.index ["present_student_ids"], name: "index_attendance_records_on_present_student_ids", using: :btree
+    t.index ["grade_id"], name: "index_attendance_records_on_grade_id", using: :btree
+    t.index ["institute_id"], name: "index_attendance_records_on_institute_id", using: :btree
+    t.index ["section_id"], name: "index_attendance_records_on_section_id", using: :btree
   end
 
   create_table "conversation_participants", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|

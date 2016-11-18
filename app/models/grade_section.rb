@@ -10,16 +10,6 @@ class GradeSection < ApplicationRecord
 	
 	belongs_to :section_creator, class_name: :User, foreign_key: :creator_id, inverse_of: :created_grade_sections_models, optional: true
 
-	has_many :attendance_records, class_name: :AttendanceRecord, foreign_key: :grade_section_id, inverse_of: :grade_section, dependent: :destroy
-
-	def events 
-		Event.where("grade_section_ids like ?", "%#{self.id}%")
-	end
-
-	def notices
-		Notice.where("grade_section_ids like ?", "%#{self.id}%")
-	end
-
 	after_create :add_creator_as_section_member
 
 	def add_creator_as_section_member

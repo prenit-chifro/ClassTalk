@@ -18,7 +18,6 @@ Rails.application.routes.draw do
   			get "add_new_member"
   			post "add_new_member"
         get "my_classwork"
-        get "my_day_plan"
   		end
 
       resources :events
@@ -43,13 +42,9 @@ Rails.application.routes.draw do
       member do
         post "add_message_category"
         delete "delete_message_category"
-        
-        post "send_request"
-        post "accept_request"
       end
 
       collection do
-        get "add_new_member"
         get "new_group"
         post "new_group"
       end  
@@ -68,8 +63,6 @@ Rails.application.routes.draw do
 	  end
 
     mount ActionCable.server => '/cable'
-
-    root "home#index"
     
     get "another_route" => "home#another_route"
     

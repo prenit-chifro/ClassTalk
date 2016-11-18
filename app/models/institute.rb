@@ -21,6 +21,8 @@ class Institute < ApplicationRecord
 	has_many :notices, class_name: :Notice, foreign_key: :institute_id, inverse_of: :institute, dependent: :destroy
 	
 	has_one :location, class_name: :Location, as: :locatable, dependent: :destroy
+
+	has_many :attendance_records, class_name: :AttendanceRecord, foreign_key: :institute_id, inverse_of: :institute, dependent: :destroy
 	
 	def short_name
 		non_text_characterless_string = self.institute_name.gsub(/[^0-9a-z ]/i, '')

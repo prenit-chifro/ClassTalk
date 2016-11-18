@@ -55,7 +55,7 @@
 					<ul class="nav navbar-nav navbar-right pull-right right-self-image" style="margin-right: 3px;">
 						<li class="main-school-name"><%= link_to conversation_path(@institute_conversation) do %><%= @institute_conversation.conversation_name %><% end %></li>
 						<li class="main-image text-center">
-							<a href="users/<%= current_user.id %>">
+							<a href="/users/<%= current_user.id %>">
 								<img src="<%= current_user.profile_picture.media.url(:thumb) %>" class="img-circle img-sm" >
 								<br>
 								<span><%= current_user.first_name.capitalize %></span>

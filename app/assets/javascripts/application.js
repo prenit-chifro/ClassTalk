@@ -12,12 +12,13 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require turbolinks
 //= require jquery.remotipart
-//= require jquery-ui/autocomplete
+//= require bootstrap-sprockets
+//= require moment 
+//= require bootstrap-datetimepicker
+//= require turbolinks
 //= require social-share-button
 //= require video
-//= require moment 
 //= require fullcalendar
 //= require fullcalendar/gcal
 //= require_tree .

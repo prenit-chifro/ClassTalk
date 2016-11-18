@@ -479,9 +479,11 @@
 						</h4>
 					</div>	
 				</div>
+				<div class="attendance-form-div">
+					<%= render partial: "attendance_records/new_attendance_form", locals: {institute: @institute, grade: @grade, section: @section, class_students: @class_students, attendance_record: @todays_attendance_record} %>
 
-				<%= render partial: "attendance_records/new_attendance_form", locals: {institute: @institute, grade: @grade, section: @section, class_students: @class_students, attendance_record: @todays_attendance_record} %>
-
+				</div>
+				
 				
 			</div>
 		</div>

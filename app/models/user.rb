@@ -52,6 +52,8 @@ class User < ApplicationRecord
 
 	has_many :created_notices, class_name: :Notice, foreign_key: :creator_id, inverse_of: :notice_creator, dependent: :destroy
 
+	has_many :created_attendance_records, class_name: :AttendanceRecord, foreign_key: :creator_id, inverse_of: :record_creator
+
 	has_many :android_devices, class_name: :AndroidDevice, foreign_key: :android_device_user_id, inverse_of: :android_device_user, dependent: :destroy
 	
 	has_many :ios_devices, class_name: :IosDevice, foreign_key: :ios_device_user_id, inverse_of: :ios_device_user, dependent: :destroy

@@ -12,6 +12,8 @@ class Grade < ApplicationRecord
 
 	has_many :grades_sections_subjects_models, class_name: :SectionSubject, foreign_key: :grade_id, inverse_of: :grade, dependent: :destroy
 
+	has_many :attendance_records, class_name: :AttendanceRecord, foreign_key: :grade_id, inverse_of: :grade
+
 	def get_sections_for_institute institute
 		Section.where(id: self.grades_sections.where(institute_id: institute.id).map(&:section_id))
 	end

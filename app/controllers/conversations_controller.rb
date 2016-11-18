@@ -51,7 +51,7 @@ class ConversationsController < ApplicationController
 
 			@assigned_classteacher_grades_sections_model = current_user.assigned_classteacher_grades_sections_models.first
 			if(!@assigned_classteacher_grades_sections_model.blank?)
-				@todays_attendance_record = @assigned_classteacher_grades_sections_model.attendance_records.find_by(date: Date.today)
+				@todays_attendance_record = current_user.created_attendance_records.find_by(date: Date.today)
 
 				@institute = @assigned_classteacher_grades_sections_model.institute
 				@grade = @assigned_classteacher_grades_sections_model.grade
