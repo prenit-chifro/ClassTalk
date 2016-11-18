@@ -159,6 +159,7 @@ div.user-profile-picture-inner-target > label span + input[type=file]{
     box-shadow: 1px 1px 6px #000;
     margin-bottom: 10px;
 }
+/*
 .form-complete-register > div.col-md-9 > h3 + div.form-group, 
 .form-complete-register > div.col-md-9> h3 + div.form-group + div.form-group,
 div.edit-user-page > span+div.form-group,
@@ -175,7 +176,7 @@ div.edit-user-page > span+div.form-group
 div.edit-user-page > span+div.form-group + div.form-group
 {
 	width:49%;
-}
+}*/
 .teachers-grades-div{
 	margin-bottom: 10px;
 }
@@ -470,15 +471,6 @@ ul.submenu>li:last-child a{
 .navbar-default .navbar-nav>li>a{
 	color:#fff;
 }
-.personal-add-icon{
-    position: fixed;
-    bottom: 53px;
-    right: 11px;    
-    color: #ea5b31;
-    z-index: 1000;
-    font-size: 65px !important;
-	cursor: pointer;
-}
 span.personal-message-icon{
 	display: block;
     background: #ea5b31;
@@ -512,7 +504,7 @@ div.add-member>i{
 }
 ul.index-conversation-modal div.classRoute>ul{
 	box-shadow:1px 1px 1px #afacac;
-	background: #5a2e2e;
+	background: #c7c7c7;
 }
  /*dropdown-submenu*/
 
@@ -1069,20 +1061,22 @@ div.toggle-teachers-classes > ul{
 div.toggle-teachers-classes > ul>li label{
 	cursor:pointer;
 }
-
-.modal-label>.media > input{
-	display:none;
-}
-.modal-label>.media > input + div.media-left{
+.modal-label{
 	position:relative;
 }
-.modal-label>.media > input + div.media-left + div.media-body{
+.modal-label> input{
+	display:none;
+}
+.modal-label>.well>.media > div.media-left{
+	position:relative;
+}
+.modal-label>.well>.media > div.media-left + div.media-body{
 	color:#d9534f;
 	transition: all 1s;
 	-webkit-transition: all 1s;
 	-moz-transition: all 1s;
 }
-.modal-label>.media > input + div.media-left>img{
+.modal-label>.well>.media > div.media-left img{
 	background:#d9534f;
     padding: 3px;
 	transition: all 1s;
@@ -1095,8 +1089,8 @@ div.toggle-teachers-classes > ul>li label{
     background: #009688;
     border-radius: 50%;
     position: absolute;
-    top: 3px;
-    right: 3px;
+    top: 9px;
+    left: 6px;
 	display:none;
     box-shadow: 1px 1px 6px #a0a0a0;
     border: 2px solid #fff;
@@ -1119,13 +1113,13 @@ div.toggle-teachers-classes > ul>li label{
     top: 2px;
     left: 5px;
 }
-.modal-label>.media>input[type="checkbox"]:checked + div.media-left > img{
+.modal-label>input[type="checkbox"]:checked + div.well >div.media> div.media-left img{
 	background: #009688;
 }
-.modal-label>.media>input[type="checkbox"]:checked + div.media-left > span.checkbox-style-block{
+.modal-label> input[type="checkbox"]:checked + div.well + span.checkbox-style-block{
 	display:block;
 }
-.modal-label>.media>input[type="checkbox"]:checked + div.media-left + div.media-body{
+.modal-label>input[type="checkbox"]:checked + div.well >div.media> div.media-left + div.media-body{
 	color:#009688;
 }
 /*Attendance Modal*/
@@ -1558,6 +1552,79 @@ ul.right-menu-toggle li a:hover{
 }
 .main-school-name a{
 	color:#fff !important;
+}
+
+ul#attachment-toggle-show {
+    margin: 0;
+    display: none;
+    border-bottom: 1px solid #ece9e9;
+}
+ul#attachment-toggle-show li {
+    text-align: center;
+}
+ul#attachment-toggle-show li label input[type="radio"]{
+	position:absolute;
+	left:-1000px;
+	top:-1000px;
+}
+ul#attachment-toggle-show li div.inner-list {
+    color: #efefef;
+    display: block;
+	padding:4px;
+	-webkit-animation-name: scaleAttachIcons;
+    -webkit-animation-duration: 1s;
+    animation-name: scaleAttachIcons;
+    animation-duration: 1s;
+}
+ul#attachment-toggle-show li div.inner-list span{
+	font-size: 11px;
+    font-weight:normal;
+	color: #a5a1a1;
+}
+ul#attachment-toggle-show li div.inner-list i{
+	background: #a5a1a1;
+    border-radius: 50%;
+    box-shadow: 1px 1px 3px #bdb9b9;
+    transition: all 1s;
+    width: 40px;
+    height: 40px;
+    line-height: 1.7;
+    color: #fff;
+}
+ul#attachment-toggle-show li div.inner-list:hover> label i{
+	-webkit-animation-name: rotateAttachIcons;
+    -webkit-animation-duration: 1s;
+    animation-name: rotateAttachIcons;
+    animation-duration: 1s;
+}
+ul#attachment-toggle-show li div.inner-list:hover > label i{
+	color: #a5a1a1;
+	background:#efefef;
+	cursor:pointer;
+}
+ul#attachment-toggle-show div.inner-list:hover > label span{
+	color:	#009688;
+}
+ul#attachment-toggle-show div.inner-list:hover > label span, ul#attachment-toggle-show div.inner-list:hover > label i{
+	transition:all 1s;
+	-webkit-transition:all 1s;
+	-moz-transition:all 1s;
+}
+@-webkit-keyframes rotateAttachIcons{
+	from {-webkit-transform:rotate(0deg)} 
+    to {-webkit-transform:rotate(360deg)}
+}
+@keyframes rotateAttachIcons {
+    from {transform:rotate(0deg)} 
+    to {transform:rotate(360deg)}
+}
+@-webkit-keyframes scaleAttachIcons {
+    from {-webkit-transform:scale(0)} 
+    to {-webkit-transform:scale(1)}
+}
+@keyframes scaleAttachIcons {
+    from {transform:scale(0)} 
+    to {transform:scale(1)}
 }
 @media (min-width:768px){
 	.left-self-image >li:nth-child(1){

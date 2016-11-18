@@ -47,13 +47,8 @@
 					<% if(current_user.role != "Student" and current_user.role != "Parent") %>
 						<div class="media mar-btm">
 				
-							<div class="media-left media-middle">
-								<%= link_to new_group_conversations_path do %>		
-									<i class="material-icons">&#xE7FE;</i>
-								<% end %>
-							</div>
 							<div class="media-body media-middle">
-								<%= link_to add_new_member_conversations_path do %>			
+								<%= link_to add_new_member_institute_path(@institute) do %>			
 									Create New Contact
 								<% end %>		
 							</div>

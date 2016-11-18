@@ -25,16 +25,18 @@
 							<li><a href="/users/<%= current_user.id %>"><img src="<%= current_user.profile_picture.media.url(:medium) %>"  class="img-circle img-xss"><span>Profile</span></a></li>
 							<li class="main_toggle_menu">
 								<a href="/conversations"><i class="material-icons menu-inner-icon">&#xE156;</i><span>My Messages</span></a>
-							</li>			
-							<li><a href="<%= institute_grades_path(@institute) %>"><i class="material-icons menu-inner-icon">&#xE86E;</i><span>My Classes</span></a></li>
-							<li><a href="/attendance_records"><i class="material-icons menu-inner-icon">&#xE85D;</i><span>My Attendance</span></a></li>
-							<li class="main_toggle_menu">
-								<a href="<%= my_classwork_institute_path(@institute) %>"><i class="material-icons menu-inner-icon">&#xE146;</i><span>Custom Categories</span></a>
-							</li>			
-							<li><a href="<%= institute_notices_path(@institute) %>"><i class="material-icons menu-inner-icon">&#xE616;</i><span>My Notices</span></a></li>
-							<li class="main_toggle_menu">
-								<a href="<%= institute_events_path(@institute) %>"><i class="material-icons menu-inner-icon">&#xE8A3;</i><span>Calendar/Day Plan</span></a>								
-							</li>
+							</li>	
+							<% if(!@institute.blank?) %>
+								<li><a href="<%= institute_grades_path(@institute) %>"><i class="material-icons menu-inner-icon">&#xE86E;</i><span>My Classes</span></a></li>
+								<li><a href="<%= institute_attendance_records_path(@institute) %><i class="material-icons menu-inner-icon">&#xE85D;</i><span>My Attendance</span></a></li>
+								<li class="main_toggle_menu">
+									<a href="<%= my_classwork_institute_path(@institute) %>"><i class="material-icons menu-inner-icon">&#xE146;</i><span>Custom Categories</span></a>
+								</li>			
+								<li><a href="<%= institute_notices_path(@institute) %>"><i class="material-icons menu-inner-icon">&#xE616;</i><span>My Notices</span></a></li>
+								<li class="main_toggle_menu">
+									<a href="<%= institute_events_path(@institute) %>"><i class="material-icons menu-inner-icon">&#xE8A3;</i><span>Calendar/Day Plan</span></a>								
+								</li>
+							<% end %>							
 							<li><a href="javascript:void(0)"><i class="material-icons menu-inner-icon">&#xE0C6;</i><span>Help</span></a></li>						
 						</ul>
 					</div>
@@ -50,7 +52,9 @@
 										<span><%= current_user.first_name.capitalize %></span>
 									</a>
 								</li>
-								<li class="main-school-name text-center"><%= link_to conversation_path(@institute_conversation) do %><%= @institute_conversation.conversation_name %><% end %></li>
+								<% if(!@institute.blank?) %>
+									<li class="main-school-name text-center"><%= link_to conversation_path(@institute_conversation) do %><%= @institute_conversation.conversation_name %><% end %></li>
+								<% end %>
 							</ul>						
 						</li>							
 					</ul>

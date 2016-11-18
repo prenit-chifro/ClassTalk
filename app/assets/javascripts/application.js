@@ -284,12 +284,12 @@ $(document).on("turbolinks:load", function(){
 		}		
 	});
 
-
+/*
 	$(".participant-checkbox-label").on("click", function(e){
 		e.preventDefault();
 		e.stopPropagation();
 		App.updateCheckboxCounter();		
-	});
+	});*/
 
 	$('#search').on("keyup keydown", function() {
 	    var value = $(this).val();

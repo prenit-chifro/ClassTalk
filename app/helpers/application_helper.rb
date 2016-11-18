@@ -65,9 +65,9 @@ module ApplicationHelper
 	# To send user account password through sms
 	def send_user_account_password_through_sms user, password
 		user_isd_code = user.isd_code
-		user_contact_no = user.contact_no
+		user_mobile_no = user.mobile_no
 		password_message = "Your ClassNest account password is #{password}. Change it at https://classnest.co/users/password/edit"
-		send_sms(password_message, user_isd_code, user_contact_no)
+		send_sms(password_message, user_isd_code, user_mobile_no)
 	end
 	
 	# To send user account password through android notification

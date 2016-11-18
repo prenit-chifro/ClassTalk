@@ -219,12 +219,12 @@
 					<div class="tab-pane active" id="all-subjectteachers">
 						<% if(!current_user.role.include?("Student") and !current_user.role.include?("Parent")) %>
 							
-							<%= link_to add_new_member_institute_path(@institute) do %>
+							<%= link_to new_conversation_path(conversation_id: @conversation.id) do %>
 								<div class="pull-left add-member">
 									<span>Add Participient</span><i class="material-icons">&#xE7FE;</i>
 								</div>	
 							<% end %>
-							<%= link_to new_conversation_path(conversation_id: @conversation.id) do %>
+							<%= link_to add_new_member_institute_path(@institute) do %>
 								<div class="pull-right add-member">
 									<span>Create New Contact</span><i class="material-icons">&#xE7FE;</i>
 								</div>	
@@ -237,12 +237,12 @@
 					<% if(["Principal", "Institute Admin", "Teacher"].include?(current_user.role)) %>
 						<div class="tab-pane" id="all-students">
 							<% if(!current_user.role.include?("Student") and !current_user.role.include?("Parent")) %>
-								<%= link_to add_new_member_institute_path(@institute) do %>
+								<%= link_to new_conversation_path(conversation_id: @conversation.id) do %>
 									<div class="pull-left add-member">
 										<span>Add Participient</span><i class="material-icons">&#xE7FE;</i>
 									</div>	
-								<% end %>
-								<%= link_to new_conversation_path(conversation_id: @conversation.id) do %>
+								<% end %>								
+								<%= link_to add_new_member_institute_path(@institute) do %>
 									<div class="pull-right add-member">
 										<span>Create New Contact</span><i class="material-icons">&#xE7FE;</i>
 									</div>
@@ -259,12 +259,12 @@
 
 						<div class="tab-pane" id="all-parents">
 							<% if(!current_user.role.include?("Student") and !current_user.role.include?("Parent")) %>
-								<%= link_to add_new_member_institute_path(@institute) do %>
+								<%= link_to new_conversation_path(conversation_id: @conversation.id) do %>
 									<div class="pull-left add-member">
 										<span>Add Participient</span><i class="material-icons">&#xE7FE;</i>
 									</div>	
 								<% end %>
-								<%= link_to new_conversation_path(conversation_id: @conversation.id) do %>
+								<%= link_to add_new_member_institute_path(@institute) do %>
 									<div class="pull-right add-member">
 										<span>Create New Contact</span><i class="material-icons">&#xE7FE;</i>
 									</div>
