@@ -467,7 +467,9 @@
 						</form>
 						<h4 class="modal-title">
 							Class <%= @grade.grade_name %><%= @section.section_name %> Attendance 
-							<%= link_to institute_attendance_records_path(@institute), class:"link-attendance" do %> Past Attendace Records <% end %><span style="float: right; margin-right: 20px"><%= get_am_pm_time(Time.now) %></span>
+							<span><%= get_month_date_year(Time.now) %></span>
+							<%= link_to institute_attendance_records_path(@institute), class:"link-attendance" do %> 
+							<button class="btn btn-success pull-right" style="margin-right: 10px;">Past Attendace Records</button> <% end %>
 						</h4>
 					</div>	
 				</div>

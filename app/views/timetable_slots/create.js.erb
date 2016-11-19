@@ -1,0 +1,6 @@
+$('.calendar').fullCalendar(
+  'renderEvent', 
+  $.parseJSON("<%=j render(@timetable_slot, format: :json).html_safe %>"),
+  true
+);
+$('#myModal').modal('hide');

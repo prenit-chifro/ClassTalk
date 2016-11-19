@@ -1,8 +1,8 @@
 
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBygb2VxPHEs8rV8j7dgreRvpowydmGrow&libraries=places" async defer></script>
 
-<div class="container">
-	<div class="col-sm-6 col-xs-6">
+<div class="container" style="margin-top: 60px;">
+	<div class="col-sm-4 col-xs-4">
 		<div class="form-group">
 			<div class='input-group date' id='startDatetimepicker'>
 				<input type='text' class="form-control" />
@@ -12,7 +12,10 @@
 			</div>
 		</div>
 	</div>
-	<div class="col-sm-6 col-xs-6">
+	<div class="col-sm-1 col-xs-1">
+		<span style="font-size: 16px;line-height: 2;color: #5cb85c;">to</span>
+	</div>
+	<div class="col-sm-4 col-xs-4">
 		<div class="form-group">
 			<div class='input-group date' id='endDatetimepicker'>
 				<input type='text' class="form-control" />
@@ -22,20 +25,19 @@
 			</div>
 		</div>
 	</div>
-	<button onClick="fetchAttendanceData()"> Go </button>
+	<div class="col-sm-3 col-xs-3">
+		<button class="btn btn-success" onClick="fetchAttendanceData()" style="width: 100%;"> Go </button>
+	</div>
 </div>
 
 <% if(!@assigned_classteacher_grades_sections_model.blank?) %>
 	<% content_for :heading do %>
 		Class <%= @grade.grade_name %> <%= @section.section_name %> Attendance
 	<% end %>
-
-	<h3>Class <%= @grade.grade_name %><%= @section.section_name %> Students Attendance   <%= params[:start_date].strftime("%b %d") %> - <%= params[:end_date].strftime("%b %d") %></h3>
-	<% if(!@attendance_records.blank?) %>
-		<div id="chart_div_class" style="max-width:400px;margin: 0 auto;">
-			
-		</div>
-
+	<div  class="text-center text-muted">
+		<h3 style="margin:0;"> Class <%= @grade.grade_name %><%= @section.section_name %> Students Attendance</h3>
+		<p style="margin:0;color:#ea5b31;"><%= params[:start_date].strftime("%b %d") %> - <%= params[:end_date].strftime("%b %d") %></p> 
+	</div>
 		<div class="table-responsive">
 			<table class="table">
 				<thead>

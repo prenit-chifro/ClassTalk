@@ -35,23 +35,24 @@
       eventSources: [
       	{	
       		googleCalendarApiKey: 'AIzaSyBygb2VxPHEs8rV8j7dgreRvpowydmGrow',
-		   	url: 'https://www.google.com/calendar/feeds/indian__en%40holiday.calendar.google.com/public/basic',
+  		   	url: 'https://www.google.com/calendar/feeds/indian__en%40holiday.calendar.google.com/public/basic',
 
-		    color: 'red',   // an option!
-		    textColor: 'black' // an option!
+  		    color: 'red',   // an option!
+  		    textColor: 'black' // an option!
 
-		},
-		{
-		    url: '<%= institute_events_path(@institute) %>',
-		    color: '#a8a8e8',   // an option!
-		    textColor: 'black' // an option!
-		}
+    		},
+    		{
+    		    url: '<%= institute_events_path(@institute) %>',
+    		    color: '#a8a8e8',   // an option!
+    		    textColor: 'black' // an option!
+    		}
 
       ],
       editable: true,
       selectable: true,
       selectHelper: true,
       eventClick: function(event, jsEvent, view) {
+          
       		if(event.edit_url){
       			$.ajax({
 		        	url: event.edit_url,
@@ -64,11 +65,13 @@
       		}else{
       			window.open(event.url);
       		}
-            
+                
 	        return false;
       },
+
       dayClick: function(date, jsEvent, view) {
-      	$.ajax({
+        this["dayClickedFlag"] = true;
+        $.ajax({
         	url: "events/new.js?start_time= " + date.format() + '&end_time= ' + date.format(),
         	complete: function(data){
         		if(data.status == "200"){
@@ -78,22 +81,33 @@
         });
       },
       select: function(start, end) {
-        $.ajax({
-        	url: "events/new.js?start_time=" + start.format() + '&end_time=' + end.format(),
-        	complete: function(data){
-        		if(data.status == "200"){
-        			eval(data.responseText);
-        		}
-        	}
+        if(this.dayClickedFlag && !this.dayClickedFlag){
+          $.ajax({
+          url: "events/new.js?start_time=" + start.format() + '&end_time=' + end.format(),
+          complete: function(data){
+            if(data.status == "200"){
+              eval(data.responseText);
+            }
+          }
         });
-
+  
+        }
+        
+        
         $(this).fullCalendar('unselect');
       },
       eventDrop: function(event,dayDelta,minuteDelta,allDay,revertFunc) {
+        
       	if(event.update_url){
       		if (confirm("update this event?")) {
+              if(event.end){
+                endTime = event.end
+              }else{
+                endTime = event.start  
+              }
+              
 	          	$.ajax({
-	      			url: event.update_url + "&start_time=" + event.start.format() + "&end_time=" + event.end.format(),
+	      			url: event.update_url + "&start_time=" + event.start.format() + "&end_time=" + endTime.format() + "&is_all_day_event=" + allDay,
 		      		method: "PATCH",
 		        	complete: function(data){
 		        		if(data.status == "200"){

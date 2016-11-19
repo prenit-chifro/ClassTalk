@@ -5,9 +5,8 @@ class CreateTimetableSlots < ActiveRecord::Migration[5.0]
     	t.integer :grade_id
     	t.integer :section_id
     	t.integer :creator_id
-    	t.date :date
-    	t.time :start_time
-    	t.time :end_time
+    	t.datetime :start_time
+    	t.datetime :end_time
     	t.integer :subject_id
     	t.integer :teacher_id
       	t.timestamps
