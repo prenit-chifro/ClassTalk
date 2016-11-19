@@ -14,11 +14,6 @@ if($('.all-small-conversations').html()){
 		conversationNoDiv.html(conversationNo);
 		$('.unread-conversation-ids').html($('.unread-conversation-ids').html() + ", <%= conversation.id %>");
 		conversationNoDiv.css("display", "block");
-	}
-	$(".conversation-small[data-conversation-id='" + <%= conversation.id %> + "']").find('.next-page-link').click(function(event){
-		clickedElement = $(this);
-		App.navigateToLink(clickedElement);			
-	});
-
+	}	
 }
 

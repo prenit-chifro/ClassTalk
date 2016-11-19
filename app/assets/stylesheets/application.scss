@@ -16,7 +16,18 @@
 .messages-unread-media{
 	background:#d6d4d4;
 }
-
+.dot-unread{
+	background: #fff;
+    border-radius: 50%;
+    color: #ea5b31;
+    width: 20px;
+    height: 20px;
+    font-size: 11px;
+    line-height: 1.7;
+}
+.checkmark:hover{
+	cursor:pointer;
+}
 /*Login and signup form*/
 .user-form{
 	margin:5px auto;
@@ -293,14 +304,14 @@ div.division-subjects, div.division-upper-subjects,div.division-upper-sections{
     vertical-align: middle;
 }
 label.file-label>span.file-label-class{
-	background: #009288;
+	background: #ea5b31;
     display: block;
     padding: 7px;
     color: #fff;
     border-radius: 50%;
     position: absolute;
-    bottom: 17px;
-    right: -1px;
+    bottom: 35px;
+    right: 5px;
     font-size: 7px;
     box-shadow: 1px 1px 8px #929292;
 }
@@ -310,7 +321,10 @@ label.file-label>span.file-label-class i{
 label.file-label > input[type=file]{
 	display:none;
 }
-
+#new-group-profile-picture-inner-target img{
+	margin:0 auto;
+	width:100%;
+}
 
 /*Hamburger menu*/
 .hamburger-menu {
@@ -542,8 +556,9 @@ ul.index-conversation-modal div.classRoute>ul{
 	border-bottom: 1px solid #c7c5c5;
 }
 .main-media>.media-body>h4 span,.main-media>.media-body>h5 span{
-	font-size: 10px;
-    margin-top: 4px;
+    font-size: 10px;
+    padding-left: 6px;
+    line-height: 1.9;
 }
 .main-media>.media-body>p{
 	margin:0;
@@ -614,7 +629,7 @@ div.classRoute >ul.nav-tabs{
 }
 div.classRoute >ul.nav-tabs >li{
 	display:inline-block;
-	float:inherit;
+
 }
 div.classRoute >ul.nav-tabs >li a,
 div.classRoute >ul.nav-tabs >li.active a,
@@ -771,7 +786,7 @@ ul.subject-list-subjects{
 }
 .chat-show-tabs-upper-div.stick{
 	position: fixed;
-    top: 69px;
+    top: 50px;
     left: 0;
     right: 0;
 	z-index:1;
@@ -816,7 +831,6 @@ form.search-form + h4.modal-title{
     border-radius: 25px;
     border: 1px solid #ccc;
     position: absolute;
-    margin-top: -5px;
 }
 .search-form .form-group input.form-control {
   padding-right: 20px;
@@ -854,8 +868,7 @@ form.search-form + h4.modal-title{
     position: absolute;
 }
 .search-conversation-new-group .form-group{
-	margin-top: -13px;
-    right: 58px;
+    right: 15px;
     top: 0;
 }
 .search-conversation-new-page .form-group{
@@ -1042,6 +1055,10 @@ ul.teachers-list{
 }
 ul.teachers-list >li{
 	margin:5px;
+}
+ul.new-group-class > li{
+	margin:0;
+	margin-bottom:10px;
 }
 ul.teachers-list > li> h6{
     margin: 0;
@@ -1542,6 +1559,7 @@ ul.right-menu-toggle{
     right: 0;
     width: 124px;
     box-shadow: 1px 1px 4px #ccc7c7;
+	z-index:1;
 }
 .main-image,.main-school-name{
 	display:block;

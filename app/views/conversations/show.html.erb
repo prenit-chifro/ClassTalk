@@ -309,7 +309,7 @@
 		
 	<% end %>
 	<div class="detect-div"></div>
-	<div class="container-width tabs-container">
+	<div class="container-width tabs-container conversation-big" data-conversation-id="<%= @conversation.id %>">
 		<div class="scroller scroller-left"><</div>
 		<div class="scroller scroller-right">></div>	
 		<div class="tabs-wrapper">		
@@ -334,7 +334,7 @@
 				</ul>
 			</div>	
 			<div class="tab-content admin-home-content" style="margin-top:50px;">
-				<div class="tab-pane active" id="all-Messages">
+				<div class="tab-pane active messages Messages-category-messages" id="all-Messages">
 					<% if(!@Messages_category_messages.blank?) %>
 						<% @Messages_category_messages.each do |message| %>
 							<%= render partial: "messages/message", locals: {conversation: @conversation, message: message} %>
@@ -342,7 +342,7 @@
 					<% end %>
 
 				</div>
-				<div class="tab-pane" id="all-Media">
+				<div class="tab-pane messages Media-category-messages" id="all-Media">
 					<% if(!@Media_category_messages.blank?) %>
 						<% @Media_category_messages.each do |message| %>
 							<%= render partial: "messages/message", locals: {conversation: @conversation, message: message} %>
@@ -354,7 +354,7 @@
 				<% if(!@conversation.message_categories.blank?) %>
 
 					<% @conversation.message_categories.split(", ").each do |category| %>
-						<div class="tab-pane" id="all-<%= category %>">
+						<div class="tab-pane messages <%= category %>-category-messages" id="all-<%= category %>">
 							<% category_messages = instance_variable_get("@" + category + "_messages") %>
 							<% if(!category_messages.blank?) %>
 								<% category_messages.each do |message| %>
@@ -477,6 +477,23 @@
 					
 				</div>
 				
+			</div>
+		</div>
+	</div>
+	<div id="seenStatusModal" class="modal fade" role="dialog">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title">Seen By Users</h4>
+				</div>
+				<div class="modal-body">
+					<ul class="list-inline">
+						<li>
+							<%= render partial: "conversations/contact", locals: {contact: current_user} %>
+						</li>
+					</ul>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -607,25 +624,24 @@
 
 						
 						messageMarkup = [
-							'<li class="mar-btm message-div message cretor-message temp-message" >',
-								'<div class="media-right message-participant-profile-picture">',
-									'<img src="<%= current_user.profile_picture.media.url(:thumb) %>" class="media-object img-circle img-sm" >',
-								'</div>',
-								'<div class="media-body message-body pad-hor speech-right">',
-									'<div class="speech">',
-										'<a href="#" class="media-heading"> <%= current_user.first_name %> </a>',
-										'<p>', fileMarkup, '</p>',
-										
-										'<span class="checkmark" style="display:inline-block;"></span>',
-
-									
+							'<div class="messages-media temp-message" >',
+								'<div class="media main-media">',
+									'<div class="media-left pull-right">',
+										'<a href="javascript:void(0)">',
+											'<img src="<%= current_user.profile_picture.media.url(:thumb) %>" class="img-circle img-xs" >',
+										'</a>',	
+									'</div>',
+									'<div class="media-body media-middle">',
+										'<h5 class="media-heading text-muted"><%= current_user.details %></h5>',
+										'<span class="pull-left"><%= current_user.first_name %></span>',
 									'</div>',
 								'</div>',
-							'</li>'	
-						
+								'<div class="media-content text-muted">', message , '</div>',
+								'<p>', fileMarkup, '</p>',
+							'</div>'				
 						];
 						
-						$(".Messages-category-messages").append(messageMarkup.join(''));
+						$(".Messages-category-messages").prepend(messageMarkup.join(''));
 						if($('#all-Messages').attr("class").indexOf("active") <= 0){
 							$(".Media-category-messages").append(messageMarkup.join(''));
 							if($('#all-Media').attr("class").indexOf("active") <= 0){
@@ -634,7 +650,7 @@
 							
 						}
 						
-						App.scrollToBottomOfPage();
+						//App.scrollToBottomOfPage();
 						
 					}
 
@@ -649,33 +665,34 @@
 				var trimedMessage = message.trim();		
 				
 				if(trimedMessage.length >= 1){
-					
-					messageMarkup = [
-						'<li class="mar-btm message-div message cretor-message temp-message" >',
-							'<div class="media-right message-participant-profile-picture">',
-								'<img src="<%= current_user.profile_picture.media.url(:thumb) %>" class="media-object img-circle img-sm" >',
-							'</div>',
-							'<div class="media-body message-body pad-hor speech-right">',
-								'<div class="speech">',
-									'<a href="#" class="media-heading"> <%= current_user.first_name %> </a>',
-									'<p>', message, '</p>',
-									
-									'<span class="checkmark" style="display:inline-block;"></span>',
+					if(submitForm==true){
 
-								
+						
+					} else{
+						messageMarkup = [
+							'<div class="messages-media temp-message" >',
+								'<div class="media main-media">',
+									'<div class="media-left pull-right">',
+										'<a href="javascript:void(0)">',
+											'<img src="<%= current_user.profile_picture.media.url(:thumb) %>" class="img-circle img-xs" >',
+										'</a>',	
+									'</div>',
+									'<div class="media-body media-middle">',
+										'<h5 class="media-heading text-muted"><%= current_user.details %></h5>',
+										'<span class="pull-left"><%= current_user.first_name %></span>',
+									'</div>',
 								'</div>',
-							'</div>',
-						'</li>'
-							
+								'<div class="media-content text-muted">', message , '</div>',
+							'</div>'								
 						];
-							
-					$(".Messages-category-messages").append(messageMarkup.join(''));
+					}
+					$(".Messages-category-messages").prepend(messageMarkup.join(''));
 					if($('#all-Messages').attr("class").indexOf("active") <= 0){
 						$($('li.active a').attr('href')).find('.messages').append(messageMarkup.join(''));	
 					}			
 					
 					
-					App.scrollToBottomOfPage();
+					//App.scrollToBottomOfPage();
 				
 					
 					submitForm = true;
@@ -686,11 +703,40 @@
 			});
 
 			function fileChanged(event){
-				
+					
 				var files = event.files;
 				
 				if(files.length > 0){
-					$("#message-form").submit();
+					
+					var reader = new FileReader();
+					reader.onload = function(file) {
+										
+						var fileType = file.target.result.split(";")[0].split(":")[1];
+
+						var fileMarkup;
+						
+						if(fileType.split('/')[0] == "video"){
+							
+							fileMarkup = [ '<video width="50" height="50" controls class="video-js vjs-default-skin">',
+												'<source src="', file.target.result, '" type="video/' + fileType.split('/')[1] +'" >',
+												
+												'Your browser does not support the video tag.',
+											'</video>'].join('');
+
+						}
+
+						if(fileType.split('/')[0] == "image"){
+							fileMarkup = ['<img  height="50" width = "50" src=', file.target.result, '>'].join('');
+						}
+						var innerFileMarkup = [
+							'<p style="clear:both;">', fileMarkup , '</p>'
+						];
+						$(innerFileMarkup.join('')).insertBefore("div.attachment-send-button");
+					}
+					$.each( files, function( i, file ) {
+						reader.readAsDataURL(file);
+					});
+					
 					
 				}		
 			}
@@ -708,5 +754,8 @@
         $(this).css("backgroundColor",randomColors[randomNum]);
         randomColors.slice(randomNum, 1);
     });
+	$(".checkmark").on("click", function(){
+		$("#seenStatusModal").modal('show');
+	});
 
 </script>

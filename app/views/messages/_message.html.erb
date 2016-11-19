@@ -1,18 +1,30 @@
-<div class="messages-media">
+<div class="messages-media message-div message" data-message-id="<%= message.id %>">
 	<div class="media main-media">
 		<div class="media-left pull-right">
-			<a href="#">
+			<a href="javascript:void(0)">
 				<img src="<%= message.message_creator.profile_picture.media.url(:thumb) %>" class="img-circle img-xs">
 			</a>
 		</div>
 		<div class="media-body media-middle">
 			<h5 class="media-heading text-muted"><%= message.message_creator.details %><span class="pull-right"><%= get_am_pm_time(message.created_at) %></span></h5>
 			<span class="pull-left"><%= message.message_creator.first_name %></span>
+			<% if message.creator_id == current_user.id %>
+				<!--<span class="checkmark pull-right" style="display:inline-block;">Seen By</span>-->
+			
+				<% participant_ids_array = conversation.participants.where.not(id: message.creator_id).map{|participant| participant.id } %>
+				<% message.seen_user_ids = "" if message.seen_user_ids.blank? %>
+				<% seen_user_ids_array = message.seen_user_ids.split(", ").map{|id| id.to_i}.uniq %>
+				<% if(seen_user_ids_array.sort == participant_ids_array.sort) %>
+					<span class="checkmark double-checkmark pull-right" style="display:inline-block;">Seen by all</span>
+				<% else %>
+					<span class="checkmark double-checkmark pull-right" style="display:none;">Seen by <%= seen_user_ids_array.length %></span>
+				<% end %>
+			<% end %>
 		</div>
 	</div>
 	<div class="media-content text-muted">
 		<%= message.content %>
-	</div>
+	</div>					
 	<% if(!message.attachments.blank?) %>
 		<% message.attachments.each do |attachment| %>
 			<p>
@@ -22,7 +34,7 @@
 
 				<% if(attachment.is_video_type?) %>
 					<video width="300" height="200" controls class="video-js vjs-default-skin">
-						<source src="<%= attachment.media.url(:medium) %>" type="video/<%= attachment.media.content_type.split('/').last %>" >
+						<source src="<%= attachment.media.url(:medium) %>" type='video/<%= attachment.media.content_type.split("/").last %>' >
 		  			</video>
 				<% end %>
 

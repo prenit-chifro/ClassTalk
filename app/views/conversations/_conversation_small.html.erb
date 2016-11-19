@@ -1,18 +1,39 @@
-<div class="messages-media">
+<% unread_messages_no = 0 %>
+<% conversation_participant_model = conversation.get_conversation_participant_model_for_participant(user) %>
+<% unread_received_messages = conversation.messages.where("is_seen_by_all_participants != ? and created_at > ? and creator_id != ?", true, conversation_participant_model.created_at, user.id) %>
+<% unread_received_messages.each do |message| %>
+	<% seen_user_ids_array = message.seen_user_ids.split(", ").map{|id| id.to_i}.uniq %>
+	<% if(!seen_user_ids_array.include?(user.id)) %>
+		<% unread_messages_no = unread_messages_no + 1 %>
+	<% end %>
+<% end %>
+<% if(unread_messages_no > 0) %>
+	<% read_unread_class = "messages-unread-media" %>
+<% else %>
+	<% read_unread_class = "messages-read-media" %>
+<% end %>
+<%= link_to conversation_path(conversation) do %>			
+<div class="messages-media <%= read_unread_class %> conversation-small" data-conversation-id="<%= conversation.id %>">
 	<div class="media main-media">
 		<div class="media-left pull-right">
 
 				<% if(!conversation.last_message_id.blank?) %>
 					<img src="<%= conversation.last_message.message_creator.profile_picture.media.url(:thumb) %>" class="img-circle img-xs">
 				<% else %>
-					<img src="<%= conversation.get_conversation_image_url_to_show_to_user(current_user, :thumb) %>" class="img-circle img-xs">
+					<img src="<%= conversation.get_conversation_image_url_to_show_to_user(user, :thumb) %>" class="img-circle img-xs">
 				<% end %>
 				
 			
 		</div>
 		<div class="media-body media-middle">
-			<h4 class="media-heading text-muted"><%= conversation.get_conversation_name_to_show_to_user(current_user).truncate(25) %>
-
+			<h4 class="media-heading text-muted"><%= conversation.get_conversation_name_to_show_to_user(user).truncate(25) %>
+			
+			
+			<% if(unread_messages_no > 0) %>
+				<span class="pull-right dot-unread dot-unread-inner conversation-small-dot" style="display:inline-block;"><%= unread_messages_no %></span>
+			<% else %>
+				<span class="pull-right dot-unread dot-unread-inner conversation-small-dot" style="display: none;">0</span>
+			<% end %> 
 		</h4>
 
 			<h5 class="media-heading text-muted">
@@ -67,3 +88,4 @@
 	<% end %>
 	
 </div>
+<% end %>

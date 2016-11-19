@@ -180,6 +180,8 @@ $(document).on("turbolinks:load", function(){
 			$('.dropdownMenu').slideUp(1000);
 		}
 	});
+	
+
 	if($("ul.main-app-tabs li:nth-child(1)").hasClass("active")){
 		if($(this).find("a[href='#chats']")){
 			$("li.chat-tab-icon").css("display", "inline-block");
@@ -245,7 +247,86 @@ $(document).on("turbolinks:load", function(){
 			$("div.delete-message").fadeIn(300);
 		}
 	}
+		function fixMessagesButton() {		
+		var buttonDiv = $('.detect-div');
+		if(buttonDiv.offset()){
+			var windowTop = $(window).scrollTop();
+			var divTop = $('.detect-div').offset().top;
+			if (windowTop > divTop) {				
+				$('.chat-show-tabs-upper-div').addClass('stick');
+				$('.scroller').addClass('scroller-fixed');
+				$('.detect-div').height($('.chat-show-tabs-upper-div').outerHeight() +56);
+			} else {
+				$('.chat-show-tabs-upper-div').removeClass('stick');
+				$('.scroller').removeClass('scroller-fixed');
+				$('.detect-div').height(0);
+			}
+		}		
+	}
+	$(window).scroll(fixMessagesButton);
 	
+	if (isMobile.any()){
+		$(".tabs-container").find("ul.list").addClass("add-class-tabs-container-mobile");
+		$("ul.list").find("li").addClass("add-class-list-mobile");
+	} else{
+		if($(".list").html()){
+			var hidWidth;
+			var scrollBarWidths = 40;
+
+			var widthOfList = function(){
+			  var itemsWidth = 0;
+			  $('.list li').each(function(){
+				var itemWidth = $(this).outerWidth();
+				itemsWidth+=itemWidth;
+			  });
+			  return itemsWidth;
+			};
+
+			var widthOfHidden = function(){
+			  return (($('.wrapper').outerWidth())-widthOfList()-getLeftPosi())-scrollBarWidths;
+			};
+		
+			var getLeftPosi = function(){
+				return $('.list').position().left;			
+			};
+
+			var reAdjust = function(){
+			  if (($('.wrapper').outerWidth()) < widthOfList()) {
+				$('.scroller-right').show();
+			  }
+			  else {
+				$('.scroller-right').hide();
+			  }
+			  
+			  if (getLeftPosi()<0) {
+				$('.scroller-left').show();
+			  }
+			  else {
+				$('.item').animate({left:"-="+getLeftPosi()+"px"},'slow');
+				$('.scroller-left').hide();
+			  }
+			}
+
+			reAdjust();
+
+			$(window).on('resize',function(e){  
+				reAdjust();
+			});
+
+			$('.scroller-right').click(function() {		  
+			  $('.scroller-left').fadeIn('slow');
+			  $('.scroller-right').fadeOut('slow');		  
+			  $('.list').animate({left:"+="+widthOfHidden()+"px"},'slow',function(){});
+			});
+
+			$('.scroller-left').click(function() {		  
+				$('.scroller-right').fadeIn('slow');
+				$('.scroller-left').fadeOut('slow');		  
+				$('.list').animate({left:"-="+getLeftPosi()+"px"},'slow',function(){});
+			}); 
+		}	
+	}	
+
 	$(".attachment-icon").on("click", toggleAttachIcons);
 	
 	function toggleAttachIcons(){

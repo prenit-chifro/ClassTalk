@@ -2,13 +2,41 @@
 <html>
 	<head>
 		<title>ClassTalk</title>
-		<%= csrf_meta_tags %>
+		<link rel="manifest" href="/manifest.json">
 
+		<link rel="image_src" href="/app_logo_small.png">
+		<link rel="icon" type="image/png" href="/app_logo_small.png">
+		
+		<!-- for Google -->
+		<meta name="description" content="Teacher-Parent communication simpliefied like never before!" />
+		<meta name="keywords" content="School, Teacher, Parent, Chat" />
+
+		<meta name="author" content="ClassTalk" />
+		<meta name="copyright" content="ClassTalk" />
+		<meta name="application-name" content="ClassTalk" />
+
+		<!-- for Facebook -->  
+		<meta property="og:site_name" content="ClassTalk">
+		
+		<meta property="og:title" content="ClassTalk" />
+		<meta property="og:description" content="Teacher-Parent communication simpliefied like never before!" />
+		<meta property="og:type" content="Education" />
+		<meta property="og:image" content="app_logo_small.png" />
+		<meta property="og:url" content="http://classtalk.in" />
+
+		<!-- for Twitter -->          
+		<meta name="twitter:card" content="ClassTalk" />
+		<meta name="twitter:title" content="ClassTalk" />
+		<meta name="twitter:description" content="Teacher-Parent communication simpliefied like never before!" />
+		<meta name="twitter:image" content="app_logo_small.png" />
+
+		<%= csrf_meta_tags %>
 		<%= stylesheet_link_tag "application", media: "all", "data-turbolinks-track": "reload" %>
 		<%= stylesheet_link_tag "//fonts.googleapis.com/css?family=Julius+Sans+One" %>
 		<%= javascript_include_tag "application", "data-turbolinks-track": "reload" %>
 		<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=0">
+		<meta name="current-user-id" content="<%= current_user.id if user_signed_in? %>">
 	</head>
 	<body>
 		<div class="wrapper">

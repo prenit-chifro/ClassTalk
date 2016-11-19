@@ -7,7 +7,7 @@ $("#<%=params[:message_category]%>-attachment-li").remove();
 $(".<%=params[:message_category]%>-Message-category-remove-link-li").remove();
 
 
-$(".chat-show-tabs").find("li").removeClass("active").find("a").attr("aria-expanded", false);
-$(".tab-content-show").find("div[id^=all]").removeClass("active");
+$(".chat-show-tabs-upper-div").find("li").removeClass("active").find("a").attr("aria-expanded", false);
+$(".admin-home-content").find("div[id^=all]").removeClass("active");
 $('a[href="#all-Messages"]').parents("li").addClass("active").find("a").attr("aria-expanded", true);
 $('div[id="all-Messages"]').addClass("active");

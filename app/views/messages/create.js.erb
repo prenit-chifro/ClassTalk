@@ -1,6 +1,6 @@
 $("#new-message-text-field").val("");
 $('.custom-file-input').val("");
-
+$("button.close").trigger("click");
 <% script_string = render partial: "messages/publish_message_partial", locals: {conversation: @conversation, message: @new_message} %>
 <% publish_to(conversation_path(@conversation), script_string) %>
 
