@@ -356,9 +356,8 @@ ActiveRecord::Schema.define(version: 20161118074130) do
     t.integer  "grade_id"
     t.integer  "section_id"
     t.integer  "creator_id"
-    t.date     "date"
-    t.time     "start_time"
-    t.time     "end_time"
+    t.datetime "start_time"
+    t.datetime "end_time"
     t.integer  "subject_id"
     t.integer  "teacher_id"
     t.datetime "created_at",   null: false
