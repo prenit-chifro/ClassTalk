@@ -1,0 +1,65 @@
+<% if(!@section_member_models.blank?) %>
+	<ul class="list-unstyled teachers-list index-conversation-modal" style ="max-height: none">
+		<% @section_member_models.each do |section_member_model| %>
+		
+			<% grade = section_member_model.grade %>
+			<% section = section_member_model.section %>
+			
+			<% if(!grade.blank? and !section.blank?) %>
+				<li>
+					<h6 class="teachers-list-heading">Class <%= grade.grade_name %><%= section.section_name %><i class="material-icons arrow-up-icon pull-right">&#xE316;</i></h6>
+					<div class="container-width classRoute">
+						<div class="calendar" data-grade-id="<%= grade.id %>" data-section-id="<%= section.id %>">
+  	
+						</div>
+
+					</div>	
+				</li>
+			<% else %>	
+
+			<% end %>			
+
+		<% end %>
+	</ul>			
+<% end %>
+<script>
+	var calendarObjects = [];
+	var teacherCalendarObjects = [];		
+	$.each($('.calendar'), function(index, calendarElement){
+	  var gradeId = $(calendarElement).attr("data-grade-id");
+	  var sectionId = $(calendarElement).attr("data-section-id");
+	  calendarObjects[index] = $(calendarElement).fullCalendar({
+		  header: {
+		    left: 'prev,next today',
+		    center: 'title',
+		    right: 'agendaWeek,agendaDay'
+		  },
+		  defaultView: "agendaWeek",
+		  firstDay: 1,
+		  slotDuration: "00:30:00",
+		  scrollTime: "08:00:00",
+		  ignoreTimezone: true,
+		  displayEventTime : false,
+		  eventSources: [
+		    { 
+		      googleCalendarApiKey: 'AIzaSyBygb2VxPHEs8rV8j7dgreRvpowydmGrow',
+		      url: 'https://www.google.com/calendar/feeds/indian__en%40holiday.calendar.google.com/public/basic',
+
+		      color: 'red',   // an option!
+		      textColor: 'black' // an option!
+
+		    },
+		    {
+		        url: '/institutes/<%= @institute.id %>/timetable_slots?grade_id='+gradeId + '&section_id='+sectionId,
+		        color: '#a8a8e8',   // an option!
+		        textColor: 'black' // an option!
+		    }
+
+		  ],
+		  eventClick: function(event, jsEvent, view) {
+		    return false;
+		  }
+		});
+	});    
+
+</script>

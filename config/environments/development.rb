@@ -2,6 +2,8 @@ Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
   config.time_zone = 'New Delhi'
+  config.active_record.default_timezone = :local
+
   config.active_record.raise_in_transactional_callbacks = true
 
   # Mailer Options

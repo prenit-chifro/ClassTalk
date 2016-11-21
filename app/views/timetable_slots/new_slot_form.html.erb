@@ -1,13 +1,43 @@
-<%= form_tag institute_timetable_slots_path(@institute), method: :post, remote: :true do %>
-	<%= hidden_field_tag :grade_id, @grade.id %>
-	<%= hidden_field_tag :section_id, @section.id %>
-	<%= hidden_field_tag :start_time, DateTime.parse(params[:start_time]) %>
-	<%= hidden_field_tag :end_time, DateTime.parse(params[:end_time]) %>
-	Set Subject for Class <%= @grade.grade_name %><%= @section.section_name %> from <%= get_am_pm_time(DateTime.parse(params[:start_time])) %> to <%= get_am_pm_time(DateTime.parse(params[:end_time])) %>
-	<% options = [["Set Subject", ""]] %>
-	<% @subjects.each do |subject| %>
-		<% options << [subject.subject_name, subject.id] %>
+<% if(!params[:teacher_id].blank?) %>
+	<%= form_tag institute_timetable_slots_path(@institute), method: :post, remote: :true do %>
+		<%= hidden_field_tag :teacher_id, @teacher.id %>
+		<%= hidden_field_tag :start_time, Time.parse(params[:start_time]) %>
+		<%= hidden_field_tag :end_time, Time.parse(params[:end_time]) %>
+		<h3><%= @teacher.first_name %> <%= @teacher.last_name %> (<%= @teacher.details %>)</h3>
+		Assign Class and Subject from <%= get_am_pm_time(DateTime.parse(params[:start_time])) %> to <%= get_am_pm_time(DateTime.parse(params[:end_time])) %>
+		<% options = [["Set Class", ""]] %>
+		<% @grade_section_models.each do |grade_section_model| %>
+			<% options << ["Class #{grade_section_model.grade.grade_name}#{grade_section_model.section.section_name}", grade_section_model.id] %>
+		<% end %>
+		<%= select_tag :grade_section_id, options_for_select(options, ["Set Class", ""]), required: :true %>
+		
+		<% options = [["Set Subject", ""]] %>
+		<% @subjects.each do |subject| %>
+			<% options << [subject.subject_name, subject.id] %>
+		<% end %>
+		<%= select_tag :subject_id, options_for_select(options, ["Set Subject", ""]), required: :true %>
+		<%= submit_tag :save %>
 	<% end %>
-	<%= select_tag :subject_id, options_for_select(options, ["Set Subject", ""]), required: :true %>
-	<%= submit_tag :save %>
+<% else %>
+	<%= form_tag institute_timetable_slots_path(@institute), method: :post, remote: :true do %>
+		<%= hidden_field_tag :grade_id, @grade.id %>
+		<%= hidden_field_tag :section_id, @section.id %>
+		<%= hidden_field_tag :start_time, Time.parse(params[:start_time]) %>
+		<%= hidden_field_tag :end_time, Time.parse(params[:end_time]) %>
+		<h3>Class <%= @grade.grade_name %><%= @section.section_name %></h3>
+		Assign Teacher and Subject from <%= get_am_pm_time(DateTime.parse(params[:start_time])) %> to <%= get_am_pm_time(DateTime.parse(params[:end_time])) %>
+		<% options = [["Set Teacher", ""]] %>
+		<% @teachers.each do |teacher| %>
+			<% options << [teacher.first_name + " " + teacher.last_name, teacher.id] %>
+		<% end %>
+		<%= select_tag :teacher_id, options_for_select(options, ["Set Teacher", ""]), required: :true %>
+
+		<% options = [["Set Subject", ""]] %>
+		<% @subjects.each do |subject| %>
+			<% options << [subject.subject_name, subject.id] %>
+		<% end %>
+		<%= select_tag :subject_id, options_for_select(options, ["Set Subject", ""]), required: :true %>
+		<%= submit_tag :save %>
+	<% end %>
 <% end %>
+

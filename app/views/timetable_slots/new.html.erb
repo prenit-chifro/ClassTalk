@@ -31,6 +31,7 @@
       firstDay: 1,
       slotDuration: "00:30:00",
       scrollTime: "08:00:00",
+      timezone: false,
       eventSources: [
         { 
           googleCalendarApiKey: 'AIzaSyBygb2VxPHEs8rV8j7dgreRvpowydmGrow',
@@ -68,31 +69,17 @@
           return false;*/
       },
 
-      dayClick: function(date, jsEvent, view) {
-        /*this["dayClickedFlag"] = true;
+      select: function(start, end) {
+        
         $.ajax({
-          url: "events/new.js?start_time= " + date.format() + '&end_time= ' + date.format(),
+          url: "/institutes/<%= @institute.id%>/timetable_slots/new.js?grade_id=<%= @grade.id %>&section_id=<%= @section.id%>&start_time=" + start.format('YYYY-MM-DD hh:mm') + '&end_time=' + end.format('YYYY-MM-DD hh:mm'),
           complete: function(data){
             if(data.status == "200"){
-              eval(data.responseText);
+              $('#myModal').find('.modal-body').html(data.responseText);
+              $('#myModal').modal('show');
             }
           }
-        });*/
-      },
-      select: function(start, end) {
-        if(!this.dayClickedFlag){
-          $.ajax({
-            url: "/institutes/<%= @institute.id%>/timetable_slots/new.js?grade_id=<%= @grade.id %>&section_id=<%= @section.id%>&start_time=" + start.format() + '&end_time=' + end.format(),
-            complete: function(data){
-              if(data.status == "200"){
-                $('#myModal').find('.modal-body').html(data.responseText);
-                $('#myModal').modal('show');
-              }
-            }
-          });
-          
-        }
-        
+        });
         
         $(this).fullCalendar('unselect');
       },
@@ -107,7 +94,7 @@
               }
               
               $.ajax({
-              url: event.update_url + "&start_time=" + event.start.format() + "&end_time=" + endTime.format() + "&is_all_day_event=" + allDay,
+              url: event.update_url + "&start_time=" + event.start.format('YYYY/MM/DD hh:mm') + "&end_time=" + endTime.format('YYYY/MM/DD hh:mm') + "&is_all_day_event=" + allDay,
               method: "PATCH",
               complete: function(data){
                 if(data.status == "200"){
@@ -126,7 +113,7 @@
       if(event.update_url){
         if (confirm("update this event?")) {
               $.ajax({
-              url: event.update_url + "&start_time=" + event.start.format() + "&end_time=" + event.end.format(),
+              url: event.update_url + "&start_time=" + event.start.format('YYYY/MM/DD hh:mm') + "&end_time=" + event.end.format('YYYY/MM/DD hh:mm'),
               method: "PATCH",
               complete: function(data){
                 if(data.status == "200"){

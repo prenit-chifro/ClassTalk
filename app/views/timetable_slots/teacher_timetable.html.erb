@@ -1,0 +1,50 @@
+<h6 class="teachers-list-heading"><%= current_user.first_name %> <%= current_user.last_name %> (<%= current_user.details %>)<i class="material-icons arrow-up-icon pull-right">&#xE316;</i></h6>
+<div class="container-width classRoute">
+	<div class="teacher-calendar" data-teacher-id="<%= current_user.id %>">
+
+	</div>
+
+</div>	
+
+<script>
+	
+	var teacherCalendarObjects = [];		
+	$.each($('.teacher-calendar'), function(index, calendarElement){
+	  var teacherId = $(calendarElement).attr("data-teacher-id");
+	  
+	  teacherCalendarObjects[index] = $(calendarElement).fullCalendar({
+		  header: {
+		    left: 'prev,next today',
+		    center: 'title',
+		    right: 'agendaWeek,agendaDay'
+		  },
+		  defaultView: "agendaWeek",
+		  firstDay: 1,
+		  slotDuration: "00:30:00",
+		  scrollTime: "08:00:00",
+		  ignoreTimezone: true,
+		  displayEventTime : false,
+		  eventSources: [
+		    { 
+		      googleCalendarApiKey: 'AIzaSyBygb2VxPHEs8rV8j7dgreRvpowydmGrow',
+		      url: 'https://www.google.com/calendar/feeds/indian__en%40holiday.calendar.google.com/public/basic',
+
+		      color: 'red',   // an option!
+		      textColor: 'black' // an option!
+
+		    },
+		    {
+		        url: '/institutes/<%= @institute.id %>/timetable_slots',
+		        color: '#a8a8e8',   // an option!
+		        textColor: 'black' // an option!
+		    }
+
+		  ],
+		  eventClick: function(event, jsEvent, view) {
+		      return false;
+		  }
+		});
+	});	
+
+
+</script>

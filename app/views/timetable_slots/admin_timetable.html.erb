@@ -1,161 +1,326 @@
-<% if(!@grade.blank? and !@section.blank?) %>
+<div id="myModal" class="modal fade modal-calender" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Create/Update Day Plan</h4>
+      </div>
+      <div class="modal-body">
+        <p></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
 
-	<% if(!@class_timetable_slots.blank?) %>	
-		<div class="calendar">
+
+<ul class="nav nav-tabs text-center" role="tablist" id="tablist" style="margin-top: 50px;">		
+	<li class="active" style="width:50%;">
+		<a data-toggle="tab" href="#class-plan">
+			Class Plan
+		</a>
+	</li>
+	<li style="width:50%;">
+		<a data-toggle="tab" href="#teacher-plan">
+			Teacher Plan
+		</a>
+	</li>
+</ul>
+<div class="tab-content admin-home-content">
+	<div class="tab-pane active" id="class-plan">
+		<% if(!@institutes_grade_section_models.blank?) %>
+			<ul class="list-unstyled teachers-list index-conversation-modal" style ="max-height: none">
+				<% @institutes_grade_section_models.each do |grade_section_model| %>
+				
+					<% grade = grade_section_model.grade %>
+					<% section = grade_section_model.section %>
+					
+					<% if(!grade.blank? and !section.blank?) %>
+						<li>
+							<h6 class="teachers-list-heading">Class <%= grade.grade_name %><%= section.section_name %><i class="material-icons arrow-up-icon pull-right">&#xE316;</i></h6>
+							<div class="container-width classRoute">
+								<div class="calendar" data-grade-id="<%= grade.id %>" data-section-id="<%= section.id %>">
 		  	
-		</div>
+								</div>
 
-		<div id="myModal" class="modal fade modal-calender" role="dialog">
-		  <div class="modal-dialog">
-		    <div class="modal-content">
-		      <div class="modal-header">
-		        <button type="button" class="close" data-dismiss="modal">&times;</button>
-		        <h4 class="modal-title">Add or Update Subject of this time-slot </h4>
-		      </div>
-		      <div class="modal-body">
-		        <p></p>
-		      </div>
-		      <div class="modal-footer">
-		        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-		      </div>
-		    </div>
-		  </div>
-		</div>
+							</div>	
+						</li>
+					<% else %>	
 
-		<script>
-		  
-		    var calendarObject = $('.calendar').fullCalendar({
-		      header: {
-		        left: 'prev,next today',
-		        center: 'title',
-		        right: 'agendaWeek,agendaDay'
-		      },
-		      defaultView: "agendaWeek",
-		      firstDay: 1,
-		      slotDuration: "00:30:00",
-		      scrollTime: "08:00:00",
-		      eventSources: [
-		        { 
-		          googleCalendarApiKey: 'AIzaSyBygb2VxPHEs8rV8j7dgreRvpowydmGrow',
-		          url: 'https://www.google.com/calendar/feeds/indian__en%40holiday.calendar.google.com/public/basic',
+					<% end %>			
 
-		          color: 'red',   // an option!
-		          textColor: 'black' // an option!
+				<% end %>
+			</ul>			
+		<% end %>
+	</div>
+	<div class="tab-pane active" id="teacher-plan">
+		<% if(!@teachers.blank?) %>
+			<ul class="list-unstyled teachers-list index-conversation-modal" style ="max-height: none">
+				<% @teachers.each do |teacher| %>
+								
+					<li>
+						<h6 class="teachers-list-heading"><%= teacher.first_name %> <%= teacher.last_name %> (<%= teacher.details %>)<i class="material-icons arrow-up-icon pull-right">&#xE316;</i></h6>
+						<div class="container-width classRoute">
+							<div class="teacher-calendar" data-teacher-id="<%= teacher.id %>">
+	  	
+							</div>
 
-		        },
-		        {
-		            url: '<%= institute_timetable_slots_path(@institute) %>',
-		            color: '#a8a8e8',   // an option!
-		            textColor: 'black' // an option!
-		        }
+						</div>	
+					</li>
+				
+				<% end %>
+			</ul>			
+		<% end %>
+	</div>		
+</div>
 
-		      ],
-		      editable: true,
-		      selectable: true,
-		      selectHelper: true,
-		      eventClick: function(event, jsEvent, view) {
-		          
-		          /*if(event.edit_url){
-		            $.ajax({
-		              url: event.edit_url,
-		              complete: function(data){
-		                if(data.status == "200"){
-		                  eval(data.responseText);
-		                }
-		              }
-		            });
-		          }else{
-		            window.open(event.url);
-		          }
-		                
-		          return false;*/
-		      },
+<script>
+	var calendarObjects = [];
+	var teacherCalendarObjects = [];		
+	$.each($('.calendar'), function(index, calendarElement){
+	  var gradeId = $(calendarElement).attr("data-grade-id");
+	  var sectionId = $(calendarElement).attr("data-section-id");
+	  calendarObjects[index] = $(calendarElement).fullCalendar({
+		  header: {
+		    left: 'prev,next today',
+		    center: 'title',
+		    right: 'agendaWeek,agendaDay'
+		  },
+		  defaultView: "agendaWeek",
+		  firstDay: 1,
+		  slotDuration: "00:30:00",
+		  scrollTime: "08:00:00",
+		  ignoreTimezone: true,
+		  displayEventTime : false,
+		  eventSources: [
+		    { 
+		      googleCalendarApiKey: 'AIzaSyBygb2VxPHEs8rV8j7dgreRvpowydmGrow',
+		      url: 'https://www.google.com/calendar/feeds/indian__en%40holiday.calendar.google.com/public/basic',
 
-		      dayClick: function(date, jsEvent, view) {
-		        /*this["dayClickedFlag"] = true;
+		      color: 'red',   // an option!
+		      textColor: 'black' // an option!
+
+		    },
+		    {
+		        url: '/institutes/<%= @institute.id %>/timetable_slots?grade_id='+gradeId + '&section_id='+sectionId,
+		        color: '#a8a8e8',   // an option!
+		        textColor: 'black' // an option!
+		    }
+
+		  ],
+		  editable: true,
+		  selectable: true,
+		  selectHelper: true,
+		  eventClick: function(event, jsEvent, view) {
+		      
+		      if(event.edit_url){
 		        $.ajax({
-		          url: "events/new.js?start_time= " + date.format() + '&end_time= ' + date.format(),
+		          url: event.edit_url,
+		          complete: function(data){
+		            if(data.status == "200"){
+		              $('#myModal').find('.modal-body').html(data.responseText);
+		              $('#myModal').modal('show');
+		            }
+		          }
+		        });
+		      }else{
+		        window.open(event.url);
+		      }
+		            
+		      return false;
+		  },
+		  select: function(start, end) {
+		    if(!this.dayClickedFlag){
+		      $.ajax({
+		        url: '/institutes/<%= @institute.id%>/timetable_slots/new.js?grade_id=' + gradeId + '&section_id=' + sectionId + '&start_time=' + start.format() + '&end_time=' + end.format() + '.js',
+		        complete: function(data){
+		          if(data.status == "200"){
+		            $('#myModal').find('.modal-body').html(data.responseText);
+		            $('#myModal').modal('show');
+		          }
+		        }
+		      });
+		      
+		    }
+		    
+		    
+		    $(this).fullCalendar('unselect');
+		  },
+		  eventDrop: function(event,dayDelta,minuteDelta,allDay,revertFunc) {
+		    
+		    if(event.update_url){
+		      if (confirm("Update this Day Plan Slot?")) {
+		          if(event.end){
+		            endTime = event.end
+		          }else{
+		            endTime = event.start  
+		          }
+		          
+		          $.ajax({
+			          url: event.update_url + "&start_time=" + event.start.format() + "&end_time=" + endTime.format(),
+			          method: "PATCH",
+			          complete: function(data){
+			            if(data.status == "200"){
+			              eval(data.responseText);
+			            }
+			          } 
+		          });
+		      }
+		      
+		      
+		    }else{
+
+		    }
+		  },
+		  eventResize: function(event, delta, revertFunc) {
+		  if(event.update_url){
+		    if (confirm("Update this Day Plan Slot?")) {
+		          $.ajax({
+		          url: event.update_url + "&start_time=" + event.start.format() + "&end_time=" + event.end.format(),
+		          method: "PATCH",
+		          complete: function(data){
+		            if(data.status == "200"){
+		              eval(data.responseText);
+		            }
+		          } 
+		        });
+		      }
+		      
+		    }else{
+		      
+		    } 
+		  }
+		});
+	});
+
+	$.each($('.teacher-calendar'), function(index, calendarElement){
+	  var teacherId = $(calendarElement).attr("data-teacher-id");
+	  
+	  teacherCalendarObjects[index] = $(calendarElement).fullCalendar({
+		  header: {
+		    left: 'prev,next today',
+		    center: 'title',
+		    right: 'agendaWeek,agendaDay'
+		  },
+		  defaultView: "agendaWeek",
+		  firstDay: 1,
+		  slotDuration: "00:30:00",
+		  scrollTime: "08:00:00",
+		  ignoreTimezone: true,
+		  displayEventTime : false,
+		  eventSources: [
+		    { 
+		      googleCalendarApiKey: 'AIzaSyBygb2VxPHEs8rV8j7dgreRvpowydmGrow',
+		      url: 'https://www.google.com/calendar/feeds/indian__en%40holiday.calendar.google.com/public/basic',
+
+		      color: 'red',   // an option!
+		      textColor: 'black' // an option!
+
+		    },
+		    {
+		        url: '/institutes/<%= @institute.id %>/timetable_slots?teacher_id=' + teacherId,
+		        color: '#a8a8e8',   // an option!
+		        textColor: 'black' // an option!
+		    }
+
+		  ],
+		  editable: true,
+		  selectable: true,
+		  selectHelper: true,
+		  eventClick: function(event, jsEvent, view) {
+		      
+		      /*if(event.edit_url){
+		        $.ajax({
+		          url: event.edit_url,
 		          complete: function(data){
 		            if(data.status == "200"){
 		              eval(data.responseText);
 		            }
 		          }
-		        });*/
-		      },
-		      select: function(start, end) {
-		        if(!this.dayClickedFlag){
-		          $.ajax({
-		            url: "/institutes/<%= @institute.id%>/timetable_slots/new.js?grade_id=<%= @grade.id %>&section_id=<%= @section.id%>&start_time=" + start.format() + '&end_time=' + end.format(),
-		            complete: function(data){
-		              if(data.status == "200"){
-		                $('#myModal').find('.modal-body').html(data.responseText);
-		                $('#myModal').modal('show');
-		              }
-		            }
-		          });
-		          
-		        }
-		        
-		        
-		        $(this).fullCalendar('unselect');
-		      },
-		      eventDrop: function(event,dayDelta,minuteDelta,allDay,revertFunc) {
-		        
-		        if(event.update_url){
-		          if (confirm("update this event?")) {
-		              if(event.end){
-		                endTime = event.end
-		              }else{
-		                endTime = event.start  
-		              }
-		              
-		              $.ajax({
-		              url: event.update_url + "&start_time=" + event.start.format() + "&end_time=" + endTime.format() + "&is_all_day_event=" + allDay,
-		              method: "PATCH",
-		              complete: function(data){
-		                if(data.status == "200"){
-		                  eval(data.responseText);
-		                }
-		              } 
-		            });
-		          }
-		          
-		          
-		        }else{
+		        });
+		      }else{
+		        window.open(event.url);
+		      }
+		            
+		      return false;*/
+		  },
 
+		  dayClick: function(date, jsEvent, view) {
+		    /*this["dayClickedFlag"] = true;
+		    $.ajax({
+		      url: "events/new.js?start_time= " + date.format() + '&end_time= ' + date.format(),
+		      complete: function(data){
+		        if(data.status == "200"){
+		          eval(data.responseText);
 		        }
-		      },
-		      eventResize: function(event, delta, revertFunc) {
-		      if(event.update_url){
-		        if (confirm("update this event?")) {
-		              $.ajax({
-		              url: event.update_url + "&start_time=" + event.start.format() + "&end_time=" + event.end.format(),
-		              method: "PATCH",
-		              complete: function(data){
-		                if(data.status == "200"){
-		                  eval(data.responseText);
-		                }
-		              } 
-		            });
+		      }
+		    });*/
+		  },
+		  select: function(start, end) {
+		    if(!this.dayClickedFlag){
+		      $.ajax({
+		        url: '/institutes/<%= @institute.id%>/timetable_slots/new.js?teacher_id=' + teacherId + '&start_time=' + start.format() + '&end_time=' + end.format(),
+		        complete: function(data){
+		          if(data.status == "200"){
+		            $('#myModal').find('.modal-body').html(data.responseText);
+		            $('#myModal').modal('show');
+		          }
+		        }
+		      });
+		      
+		    }
+		    
+		    
+		    $(this).fullCalendar('unselect');
+		  },
+		  eventDrop: function(event,dayDelta,minuteDelta,allDay,revertFunc) {
+		    
+		    if(event.update_url){
+		      if (confirm("Update this Day Plan Slot?")) {
+		          if(event.end){
+		            endTime = event.end
+		          }else{
+		            endTime = event.start  
 		          }
 		          
-		        }else{
-		          
-		        } 
-		          
+		          $.ajax({
+			          url: event.update_url + "&start_time=" + event.start.format() + "&end_time=" + endTime.format(),
+			          method: "PATCH",
+			          complete: function(data){
+			            if(data.status == "200"){
+			              eval(data.responseText);
+			            }
+			          } 
+		          });
+		      }
+		      
+		      
+		    }else{
 
 		    }
-		    });
+		  },
+		  eventResize: function(event, delta, revertFunc) {
+		  if(event.update_url){
+		    if (confirm("Update this Day Plan Slot?")) {
+		          $.ajax({
+		          url: event.update_url + "&start_time=" + event.start.format() + "&end_time=" + event.end.format(),
+		          method: "PATCH",
+		          complete: function(data){
+		            if(data.status == "200"){
+		              eval(data.responseText);
+		            }
+		          } 
+		        });
+		      }
+		      
+		    }else{
+		      
+		    } 
+		  }
+		});
+	});	  
+    
 
-		</script>
-	<% else %>
-		<%= link_to new_institute_timetable_slot_path(@institute, grade_id: @grade.id, section_id: @section.id) do %>
-			Create timetable for Class <%= @grade.grade_name %><%= @section.section_name %>
-		<% end %>
-	<% end %>
-
-<% else %>
-
-<% end %>
-
-
+</script>
