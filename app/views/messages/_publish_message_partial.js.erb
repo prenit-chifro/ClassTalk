@@ -32,7 +32,22 @@ if(conversationBigDiv.length != 0){
 		var message_creator_id = "<%= message.creator_id %>";
 
 		if(currentUserId == message_creator_id){
-			
+			$(".double-checkmark").on("click", function(){
+			var messageId = $(this).attr("data-message-id");
+			$.ajax({
+				url: "/conversations/<%= conversation.id %>/messages/" + messageId + "/seen_by_users.js",  
+				type: "GET",
+				success: function(data) {
+					if(data.trim().length == 0) {
+						$("#seenStatusModal").find(".modal-body").html("No one has yet seem this message !");
+					} else {
+						$("#seenStatusModal").find(".modal-body").html(data);
+					}
+				}
+			});
+			$("#seenStatusModal").modal('show');
+		});
+		
 		}else{
 			statusDiv.remove();
 			

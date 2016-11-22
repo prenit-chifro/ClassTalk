@@ -212,14 +212,17 @@ ActiveRecord::Schema.define(version: 20161118074130) do
   end
 
   create_table "messages", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.text     "content",                     limit: 65535
+    t.text     "content",                      limit: 65535
     t.integer  "creator_id"
     t.integer  "conversation_id"
-    t.string   "seen_user_ids",                             default: ""
-    t.boolean  "is_seen_by_all_participants",               default: false
-    t.string   "category",                                  default: "Messages"
-    t.datetime "created_at",                                                     null: false
-    t.datetime "updated_at",                                                     null: false
+    t.string   "seen_user_ids",                              default: ""
+    t.boolean  "is_seen_by_all_participants",                default: false
+    t.string   "acted_user_ids",                             default: ""
+    t.boolean  "is_acted_by_all_participants",               default: false
+    t.string   "category",                                   default: "Messages"
+    t.datetime "created_at",                                                      null: false
+    t.datetime "updated_at",                                                      null: false
+    t.index ["acted_user_ids"], name: "index_messages_on_acted_user_ids", using: :btree
     t.index ["category"], name: "index_messages_on_category", using: :btree
     t.index ["conversation_id"], name: "index_messages_on_conversation_id", using: :btree
     t.index ["creator_id"], name: "index_messages_on_creator_id", using: :btree
@@ -300,7 +303,6 @@ ActiveRecord::Schema.define(version: 20161118074130) do
     t.string   "category"
     t.boolean  "content_available",                  default: false
     t.text     "notification",      limit: 65535
-    t.index ["app_id", "delivered", "failed", "deliver_after"], name: "index_rapns_notifications_multi", using: :btree
     t.index ["delivered", "failed"], name: "index_rpush_notifications_multi", using: :btree
   end
 

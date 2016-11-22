@@ -31,10 +31,9 @@
 		<div class="tab-pane" id="all-sent-messages">
 		<% if(!@sent_conversations.blank?) %>
 				<% @sent_conversations.each do |conversation| %>
-					
+					<% if(!conversation.messages.first.blank? and conversation.messages.first.creator_id == current_user.id) %>
 						<%= render partial: "conversations/conversation_small", locals: {conversation: conversation, user: current_user} %>
-					
-					
+					<% end %>
 				<% end %>
 			<% end %>
 		</div>

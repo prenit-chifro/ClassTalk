@@ -6,6 +6,8 @@ class CreateMessages < ActiveRecord::Migration[5.0]
 		t.integer :conversation_id
 		t.string :seen_user_ids, default: ""
 		t.boolean :is_seen_by_all_participants, default: false
+        t.string :acted_user_ids, default: ""
+        t.boolean :is_acted_by_all_participants, default: false
 		t.string :category, default: "Messages"
 		t.timestamps
     end
@@ -13,6 +15,7 @@ class CreateMessages < ActiveRecord::Migration[5.0]
     add_index :messages, :creator_id
     add_index :messages, :conversation_id
     add_index :messages, :seen_user_ids
+    add_index :messages, :acted_user_ids
     add_index :messages, :category
   end
 end

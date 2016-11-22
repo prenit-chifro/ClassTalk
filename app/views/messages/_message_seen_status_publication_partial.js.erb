@@ -3,5 +3,9 @@ var message_creator_id = "<%= message.creator_id %>";
 if(currentUserId == message_creator_id){
 	messageDiv = $('.message-div[data-message-id=' + <%= message.id %> + ']');
 	checkDiv = $(messageDiv).find(".double-checkmark");
-	checkDiv.css("display", "inline-block");
+	<% if(message.is_seen_by_all_participants == true) %>
+		checkDiv.html("Seen by All");
+	<% else %>
+		checkDiv.html("Seen by <%=message.seen_user_ids.split(", ").count %>");	
+	<% end %>
 }

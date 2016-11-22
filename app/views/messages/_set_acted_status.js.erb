@@ -1,0 +1,9 @@
+messageDiv = $('.message-div[data-message-id=' + <%= @message.id %> + ']');
+checkDiv = $(messageDiv).find(".checkmark");
+<% if(!message.is_acted_by_all_participants == true) %>
+	checkDiv.html("Submitted by All");
+<% else %>
+	checkDiv.html("Submitted by <%= @message.acted_user_ids.split(", ").count %>");	
+<% end %>
+
+$("#seenStatusModal").modal('hide');
