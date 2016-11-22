@@ -1,27 +1,28 @@
-<div class="calendar" style="margin-top:65px;">
-	
-</div>
+<div class="container-width classRoute">
+	<div class="calendar">
+		
+	</div>
 
-<div id="myModal" class="modal fade modal-calender" role="dialog">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Create or Update Event</h4>
-      </div>
-      <div class="modal-body">
-        <p></p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
+	<div id="myModal" class="modal fade modal-calender" role="dialog">
+	  <div class="modal-dialog">
+		<div class="modal-content">
+		  <div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal">&times;</button>
+			<h4 class="modal-title">Create or Update Event</h4>
+		  </div>
+		  <div class="modal-body">
+			<p></p>
+		  </div>
+		  <div class="modal-footer">
+			<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		  </div>
+		</div>
+	  </div>
+	</div>
 </div>
-
 
 <script>
-	
+	$(".classRoute").parents("div.wrapper").find(".navbar-default").css("box-shadow", "none");
     var calendarObject = $('.calendar').fullCalendar({
       header: {
         left: 'prev,next today',

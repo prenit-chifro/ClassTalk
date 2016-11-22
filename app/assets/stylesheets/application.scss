@@ -1655,6 +1655,76 @@ ul#attachment-toggle-show div.inner-list:hover > label span, ul#attachment-toggl
     from {transform:scale(0)} 
     to {transform:scale(1)}
 }
+
+/*fullcalender custom CSS*/
+.calendar{
+	max-width: 900px;
+    margin: 0 auto;
+    margin-top: 50px;
+}
+div.calendar div.fc-toolbar{
+	padding: 10px;
+    background: rgb(234, 91, 49);
+    box-shadow: 1px 1px 6px #5d5d5d;
+    color: #fff;
+}
+div.calendar div.fc-toolbar > div.fc-left >div.fc-button-group + button{
+	background: #ffffff;
+    border: none;
+    color: #ea5b31;
+    text-shadow: none;
+    opacity: 1;
+    border-radius: 0;
+    box-shadow: 1px 1px 8px #7a7878;
+}
+div.calendar div.fc-toolbar > div.fc-right>div.fc-button-group>button{
+	background: #ffffff;
+    border: none;
+    color: #ea5b31;
+}
+div.calendar div.fc-toolbar > div.fc-right>div.fc-button-group>button.fc-state-active{
+	background: #8f8d8d;
+    color: #fff;
+    text-shadow: none;
+}
+div.calendar div.fc-toolbar div.fc-center{
+	font-family: 'Julius Sans One', sans-serif;
+}
+div.calendar div.fc-view-container thead.fc-head > tr td.fc-head-container{
+	border: 1px solid #56b0ca;
+}
+div.calendar div.fc-view-container thead.fc-head > tr td.fc-head-container >div.fc-row>table tr >th{
+	background:#56b0ca !important;
+	color: #fff;
+	padding:10px;
+	vertical-align: inherit;
+}
+div.calendar div.fc-view-container tbody.fc-body td.fc-widget-content > div.fc-scroller> div.fc-day-grid{
+	position: absolute;
+    width: 100%;
+    background: #e9f9fe;
+    color: #d72323;
+    border: 1px solid #56b0ca;
+}
+.fc-row .fc-content-skeleton{
+	text-align: center;
+}
+.fc-row .fc-content-skeleton > table> tbody  td.fc-event-container a{
+	background-color: #009288 !important;
+    color: #fff !important;
+	border:none !important;
+    text-align: center;
+    padding: 7px;
+}
+.fc-month-view .fc-today{
+	background: #56b0ca;
+}
+.fc-month-view td.fc-today{
+    color: #fff;
+}
+.fc-row{
+	margin-right:0;
+}
 @media (min-width:768px){
 	.left-self-image >li:nth-child(1){
 		display:none;
