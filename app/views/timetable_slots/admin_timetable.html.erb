@@ -15,66 +15,67 @@
   </div>
 </div>
 
-
-<ul class="nav nav-tabs text-center" role="tablist" id="tablist" style="margin-top: 50px;">		
-	<li class="active" style="width:50%;">
-		<a data-toggle="tab" href="#class-plan">
-			Class Plan
-		</a>
-	</li>
-	<li style="width:50%;">
-		<a data-toggle="tab" href="#teacher-plan">
-			Teacher Plan
-		</a>
-	</li>
-</ul>
-<div class="tab-content admin-home-content">
-	<div class="tab-pane active" id="class-plan">
-		<% if(!@institutes_grade_section_models.blank?) %>
-			<ul class="list-unstyled teachers-list index-conversation-modal" style ="max-height: none">
-				<% @institutes_grade_section_models.each do |grade_section_model| %>
-				
-					<% grade = grade_section_model.grade %>
-					<% section = grade_section_model.section %>
+<div class="container-width classRoute"  style="margin-top: 50px;">
+	<ul class="nav nav-tabs text-center" role="tablist" id="tablist">		
+		<li class="active" style="width:50%;">
+			<a data-toggle="tab" href="#class-plan">
+				Class Plan
+			</a>
+		</li>
+		<li style="width:50%;">
+			<a data-toggle="tab" href="#teacher-plan">
+				Teacher Plan
+			</a>
+		</li>
+	</ul>
+	<div class="tab-content admin-home-content">
+		<div class="tab-pane active" id="class-plan">
+			<% if(!@institutes_grade_section_models.blank?) %>
+				<ul class="list-unstyled teachers-list index-conversation-modal" style ="max-height: none">
+					<% @institutes_grade_section_models.each do |grade_section_model| %>
 					
-					<% if(!grade.blank? and !section.blank?) %>
+						<% grade = grade_section_model.grade %>
+						<% section = grade_section_model.section %>
+						
+						<% if(!grade.blank? and !section.blank?) %>
+							<li>
+								<h6 class="teachers-list-heading">Class <%= grade.grade_name %><%= section.section_name %><i class="material-icons arrow-up-icon pull-right">&#xE316;</i></h6>
+								<div class="container-width classRoute">
+									<div class="calendar" data-grade-id="<%= grade.id %>" data-section-id="<%= section.id %>">
+				
+									</div>
+
+								</div>	
+							</li>
+						<% else %>	
+
+						<% end %>			
+
+					<% end %>
+				</ul>			
+			<% end %>
+		</div>
+		<div class="tab-pane active" id="teacher-plan">
+			<% if(!@teachers.blank?) %>
+				<ul class="list-unstyled teachers-list index-conversation-modal" style ="max-height: none">
+					<% @teachers.each do |teacher| %>
+									
 						<li>
-							<h6 class="teachers-list-heading">Class <%= grade.grade_name %><%= section.section_name %><i class="material-icons arrow-up-icon pull-right">&#xE316;</i></h6>
+							<h6 class="teachers-list-heading"><%= teacher.first_name %> <%= teacher.last_name %> (<%= teacher.details %>)<i class="material-icons arrow-up-icon pull-right">&#xE316;</i></h6>
 							<div class="container-width classRoute">
-								<div class="calendar" data-grade-id="<%= grade.id %>" data-section-id="<%= section.id %>">
-		  	
+								<div class="teacher-calendar" data-teacher-id="<%= teacher.id %>">
+			
 								</div>
 
 							</div>	
 						</li>
-					<% else %>	
-
-					<% end %>			
-
-				<% end %>
-			</ul>			
-		<% end %>
+					
+					<% end %>
+				</ul>			
+			<% end %>
+		</div>		
 	</div>
-	<div class="tab-pane active" id="teacher-plan">
-		<% if(!@teachers.blank?) %>
-			<ul class="list-unstyled teachers-list index-conversation-modal" style ="max-height: none">
-				<% @teachers.each do |teacher| %>
-								
-					<li>
-						<h6 class="teachers-list-heading"><%= teacher.first_name %> <%= teacher.last_name %> (<%= teacher.details %>)<i class="material-icons arrow-up-icon pull-right">&#xE316;</i></h6>
-						<div class="container-width classRoute">
-							<div class="teacher-calendar" data-teacher-id="<%= teacher.id %>">
-	  	
-							</div>
-
-						</div>	
-					</li>
-				
-				<% end %>
-			</ul>			
-		<% end %>
-	</div>		
-</div>
+</div>	
 
 <script>
 	var calendarObjects = [];
@@ -321,6 +322,6 @@
 		  }
 		});
 	});	  
-    
+    $(".classRoute").parents("div.wrapper").find(".navbar-default").css("box-shadow", "none");
 
 </script>
