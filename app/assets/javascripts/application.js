@@ -247,7 +247,7 @@ $(document).on("turbolinks:load", function(){
 			$("div.delete-message").fadeIn(300);
 		}
 	}
-		function fixMessagesButton() {		
+	function fixMessagesButton() {		
 		var buttonDiv = $('.detect-div');
 		if(buttonDiv.offset()){
 			var windowTop = $(window).scrollTop();
@@ -365,13 +365,6 @@ $(document).on("turbolinks:load", function(){
 		}		
 	});
 
-/*
-	$(".participant-checkbox-label").on("click", function(e){
-		e.preventDefault();
-		e.stopPropagation();
-		App.updateCheckboxCounter();		
-	});*/
-
 	$('#search').on("keyup keydown", function() {
 	    var value = $(this).val();
 	    if(value){
@@ -406,8 +399,7 @@ $(document).on("turbolinks:load", function(){
 			imageModal.find(".modal-title").html(name);
 			imageModal.find(".modal-footer").html($(parent).find(".icon-short-profile-modal-main-div").html());
 			imageModal.modal("show");
-		}
-		
+		}		
 	});
 
 	$('body').on('hidden.bs.modal', '#imageModal', function () {
@@ -494,7 +486,7 @@ App.checkWebNotificationServiceWorker = function (){
 			console.log("Registartion error: " + error);
 			App.setWebNoyificationSubscriptionStatus(false);
 		});
-	}else {  
+	}else {
 		console.log('Chrome Service workers aren\'t supported in this browser.');  
 	}
 
