@@ -39,6 +39,10 @@ Rails.application.routes.draw do
       resources :messages do
         member do
           post "set_seen_user_id"
+          get "seen_by_users"
+
+          post "set_acted_user_ids"
+          get "acted_by_users"
         end
       end
       member do

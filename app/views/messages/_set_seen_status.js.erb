@@ -1,4 +1,4 @@
-<% if(!message.blank? and publish_to_message_creator == true) %>
+<% if(!message.blank?) %>
 	<% script_string = render partial: "messages/message_seen_status_publication_partial.js", locals: {message: message} %>
 	
 	<% publish_to(user_path(message.message_creator), script_string) %>

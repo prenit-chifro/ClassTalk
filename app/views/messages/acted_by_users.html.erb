@@ -1,0 +1,25 @@
+Acted By Users:
+<% if(!@acted_users.blank?) %>
+	<% @acted_users.each do |user| %>
+		<%= render partial: "conversations/contact", locals: {contact: user} %>
+	<% end %>
+<% end %>
+
+<br>
+
+Pending Users:
+<% if(!@pending_users.blank?) %>
+	<%= form_tag set_acted_user_ids_conversation_message_path(@conversation, @message), method: :post, remote: true do %>
+		
+		<%= submit_tag "mark_submission" %>
+
+		<% @pending_users.each do |user| %>
+			<label for="contact-new-group-<%= user.id %>" class="modal-label">
+				<%= check_box_tag "acted_user_ids[]", user.id, false,class:"contact-new-group-page", id:"contact-new-group-#{user.id}" %>
+				<%= render partial: "conversations/contact", locals: {contact: user} %>
+				<span class="checkbox-style-block checkbox-style-block-<%= user.id %>"></span>																	
+			</label>							
+		<% end %>
+	<% end %>
+
+<% end %>

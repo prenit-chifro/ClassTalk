@@ -488,11 +488,7 @@
 					<h4 class="modal-title">Seen By Users</h4>
 				</div>
 				<div class="modal-body">
-					<ul class="list-inline">
-						<li>
-							<%= render partial: "conversations/contact", locals: {contact: current_user} %>
-						</li>
-					</ul>
+					
 				</div>
 			</div>
 		</div>
@@ -546,7 +542,7 @@
 	<script>
 		$(document).one("turbolinks:load", function(){
 			$(".classRoute").parents("div.wrapper").find(".navbar-default").css("box-shadow", "none");
-			App.scrollToBottomOfPage();
+			
 		});
 		
 
@@ -754,7 +750,35 @@
         $(this).css("backgroundColor",randomColors[randomNum]);
         randomColors.slice(randomNum, 1);
     });
+	$(".double-checkmark").on("click", function(){
+		var messageId = $(this).attr("data-message-id");
+		$.ajax({
+			url: "/conversations/<%= @conversation.id %>/messages/" + messageId + "/seen_by_users.js",  
+			type: "GET",
+			success: function(data) {
+				if(data.trim().length == 0) {
+					$("#seenStatusModal").find(".modal-body").html("No one has yet seen this message !");
+				} else {
+					$("#seenStatusModal").find(".modal-body").html(data);
+				}
+			}
+		});
+		$("#seenStatusModal").modal('show');
+	});
+
 	$(".checkmark").on("click", function(){
+		var messageId = $(this).attr("data-message-id");
+		$.ajax({
+			url: "/conversations/<%= @conversation.id %>/messages/" + messageId + "/acted_by_users.js",  
+			type: "GET",
+			success: function(data) {
+				if(data.trim().length == 0) {
+					$("#seenStatusModal").find(".modal-body").html("No one has yet acted on this message !");
+				} else {
+					$("#seenStatusModal").find(".modal-body").html(data);
+				}
+			}
+		});
 		$("#seenStatusModal").modal('show');
 	});
 
