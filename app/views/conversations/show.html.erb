@@ -252,7 +252,7 @@
 									<li>
 										<div class="ch-item">	
 											<div class="ch-info">
-												<h3>Subject Teacher></h3>
+												<h3><%= subject_teacher.first_name if !subject_teacher.blank?%> <%= subject_teacher.last_name  if !subject_teacher.blank? %></h3>
 												
 												<p><%= subject_teacher.first_name if !subject_teacher.blank?%> <%= subject_teacher.last_name  if !subject_teacher.blank? %><a href="<%= institute_grade_section_subject_path(@institute, @grade, @section, subject) %>" style="font-size:6px;"><%= subject.subject_name %></a></p>
 											</div>
