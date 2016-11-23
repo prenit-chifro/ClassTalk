@@ -1,6 +1,40 @@
 <% content_for :heading do %>
-	Admin Panel
+	<a class="mybtn btn btn-link btn-xs pull-left" href="/"><i class="material-icons">&#xE317;</i>Admin Panel</a>
 <% end %>
+	<div id="myModal" class="modal fade modal-calender" role="dialog">
+	  <div class="modal-dialog">
+		<div class="modal-content">
+		  <div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal">&times;</button>
+			<h4 class="modal-title">Create or Update Event</h4>
+		  </div>
+		  <div class="modal-body">
+			<p></p>
+		  </div>
+		  <div class="modal-footer">
+			<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		  </div>
+		</div>
+	  </div>
+	</div>
+	
+	<div id="dayPlanModal" class="modal fade modal-calender" role="dialog">
+	  <div class="modal-dialog">
+		<div class="modal-content">
+		  <div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal">&times;</button>
+			<h4 class="modal-title">Create or Update Day Plan</h4>
+		  </div>
+		  <div class="modal-body">
+			<p></p>
+		  </div>
+		  <div class="modal-footer">
+			<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		  </div>
+		</div>
+	  </div>
+	</div>
+	
 	<div class="container-width classRoute tabs-container conversation-big" style="margin-top:50px;">
 		
 			<ul class="nav nav-tabs admin-new-tabs" role="tablist" id="tablist" style="position:fixed;z-index:5;">		
@@ -311,41 +345,10 @@
 						
 					</div>
 
-					<div id="myModal" class="modal fade modal-calender" role="dialog">
-					  <div class="modal-dialog">
-						<div class="modal-content">
-						  <div class="modal-header">
-							<button type="button" class="close" data-dismiss="modal">&times;</button>
-							<h4 class="modal-title">Create or Update Event</h4>
-						  </div>
-						  <div class="modal-body">
-							<p></p>
-						  </div>
-						  <div class="modal-footer">
-							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-						  </div>
-						</div>
-					  </div>
-					</div>
+					
 				</div>
 				<div class="tab-pane" id="all-dayplan">
-					<div id="myModal" class="modal fade modal-calender" role="dialog">
-					  <div class="modal-dialog">
-						<div class="modal-content">
-						  <div class="modal-header">
-							<button type="button" class="close" data-dismiss="modal">&times;</button>
-							<h4 class="modal-title">Create/Update Day Plan</h4>
-						  </div>
-						  <div class="modal-body">
-							<p></p>
-						  </div>
-						  <div class="modal-footer">
-							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-						  </div>
-						</div>
-					  </div>
-					</div>
-
+					
 					<div class="container-width classRoute">
 						<ul class="nav nav-tabs text-center" role="tablist" id="tablist">		
 							<li class="active" style="width:50%;">
@@ -949,8 +952,8 @@
 		          url: event.edit_url,
 		          complete: function(data){
 		            if(data.status == "200"){
-		              $('#myModal').find('.modal-body').html(data.responseText);
-		              $('#myModal').modal('show');
+		              $('#dayPlanModal').find('.modal-body').html(data.responseText);
+		              $('#dayPlanModal').modal('show');
 		            }
 		          }
 		        });
@@ -966,8 +969,8 @@
 		        url: '/institutes/<%= @institute.id%>/timetable_slots/new.js?grade_id=' + gradeId + '&section_id=' + sectionId + '&start_time=' + start.format() + '&end_time=' + end.format() + '.js',
 		        complete: function(data){
 		          if(data.status == "200"){
-		            $('#myModal').find('.modal-body').html(data.responseText);
-		            $('#myModal').modal('show');
+		            $('#dayPlanModal').find('.modal-body').html(data.responseText);
+		            $('#dayPlanModal').modal('show');
 		          }
 		        }
 		      });
@@ -1093,8 +1096,8 @@
 		        url: '/institutes/<%= @institute.id%>/timetable_slots/new.js?teacher_id=' + teacherId + '&start_time=' + start.format() + '&end_time=' + end.format(),
 		        complete: function(data){
 		          if(data.status == "200"){
-		            $('#myModal').find('.modal-body').html(data.responseText);
-		            $('#myModal').modal('show');
+		            $('#dayPlanModal').find('.modal-body').html(data.responseText);
+		            $('#dayPlanModal').modal('show');
 		          }
 		        }
 		      });
