@@ -40,7 +40,7 @@ class ConversationsController < ApplicationController
 			@teachers = @institute.get_members_with_given_roles(["Teacher"])
 			@institutes_grades_sections_models = @institute.institutes_grades_sections_models
 			
-			#render "admin_index"
+			render "admin_index"
 		end
 
 		if(current_user.role == "Teacher")
