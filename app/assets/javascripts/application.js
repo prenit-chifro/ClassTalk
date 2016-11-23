@@ -106,7 +106,7 @@ $(document).on("turbolinks:load", function(){
 		var animateMainMenu = $("#navbar");
 		
 		animateMainMenu.animate({
-			left: parseInt(animateMainMenu.css('left'),10) == 0 ? -animateMainMenu.outerWidth() :0
+			right: parseInt(animateMainMenu.css('right'),10) == 0 ? -animateMainMenu.outerWidth() :0
 		});
 		e.stopPropagation();
 		e.preventDefault();
@@ -131,7 +131,7 @@ $(document).on("turbolinks:load", function(){
 		if(e.target.id!="navbar"){
 			$(".navbar-toggle").removeClass("is-active");
 			$("#navbar").animate(
-				{left:"-250px"}
+				{right:"-250px"}
 			);
 			$('.main_toggle_menu').find('ul').slideUp();
 			$('.main_toggle_menu').find(".arrow-up-icon").toggleClass("arrow-down-icon");
