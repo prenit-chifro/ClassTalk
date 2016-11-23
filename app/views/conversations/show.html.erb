@@ -732,7 +732,7 @@
 							fileMarkup = ['<img  height="50" width = "50" src=', file.target.result, '>'].join('');
 						}
 						var innerFileMarkup = [
-							'<p style="clear:both;">', fileMarkup , '</p>'
+							'<p style="clear:both;" class="temp-message">', fileMarkup , '</p>'
 						];
 						$(innerFileMarkup.join('')).insertBefore("div.attachment-send-button");
 					}
