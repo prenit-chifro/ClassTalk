@@ -1,8 +1,7 @@
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBygb2VxPHEs8rV8j7dgreRvpowydmGrow&libraries=places" async defer></script>
 
 <% content_for :heading do %>
-  <a class="mybtn btn btn-link btn-xs pull-left" href="/"><i class="material-icons">&#xE317;</i></a>
-  Attendance Records
+  <a class="mybtn btn btn-link btn-xs pull-left" href="/"><i class="material-icons">&#xE317;</i>Attendance Records</a>
 <% end %>
 
 <div class="container" style="margin-top: 60px;">
@@ -74,10 +73,10 @@
 			</table>
 		</div>
 	<% else %>
-		Sorry ! No records found !
+		<p class="no-attendance-records">Sorry ! No records found !</p>
 	<% end %>
 <% else %>
-	You dont have any class assigned to you. 
+	<p class="no-attendance-records">You dont have any class assigned to you. </p>
 <% end %>
 
 <script type="text/javascript">
