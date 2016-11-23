@@ -4,12 +4,7 @@ class NoticesController < ApplicationController
 
 	def index
 		@institutes = current_user.institutes
-		if(params[:page] and params[:page].to_i > 1)
-			@notices = Notice.where(institute_id: @institutes.map(&:id)).order(updated_at: :desc).page(params[:page]).per(10)
-			render "index", layout: false
-		else
-			@notices = Notice.where(institute_id: @institutes.map(&:id)).order(updated_at: :desc).page(1).per(10)
-		end
+		@notices = Notice.where(institute_id: @institutes.map(&:id)).order(updated_at: :desc).page(1).per(10)
 		
 	end
 
@@ -70,7 +65,7 @@ class NoticesController < ApplicationController
 		    @notice.save
 
 
-		    redirect_to notices_path
+		    redirect_to institute_notices_path(@institute)
 		else
 
 		end

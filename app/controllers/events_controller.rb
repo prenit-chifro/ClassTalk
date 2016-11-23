@@ -3,7 +3,9 @@ class EventsController < ApplicationController
   before_action :set_event, only: [:show, :edit, :update, :destroy]
 
   def index
-    @events = current_user.created_events
+    @events = @institute.events
+    @personal_events = current_user.created_events.where(is_official: false)
+    @events = @events + @personal_events
   end
 
   def show
