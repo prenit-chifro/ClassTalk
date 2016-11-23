@@ -42,10 +42,7 @@
 		<div class="wrapper">
 		    <nav class="navbar navbar-default navbar-fixed-top">
 				<div class="container-width">
-					<div class="navbar-header pull-left">
-						<button type="button" class="navbar-toggle collapsed pull-left hamburger-menu hamburger-menu-left-arrow" data-toggle="collapse" id="navbar-toggle-button">
-							<span></span>
-						</button>
+					<div class="navbar-header pull-left">						
 						<span class="navbar-brand"><%= yield :heading %></span>
 					</div>
 					<div id="navbar" class="navbar-collapse pull-left navbar-fixed-small-screen">
@@ -75,7 +72,10 @@
 					<ul class="nav navbar-nav navbar-right pull-right right-self-image" style="margin-right: 3px;">
 
 						<li>
-							<a class="navbar-brand right-menu" href="javascript:void(0)"><%= current_user.role %><i class="material-icons arrow-up-icon" style="vertical-align:middle;">&#xE313;</i></a>
+							<a class="navbar-brand right-menu" href="javascript:void(0)" style="padding: 15px;padding-right: 4px;"><%= current_user.role %></a>
+							<button type="button" class="navbar-toggle collapsed pull-left hamburger-menu hamburger-menu-left-arrow" data-toggle="collapse" id="navbar-toggle-button">
+								<span></span>
+							</button>
 							<ul class="right-menu-toggle" id="right-menu-toggle-id" style="display:none;">
 								<li class="main-image text-center">
 									<a href="/users/<%= current_user.id %>">

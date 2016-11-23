@@ -413,12 +413,12 @@ label.file-label > input[type=file]{
 
 .hamburger-menu-left-arrow.is-active span::before {
 	top: 0;
-	transform: translateX(13px) translateY(1px) rotate(45deg);
+	transform: translateX(-3px) translateY(9px) rotate(45deg);
 }
 
 .hamburger-menu-left-arrow.is-active span::after {
 	bottom: 0;
-	transform: translateX(13px) translateY(-2px) rotate(-45deg)	;
+	transform: translateX(-2px) translateY(-9px) rotate(-45deg);
 }
 .main_toggle_menu >a i.arrow-up-icon{
 	float:right;
@@ -1802,9 +1802,6 @@ div.calendar div.fc-view-container tbody.fc-body td.fc-widget-content > div.fc-s
 		height:47px;
 		box-shadow:1px 1px 6px #afacac;
 	}
-	.navbar-brand{
-		padding-left:0;
-	}
 	#navbar{
 		background: #ea5b31;
 		height: 100%;
@@ -1815,7 +1812,7 @@ div.calendar div.fc-view-container tbody.fc-body td.fc-widget-content > div.fc-s
 		box-shadow: 1px 1px 2px #bdbcbc;
 		width: 250px;
 		border: 0;
-		left:-250px;
+		right:-250px;
 		overflow: scroll;
 		overflow-x: hidden;
 	}
