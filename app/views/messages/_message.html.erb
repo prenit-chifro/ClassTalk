@@ -15,9 +15,9 @@
 				<% message.seen_user_ids = "" if message.seen_user_ids.blank? %>
 				<% seen_user_ids_array = message.seen_user_ids.split(", ").map{|id| id.to_i}.uniq %>
 				<% if(message.is_seen_by_all_participants == true) %>
-					<span class="double-checkmark pull-right" data-message-id=<%= message.id %> data-conversation-id=<%= conversation.id %>>Seen by all</span>
+					<span class="double-checkmark pull-right" data-message-id=<%= message.id %> data-conversation-id=<%= conversation.id %>> &nbsp;Seen by all</span>
 				<% else %>
-					<span class="double-checkmark pull-right" data-message-id=<%= message.id %> data-conversation-id=<%= conversation.id %>>Seen by <%= seen_user_ids_array.length %></span>
+					<span class="double-checkmark pull-right" data-message-id=<%= message.id %> data-conversation-id=<%= conversation.id %>>&nbsp;Seen by <%= seen_user_ids_array.length %></span>
 				<% end %>
 			<% end %>
 			<% if(message.creator_id == current_user.id and !conversation.message_categories.blank? and conversation.message_categories.include?(message.category)) %>

@@ -1,7 +1,7 @@
 <div class="container-width classRoute" style="margin-bottom:85px;">	
 	<ul class="nav nav-tabs text-center" role="tablist" id="tablist">		
-		<li class="active" style="width:50%;"><a data-toggle="tab" href="#all-submitted-users">Submitted by</li>
-		<li style="width:50%;"><a data-toggle="tab" href="#all-pending-users">Pending Users</li>
+		<li class="active" style="width:50%;"><a data-toggle="tab" href="#all-submitted-users">Submitted by</a></li>
+		<li style="width:50%;"><a data-toggle="tab" href="#all-pending-users">Pending Users</a></li>
 	</ul>
 	<div class="tab-content admin-home-content">
 		<div class="tab-pane active all-small-conversations" id="all-submitted-users">
@@ -16,7 +16,7 @@
 			<% if(!@pending_users.blank?) %>
 				<%= form_tag set_acted_user_ids_conversation_message_path(@conversation, @message), method: :post, remote: true do %>
 					
-					<%= submit_tag "mark_submission" %>
+					<button type="submit" class="btn btn-success mar-btm" style="width: 100%;"> Mark Submission </button>
 
 					<% @pending_users.each do |user| %>
 						<label for="contact-new-group-<%= user.id %>" class="modal-label">

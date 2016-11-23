@@ -6,7 +6,7 @@
 			
 		</div>
 		<div class="media-body media-middle">
-			<h5 class="media-heading"><%= contact.first_name %></h5>
+			<h5 class="media-heading student-name-in-message"><%= contact.first_name %></h5>
 			<small><%= contact.details %></small>
 			<span class="pull-right">
 				<%= link_to conversations_path(participant_ids: [contact.id], conversation_id:"#{params[:conversation_id]}"), method: :post do %>

@@ -370,7 +370,8 @@ $(document).on("turbolinks:load", function(){
 		}		
 	});
 
-	$('#search').on("keyup keydown", function() {
+	$('.search-attendance-input').on("keyup keydown", function() {
+		
 	    var value = $(this).val();
 	    if(value){
 	    	$(".student-in-attendance").show().filter(function () {
@@ -380,14 +381,14 @@ $(document).on("turbolinks:load", function(){
 	    	$(".student-in-attendance").show();
 	    }    
 	});
-	$('#search-conversation-new-group').on("keyup keydown", function() {
+	$('.search-conversation-new-group').on("keyup keydown", function() {
 	    var value = $(this).val();
 	    if(value){
-	    	$("ul.list-conversation-group-search li").show().filter(function () {
+	    	$("ul.index-conversation-modal li").show().filter(function () {
 			    return $(".media-heading", this).text().toLowerCase().indexOf(value.toLowerCase()) < 0;
 			}).hide();
 	    }else{
-	    	$("ul.list-conversation-group-search li").show();
+	    	$("ul.index-conversation-modal li").show();
 	    }    
 	});
 
