@@ -38,8 +38,62 @@ class ConversationsController < ApplicationController
 			@principal = @institute.get_members_with_given_roles(["Principal"])
 			@admins = @institute.get_members_with_given_roles(["Institute Admin"])
 			@teachers = @institute.get_members_with_given_roles(["Teacher"])
+			@grades = @institute.grades
 			@institutes_grades_sections_models = @institute.institutes_grades_sections_models
 			
+			if(params[:start_date].blank?)
+				params[:start_date] = Date.today
+			else
+				params[:start_date] = Date.parse(params[:start_date])	
+			end
+			if(params[:end_date].blank?)
+				params[:end_date] = Date.today
+			else
+				params[:end_date] = Date.parse(params[:end_date])	
+			end
+
+			@all_section_member_models = current_user.members_sections
+			if(!@all_section_member_models.blank?)
+				if(params[:grade_id].blank?)
+					params[:grade_id] = @all_section_member_models.first.grade_id
+				end
+				if(params[:section_id].blank?)
+					params[:section_id] = @all_section_member_models.first.section_id
+				end
+				@all_attendance_records = @institute.attendance_records.where("date >= ? AND date <= ?", params[:start_date], params[:end_date])
+				if(@all_attendance_records.blank?)
+					
+					params[:start_date] = Date.yesterday
+					
+					@all_attendance_records = @institute.attendance_records.where("date >= ? AND date <= ?", params[:start_date], params[:end_date])
+				end
+				@all_students = @institute.get_members_with_given_roles(["Student"])
+
+				@total_all_students = @all_students.count * @all_attendance_records.count
+				@total_all_present_students = 0
+				@all_attendance_records.each do |record|
+					@total_all_present_students = @total_all_present_students + record.present_student_ids.split(", ").count
+				end
+				@total_all_absent_students = @total_all_students - @total_all_present_students
+
+				@grade = Grade.find_by(id: params[:grade_id])
+				@section = Section.find_by(id: params[:section_id])
+				
+				@section_students =  @section.get_members_with_given_roles_for_institute_and_grade_with_role(@institute, @grade, "Student")
+				@section_attendance_records = @all_attendance_records.where(grade_id: @grade.id, section_id: @section.id)
+				
+				@total_section_students = @section_students.count * @section_attendance_records.count
+				@total_section_present_students = 0
+				@section_attendance_records.each do |record|
+					@total_section_present_students = @total_section_present_students + record.present_student_ids.split(", ").count
+				end
+				@total_section_absent_students = @total_section_students - @total_section_present_students
+
+				@institutes_grade_section_models = @institute.institutes_grades_sections_models
+                @teachers = @institute.get_members_with_given_roles(["Teacher"]) 
+                @notices = Notice.where(institute_id: @institute.id).order(updated_at: :desc).page(1).per(10)
+			end
+
 			render "admin_index"
 		end
 
