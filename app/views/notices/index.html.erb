@@ -1,7 +1,7 @@
 <% content_for :heading do %>
-	Notices
+	<a class="mybtn btn btn-link btn-xs pull-left" href="/"><i class="material-icons">&#xE317;</i>Notices</a>
 <% end %>
-<div id="all-notices-analytics" style="padding:30px;max-height: inherit;margin-top: 70px;">
+<div id="all-notices-analytics" style="padding:30px;max-height: inherit;margin-top: 60px;">
 	<ul class="list-unstyled sticky-notices">
 		<% if(!@notices.blank?) %>
 			<% @notices.each do |notice| %>
@@ -9,6 +9,18 @@
 					<%= render partial: "notices/notice", locals: {notice: notice} %>
 				</li>	
 				
+			<% end %>
+			<%= link_to new_institute_notice_path(@institute), class:"new-notices-icons" do %>
+				<i class="material-icons">&#xE147;</i>
+			<% end %>
+		<% else %>
+			<%= link_to new_institute_notice_path(@institute) do %>
+				<p class="no-attendance-records">
+					You have no notices! Create One..
+				</p>
+			<% end %>	
+			<%= link_to new_institute_notice_path(@institute), class:"new-notices-icons" do %>
+				<i class="material-icons">&#xE147;</i>
 			<% end %>
 		<% end %>
 		

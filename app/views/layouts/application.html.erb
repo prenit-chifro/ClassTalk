@@ -45,32 +45,8 @@
 					<div class="navbar-header pull-left">						
 						<span class="navbar-brand main-navbar-brand"><%= yield :heading %></span>
 					</div>
-					<div id="navbar" class="navbar-collapse pull-left navbar-fixed-small-screen">
-						<ul class="nav navbar-nav left-self-image">
-							<li><a href="/users/<%= current_user.id %>"><img src="<%= current_user.profile_picture.media.url(:medium) %>"  class="img-circle img-xss"><span>Profile</span></a></li>
-							<li>
-								<a href="/conversations"><i class="material-icons menu-inner-icon">&#xE156;</i><span>My Messages</span></a>
-
-							</li>	
-							<% if(!@institute.blank?) %>
-								<li><a href="<%= institute_grades_path(@institute) %>"><i class="material-icons menu-inner-icon">&#xE86E;</i><span>My Classes</span></a></li>
-								<li><a href="<%= institute_attendance_records_path(@institute) %>"><i class="material-icons menu-inner-icon">&#xE85D;</i><span>My Attendance</span></a></li>
-								<li>
-									<a href="<%= my_classwork_conversations_path %>"><i class="material-icons menu-inner-icon">&#xE146;</i><span>My ClassWork</span></a>
-								</li>			
-								<li><a href="<%= institute_notices_path(@institute) %>"><i class="material-icons menu-inner-icon">&#xE616;</i><span>My Notices</span></a></li>
-								<li >
-									<a href="<%= institute_events_path(@institute) %>"><i class="material-icons menu-inner-icon">&#xE8A3;</i><span>Event Calendar</span></a>								
-								</li>
-								<li>
-									<a href="<%= institute_timetable_slots_path(@institute) %>"><i class="material-icons menu-inner-icon">&#xE8A3;</i><span>Day Plan</span></a>								
-								</li>
-							<% end %>							
-							<li><a href="javascript:void(0)"><i class="material-icons menu-inner-icon">&#xE0C6;</i><span>Help</span></a></li>						
-						</ul>
-					</div>
+					
 					<ul class="nav navbar-nav navbar-right pull-right right-self-image" style="margin-right: 3px;">
-
 						<li>
 							<a class="navbar-brand right-menu" href="javascript:void(0)" style="padding: 15px;padding-left:4px;padding-right: 4px;"><%= current_user.role %></a>
 							<button type="button" class="navbar-toggle collapsed pull-left hamburger-menu hamburger-menu-left-arrow" data-toggle="collapse" id="navbar-toggle-button">
@@ -98,6 +74,29 @@
 							</ul>						
 						</li>							
 					</ul>
+					<div id="navbar" class="navbar-collapse pull-right navbar-fixed-small-screen">
+						<ul class="nav navbar-nav left-self-image">
+							<li><a href="/users/<%= current_user.id %>"><img src="<%= current_user.profile_picture.media.url(:medium) %>"  class="img-circle img-xss"><span>Profile</span></a></li>
+							<li>
+								<a href="/conversations"><i class="material-icons menu-inner-icon">&#xE156;</i><span>My Messages</span></a>
+							</li>	
+							<% if(!@institute.blank?) %>
+								<li><a href="<%= institute_grades_path(@institute) %>"><i class="material-icons menu-inner-icon">&#xE86E;</i><span>My Classes</span></a></li>
+								<li><a href="<%= institute_attendance_records_path(@institute) %>"><i class="material-icons menu-inner-icon">&#xE85D;</i><span>My Attendance</span></a></li>
+								<li>
+									<a href="<%= my_classwork_conversations_path %>"><i class="material-icons menu-inner-icon">&#xE146;</i><span>My ClassWork</span></a>
+								</li>			
+								<li><a href="<%= institute_notices_path(@institute) %>"><i class="material-icons menu-inner-icon">&#xE616;</i><span>My Notices</span></a></li>
+								<li >
+									<a href="<%= institute_events_path(@institute) %>"><i class="material-icons menu-inner-icon">&#xE8A3;</i><span>Event Calendar</span></a>								
+								</li>
+								<li>
+									<a href="<%= institute_timetable_slots_path(@institute) %>"><i class="material-icons menu-inner-icon">&#xE8A3;</i><span>Day Plan</span></a>								
+								</li>
+							<% end %>							
+							<li><a href="javascript:void(0)"><i class="material-icons menu-inner-icon">&#xE0C6;</i><span>Help</span></a></li>						
+						</ul>
+					</div>
 				</div>
 			</nav>
 			<%= yield %>
