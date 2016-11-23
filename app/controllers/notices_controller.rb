@@ -101,7 +101,7 @@ class NoticesController < ApplicationController
 		end
 
 		@notice.save
-	  	redirect_to notices_path
+	  	redirect_to institute_notices_path(@institute)
 	end
 
 	def destroy
