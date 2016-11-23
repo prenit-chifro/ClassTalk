@@ -19,7 +19,7 @@ development:
   <<: *default
   username: root
   password:
-  database: class_talk_development_1
+  database: class_talk_development
    
 
 # Warning: The database defined as "test" will be erased and
@@ -29,7 +29,7 @@ test:
   <<: *default
   username: root
   password: 
-  database: class_talk_development_1
+  database: class_talk_development
 
 
 # As with config/secrets.yml, you never want to store sensitive information,

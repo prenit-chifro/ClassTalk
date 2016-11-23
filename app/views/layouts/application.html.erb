@@ -102,32 +102,33 @@
 			<%= yield %>
 			
 		</div>
-		<footer class="footer text-center">
-			<div class="container-width">
-				<ul class="list-inline footer-list">
-					<li>
-						<%= link_to institute_timetable_slots_path(@institute) do %>
-							Day Plan<i class="material-icons calender-icon">&#xE8B5;</i>
-						<% end %>				
-					</li>
-					<% if(!@assigned_classteacher_grades_sections_model.blank?) %>
-						<li data-toggle="modal" data-target="#attendance-modal">
-							Attendance<i class="material-icons attendance-icon">&#xE85D;</i>
-						</li>
-					<% else %>
+		<% if(!@institute.blank?) %>
+			<footer class="footer text-center">
+				<div class="container-width">
+					<ul class="list-inline footer-list">
 						<li>
-							<%= link_to institute_attendance_records_path(@institute) do %>
-								Attendance<i class="material-icons attendance-icon">&#xE85D;</i>	
-							<% end %>					
+							<%= link_to institute_timetable_slots_path(@institute) do %>
+								Day Plan<i class="material-icons calender-icon">&#xE8B5;</i>
+							<% end %>				
 						</li>
-					<% end %>			
-					<li>
-						<%= link_to institute_notices_path(@institute) do %>Notices<i class="material-icons notice-icon">&#xE616;</i><% end %>
-					</li>
-				</ul>
-			</div>
-		</footer>
-
+						<% if(!@assigned_classteacher_grades_sections_model.blank?) %>
+							<li data-toggle="modal" data-target="#attendance-modal">
+								Attendance<i class="material-icons attendance-icon">&#xE85D;</i>
+							</li>
+						<% else %>
+							<li>
+								<%= link_to institute_attendance_records_path(@institute) do %>
+									Attendance<i class="material-icons attendance-icon">&#xE85D;</i>	
+								<% end %>					
+							</li>
+						<% end %>			
+						<li>
+							<%= link_to institute_notices_path(@institute) do %>Notices<i class="material-icons notice-icon">&#xE616;</i><% end %>
+						</li>
+					</ul>
+				</div>
+			</footer>
+		<% end %>
 
 	</body>
 </html>
