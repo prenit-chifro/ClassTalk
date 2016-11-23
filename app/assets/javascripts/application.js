@@ -148,7 +148,12 @@ $(document).on("turbolinks:load", function(){
 			$(".modal").find("button.close").trigger("click");
 		}
 	});	
-	
+	$(".teachers-list-heading").click(function(e){
+		$(this).find(".arrow-up-icon").toggleClass("arrow-down-icon");
+		$(this).parents("li").find("div.classRoute").slideToggle();
+		e.preventDefault();
+		e.stopPropagation();
+	});	
 	$('.next-page-link').click(function(event){
 		clickedElement = $(this);
 		App.navigateToLink(clickedElement);			

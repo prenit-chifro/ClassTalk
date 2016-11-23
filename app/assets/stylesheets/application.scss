@@ -10,6 +10,50 @@
 
 
 /*universal*/
+.navbar-default .navbar-brand{
+	color:#fff;
+}
+.navbar-brand{
+	font-family: 'Julius Sans One', sans-serif;
+}
+.navbar-brand:hover, .navbar-brand:focus{
+    color: #fff !important;
+}
+.main-navbar-brand{
+    font-size: 20px;
+    color: #c3d239 !important;
+    font-weight: bolder;
+}
+.main-navbar-brand:hover,.main-navbar-brand:focus{
+	color: #c3d239 !important;
+}
+.main-navbar-brand a{
+	font-size: 20px;
+    color: #c3d239 !important;
+    font-weight: bolder;
+    text-decoration: none;
+    display: block;	
+	margin-top: -6px;
+    margin-left: -10px;
+}
+p.no-attendance-records{
+    background: #ea5b31;
+    padding: 10px;
+    color: #fff;
+    max-width: 300px;
+    margin: 0 auto;
+    margin-bottom: 10px;
+    text-align: center;
+    box-shadow: 1px 1px 2px #000;
+}
+.main-navbar-brand a:hover,.main-navbar-brand a:focus{
+	text-decoration:none;
+}
+.main-navbar-brand a i{
+	vertical-align: middle;
+    color: #c3d239;
+    margin-right: 4px;
+}
 .mar-btm{
 	margin-bottom:10px;
 }
@@ -484,12 +528,7 @@ ul.submenu>li:last-child a{
     box-shadow: 1px 1px 6px #afacac;
 	border:none;
 }
-.navbar-default .navbar-brand{
-	color:#fff !important;
-}
-.navbar-brand{
-	font-family: 'Julius Sans One', sans-serif;
-}
+
 .navbar-default .navbar-toggle .icon-bar{
 	background-color:#fff;
 }
@@ -515,14 +554,14 @@ span.personal-message-icon i{
 	font-size: 25px !Important;
     color: #fff;
 }
-div.add-member{
+div.add-member, span.add-member{
 	background: #8c8c8c;
     color: #fff;
     padding: 10px;
     font-size: 13px;
     box-shadow: 1px 1px 1px #afacac;
 }
-div.add-member>i{
+div.add-member>i,span.add-member>i{
 	vertical-align: middle;
     margin-left: 10px;
     font-size: 18px;
@@ -588,6 +627,12 @@ div.media-content{
     margin: 10px;
     box-shadow: 1px 1px 8px #b1a9a9;
 }
+h6.teachers-list-heading + div.classRoute div.tab-pane{
+	border: 1px solid rgb(216, 214, 214);
+}
+h6.teachers-list-heading + div.classRoute{
+	margin-bottom:0;
+}
 /*footer*/
 .footer{
 	position:fixed;
@@ -595,6 +640,7 @@ div.media-content{
 	left:0;
 	right:0;
 	background-color: #484848;
+	z-index:1;
 }
 .footer-list{
 	margin:0;
@@ -604,7 +650,7 @@ div.media-content{
 	padding:10px;
     border-left: 1px solid #b7b1b1;
 	cursor:pointer;
-	width:50%;
+	width:33%;
 	color:#bbb;
 }
 .link-attendance{
@@ -622,6 +668,9 @@ ul.footer-list li a{
     font-size: 21px !important;
 }
 /*Class*/
+div.classRoute{
+	margin-bottom:70px;
+}
 div.classRoute >ul.nav-tabs{
 	border:none;
 	background: #ea5b31;
@@ -1567,10 +1616,7 @@ ul.right-menu-toggle{
 ul.right-menu-toggle li a{
 	color: #ea5b31;
     font-size: 14px;
-    padding: 10px;
     display: block;
-	padding-top:2px;
-	padding-bottom:2px;
 }
 ul.right-menu-toggle li a:hover{
 	text-decoration:none;
@@ -1662,11 +1708,17 @@ ul#attachment-toggle-show div.inner-list:hover > label span, ul#attachment-toggl
     margin: 0 auto;
     margin-top: 50px;
 }
+.class-calendar, .teacher-calendar{
+	margin-top:0;
+}
 div.calendar div.fc-toolbar{
 	padding: 10px;
     background: rgb(234, 91, 49);
     box-shadow: 1px 1px 6px #5d5d5d;
     color: #fff;
+}
+.class-calendar div.fc-toolbar, .teacher-calendar div.fc-toolbar{
+	box-shadow: 1px 2px 2px #5d5d5d !important;
 }
 div.calendar div.fc-toolbar > div.fc-left >div.fc-button-group + button{
 	background: #ffffff;
@@ -1710,7 +1762,7 @@ div.calendar div.fc-view-container tbody.fc-body td.fc-widget-content > div.fc-s
 	text-align: center;
 }
 .fc-row .fc-content-skeleton > table> tbody  td.fc-event-container a{
-	background-color: #009288 !important;
+	background-color: #ea5b31 !important;
     color: #fff !important;
 	border:none !important;
     text-align: center;
@@ -1721,6 +1773,9 @@ div.calendar div.fc-view-container tbody.fc-body td.fc-widget-content > div.fc-s
 }
 .fc-month-view td.fc-today{
     color: #fff;
+}
+.fc-agendaWeek-view .fc-today, .fc-agendaDay-view .fc-today{
+	background:#e9f9fe;
 }
 .fc-row{
 	margin-right:0;

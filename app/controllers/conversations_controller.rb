@@ -41,6 +41,7 @@ class ConversationsController < ApplicationController
 			@grades = @institute.grades
 			@institutes_grades_sections_models = @institute.institutes_grades_sections_models
 			
+
 			if(params[:start_date].blank?)
 				params[:start_date] = Date.today
 			else
@@ -95,6 +96,7 @@ class ConversationsController < ApplicationController
 			end
 
 			render "admin_index"
+
 		end
 
 		if(current_user.role == "Teacher")

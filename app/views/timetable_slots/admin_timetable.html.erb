@@ -1,6 +1,5 @@
 <% content_for :heading do %>
-	<a class="mybtn btn btn-link btn-xs pull-left" href="/"><i class="material-icons">&#xE317;</i></a>
-	Day Plan
+	<a class="mybtn btn btn-link btn-xs pull-left" href="/"><i class="material-icons">&#xE317;</i>Day Plan</a>	
 <% end %>
 
 <div id="myModal" class="modal fade modal-calender" role="dialog">
@@ -46,7 +45,7 @@
 							<li>
 								<h6 class="teachers-list-heading">Class <%= grade.grade_name %><%= section.section_name %><i class="material-icons arrow-up-icon pull-right">&#xE316;</i></h6>
 								<div class="container-width classRoute">
-									<div class="calendar" data-grade-id="<%= grade.id %>" data-section-id="<%= section.id %>">
+									<div class="calendar class-calendar" data-grade-id="<%= grade.id %>" data-section-id="<%= section.id %>">
 				
 									</div>
 
@@ -60,7 +59,7 @@
 				</ul>			
 			<% end %>
 		</div>
-		<div class="tab-pane active" id="teacher-plan">
+		<div class="tab-pane" id="teacher-plan">
 			<% if(!@teachers.blank?) %>
 				<ul class="list-unstyled teachers-list index-conversation-modal" style ="max-height: none">
 					<% @teachers.each do |teacher| %>
@@ -68,7 +67,7 @@
 						<li>
 							<h6 class="teachers-list-heading"><%= teacher.first_name %> <%= teacher.last_name %> (<%= teacher.details %>)<i class="material-icons arrow-up-icon pull-right">&#xE316;</i></h6>
 							<div class="container-width classRoute">
-								<div class="teacher-calendar" data-teacher-id="<%= teacher.id %>">
+								<div class="calendar teacher-calendar" data-teacher-id="<%= teacher.id %>">
 			
 								</div>
 
