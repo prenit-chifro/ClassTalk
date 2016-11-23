@@ -1,5 +1,5 @@
 class ConversationsController < ApplicationController
-	before_action :set_conversation, except: [:index, :new, :create, :new_group, :add_new_member] 
+	before_action :set_conversation, except: [:index, :new, :create, :new_group, :add_new_member, :my_classwork] 
 
 	def set_conversation
 		@conversation = Conversation.find_by(id: params[:id])
@@ -12,7 +12,6 @@ class ConversationsController < ApplicationController
 	def index
 		@conversations = current_user.participating_conversations.order(updated_at: :desc)
 		@sent_conversations = @conversations.where(creator_id: current_user.id)
-		@sections = current_user.sections
 		
 		@unread_conversation_ids_array = []
 		@conversations.each do |conversation|
@@ -41,6 +40,7 @@ class ConversationsController < ApplicationController
 			@teachers = @institute.get_members_with_given_roles(["Teacher"])
 			@institutes_grades_sections_models = @institute.institutes_grades_sections_models
 			
+			render "admin_index"
 		end
 
 		if(current_user.role == "Teacher")
@@ -404,4 +404,71 @@ class ConversationsController < ApplicationController
 		
 		@unread_conversation_ids_array.delete(@conversation.id) if !@unread_conversation_ids_array.blank?
 	end
+
+	def my_classwork
+	    @participating_conversations = current_user.participating_conversations
+	    @message_categories_array = []
+	    if(!@participating_conversations.blank?)
+	      @participating_conversations.each do |conversation|
+	        conversation.message_categories = "" if conversation.message_categories.blank?
+	        conversation_message_categories_array = conversation.message_categories.split(", ")
+	        conversation_message_categories_array.each do |category|
+	            if(!@message_categories_array.include?(category))
+	                @message_categories_array << category
+	            end
+
+	            conversation_participant_model = conversation.get_conversation_participant_model_for_participant(current_user)
+				messages = conversation.messages.where("created_at >= ?", conversation_participant_model.created_at).order(created_at: :desc)
+				if(params[:page] and params[:page].to_i >= 2)
+					
+					if( !params[:message_category].blank? )
+						if(params[:message_category] == "Messages")
+							@Messages_category_messages = @messages.page(params[:page]).per(20).to_a.reverse!
+							set_seen_status_to_recieved_messages(@Messages_category_messages)
+							render "show", layout: false
+							return
+						end
+						if(params[:message_category] == "Media")
+							@Media_category_messages = Message.includes(:attachments).where.not(attachments: { attachable_id: nil }).where(id: @messages.map(&:id))
+							@Media_category_messages = Kaminari.paginate_array(@Media_category_messages).page(params[:page]).per(20).to_a.reverse!
+							set_seen_status_to_recieved_messages(@Media_category_messages)
+							render "show", layout: false
+							return
+						end
+						
+						if(!@conversation.message_categories.blank? and @conversation.message_categories.include?(params[:message_category]))
+							@conversation.message_categories.split(", ").each do |category|
+								instance_variable_set("@" + category + "_messages", @messages.where(category: category))
+								instance_variable_set("@" + category + "_messages", instance_variable_get("@" + category + "_messages").page(params[:page]).per(20).to_a.reverse!)
+								set_seen_status_to_recieved_messages(instance_variable_get("@" + category + "_messages"))
+							end
+							
+							render "show", layout: false
+							return
+						end
+								
+					end
+
+				else 
+
+					
+					if(instance_variable_get("@" + category + "_messages").blank?)
+						instance_variable_set("@" + category + "_messages", messages.where(category: category).page(1).per(10))
+					else
+						instance_variable_set("@" + category + "_messages", instance_variable_get("@" + category + "_messages") + messages.where(category: category).page(1).per(10))
+						set_seen_status_to_recieved_messages(messages.where(category: category).page(1).per(10))
+					end
+					
+					Rails.logger.debug instance_variable_get("@" + category + "_messages").inspect
+			
+				end
+	        end
+	        
+	      end
+
+
+	    end
+
+
+ 	end
 end

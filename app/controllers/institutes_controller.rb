@@ -158,4 +158,6 @@ class InstitutesController < ApplicationController
       end
     end    
   end
+
+  
 end

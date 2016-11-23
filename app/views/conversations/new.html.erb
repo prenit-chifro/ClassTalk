@@ -4,7 +4,7 @@
 <nav class="navbar navbar-inverse main-app-header main-app-conversation-new-header" style="margin-top:50px;margin-bottom:0;background:#ea5b31;border:none;">
 	<div class="container-fluid">
 		<div class="navbar-header main-app-header main-app-conversation-new-header pull-left">
-			<a class="mybtn btn btn-link btn-xs pull-left" href="/" style="padding:10px;"><i class="material-icons">&#xE317;</i></a>
+			<a class="mybtn btn btn-link btn-xs pull-left" href="<%= conversation_path(id: params[:conversation_id]) %>" style="padding:10px;"><i class="material-icons">&#xE317;</i></a>
 			<span class="checkbox-counter" style="color:#fff;margin-left:0;line-height:4;">Select</span> <span style="font-size:11px;color:#fff;">Participants</span>
 			
 		</div>
@@ -25,8 +25,13 @@
 		<div class="">
 			<ul class="list-inline list-conversation-group-search" style="margin:10px;">
 				<% if(current_user.role != "Student" and current_user.role != "Parent") %>
+					
+					<div class="pull-left add-member">
+						<span><%= submit_tag :Add do %>Save<% end %>	</span><i class="material-icons">&#xE876;</i>
+					</div>
+				
 					<%= link_to new_group_conversations_path do %>		
-						<div class="pull-left add-member">
+						<div class="pull-right add-member">
 							<span>New Group</span><i class="material-icons">&#xE7FE;</i>
 						</div>
 					<% end %>

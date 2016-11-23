@@ -1,0 +1,99 @@
+<% content_for :heading do %>
+	<a class="mybtn btn btn-link btn-xs pull-left" href="/"><i class="material-icons">&#xE317;</i></a>
+	My ClassWork
+<% end %>
+
+<div class="detect-div"></div>
+<div class="container-width tabs-container">
+	<div class="scroller scroller-left"><</div>
+	<div class="scroller scroller-right">></div>	
+	<div class="tabs-wrapper">		
+		<div class="chat-show-tabs-upper-div">
+			<ul class="nav nav-tabs list" role="tablist" id="tablist">
+				<% if(!@message_categories_array.blank?) %>
+					<% i=0 %>
+					<% @message_categories_array.each do |category| %>
+						<li <%= 'class="active"' if i==0 %>>								
+							<a data-toggle="tab" href="#all-<%=category%>" data-message-category-input-id="#<%= category %>-message-category-input" <%= "class='active#{i=1}" if i==0 %>> <%= category %></a>
+						</li>
+					<% end %>
+				<% end %>
+			</ul>
+		</div>	
+		<div class="tab-content admin-home-content" style="margin-top:50px;">
+			<% if(!@message_categories_array.blank?) %>
+				<% i=0 %>
+				<% @message_categories_array.each do |category| %>
+
+					<div class="tab-pane messages <%= category %>-category-messages <%= "class='active#{i=1}" if i==0 %>" id="all-<%= category %>">
+						<% category_messages = instance_variable_get("@" + category + "_messages") %>
+						<% if(!category_messages.blank?) %>
+							<% category_messages.each do |message| %>
+								<%= render partial: "messages/message", locals: {conversation: message.conversation, message: message} %>
+							<% end %>
+						<% end %>
+						
+					</div>
+				<% end %>
+
+			<% end %>	
+			
+		</div>
+	</div>
+</div>
+<div id="seenStatusModal" class="modal fade" role="dialog">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4 class="modal-title">Seen By Users</h4>
+			</div>
+			<div class="modal-body">
+				
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+	var randomColors = ["#35a5a5",'#8cc4c4','#8b5861',"#d7b26f"];
+	$(".ch-thumb").each(function(index) {
+        var len = randomColors.length;
+        var randomNum = Math.floor(Math.random()*len);
+        $(this).css("backgroundColor",randomColors[randomNum]);
+        randomColors.slice(randomNum, 1);
+    });
+	$(".double-checkmark").on("click", function(){
+		var messageId = $(this).attr("data-message-id");
+		var conversationId = $(this).attr("data-conversation-id");
+		$.ajax({
+			url: "/conversations/" + conversationId + "/messages/" + messageId + "/seen_by_users.js",  
+			type: "GET",
+			success: function(data) {
+				if(data.trim().length == 0) {
+					$("#seenStatusModal").find(".modal-body").html("No one has yet seen this message !");
+				} else {
+					$("#seenStatusModal").find(".modal-body").html(data);
+				}
+			}
+		});
+		$("#seenStatusModal").modal('show');
+	});
+
+	$(".checkmark").on("click", function(){
+		var messageId = $(this).attr("data-message-id");
+		var conversationId = $(this).attr("data-conversation-id");
+		$.ajax({
+			url: "/conversations/" + conversationId +"/messages/" + messageId + "/acted_by_users.js",  
+			type: "GET",
+			success: function(data) {
+				if(data.trim().length == 0) {
+					$("#seenStatusModal").find(".modal-body").html("No one has yet acted on this message !");
+				} else {
+					$("#seenStatusModal").find(".modal-body").html(data);
+				}
+			}
+		});
+		$("#seenStatusModal").modal('show');
+	});
+
+</script>
