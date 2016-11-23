@@ -1,3 +1,12 @@
+$('#dayPlanModal').modal('hide');
+
+$('.class-calendar[data-grade-id="<%= @timetable_slot.grade_id %>"][data-section-id="<%= @timetable_slot.section_id %>"]').fullCalendar('removeEvents', [<%= @timetable_slot.id %>]);
+$('.class-calendar[data-grade-id="<%= @timetable_slot.grade_id %>"][data-section-id="<%= @timetable_slot.section_id %>"]').fullCalendar(
+  'renderEvent', 
+  $.parseJSON("<%=j render(partial: 'timetable_slot.json', locals: {timetable_slot: @timetable_slot, slot_for: :Others}).html_safe %>"),
+  true
+);
+
 $('.teacher-calendar[data-teacher-id="<%= @timetable_slot.teacher_id %>"]').fullCalendar('removeEvents', [<%= @timetable_slot.id %>]);
 
 $('.teacher-calendar[data-teacher-id="<%= @timetable_slot.teacher_id %>"]').fullCalendar(
@@ -6,14 +15,6 @@ $('.teacher-calendar[data-teacher-id="<%= @timetable_slot.teacher_id %>"]').full
   true
 );
 
-$('.calendar[data-grade-id="<%= @timetable_slot.grade_id %>"][data-section-id="<%= @timetable_slot.section_id %>"]').fullCalendar('removeEvents', [<%= @timetable_slot.id %>]);
-$('.calendar[data-grade-id="<%= @timetable_slot.grade_id %>"][data-section-id="<%= @timetable_slot.section_id %>"]').fullCalendar(
-  'renderEvent', 
-  $.parseJSON("<%=j render(partial: 'timetable_slot.json', locals: {timetable_slot: @timetable_slot, slot_for: :Others}).html_safe %>"),
-  true
-);
-
-$('#myModal').modal('hide');
 
 
 

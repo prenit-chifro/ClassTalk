@@ -1,5 +1,5 @@
 <% content_for :heading do %>
-	<a class="mybtn btn btn-link btn-xs pull-left" href="/"><i class="material-icons">&#xE317;</i>Admin Panel</a>
+	Admin Panel</a>
 <% end %>
 	<div id="myModal" class="modal fade modal-calender" role="dialog">
 	  <div class="modal-dialog">
@@ -654,12 +654,373 @@
 			initMap();
 		}
 		if(target == "#all-dayplan"){
-			initDayPlanCalendar();
+			initClassDayPlanCalendar();
 		}
 		if(target == "#all-events-analytics"){
 			initEventCalendar();
 		}
+
+		if(target == "#class-plan"){
+			initClassDayPlanCalendar();
+		}
+		if(target == "#teacher-plan"){
+			initTeacherDayPlanCalendar();
+		}
 	});
+
+	function initEventCalendar(){
+		var calendarObject = $('.event-calendar').fullCalendar({
+	      header: {
+	        left: 'prev,next today',
+	        center: 'title',
+	        right: 'month,agendaWeek,agendaDay'
+	      },
+	      defaultView: "month",
+	      firstDay: 1,
+	      slotDuration: "01:00:00",
+	      scrollTime: "07:00:00",
+	      eventSources: [
+	      	{	
+	      		googleCalendarApiKey: 'AIzaSyBygb2VxPHEs8rV8j7dgreRvpowydmGrow',
+	  		   	url: 'https://www.google.com/calendar/feeds/indian__en%40holiday.calendar.google.com/public/basic',
+
+	  		    color: 'red',   // an option!
+	  		    textColor: 'black' // an option!
+
+	    		},
+	    		{
+	    		    url: '<%= institute_events_path(@institute) %>',
+	    		    color: '#a8a8e8',   // an option!
+	    		    textColor: 'black' // an option!
+	    		}
+
+	      ],
+	      editable: true,
+	      selectable: true,
+	      selectHelper: true,
+	      eventClick: function(event, jsEvent, view) {
+	          
+	      		if(event.edit_url){
+	      			$.ajax({
+			        	url: event.edit_url,
+			        	complete: function(data){
+			        		if(data.status == "200"){
+			        			eval(data.responseText);
+			        		}
+			        	}
+			        });
+	      		}else{
+	      			window.open(event.url);
+	      		}
+	                
+		        return false;
+	      },
+
+	      select: function(start, end) {
+	        
+	          $.ajax({
+	          url: "/institutes/<%= @institute.id %>/events/new.js?start_time=" + start.format() + '&end_time=' + end.format(),
+	          complete: function(data){
+	            if(data.status == "200"){
+	              eval(data.responseText);
+	            }
+	          }
+	        });
+	  
+	        
+	        
+	        
+	        $(this).fullCalendar('unselect');
+	      },
+	      eventDrop: function(event,dayDelta,minuteDelta,allDay,revertFunc) {
+	        
+	      	if(event.update_url){
+	      		if (confirm("update this event?")) {
+	              if(event.end){
+	                endTime = event.end
+	              }else{
+	                endTime = event.start  
+	              }
+	              
+		          	$.ajax({
+		      			url: event.update_url + "&start_time=" + event.start.format() + "&end_time=" + endTime.format() + "&is_all_day_event=" + allDay,
+			      		method: "PATCH",
+			        	complete: function(data){
+			        		if(data.status == "200"){
+			        			eval(data.responseText);
+			        		}
+			        	}	
+		      		});
+		        }
+	      		
+	      		
+	      	}else{
+
+	      	}
+	      },
+	      eventResize: function(event, delta, revertFunc) {
+		    if(event.update_url){
+		    	if (confirm("update this event?")) {
+		          	$.ajax({
+		      			url: event.update_url + "&start_time=" + event.start.format() + "&end_time=" + event.end.format(),
+			      		method: "PATCH",
+			        	complete: function(data){
+			        		if(data.status == "200"){
+			        			eval(data.responseText);
+			        		}
+			        	}	
+		      		});
+		        }
+	      		
+	      	}else{
+	      		
+	      	} 
+		        
+
+		  }
+	  	});
+	};
+		
+  		
+	var calendarObjects = [];
+	var teacherCalendarObjects = [];		
+	function initClassDayPlanCalendar(){
+
+		$.each($('.class-calendar'), function(index, calendarElement){
+		  var gradeId = $(calendarElement).attr("data-grade-id");
+		  var sectionId = $(calendarElement).attr("data-section-id");
+		  calendarObjects[index] = $(calendarElement).fullCalendar({
+			  header: {
+			    left: 'prev,next today',
+			    center: 'title',
+			    right: 'agendaWeek,agendaDay'
+			  },
+			  defaultView: "agendaWeek",
+			  firstDay: 1,
+			  slotDuration: "00:30:00",
+			  scrollTime: "08:00:00",
+			  ignoreTimezone: true,
+			  displayEventTime : false,
+			  eventSources: [
+			    { 
+			      googleCalendarApiKey: 'AIzaSyBygb2VxPHEs8rV8j7dgreRvpowydmGrow',
+			      url: 'https://www.google.com/calendar/feeds/indian__en%40holiday.calendar.google.com/public/basic',
+
+			      color: 'red',   // an option!
+			      textColor: 'black' // an option!
+
+			    },
+			    {
+			        url: '/institutes/<%= @institute.id %>/timetable_slots?grade_id='+gradeId + '&section_id='+sectionId,
+			        color: '#a8a8e8',   // an option!
+			        textColor: 'black' // an option!
+			    }
+
+			  ],
+			  editable: true,
+			  selectable: true,
+			  selectHelper: true,
+			  eventClick: function(event, jsEvent, view) {
+			      
+			      if(event.edit_url){
+			        $.ajax({
+			          url: event.edit_url,
+			          complete: function(data){
+			            if(data.status == "200"){
+			              $('#dayPlanModal').find('.modal-body').html(data.responseText);
+			              $('#dayPlanModal').modal('show');
+			            }
+			          }
+			        });
+			      }else{
+			        window.open(event.url);
+			      }
+			            
+			      return false;
+			  },
+			  select: function(start, end) {
+			    if(!this.dayClickedFlag){
+			      $.ajax({
+			        url: '/institutes/<%= @institute.id%>/timetable_slots/new.js?grade_id=' + gradeId + '&section_id=' + sectionId + '&start_time=' + start.format() + '&end_time=' + end.format() + '.js',
+			        complete: function(data){
+			          if(data.status == "200"){
+			            $('#dayPlanModal').find('.modal-body').html(data.responseText);
+			            $('#dayPlanModal').modal('show');
+			          }
+			        }
+			      });
+			      
+			    }
+			    
+			    
+			    $(this).fullCalendar('unselect');
+			  },
+			  eventDrop: function(event,dayDelta,minuteDelta,allDay,revertFunc) {
+			    
+			    if(event.update_url){
+			      if (confirm("Update this Day Plan Slot?")) {
+			          if(event.end){
+			            endTime = event.end
+			          }else{
+			            endTime = event.start  
+			          }
+			          
+			          $.ajax({
+				          url: event.update_url + "&start_time=" + event.start.format() + "&end_time=" + endTime.format(),
+				          method: "PATCH",
+				          complete: function(data){
+				            if(data.status == "200"){
+				              eval(data.responseText);
+				            }
+				          } 
+			          });
+			      }
+			      
+			      
+			    }else{
+
+			    }
+			  },
+			  eventResize: function(event, delta, revertFunc) {
+			  if(event.update_url){
+			    if (confirm("Update this Day Plan Slot?")) {
+			          $.ajax({
+			          url: event.update_url + "&start_time=" + event.start.format() + "&end_time=" + event.end.format(),
+			          method: "PATCH",
+			          complete: function(data){
+			            if(data.status == "200"){
+			              eval(data.responseText);
+			            }
+			          } 
+			        });
+			      }
+			      
+			    }else{
+			      
+			    } 
+			  }
+			});
+		});
+	
+	}		
+	
+	function initTeacherDayPlanCalendar(){
+		$.each($('.teacher-calendar'), function(index, calendarElement){
+		  var teacherId = $(calendarElement).attr("data-teacher-id");
+		  
+		  teacherCalendarObjects[index] = $(calendarElement).fullCalendar({
+			  header: {
+			    left: 'prev,next today',
+			    center: 'title',
+			    right: 'agendaWeek,agendaDay'
+			  },
+			  defaultView: "agendaWeek",
+			  firstDay: 1,
+			  slotDuration: "00:30:00",
+			  scrollTime: "08:00:00",
+			  ignoreTimezone: true,
+			  displayEventTime : false,
+			  eventSources: [
+			    { 
+			      googleCalendarApiKey: 'AIzaSyBygb2VxPHEs8rV8j7dgreRvpowydmGrow',
+			      url: 'https://www.google.com/calendar/feeds/indian__en%40holiday.calendar.google.com/public/basic',
+
+			      color: 'red',   // an option!
+			      textColor: 'black' // an option!
+
+			    },
+			    {
+			        url: '/institutes/<%= @institute.id %>/timetable_slots?teacher_id=' + teacherId,
+			        color: '#a8a8e8',   // an option!
+			        textColor: 'black' // an option!
+			    }
+
+			  ],
+			  editable: true,
+			  selectable: true,
+			  selectHelper: true,
+			  eventClick: function(event, jsEvent, view) {
+			      
+			      if(event.edit_url){
+			        $.ajax({
+			          url: event.edit_url,
+			          complete: function(data){
+			            if(data.status == "200"){
+			              eval(data.responseText);
+			            }
+			          }
+			        });
+			      }else{
+			        window.open(event.url);
+			      }
+			            
+			      return false;
+			  },
+			  select: function(start, end) {
+			    if(!this.dayClickedFlag){
+			      $.ajax({
+			        url: '/institutes/<%= @institute.id%>/timetable_slots/new.js?teacher_id=' + teacherId + '&start_time=' + start.format() + '&end_time=' + end.format(),
+			        complete: function(data){
+			          if(data.status == "200"){
+			            $('#dayPlanModal').find('.modal-body').html(data.responseText);
+			            $('#dayPlanModal').modal('show');
+			          }
+			        }
+			      });
+			      
+			    }
+			    
+			    
+			    $(this).fullCalendar('unselect');
+			  },
+			  eventDrop: function(event,dayDelta,minuteDelta,allDay,revertFunc) {
+			    
+			    if(event.update_url){
+			      if (confirm("Update this Day Plan Slot?")) {
+			          if(event.end){
+			            endTime = event.end
+			          }else{
+			            endTime = event.start  
+			          }
+			          
+			          $.ajax({
+				          url: event.update_url + "&start_time=" + event.start.format() + "&end_time=" + endTime.format(),
+				          method: "PATCH",
+				          complete: function(data){
+				            if(data.status == "200"){
+				              eval(data.responseText);
+				            }
+				          } 
+			          });
+			      }
+			      
+			      
+			    }else{
+
+			    }
+			  },
+			  eventResize: function(event, delta, revertFunc) {
+			  if(event.update_url){
+			    if (confirm("Update this Day Plan Slot?")) {
+			          $.ajax({
+			          url: event.update_url + "&start_time=" + event.start.format() + "&end_time=" + event.end.format(),
+			          method: "PATCH",
+			          complete: function(data){
+			            if(data.status == "200"){
+			              eval(data.responseText);
+			            }
+			          } 
+			        });
+			      }
+			      
+			    }else{
+			      
+			    } 
+			  }
+			});
+		});
+	}
+
     $('#startDatetimepicker, #endDatetimepicker').datetimepicker({
 		defaultDate: new Date(),
         format: 'DD/MM/YYYY'
@@ -781,8 +1142,8 @@
         randomColors.slice(randomNum, 1);
     });
 
-    </script>
-	<script type="text/javascript">
+</script>
+<script type="text/javascript">
 		$(function () {
 			$('#datetimepicker11, #datetimepicker12').datetimepicker({
 				icons: {
@@ -794,366 +1155,7 @@
 			});
 		});
 		
-		function initEventCalendar(){
-			var calendarObject = $('.event-calendar').fullCalendar({
-	      header: {
-	        left: 'prev,next today',
-	        center: 'title',
-	        right: 'month,agendaWeek,agendaDay'
-	      },
-	      defaultView: "month",
-	      firstDay: 1,
-	      slotDuration: "01:00:00",
-	      scrollTime: "07:00:00",
-	      eventSources: [
-	      	{	
-	      		googleCalendarApiKey: 'AIzaSyBygb2VxPHEs8rV8j7dgreRvpowydmGrow',
-	  		   	url: 'https://www.google.com/calendar/feeds/indian__en%40holiday.calendar.google.com/public/basic',
-
-	  		    color: 'red',   // an option!
-	  		    textColor: 'black' // an option!
-
-	    		},
-	    		{
-	    		    url: '<%= institute_events_path(@institute) %>',
-	    		    color: '#a8a8e8',   // an option!
-	    		    textColor: 'black' // an option!
-	    		}
-
-	      ],
-	      editable: true,
-	      selectable: true,
-	      selectHelper: true,
-	      eventClick: function(event, jsEvent, view) {
-	          
-	      		if(event.edit_url){
-	      			$.ajax({
-			        	url: event.edit_url,
-			        	complete: function(data){
-			        		if(data.status == "200"){
-			        			eval(data.responseText);
-			        		}
-			        	}
-			        });
-	      		}else{
-	      			window.open(event.url);
-	      		}
-	                
-		        return false;
-	      },
-
-	      select: function(start, end) {
-	        
-	          $.ajax({
-	          url: "/institutes/<%= @institute.id %>/events/new.js?start_time=" + start.format() + '&end_time=' + end.format(),
-	          complete: function(data){
-	            if(data.status == "200"){
-	              eval(data.responseText);
-	            }
-	          }
-	        });
-	  
-	        
-	        
-	        
-	        $(this).fullCalendar('unselect');
-	      },
-	      eventDrop: function(event,dayDelta,minuteDelta,allDay,revertFunc) {
-	        
-	      	if(event.update_url){
-	      		if (confirm("update this event?")) {
-	              if(event.end){
-	                endTime = event.end
-	              }else{
-	                endTime = event.start  
-	              }
-	              
-		          	$.ajax({
-		      			url: event.update_url + "&start_time=" + event.start.format() + "&end_time=" + endTime.format() + "&is_all_day_event=" + allDay,
-			      		method: "PATCH",
-			        	complete: function(data){
-			        		if(data.status == "200"){
-			        			eval(data.responseText);
-			        		}
-			        	}	
-		      		});
-		        }
-	      		
-	      		
-	      	}else{
-
-	      	}
-	      },
-	      eventResize: function(event, delta, revertFunc) {
-		    if(event.update_url){
-		    	if (confirm("update this event?")) {
-		          	$.ajax({
-		      			url: event.update_url + "&start_time=" + event.start.format() + "&end_time=" + event.end.format(),
-			      		method: "PATCH",
-			        	complete: function(data){
-			        		if(data.status == "200"){
-			        			eval(data.responseText);
-			        		}
-			        	}	
-		      		});
-		        }
-	      		
-	      	}else{
-	      		
-	      	} 
-		        
-
-		  }
-	  	});
-		};
-		
-  		
-	var calendarObjects = [];
-	var teacherCalendarObjects = [];		
-	function initDayPlanCalendar(){
-		$.each($('.class-calendar'), function(index, calendarElement){
-	  var gradeId = $(calendarElement).attr("data-grade-id");
-	  var sectionId = $(calendarElement).attr("data-section-id");
-	  calendarObjects[index] = $(calendarElement).fullCalendar({
-		  header: {
-		    left: 'prev,next today',
-		    center: 'title',
-		    right: 'agendaWeek,agendaDay'
-		  },
-		  defaultView: "agendaWeek",
-		  firstDay: 1,
-		  slotDuration: "00:30:00",
-		  scrollTime: "08:00:00",
-		  ignoreTimezone: true,
-		  displayEventTime : false,
-		  eventSources: [
-		    { 
-		      googleCalendarApiKey: 'AIzaSyBygb2VxPHEs8rV8j7dgreRvpowydmGrow',
-		      url: 'https://www.google.com/calendar/feeds/indian__en%40holiday.calendar.google.com/public/basic',
-
-		      color: 'red',   // an option!
-		      textColor: 'black' // an option!
-
-		    },
-		    {
-		        url: '/institutes/<%= @institute.id %>/timetable_slots?grade_id='+gradeId + '&section_id='+sectionId,
-		        color: '#a8a8e8',   // an option!
-		        textColor: 'black' // an option!
-		    }
-
-		  ],
-		  editable: true,
-		  selectable: true,
-		  selectHelper: true,
-		  eventClick: function(event, jsEvent, view) {
-		      
-		      if(event.edit_url){
-		        $.ajax({
-		          url: event.edit_url,
-		          complete: function(data){
-		            if(data.status == "200"){
-		              $('#dayPlanModal').find('.modal-body').html(data.responseText);
-		              $('#dayPlanModal').modal('show');
-		            }
-		          }
-		        });
-		      }else{
-		        window.open(event.url);
-		      }
-		            
-		      return false;
-		  },
-		  select: function(start, end) {
-		    if(!this.dayClickedFlag){
-		      $.ajax({
-		        url: '/institutes/<%= @institute.id%>/timetable_slots/new.js?grade_id=' + gradeId + '&section_id=' + sectionId + '&start_time=' + start.format() + '&end_time=' + end.format() + '.js',
-		        complete: function(data){
-		          if(data.status == "200"){
-		            $('#dayPlanModal').find('.modal-body').html(data.responseText);
-		            $('#dayPlanModal').modal('show');
-		          }
-		        }
-		      });
-		      
-		    }
-		    
-		    
-		    $(this).fullCalendar('unselect');
-		  },
-		  eventDrop: function(event,dayDelta,minuteDelta,allDay,revertFunc) {
-		    
-		    if(event.update_url){
-		      if (confirm("Update this Day Plan Slot?")) {
-		          if(event.end){
-		            endTime = event.end
-		          }else{
-		            endTime = event.start  
-		          }
-		          
-		          $.ajax({
-			          url: event.update_url + "&start_time=" + event.start.format() + "&end_time=" + endTime.format(),
-			          method: "PATCH",
-			          complete: function(data){
-			            if(data.status == "200"){
-			              eval(data.responseText);
-			            }
-			          } 
-		          });
-		      }
-		      
-		      
-		    }else{
-
-		    }
-		  },
-		  eventResize: function(event, delta, revertFunc) {
-		  if(event.update_url){
-		    if (confirm("Update this Day Plan Slot?")) {
-		          $.ajax({
-		          url: event.update_url + "&start_time=" + event.start.format() + "&end_time=" + event.end.format(),
-		          method: "PATCH",
-		          complete: function(data){
-		            if(data.status == "200"){
-		              eval(data.responseText);
-		            }
-		          } 
-		        });
-		      }
-		      
-		    }else{
-		      
-		    } 
-		  }
-		});
-	});
-
-	$.each($('.teacher-calendar'), function(index, calendarElement){
-	  var teacherId = $(calendarElement).attr("data-teacher-id");
-	  
-	  teacherCalendarObjects[index] = $(calendarElement).fullCalendar({
-		  header: {
-		    left: 'prev,next today',
-		    center: 'title',
-		    right: 'agendaWeek,agendaDay'
-		  },
-		  defaultView: "agendaWeek",
-		  firstDay: 1,
-		  slotDuration: "00:30:00",
-		  scrollTime: "08:00:00",
-		  ignoreTimezone: true,
-		  displayEventTime : false,
-		  eventSources: [
-		    { 
-		      googleCalendarApiKey: 'AIzaSyBygb2VxPHEs8rV8j7dgreRvpowydmGrow',
-		      url: 'https://www.google.com/calendar/feeds/indian__en%40holiday.calendar.google.com/public/basic',
-
-		      color: 'red',   // an option!
-		      textColor: 'black' // an option!
-
-		    },
-		    {
-		        url: '/institutes/<%= @institute.id %>/timetable_slots?teacher_id=' + teacherId,
-		        color: '#a8a8e8',   // an option!
-		        textColor: 'black' // an option!
-		    }
-
-		  ],
-		  editable: true,
-		  selectable: true,
-		  selectHelper: true,
-		  eventClick: function(event, jsEvent, view) {
-		      
-		      /*if(event.edit_url){
-		        $.ajax({
-		          url: event.edit_url,
-		          complete: function(data){
-		            if(data.status == "200"){
-		              eval(data.responseText);
-		            }
-		          }
-		        });
-		      }else{
-		        window.open(event.url);
-		      }
-		            
-		      return false;*/
-		  },
-
-		  dayClick: function(date, jsEvent, view) {
-		    /*this["dayClickedFlag"] = true;
-		    $.ajax({
-		      url: "events/new.js?start_time= " + date.format() + '&end_time= ' + date.format(),
-		      complete: function(data){
-		        if(data.status == "200"){
-		          eval(data.responseText);
-		        }
-		      }
-		    });*/
-		  },
-		  select: function(start, end) {
-		    if(!this.dayClickedFlag){
-		      $.ajax({
-		        url: '/institutes/<%= @institute.id%>/timetable_slots/new.js?teacher_id=' + teacherId + '&start_time=' + start.format() + '&end_time=' + end.format(),
-		        complete: function(data){
-		          if(data.status == "200"){
-		            $('#dayPlanModal').find('.modal-body').html(data.responseText);
-		            $('#dayPlanModal').modal('show');
-		          }
-		        }
-		      });
-		      
-		    }
-		    
-		    
-		    $(this).fullCalendar('unselect');
-		  },
-		  eventDrop: function(event,dayDelta,minuteDelta,allDay,revertFunc) {
-		    
-		    if(event.update_url){
-		      if (confirm("Update this Day Plan Slot?")) {
-		          if(event.end){
-		            endTime = event.end
-		          }else{
-		            endTime = event.start  
-		          }
-		          
-		          $.ajax({
-			          url: event.update_url + "&start_time=" + event.start.format() + "&end_time=" + endTime.format(),
-			          method: "PATCH",
-			          complete: function(data){
-			            if(data.status == "200"){
-			              eval(data.responseText);
-			            }
-			          } 
-		          });
-		      }
-		      
-		      
-		    }else{
-
-		    }
-		  },
-		  eventResize: function(event, delta, revertFunc) {
-		  if(event.update_url){
-		    if (confirm("Update this Day Plan Slot?")) {
-		          $.ajax({
-		          url: event.update_url + "&start_time=" + event.start.format() + "&end_time=" + event.end.format(),
-		          method: "PATCH",
-		          complete: function(data){
-		            if(data.status == "200"){
-		              eval(data.responseText);
-		            }
-		          } 
-		        });
-		      }
-		      
-		    }else{
-		      
-		    } 
-		  }
-		});
-	});
-	}	  
+			
     $(".classRoute").parents("div.wrapper").find(".navbar-default").css("box-shadow", "none");	
 	$(".modal-label").on("click", function(e){
 		updateCheckboxCounter();

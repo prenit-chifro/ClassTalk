@@ -6,14 +6,20 @@
 <div class="container-width tabs-container">
 	<div class="scroller scroller-left"><</div>
 	<div class="scroller scroller-right">></div>	
-	<div class="tabs-wrapper">		
+	<div class="tabs-wrapper" style="margin-top:50px !important;">		
 		<div class="chat-show-tabs-upper-div">
 			<ul class="nav nav-tabs list" role="tablist" id="tablist">
 				<% if(!@message_categories_array.blank?) %>
 					<% i=0 %>
 					<% @message_categories_array.each do |category| %>
-						<li <%= 'class="active"' if i==0 %>>								
-							<a data-toggle="tab" href="#all-<%=category%>" data-message-category-input-id="#<%= category %>-message-category-input" <%= "class='active#{i=1}" if i==0 %>> <%= category %></a>
+						<% if(i==0) %>
+							<% active_or_not = "active" %>
+							<% i=1 %>
+						<% else %>
+							<% active_or_not = "" %>
+						<% end %>
+						<li class="<%= active_or_not %>">								
+							<a data-toggle="tab" href="#all-<%=category%>" data-message-category-input-id="#<%= category %>-message-category-input"> <%= category %></a>
 						</li>
 					<% end %>
 				<% end %>
@@ -23,8 +29,13 @@
 			<% if(!@message_categories_array.blank?) %>
 				<% i=0 %>
 				<% @message_categories_array.each do |category| %>
-
-					<div class="tab-pane messages <%= category %>-category-messages <%= "class='active#{i=1}" if i==0 %>" id="all-<%= category %>">
+					<% if(i==0) %>
+						<% active_or_not = "active" %>
+						<% i=1  %>
+					<% else %>
+						<% active_or_not = "" %>
+					<% end %>
+					<div class="tab-pane messages <%= category %>-category-messages <%= active_or_not %>" id="all-<%=category%>">
 						<% category_messages = instance_variable_get("@" + category + "_messages") %>
 						<% if(!category_messages.blank?) %>
 							<% category_messages.each do |message| %>
@@ -46,6 +57,19 @@
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal">&times;</button>
 				<h4 class="modal-title">Seen By Users</h4>
+			</div>
+			<div class="modal-body">
+				
+			</div>
+		</div>
+	</div>
+</div>
+<div id="submissionModal" class="modal fade" role="dialog">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4 class="modal-title">Submission Report</h4>
 			</div>
 			<div class="modal-body">
 				
@@ -86,13 +110,13 @@
 			type: "GET",
 			success: function(data) {
 				if(data.trim().length == 0) {
-					$("#seenStatusModal").find(".modal-body").html("No one has yet acted on this message !");
+					$("#submissionModal").find(".modal-body").html("No one has yet acted on this message !");
 				} else {
-					$("#seenStatusModal").find(".modal-body").html(data);
+					$("#submissionModal").find(".modal-body").html(data);
 				}
 			}
 		});
-		$("#seenStatusModal").modal('show');
+		$("#submissionModal").modal('show');
 	});
 
 </script>

@@ -1,13 +1,9 @@
-<nav class="navbar navbar-inverse navbar-fixed-top main-app-header main-app-conversation-new-header">
-	<div class="container-fluid">
-		<div class="navbar-header main-app-header main-app-conversation-new-header pull-left">
-			<a class="mybtn btn btn-link btn-xs pull-left" href="/notices"><i class="material-icons">&#xE317;</i></a>
-		</div>	
-	</div>
-</nav>
+<% content_for :heading do %>
+	<a class="mybtn btn btn-link btn-xs pull-left" href="/institute/<%= @institute.id %>/notices"><i class="material-icons">&#xE317;</i></a>
+<% end %>
 <div class="container">
 	<div class="sticky-notes-new">
-		<%= form_tag notice_path(@notice), method: :patch, remote: true do %>
+		<%= form_tag institute_notice_path(@institute, @notice), method: :patch, remote: true do %>
 			<span class="edit-notices-form-title"><%= @institute.institute_name %></span><br>
 			<% @grade_section_models.each do |grade_section_model| %>
 				<span class="edit-notices-form-field">Class <%= grade_section_model.grade.grade_name %> <%= grade_section_model.section.section_name %> ,</span>

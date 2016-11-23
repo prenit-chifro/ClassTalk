@@ -1,5 +1,5 @@
 <% if(notice.can_user_edit_notice(current_user)) %>
-	<a href="/notices/<%= notice.id %>/edit">
+	<a href="/institutes/<%= @institute.id %>/notices/<%= notice.id %>/edit">
 		<i class="material-icons notices-icon notices-edit-icon">&#xE254;</i>
 	</a>	
 	<%= link_to institute_notices_path(@institute), method: :delete do %>

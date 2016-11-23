@@ -7,16 +7,10 @@
     
 	<div class="container">
 		<div class="sticky-notes-new">
-		<%= form_tag institute_notices_path, remote: true do %>
+		<%= form_tag institute_notices_path(@institute), method: :post, remote: true do %>
 			
 			<div class="institute-select-div">
-				<% options = [["Select Institute",""]] %>
-				<div class="form-group event-institute-select-div">
-					<% @institutes.each do |institute| %>
-						<% options << [institute.institute_name.truncate(20),institute.id] %>
-					<% end %>
-					<%= select_tag :institute_id, options_for_select(options, ["Select Institute",""]), class: "form-control event-institute-input" %>
-				</div>
+				
 				<div class="all-classes" style="display: none">
 					<input type="checkbox" name="all_sections" id="all-sections-checkbox">		
 				</div>	
