@@ -95,6 +95,7 @@ class ConversationsController < ApplicationController
 			end
 
 			render "admin_index"
+
 		end
 
 		if(current_user.role == "Teacher")
