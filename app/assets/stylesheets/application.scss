@@ -489,11 +489,18 @@ ul.submenu>li a{
 ul.submenu>li:last-child a{
 	border: 0px;
 }
-
+.from-input-date .bootstrap-datetimepicker-widget{
+	left: inherit !important;
+	right: inherit !important;
+}
+.from-input-date .bootstrap-datetimepicker-widget.dropdown-menu.pull-right:before,
+.from-input-date .bootstrap-datetimepicker-widget.dropdown-menu.pull-right:after{
+	left: inherit !important;
+	right: inherit !important;
+}
 /*universal*/
 .admin-home-content div[id*="all"]{
 	max-height:100%;
-	overflow:hidden;
 }
 #all-institute-analytics{
 	padding:0;
@@ -1831,13 +1838,13 @@ div.calendar div.fc-view-container tbody.fc-body td.fc-widget-content > div.fc-s
 		padding: 8px;
 	}
 }
-@media (max-width:350px){
+@media only screen and (max-width:350px){
 	.main-navbar-brand a i{
 	    font-size: 15px;
 		margin-right: 2px;
 	}
 }
-@media (max-width: 470px){
+@media only screen and (max-width : 480px){
 	.right-menu{
 		font-size:13px;
 	}
