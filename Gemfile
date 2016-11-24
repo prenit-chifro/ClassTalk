@@ -119,3 +119,5 @@ end
 # For Bootstrap
 	gem 'bootstrap-sass', '~> 3.3.6'
 	
+# For JQuery UI
+	gem 'jquery-ui-rails'

@@ -5,11 +5,11 @@
 		<%= hidden_field_tag :end_time, @timetable_slot.end_time %>
 		<h3>
 			<%= @teacher.first_name %> <%= @teacher.last_name %> (<%= @teacher.details %>)
-			<span class="pull-right" style="color:#d9535f"> <%= get_am_pm_time(@timetable_slot.start_time) %> to <%= get_am_pm_time(@timetable_slot.end_time) %></span>
+			<span class="pull-right" style="font-size:17px; color:#d9535f"> <%= get_am_pm_time(@timetable_slot.start_time) %> to <%= get_am_pm_time(@timetable_slot.end_time) %></span>
 		</h3>
 		<span>Assign Class and Subject </span>
 		<div class="clearfix mar-btm"></div>
-		<div class="col-sm-5 col-xs-5">
+		<div class="col-sm-5 col-xs-6">
 			<div class="form-group">
 				<% options = [["Set Class", ""]] %>
 				<% @grade_section_models.each do |grade_section_model| %>
@@ -18,7 +18,7 @@
 				<%= select_tag :grade_section_id, options_for_select(options, ["Class #{@timetable_slot.grade.grade_name}#{@timetable_slot.section.section_name}", @grade_section_model.id]), class: "form-control",required: :true %>
 			</div>
 		</div>
-		<div class="col-sm-5 col-xs-5">
+		<div class="col-sm-5 col-xs-6">
 			<div class="form-group">
 				<% options = [["Set Subject", ""]] %>
 				<% @subjects.each do |subject| %>
@@ -27,7 +27,7 @@
 				<%= select_tag :subject_id, options_for_select(options, [@subject.subject_name, @subject.id]),class: "form-control", required: :true %>
 			</div>
 		</div>	
-		<div class="col-sm-2 col-xs-2">
+		<div class="col-sm-2 col-xs-12">
 			<button type="submit" class="btn btn-success" style="width: 100%;"> Save </button>
 		</div>
 	<% end %>
@@ -40,11 +40,11 @@
 	
 		<h3>
 			Class <%= @grade.grade_name %><%= @section.section_name %>
-			<span class="pull-right" style="color:#d9535f"> <%= get_am_pm_time(@timetable_slot.start_time) %> to <%= get_am_pm_time(@timetable_slot.end_time) %></span>
+			<span class="pull-right" style="font-size:17px;color:#d9535f"> <%= get_am_pm_time(@timetable_slot.start_time) %> to <%= get_am_pm_time(@timetable_slot.end_time) %></span>
 		</h3>
 		<span>Assign Teacher and Subject </span>
 		<div class="clearfix mar-btm"></div>
-		<div class="col-sm-5 col-xs-5">
+		<div class="col-sm-5 col-xs-6">
 			<div class="form-group">
 				<% options = [["Set Teacher", ""]] %>
 				<% @teachers.each do |teacher| %>
@@ -53,7 +53,7 @@
 				<%= select_tag :teacher_id, options_for_select(options, [@teacher.first_name + " " + @teacher.last_name, @teacher.id, ""]), class: "form-control",required: :true %>
 			</div>
 		</div>	
-		<div class="col-sm-5 col-xs-5">
+		<div class="col-sm-5 col-xs-6">
 			<div class="form-group">
 				<% options = [["Set Subject", ""]] %>
 				<% @subjects.each do |subject| %>
@@ -62,7 +62,7 @@
 				<%= select_tag :subject_id, options_for_select(options, [@subject.subject_name, @subject.id]),class: "form-control", required: :true %>
 			</div>
 		</div>	
-		<div class="col-sm-2 col-xs-2">
+		<div class="col-sm-2 col-xs-12">
 			<button type="submit" class="btn btn-success" style="width: 100%;"> Save </button>
 		</div>
 	<% end %>

@@ -98,9 +98,10 @@
 	initClassDayPlanCalendar();
 	function initClassDayPlanCalendar(){
 		$.each($('.class-calendar'), function(index, calendarElement){
+
 		  var gradeId = $(calendarElement).attr("data-grade-id");
 		  var sectionId = $(calendarElement).attr("data-section-id");
-
+		  var dayClickFlag = false;
 		  calendarObjects[index] = $(calendarElement).fullCalendar({
 			  header: {
 			    left: 'prev,next today',
@@ -150,9 +151,22 @@
 			            
 			      return false;
 			  },
+			  dayClick: function(date, jsEvent, view) {
+			  	
+		        dayClickFlag = true;
+		        $.ajax({
+			        url: '/institutes/<%= @institute.id%>/timetable_slots/new.js?grade_id=' + gradeId + '&section_id=' + sectionId + '&start_time=' + date.format() + '&end_time=' + date.add(30, 'minutes').format() + '.js',
+			        complete: function(data){
+			          if(data.status == "200"){
+			            $('#dayPlanModal').find('.modal-body').html(data.responseText);
+			            $('#dayPlanModal').modal('show');
+			          }
+			        }
+			      });
+		      },
 			  select: function(start, end) {
-				alert("selected");
-			    if(!this.dayClickedFlag){
+				
+			    if(!dayClickFlag){
 			      $.ajax({
 			        url: '/institutes/<%= @institute.id%>/timetable_slots/new.js?grade_id=' + gradeId + '&section_id=' + sectionId + '&start_time=' + start.format() + '&end_time=' + end.format() + '.js',
 			        complete: function(data){
@@ -162,7 +176,7 @@
 			          }
 			        }
 			      });
-			      
+			      dayClickFlag = false;
 			    }
 			    
 			    
@@ -220,7 +234,7 @@
 	function initTeacherDayPlanCalendar(){
 		$.each($('.teacher-calendar'), function(index, calendarElement){
 		  var teacherId = $(calendarElement).attr("data-teacher-id");
-		  
+		  var dayClickFlag = false;
 		  teacherCalendarObjects[index] = $(calendarElement).fullCalendar({
 			  header: {
 			    left: 'prev,next today',
@@ -252,6 +266,20 @@
 			  editable: true,
 			  selectable: true,
 			  selectHelper: true,
+			  dayClick: function(date, jsEvent, view) {
+			  	dayClickFlag = true;
+			  	  $.ajax({
+			        url: '/institutes/<%= @institute.id%>/timetable_slots/new.js?teacher_id=' + teacherId + '&start_time=' + date.format() + '&end_time=' + date.add(30, 'minutes').format(),
+			        complete: function(data){
+			          if(data.status == "200"){
+			            $('#dayPlanModal').find('.modal-body').html(data.responseText);
+			            $('#dayPlanModal').modal('show');
+			          }
+			        }
+			      });
+			      
+		        
+		      },
 			  eventClick: function(event, jsEvent, view) {
 			      
 			      if(event.edit_url){
@@ -270,7 +298,7 @@
 			      return false;
 			  },
 			  select: function(start, end) {
-			    if(!this.dayClickedFlag){
+			    if(!dayClickFlag){
 			      $.ajax({
 			        url: '/institutes/<%= @institute.id%>/timetable_slots/new.js?teacher_id=' + teacherId + '&start_time=' + start.format() + '&end_time=' + end.format(),
 			        complete: function(data){
@@ -280,7 +308,7 @@
 			          }
 			        }
 			      });
-			      
+			      dayClickFlag = false;
 			    }
 			    
 			    

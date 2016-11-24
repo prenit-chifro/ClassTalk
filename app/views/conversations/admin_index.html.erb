@@ -100,7 +100,7 @@
 						<% if(current_user.role == "Institute Admin") %>
 							<li>
 								<h6 class="teachers-list-heading">Staff<i class="material-icons arrow-up-icon pull-right">&#xE316;</i></h6>
-								<div class="container-width classRoute">
+								<div class="container-width classRoute" style="display: block;">
 									<ul class="nav nav-tabs" role="tablist" id="tablist">
 										<li class="active"><a data-toggle="tab" href="#all-principals">Principal</a></li>
 										<li><a data-toggle="tab" href="#all-admins">Admins</a></li>
@@ -513,7 +513,7 @@
 								<% if(current_user.role == "Institute Admin") %>
 									<li>
 										<h6 class="teachers-list-heading">Staff<i class="material-icons arrow-up-icon pull-right">&#xE316;</i></h6>
-										<div class="container-width classRoute">
+										<div class="container-width classRoute" style="display: block;">
 											<ul class="nav nav-tabs" role="tablist" id="tablist">
 												<li class="active"><a data-toggle="tab" href="#all-principals-modal">Principal</a></li>
 												<li><a data-toggle="tab" href="#all-admins-modal">Admins</a></li>
@@ -785,8 +785,10 @@
 	function initClassDayPlanCalendar(){
 
 		$.each($('.class-calendar'), function(index, calendarElement){
+
 		  var gradeId = $(calendarElement).attr("data-grade-id");
 		  var sectionId = $(calendarElement).attr("data-section-id");
+		  var dayClickFlag = false;
 		  calendarObjects[index] = $(calendarElement).fullCalendar({
 			  header: {
 			    left: 'prev,next today',
@@ -836,8 +838,22 @@
 			            
 			      return false;
 			  },
+			  dayClick: function(date, jsEvent, view) {
+			  	
+		        dayClickFlag = true;
+		        $.ajax({
+			        url: '/institutes/<%= @institute.id%>/timetable_slots/new.js?grade_id=' + gradeId + '&section_id=' + sectionId + '&start_time=' + date.format() + '&end_time=' + date.add(30, 'minutes').format() + '.js',
+			        complete: function(data){
+			          if(data.status == "200"){
+			            $('#dayPlanModal').find('.modal-body').html(data.responseText);
+			            $('#dayPlanModal').modal('show');
+			          }
+			        }
+			      });
+		      },
 			  select: function(start, end) {
-			    if(!this.dayClickedFlag){
+				
+			    if(!dayClickFlag){
 			      $.ajax({
 			        url: '/institutes/<%= @institute.id%>/timetable_slots/new.js?grade_id=' + gradeId + '&section_id=' + sectionId + '&start_time=' + start.format() + '&end_time=' + end.format() + '.js',
 			        complete: function(data){
@@ -847,7 +863,7 @@
 			          }
 			        }
 			      });
-			      
+			      dayClickFlag = false;
 			    }
 			    
 			    
@@ -904,9 +920,11 @@
 	
 	function initTeacherDayPlanCalendar(){
 		$.each($('.teacher-calendar'), function(index, calendarElement){
-		  var teacherId = $(calendarElement).attr("data-teacher-id");
-		  
-		  teacherCalendarObjects[index] = $(calendarElement).fullCalendar({
+
+		  var gradeId = $(calendarElement).attr("data-grade-id");
+		  var sectionId = $(calendarElement).attr("data-section-id");
+		  var dayClickFlag = false;
+		  calendarObjects[index] = $(calendarElement).fullCalendar({
 			  header: {
 			    left: 'prev,next today',
 			    center: 'title',
@@ -928,7 +946,7 @@
 
 			    },
 			    {
-			        url: '/institutes/<%= @institute.id %>/timetable_slots?teacher_id=' + teacherId,
+			        url: '/institutes/<%= @institute.id %>/timetable_slots?grade_id='+gradeId + '&section_id='+sectionId,
 			        color: '#a8a8e8',   // an option!
 			        textColor: 'black' // an option!
 			    }
@@ -944,7 +962,8 @@
 			          url: event.edit_url,
 			          complete: function(data){
 			            if(data.status == "200"){
-			              eval(data.responseText);
+			              $('#dayPlanModal').find('.modal-body').html(data.responseText);
+			              $('#dayPlanModal').modal('show');
 			            }
 			          }
 			        });
@@ -954,10 +973,11 @@
 			            
 			      return false;
 			  },
-			  select: function(start, end) {
-			    if(!this.dayClickedFlag){
-			      $.ajax({
-			        url: '/institutes/<%= @institute.id%>/timetable_slots/new.js?teacher_id=' + teacherId + '&start_time=' + start.format() + '&end_time=' + end.format(),
+			  dayClick: function(date, jsEvent, view) {
+			  	
+		        dayClickFlag = true;
+		        $.ajax({
+			        url: '/institutes/<%= @institute.id%>/timetable_slots/new.js?grade_id=' + gradeId + '&section_id=' + sectionId + '&start_time=' + date.format() + '&end_time=' + date.add(30, 'minutes').format() + '.js',
 			        complete: function(data){
 			          if(data.status == "200"){
 			            $('#dayPlanModal').find('.modal-body').html(data.responseText);
@@ -965,7 +985,20 @@
 			          }
 			        }
 			      });
-			      
+		      },
+			  select: function(start, end) {
+				
+			    if(!dayClickFlag){
+			      $.ajax({
+			        url: '/institutes/<%= @institute.id%>/timetable_slots/new.js?grade_id=' + gradeId + '&section_id=' + sectionId + '&start_time=' + start.format() + '&end_time=' + end.format() + '.js',
+			        complete: function(data){
+			          if(data.status == "200"){
+			            $('#dayPlanModal').find('.modal-body').html(data.responseText);
+			            $('#dayPlanModal').modal('show');
+			          }
+			        }
+			      });
+			      dayClickFlag = false;
 			    }
 			    
 			    

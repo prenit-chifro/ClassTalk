@@ -46,7 +46,7 @@
 					<% if(current_user.role == "Principal") %>
 						<li>
 							<h6 class="teachers-list-heading">Staff<i class="material-icons arrow-up-icon pull-right">&#xE316;</i></h6>
-							<div class="container-width classRoute">
+							<div class="container-width classRoute" style="display: block;">
 								<ul class="nav nav-tabs" role="tablist" id="tablist">
 									<li class="active"><a data-toggle="tab" href="#all-admins">Admins</a></li>
 									<li><a data-toggle="tab" href="#all-teachers">Teachers</a></li>
@@ -94,7 +94,7 @@
 					<% if(current_user.role == "Institute Admin") %>
 						<li>
 							<h6 class="teachers-list-heading">Staff<i class="material-icons arrow-up-icon pull-right">&#xE316;</i></h6>
-							<div class="container-width classRoute">
+							<div class="container-width classRoute" style="display: block;">
 								<ul class="nav nav-tabs" role="tablist" id="tablist">
 									<li class="active"><a data-toggle="tab" href="#all-principals">Principal</a></li>
 									<li><a data-toggle="tab" href="#all-admins">Admins</a></li>
@@ -163,7 +163,7 @@
 
 								<li>
 									<h6 class="teachers-list-heading">Class <%= grade.grade_name + section.section_name %><i class="material-icons arrow-up-icon pull-right">&#xE316;</i></h6>
-									<div class="container-width classRoute">
+									<div class="container-width classRoute " style="display: none;">
 										<ul class="nav nav-tabs" role="tablist" id="tablist">
 											<li class="active"><a data-toggle="tab" href="#all-parents-<%= grade_section_model.id %>">Parents</a></li>
 											<li><a data-toggle="tab" href="#all-students-<%= grade_section_model.id %>">Students</a></li>														
@@ -213,7 +213,7 @@
 					<% if(current_user.role == "Teacher") %>
 						<li>
 							<h6 class="teachers-list-heading">Staff<i class="material-icons arrow-up-icon pull-right">&#xE316;</i></h6>
-							<div class="container-width classRoute">
+							<div class="container-width classRoute" style="display: block;">
 								<ul class="nav nav-tabs" role="tablist" id="tablist">												
 									<li class="active"><a data-toggle="tab" href="#all-admins">Admin</a></li>
 									<li><a data-toggle="tab" href="#all-teachers">Teachers</a></li>												
@@ -265,7 +265,7 @@
 
 								<li>
 									<h6 class="teachers-list-heading">Class <%= grade.grade_name + section.section_name %><i class="material-icons arrow-up-icon pull-right">&#xE316;</i></h6>
-									<div class="container-width classRoute">
+									<div class="container-width classRoute" style="display: none;">
 										<ul class="nav nav-tabs" role="tablist" id="tablist">
 											<li class="active"><a data-toggle="tab" href="#all-parents-<%= section_subject_model.id %>">Parents</a></li>
 											<li><a data-toggle="tab" href="#all-students-<%= section_subject_model.id %>">Students</a></li>														
@@ -316,7 +316,7 @@
 					<% if(current_user.role == "Parent" or current_user.role == "Student") %>
 						<li>
 							<h6 class="teachers-list-heading">Staff<i class="material-icons arrow-up-icon pull-right">&#xE316;</i></h6>
-							<div class="container-width classRoute">
+							<div class="container-width classRoute" style="display: block;">
 								<ul class="nav nav-tabs" role="tablist" id="tablist">
 									<li class="active"><a data-toggle="tab" href="#all-admins">Admin</a></li>
 									<li class="active"><a data-toggle="tab" href="#all-teachers">Teachers</a></li>
@@ -379,7 +379,7 @@
 		});
 		return submit;
 	}
-	
+
 	$(".modal-label").on("click", function(e){
 		updateCheckboxCounter();
 	});

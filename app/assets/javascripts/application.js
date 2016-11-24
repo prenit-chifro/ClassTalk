@@ -17,8 +17,6 @@
 //= require moment 
 //= require bootstrap-datetimepicker
 //= require turbolinks
-//= require social-share-button
-//= require video
 //= require fullcalendar
 //= require fullcalendar/gcal
 //= require_tree .
@@ -148,6 +146,7 @@ $(document).on("turbolinks:load", function(){
 			$(".modal").find("button.close").trigger("click");
 		}
 	});	
+	
 	$(".teachers-list-heading").click(function(e){
 		$(this).find(".arrow-up-icon").toggleClass("arrow-down-icon");
 		$(this).parents("li").find("div.classRoute").slideToggle();
