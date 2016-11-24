@@ -43,6 +43,9 @@ class DeviseCreateUsers < ActiveRecord::Migration[5.0]
 	  t.string :last_name
 	  t.string :gender
 	  t.string :role
+    t.string :child_ids
+    t.integer :father_id
+    t.integer :mother_id
 	  t.string :system_encrypted_password
 	  t.string :system_password_encryption_key
 	  t.string :system_password_encryption_iv

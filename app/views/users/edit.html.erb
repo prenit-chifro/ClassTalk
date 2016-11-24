@@ -1,18 +1,3 @@
-<nav class="navbar navbar-inverse navbar-fixed-top main-app-header main-app-conversation-new-header">
-	<div class="container-fluid">
-		<div class="navbar-header main-app-header main-app-conversation-new-header pull-left">
-			<a class="mybtn btn btn-link btn-xs pull-left" href="/"><i class="material-icons">&#xE317;</i></a>
-			<div class="media pull-left">
-				<div class="media-body chat-show-media">
-					<h4 class="media-heading"> Edit your Profile </h4>
-
-					<p> Last Updated <%= show_human_time(@user.updated_at) %> </p>	
-				</div>
-			</div>
-		</div>
-
-	</div>
-</nav>
 <div class="container new-group-member-container">
 	<div class="row">
 		<%= form_tag user_path(@user), method: :put, multipart: true, remote: true, class:"form-complete-register","autocomplete"=>"off" do %>
@@ -47,7 +32,56 @@
 				<div class="form-group">
 					<%= select_tag :gender, options_for_select([["Gender", ""], ["Male", "male"], ["Female", "female"]],["Gender", @user.gender]), class:"form-control"  %>
 				</div>
-				<%= button_tag(type:"submit", class: "new-group-submit-button") do %>
+
+				<% if(current_user.role == "Parent") %>
+					<% if(!@section_member_models.blank?) %>
+						<% @section_member_models.each do |section_member_model| %>
+							<% grade = section_member_model.grade %>
+							<% section = section_member_model.section %>
+							<%  students = section.get_members_with_given_roles_for_institute_and_grade_with_role(@institute, grade, ["Student"]) %>
+							<% options = [["Select your Child in Class #{grade.grade_name}#{section.section_name}", ""]] %>
+							<% default_option = ["Select your Child in Class #{grade.grade_name}#{section.section_name}", ""] %>
+							<% students.each do |student| %>
+								<% options << [student.first_name + " " + student.last_name, student.id] %>
+								<% if(!@children.blank? and @children.include?(student)) %>
+									<% default_option = [student.first_name + " " + student.last_name, student.id] %>
+								<% end %>
+							<% end %>
+							
+							<%= select_tag "child_ids[]", options_for_select(options, default_option) %>
+						<% end %>
+						
+					<% end %>
+				<% end %>
+
+				<% if(current_user.role == "Student") %>
+					<% if(!@male_parents.blank?) %>
+						<% options = [["Select your Father", ""]] %>
+						<% @male_parents.each do |parent| %>
+							<% options << [parent.first_name + " " + parent.last_name, parent.id] %>
+						<% end %>
+						<% if(!@father.blank?) %>
+							<% default_option = [@father.first_name + " " + @father.last_name, @father.id] %>
+						<% else %>
+							<% default_option = ["Select your Father", ""] %>
+						<% end %>
+						<%= select_tag :father_id, options_for_select(options, default_option) %>
+					<% end %>
+					<% if(!@female_parents.blank?) %>
+						<% options = [["Select your Mother", ""]] %>
+						<% @female_parents.each do |parent| %>
+							<% options << [parent.first_name + " " + parent.last_name, parent.id] %>
+						<% end %>
+						<% if(!@mother.blank?) %>
+							<% default_option = [@mother.first_name + " " + @mother.last_name, @mother.id] %>
+						<% else %>
+							<% default_option = ["Select your Mother", ""] %>
+						<% end %>
+						<%= select_tag :mother_id, options_for_select(options, default_option) %>
+					<% end %>
+				<% end %>
+
+				<%= button_tag(type:"submit", class: "") do %>
 					<i class="material-icons">&#xE876;</i>
 				<% end %>	
 			</div>	
