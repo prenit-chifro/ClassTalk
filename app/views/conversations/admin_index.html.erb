@@ -984,7 +984,8 @@
 			          url: event.edit_url,
 			          complete: function(data){
 			            if(data.status == "200"){
-			              eval(data.responseText);
+			              $('#dayPlanModal').find('.modal-body').html(data.responseText);
+			              $('#dayPlanModal').modal('show');
 			            }
 			          }
 			        });
