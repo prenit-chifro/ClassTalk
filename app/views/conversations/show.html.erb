@@ -308,6 +308,7 @@
 									</div>
 								<% end %>
 							<% end %>
+							<div class="clearfix mar-btm"></div>
 							<% if(!@students.blank?) %>
 								<% @students.each do |contact| %>
 									<%= render partial: "conversations/contact", locals: {contact: contact}	 %>	
@@ -332,6 +333,7 @@
 									</div>
 								<% end %>
 							<% end %>
+							<div class="clearfix mar-btm"></div>
 							<% if(!@parents.blank?) %>
 								<% @parents.each do |contact| %>
 									<%= render partial: "conversations/contact", locals: {contact: contact} %>		
