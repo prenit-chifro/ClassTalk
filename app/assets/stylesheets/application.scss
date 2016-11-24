@@ -1831,12 +1831,25 @@ div.calendar div.fc-view-container tbody.fc-body td.fc-widget-content > div.fc-s
 		padding: 8px;
 	}
 }
-@media (max-width: 430px){
+@media (max-width:350px){
+	.main-navbar-brand a i{
+	    font-size: 15px;
+		margin-right: 2px;
+	}
+}
+@media (max-width: 470px){
 	.right-menu{
 		font-size:13px;
 	}
 	.main-navbar-brand{
+		padding-left: 3px;
+		padding-right: 3px;
+	}
+	.main-navbar-brand,.main-navbar-brand a{
 		font-size:14px;
+	}
+	.main-navbar-brand a{
+		margin-top: -4px;
 	}
 	ul.footer-list li a{
 		font-size: 11px;
