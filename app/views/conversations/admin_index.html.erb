@@ -709,13 +709,23 @@
 	      		}else{
 	      			window.open(event.url);
 	      		}
-  
+	                
 		        return false;
-				
 	      },
-		
+
+	      dayClick: function(date, jsEvent, view) {
+	        this["dayClickedFlag"] = true;
+	        $.ajax({
+	        	url: "/institutes/<%= @institute.id %>/events/new.js?start_time= " + date.format() + '&end_time= ' + date.format(),
+	        	complete: function(data){
+	        		if(data.status == "200"){
+	        			eval(data.responseText);
+	        		}
+	        	}
+	        });
+	      },
 	      select: function(start, end) {
-	        
+	        if(this.dayClickedFlag && !this.dayClickedFlag){
 	          $.ajax({
 	          url: "/institutes/<%= @institute.id %>/events/new.js?start_time=" + start.format() + '&end_time=' + end.format(),
 	          complete: function(data){
@@ -725,7 +735,7 @@
 	          }
 	        });
 	  
-	        
+	        }
 	        
 	        
 	        $(this).fullCalendar('unselect');
@@ -920,11 +930,9 @@
 	
 	function initTeacherDayPlanCalendar(){
 		$.each($('.teacher-calendar'), function(index, calendarElement){
-
-		  var gradeId = $(calendarElement).attr("data-grade-id");
-		  var sectionId = $(calendarElement).attr("data-section-id");
+		  var teacherId = $(calendarElement).attr("data-teacher-id");
 		  var dayClickFlag = false;
-		  calendarObjects[index] = $(calendarElement).fullCalendar({
+		  teacherCalendarObjects[index] = $(calendarElement).fullCalendar({
 			  header: {
 			    left: 'prev,next today',
 			    center: 'title',
@@ -946,7 +954,7 @@
 
 			    },
 			    {
-			        url: '/institutes/<%= @institute.id %>/timetable_slots?grade_id='+gradeId + '&section_id='+sectionId,
+			        url: '/institutes/<%= @institute.id %>/timetable_slots?teacher_id=' + teacherId,
 			        color: '#a8a8e8',   // an option!
 			        textColor: 'black' // an option!
 			    }
@@ -955,6 +963,20 @@
 			  editable: true,
 			  selectable: true,
 			  selectHelper: true,
+			  dayClick: function(date, jsEvent, view) {
+			  	dayClickFlag = true;
+			  	  $.ajax({
+			        url: '/institutes/<%= @institute.id%>/timetable_slots/new.js?teacher_id=' + teacherId + '&start_time=' + date.format() + '&end_time=' + date.add(30, 'minutes').format(),
+			        complete: function(data){
+			          if(data.status == "200"){
+			            $('#dayPlanModal').find('.modal-body').html(data.responseText);
+			            $('#dayPlanModal').modal('show');
+			          }
+			        }
+			      });
+			      
+		        
+		      },
 			  eventClick: function(event, jsEvent, view) {
 			      
 			      if(event.edit_url){
@@ -962,8 +984,7 @@
 			          url: event.edit_url,
 			          complete: function(data){
 			            if(data.status == "200"){
-			              $('#dayPlanModal').find('.modal-body').html(data.responseText);
-			              $('#dayPlanModal').modal('show');
+			              eval(data.responseText);
 			            }
 			          }
 			        });
@@ -973,24 +994,10 @@
 			            
 			      return false;
 			  },
-			  dayClick: function(date, jsEvent, view) {
-			  	
-		        dayClickFlag = true;
-		        $.ajax({
-			        url: '/institutes/<%= @institute.id%>/timetable_slots/new.js?grade_id=' + gradeId + '&section_id=' + sectionId + '&start_time=' + date.format() + '&end_time=' + date.add(30, 'minutes').format() + '.js',
-			        complete: function(data){
-			          if(data.status == "200"){
-			            $('#dayPlanModal').find('.modal-body').html(data.responseText);
-			            $('#dayPlanModal').modal('show');
-			          }
-			        }
-			      });
-		      },
 			  select: function(start, end) {
-				
 			    if(!dayClickFlag){
 			      $.ajax({
-			        url: '/institutes/<%= @institute.id%>/timetable_slots/new.js?grade_id=' + gradeId + '&section_id=' + sectionId + '&start_time=' + start.format() + '&end_time=' + end.format() + '.js',
+			        url: '/institutes/<%= @institute.id%>/timetable_slots/new.js?teacher_id=' + teacherId + '&start_time=' + start.format() + '&end_time=' + end.format(),
 			        complete: function(data){
 			          if(data.status == "200"){
 			            $('#dayPlanModal').find('.modal-body').html(data.responseText);
