@@ -1,21 +1,8 @@
-<nav class="navbar navbar-inverse navbar-fixed-top main-app-header main-app-conversation-new-header">
-  <div class="container-fluid">
-    <div class="navbar-header main-app-header main-app-conversation-new-header pull-left">
-      <a class="mybtn btn btn-link btn-xs pull-left" href="<%= edit_user_path(current_user) %>"><i class="material-icons">&#xE317;</i></a>
-      <div class="media pull-left">
-        <div class="media-body chat-show-media">
-          <h4 class="media-heading"> Change your Password </h4>
-
-          <p> Profile Last Updated <%= show_human_time(@user.updated_at) %> </p>  
-        </div>
-      </div>
-    </div>
-
-  </div>
-</nav>
-
-<div class="container new-group-member-container">
-  <div class="row">
+<% content_for :heading do %>
+  <a class="mybtn btn btn-link btn-xs pull-left" href="<%= user_path(current_user) %>"><i class="material-icons">&#xE317;</i><%= current_user.first_name %> <%= current_user.last_name %></a>
+<% end %>
+<div class="container new-group-member-container" style="margin-top: 50px;">
+  <div class="row" style="margin:14px;">
     <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
       
       <div class="row new-group-row">
@@ -38,22 +25,11 @@
 
       </div>
       
-      <%= button_tag(type:"submit", class: "new-group-submit-button") do %>
-        <i class="material-icons">&#xE876;</i>
-      <% end %> 
+      <div class="text-center">
+        <button type="submit" class="btn btn-success">Save</button>
+      </div>
     <% end %>
       
       
   </div>
 </div> 
-
-
-
-<!--
-<h3>Cancel my account</h3>
-
-<p>Unhappy? <%= button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?" }, method: :delete %></p>
-
-<%= link_to "Back", :back %>
-
-<-->

@@ -3,12 +3,10 @@
 <% end %>
 
 <div class="detect-div"></div>
-<div class="container-width tabs-container">
-	<div class="scroller scroller-left"><</div>
-	<div class="scroller scroller-right">></div>	
-	<div class="tabs-wrapper" style="margin-top:50px !important;">		
-		<div class="chat-show-tabs-upper-div">
-			<ul class="nav nav-tabs list" role="tablist" id="tablist">
+<div class="container-width tabs-container classRoute tabs-container" style="margin-top:50px;">
+			
+		
+			<ul class="nav nav-tabs" role="tablist" id="tablist" style="position:fixed;z-index:5;left:0;right:0;">
 				<% if(!@message_categories_array.blank?) %>
 					<% i=0 %>
 					<% @message_categories_array.each do |category| %>
@@ -24,7 +22,7 @@
 					<% end %>
 				<% end %>
 			</ul>
-		</div>	
+		
 		<div class="tab-content admin-home-content" style="margin-top:50px;">
 			<% if(!@message_categories_array.blank?) %>
 				<% i=0 %>
@@ -49,7 +47,7 @@
 			<% end %>	
 			
 		</div>
-	</div>
+	
 </div>
 <div id="seenStatusModal" class="modal fade" role="dialog">
 	<div class="modal-dialog">
@@ -78,6 +76,7 @@
 	</div>
 </div>
 <script>
+	$(".classRoute").parents("div.wrapper").find(".navbar-default").css("box-shadow", "none");
 	var randomColors = ["#35a5a5",'#8cc4c4','#8b5861',"#d7b26f"];
 	$(".ch-thumb").each(function(index) {
         var len = randomColors.length;

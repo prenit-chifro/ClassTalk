@@ -39,7 +39,7 @@
 		
 			<ul class="nav nav-tabs admin-new-tabs" role="tablist" id="tablist" style="position:fixed;z-index:5;left:0;right:0;">		
 				<li class="active"><a data-toggle="tab" href="#all-messages">Messages</a></li>
-				<li><a data-toggle="tab" href="#all-people">People</a></li>
+				<li><a data-toggle="tab" href="#all-people">Members</a></li>
 				<li><a data-toggle="tab" href="#all-classes-analytics">Classes</a></li>
 				<li><a data-toggle="tab" href="#all-attendance-admin-analytics">Attendance</a></li>
 				<li><a data-toggle="tab" href="#all-dayplan">Day Plan</a></li>
@@ -91,7 +91,12 @@
 				</div>
 				<div class="tab-pane" id="all-people">
 					<ul class="list-unstyled teachers-list index-conversation-modal">
-
+						<%= link_to add_new_member_institute_path(@institute) do %>
+							<div class="pull-right add-member">
+								<span>Create New Contact</span><i class="material-icons">&#xE7FE;</i>
+							</div>
+						<% end %>
+						<div class="clearfix"></div>
 						<% if(current_user.role == "Institute Admin") %>
 							<li>
 								<h6 class="teachers-list-heading">Staff<i class="material-icons arrow-up-icon pull-right">&#xE316;</i></h6>

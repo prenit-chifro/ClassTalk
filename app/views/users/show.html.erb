@@ -1,6 +1,7 @@
 <% content_for :heading do %>
-	<%= @user.first_name %> <%= @user.last_name %>
+	<a class="mybtn btn btn-link btn-xs pull-left" href="/"><i class="material-icons">&#xE317;</i><%= @user.first_name %> <%= @user.last_name %></a>
 <% end %>
+
 <div class="container" style="margin-top:90px;">
 	<div class="row">
 		<div class="user-details">
@@ -11,7 +12,7 @@
                 <div class="user-heading">
                     <span class="help-block"><%= @user.details %></span>
                 </div>
-				<div class="user-body">
+				<div class="user-body" style="margin-bottom: 70px;">
                     <div class="">
                         <div id="information">
                     	

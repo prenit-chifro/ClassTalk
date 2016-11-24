@@ -1,10 +1,14 @@
-<div class="container new-group-member-container">
-	<div class="row">
+<% content_for :heading do %>
+	<a class="mybtn btn btn-link btn-xs pull-left" href="<%= user_path(@user) %>"><i class="material-icons">&#xE317;</i><%= @user.first_name %> <%= @user.last_name %></a>
+<% end %>
+
+<div class="container-width conversation-new-container new-group-member-container" style="margin-top:50px; margin-bottom: 70px;">
+	
 		<%= form_tag user_path(@user), method: :put, multipart: true, remote: true, class:"form-complete-register","autocomplete"=>"off" do %>
 		<div class="row new-group-row">
 			<div class="col-lg-12 text-center">
-				<div id="new-group-profile-picture-target">
-					<div id="new-group-profile-picture-inner-target" class="new-group-profile-picture-inner-target">
+				<div id="new-group-profile-picture-target" style="max-width:320px;margin:0 auto;position:relative;">
+					<div id="new-group-profile-picture-inner-target" class="new-group-profile-picture-inner-target" >
 						<img src="<%= @user.profile_picture.media.url(:thumb) %>" class="img-responsive" >
 					</div>	
 					<label class="file-label" for="new-group-profile-pic-uploadBtn">
@@ -14,7 +18,7 @@
 				</div>			
 
 			</div>
-			<div class="col-md-12 text-center edit-user-page">
+			<div class="col-md-12 text-center edit-user-page" style="margin:14px;">
 				<span></span>
 				<div class="form-group">
 					<%= text_field_tag :first_name, @user.first_name, placeholder: "First Name", "autocomplete"=>"off", class:"form-control", required: true %>				
@@ -26,6 +30,7 @@
 					<%= number_field_tag :isd_code, 91, placeholder: "ISD code", id: "new-member-isd-code",class:"form-control isd-control", "autocomplete"=>"off" %>
 					<%= number_field_tag :mobile_no, @user.mobile_no, placeholder: "Contact Number", id: "new-member-contact-no",class:"form-control", class:"form-control", "autocomplete"=>"off" %>
 				</div>
+				<div class="clearfix mar-btm"></div>
 				<div class="form-group">
 					<%= email_field_tag :email, @user.email, placeholder: "Email", class:"form-control", "autocomplete"=>"off" %>
 				</div>
@@ -47,8 +52,8 @@
 									<% default_option = [student.first_name + " " + student.last_name, student.id] %>
 								<% end %>
 							<% end %>
-							
-							<%= select_tag "child_ids[]", options_for_select(options, default_option) %>
+							<label><%= "Select your Child in Class #{grade.grade_name}#{section.section_name}" %> </label>
+							<%= select_tag "child_ids[]", options_for_select(options, default_option), class: "form-control" %>
 						<% end %>
 						
 					<% end %>
@@ -65,7 +70,8 @@
 						<% else %>
 							<% default_option = ["Select your Father", ""] %>
 						<% end %>
-						<%= select_tag :father_id, options_for_select(options, default_option) %>
+						<label> Select your Father </label>
+						<%= select_tag :father_id, options_for_select(options, default_option), class: "form-control" %>
 					<% end %>
 					<% if(!@female_parents.blank?) %>
 						<% options = [["Select your Mother", ""]] %>
@@ -77,21 +83,28 @@
 						<% else %>
 							<% default_option = ["Select your Mother", ""] %>
 						<% end %>
-						<%= select_tag :mother_id, options_for_select(options, default_option) %>
+						<label> Select your Father </label>
+						<%= select_tag :mother_id, options_for_select(options, default_option), class: "form-control" %>
 					<% end %>
 				<% end %>
-
-				<%= button_tag(type:"submit", class: "") do %>
-					<i class="material-icons">&#xE876;</i>
-				<% end %>	
+				<div class="clearfix mar-btm"></div>
+				<div class="row">
+					<div class="col-sm-6">
+						<button type="submit" class="btn btn-success pull-left">Save</button>
+					</div>
+					<div class="col-sm-6">	
+						<%= link_to edit_user_registration_path do %>
+							<button class="btn btn-danger change-password-btn pull-right"> Change Password </button>
+						<% end %>
+					</div>
+				</div>
 			</div>	
 		</div>	
 	<% end %>
+	
+
 </div>	
 
-<%= link_to edit_user_registration_path do %>
-	<button class="btn btn-danger change-password-btn"> Change Password </button>
-<% end %>
 
 <script>
 	$('#profile-pic-uploadBtn').on('change', function(event) {

@@ -6,7 +6,7 @@ class MyDevise::RegistrationsController < Devise::RegistrationsController
   # def new
   #   super
   # end
-
+  layout "application"
   $current_user_id = nil
 
   # POST /resource
@@ -47,9 +47,9 @@ class MyDevise::RegistrationsController < Devise::RegistrationsController
   end
 
   # GET /resource/edit
-  # def edit
+  #def edit
   #   super
-  # end
+  #end
 
   # PUT /resource
   def update
