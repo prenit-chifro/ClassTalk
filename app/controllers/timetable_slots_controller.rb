@@ -27,7 +27,7 @@ class TimetableSlotsController < ApplicationController
             @grade = @timetable_slot.grade if !@timetable_slot.blank?
             @section = @timetable_slot.section if !@timetable_slot.blank?
             @teachers = @institute.get_members_with_given_roles(["Teacher"]) 
-            @subjects = @section.subjects
+            @subjects = @section.subjects.uniq
         end
         @subject = @timetable_slot.subject if !@timetable_slot.blank?
         @teacher = @timetable_slot.teacher if !@timetable_slot.blank?
@@ -112,7 +112,7 @@ class TimetableSlotsController < ApplicationController
                 @subjects = @institute.institutes_sections_subjects_models.map{|model| model.subject}.uniq
             else
                 @teachers = @institute.get_members_with_given_roles(["Teacher"]) 
-                @subjects = @section.subjects
+                @subjects = @section.subjects.uniq
             end
             
             render :new_slot_form
