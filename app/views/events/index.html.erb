@@ -3,7 +3,7 @@
 <% end %>
 
 <div class="container-width classRoute">
-	<div class="calendar">
+	<div class="calendar main-calendar">
 		
 	</div>
 
@@ -27,7 +27,7 @@
 
 <script>
 	$(".classRoute").parents("div.wrapper").find(".navbar-default").css("box-shadow", "none");
-    var calendarObject = $('.calendar').fullCalendar({
+    var calendarObject = $('.main-calendar').fullCalendar({
       header: {
         left: 'prev,next today',
         center: 'title',

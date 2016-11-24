@@ -151,6 +151,7 @@
 			      return false;
 			  },
 			  select: function(start, end) {
+				alert("selected");
 			    if(!this.dayClickedFlag){
 			      $.ajax({
 			        url: '/institutes/<%= @institute.id%>/timetable_slots/new.js?grade_id=' + gradeId + '&section_id=' + sectionId + '&start_time=' + start.format() + '&end_time=' + end.format() + '.js',
