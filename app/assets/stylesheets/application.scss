@@ -648,7 +648,6 @@ h6.teachers-list-heading + div.classRoute{
 }
 .footer-list li{
 	float:left;
-	padding:10px;
     border-left: 1px solid #b7b1b1;
 	cursor:pointer;
 	width:33%;
@@ -660,6 +659,8 @@ h6.teachers-list-heading + div.classRoute{
 ul.footer-list li a{
 	color:#bbb;
 	text-decoration:none;
+	padding:10px;
+	display:block;
 }
 .calender-icon,.notice-icon,.attendance-icon{
     cursor: pointer;
@@ -1828,6 +1829,21 @@ div.calendar div.fc-view-container tbody.fc-body td.fc-widget-content > div.fc-s
 	ul.submenu>li a{
 		color: #fff;
 		padding: 8px;
+	}
+}
+@media (max-width: 430px){
+	.right-menu{
+		font-size:13px;
+	}
+	.main-navbar-brand{
+		font-size:14px;
+	}
+	ul.footer-list li a{
+		font-size: 11px;
+	}
+	.calender-icon, .notice-icon, .attendance-icon{
+		font-size: 15px !Important;
+		margin-left: 2px;
 	}
 }
 @media (max-width:767px){
