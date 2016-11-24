@@ -7,7 +7,7 @@
 		<%= hidden_field_tag :institute_id, @institute.id %>
 		<input type="checkbox" name="all_sections" id="all-sections-checkbox" style="display: none">
 		
-			<div class="event-institute-grade-section-select-div" data-institute-id="<%= @institute.id %>" style="display: none">
+			<div class="event-institute-grade-section-select-div" data-institute-id="<%= @institute.id %>" style="display: block">
 				
 						<% institute_grade_section_models = @institute.institutes_grades_sections_models %>
 						Select Classes:
@@ -49,20 +49,11 @@
 
 <script type="text/javascript">
 	$(".personal-or-institute-event-input").change(function(){
-		if(this.value == "true"){
+		if($(this).val() == "true"){
 			$(".institute-select-div").show();
 		}else{
 			$(".institute-select-div").hide();
 		}
-	});
-
-	$(".event-institute-input").change(function(){
-		$("#all-sections-checkbox").show();
-		$("<span>Send to all Classes?</span>").insertAfter("#all-sections-checkbox");
-		instituteId = $(this).val();
-		$(".event-institute-grade-section-select-div").hide();
-		$(".event-institute-grade-section-select-div[data-institute-id='" + instituteId + "']").show();
-		
 	});
 
 	$("#all-sections-checkbox").change(function(){
