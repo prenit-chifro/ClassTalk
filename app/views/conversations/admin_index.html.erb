@@ -1,4 +1,5 @@
 <% content_for :heading do %>
+<<<<<<< HEAD
 	Admin Panel
 <% end %>
 	<div class="container-width classRoute tabs-container conversation-big" style="margin-top:50px;">
@@ -40,6 +41,7 @@
 								<% @conversations.each do |conversation| %>
 									
 										<%= render partial: "conversations/conversation_small", locals: {conversation: conversation, user: current_user} %>
+
 														
 								<% end %>
 							<% end %>

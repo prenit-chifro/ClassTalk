@@ -40,7 +40,6 @@ class ConversationsController < ApplicationController
 			@teachers = @institute.get_members_with_given_roles(["Teacher"])
 			@grades = @institute.grades
 			@institutes_grades_sections_models = @institute.institutes_grades_sections_models
-			
 
 			if(params[:start_date].blank?)
 				params[:start_date] = Date.today
@@ -96,7 +95,6 @@ class ConversationsController < ApplicationController
 			end
 
 			render "admin_index"
-
 		end
 
 		if(current_user.role == "Teacher")
