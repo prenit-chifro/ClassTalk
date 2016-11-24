@@ -7,7 +7,7 @@
 		<% if(!@grade_section_models.blank?) %>
 			<% @grade_section_models.each do |grade_section_model| %>
 				<% section = grade_section_model.section %>
-				<% subjects_count = section.sections_subjects.where(institute_id: @institute.id).count %>
+				<% subjects_count = section.sections_subjects.where(institute_id: @institute.id).map(&:subject).uniq.count %>
 				
 				<% teachers_count =  section.sections_members.where(institute_id: @institute.id, member_role: "Teacher").count %>
 				<% students_count =  section.sections_members.where(institute_id: @institute.id, member_role: "Student").count %>
