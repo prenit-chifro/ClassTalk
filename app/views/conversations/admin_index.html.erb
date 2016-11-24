@@ -1,5 +1,5 @@
 <% content_for :heading do %>
-	Admin Panel</a>
+	Admin Panel
 <% end %>
 	<div id="myModal" class="modal fade modal-calender" role="dialog">
 	  <div class="modal-dialog">
@@ -37,7 +37,7 @@
 	
 	<div class="container-width classRoute tabs-container conversation-big" style="margin-top:50px;">
 		
-			<ul class="nav nav-tabs admin-new-tabs" role="tablist" id="tablist" style="position:fixed;z-index:5;">		
+			<ul class="nav nav-tabs admin-new-tabs" role="tablist" id="tablist" style="position:fixed;z-index:5;left:0;right:0;">		
 				<li class="active"><a data-toggle="tab" href="#all-messages">Messages</a></li>
 				<li><a data-toggle="tab" href="#all-people">People</a></li>
 				<li><a data-toggle="tab" href="#all-classes-analytics">Classes</a></li>
@@ -74,7 +74,7 @@
 								<% @conversations.each do |conversation| %>
 									
 										<%= render partial: "conversations/conversation_small", locals: {conversation: conversation, user: current_user} %>
-														
+													
 								<% end %>
 							<% end %>
 						</div>
