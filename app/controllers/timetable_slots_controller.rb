@@ -205,7 +205,13 @@ class TimetableSlotsController < ApplicationController
     end
 
     def destroy
-    
+        if(!@timetable_slot.blank?)
+            @slot_id = @timetable_slot.id
+            @grade_id = @timetable_slot.grade_id
+            @section_id = @timetable_slot.section_id
+            @teacher_id = @timetable_slot.teacher_id
+            @timetable_slot.destroy    
+        end
     end
 
 end

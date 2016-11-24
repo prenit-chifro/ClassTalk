@@ -65,6 +65,14 @@
 		<div class="col-sm-2 col-xs-12">
 			<button type="submit" class="btn btn-success" style="width: 100%;"> Save </button>
 		</div>
+		<br>
+		<div class="col-sm-2 col-xs-12">
+			<%= link_to institute_timetable_slot_path(@institute, @timetable_slot), method: :delete, remote: true do %> 
+				<button class="btn btn-success" style="width: 100%;"> 
+					Delete This Day Plan Slot
+				</button>
+			<% end %>
+		</div>
 	<% end %>
 	<div class="clearfix mar-btm"></div>
 <% end %>

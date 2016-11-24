@@ -1,2 +1,4 @@
-<h1>TimetableSlots#destroy</h1>
-<p>Find me in app/views/timetable_slots/destroy.html.erb</p>
+$('#dayPlanModal').modal('hide');
+
+$('.class-calendar[data-grade-id="<%= @grade_id %>"][data-section-id="<%= @section_id %>"]').fullCalendar('removeEvents', [<%= @slot_id %>]);
+$('.teacher-calendar[data-teacher-id="<%= @teacher_id %>"]').fullCalendar('removeEvents', [<%= @slot_id %>]);
