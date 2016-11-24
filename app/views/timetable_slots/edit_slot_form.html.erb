@@ -1,5 +1,5 @@
 <% if(!params[:slot_for].blank? and params[:slot_for] == "Teacher") %>
-	<%= form_tag institute_timetable_slot_path(@institute, @timetable_slot), method: :patch, remote: :true do %>
+	<%= form_tag institute_timetable_slot_path(@institute, @timetable_slot), method: :patch, remote: true do %>
 		<%= hidden_field_tag :slot_for, :Teacher %>
 		<%= hidden_field_tag :start_time, @timetable_slot.start_time %>
 		<%= hidden_field_tag :end_time, @timetable_slot.end_time %>
@@ -33,7 +33,7 @@
 	<% end %>
 	<div class="clearfix mar-btm"></div>
 <% else %>
-	<%= form_tag institute_timetable_slot_path(@institute, @timetable_slot), method: :patch, remote: :true do %>
+	<%= form_tag institute_timetable_slot_path(@institute, @timetable_slot), method: :patch, remote: true do %>
 		<%= hidden_field_tag :slot_for, :Others %>
 		<%= hidden_field_tag :start_time, @timetable_slot.start_time %>
 		<%= hidden_field_tag :end_time, @timetable_slot.end_time %>
