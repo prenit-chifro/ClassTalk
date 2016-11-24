@@ -380,12 +380,6 @@
 		return submit;
 	}
 	
-	$(".teachers-list-heading").on("click", function(e){
-		$(this).find(".arrow-up-icon").toggleClass("arrow-down-icon");
-		$(this).parents("li").find("div.classRoute").slideToggle();	
-		e.stopPropagation();
-		e.preventDefault();
-	});
 	$(".modal-label").on("click", function(e){
 		updateCheckboxCounter();
 	});
