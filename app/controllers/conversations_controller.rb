@@ -35,7 +35,7 @@ class ConversationsController < ApplicationController
 		if(current_user.role == "Institute Admin")
 			@institute = current_user.institutes.first
 			
-			@principal = @institute.get_members_with_given_roles(["Principal"])
+			@principal = @institute.get_members_with_given_roles(["Principal"]).first
 			@admins = @institute.get_members_with_given_roles(["Institute Admin"])
 			@teachers = @institute.get_members_with_given_roles(["Teacher"])
 			@grades = @institute.grades
