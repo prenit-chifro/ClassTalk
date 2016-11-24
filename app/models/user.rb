@@ -90,6 +90,22 @@ class User < ApplicationRecord
 		end
 	end
 
+	def father
+		return User.find_by(id: self.father_id)	
+	end
+
+	def mother
+		return User.find_by(id: self.mother_id)	
+	end
+
+	def children
+		if(self.child_ids.blank?)
+			return  []
+		else
+			return User.where(id: self.child_ids.split(", ")).uniq	
+		end
+	end
+
 	def email_required?
 		self.mobile_no.blank?
 	end

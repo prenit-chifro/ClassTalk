@@ -28,6 +28,22 @@
 								<h4>Personal Information</h4>
 								<p>Email Id: <span class="pull-right"> <%= @user.email %> </span></p>
 								<p>Mobile no: <span class="pull-right"> <%= @user.mobile_no %> </span></p>
+								<% if(@user.role == "Student" and !@user.father.blank?) %>
+									<h4> Father </h4>
+									<p><%= render partial: "conversations/contact", locals: {contact: @user.father} %></p>
+								<% end %>
+								<% if(@user.role == "Student" and !@user.mother.blank?) %>
+									<h4> Mother </h4>
+									<p><%= render partial: "conversations/contact", locals: {contact: @user.mother} %></p>
+								<% end %>
+
+								<% if(@user.role == "Parent" and !@user.child_ids.blank?) %>
+									<h4> Children </h4>
+									<% @user.children.each do |child| %>
+										<p><%= render partial: "conversations/contact", locals: {contact: child} %></p>
+									<% end %>
+									
+								<% end %>
 							</div>	
 							<% if(@user.id == current_user.id) %>					
 								<p>
