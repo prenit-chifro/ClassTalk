@@ -19,7 +19,7 @@ class AttendanceRecordsController < ApplicationController
 			params[:end_date] = Date.parse(params[:end_date])	
 		end
 
-		if(current_user.role == "Institute Admin" or current_user.role == "Principal")
+		if(current_user.role == "Institute Admin")
 
 			@all_section_member_models = current_user.members_sections
 			if(!@all_section_member_models.blank?)
