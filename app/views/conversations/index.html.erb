@@ -385,7 +385,7 @@
 										<div class="container-width classRoute" style="display: block;">
 											<ul class="nav nav-tabs" role="tablist" id="tablist">
 												<li class="active"><a data-toggle="tab" href="#all-admins">Admin</a></li>
-												<li class="active"><a data-toggle="tab" href="#all-teachers">Teachers</a></li>
+												<li><a data-toggle="tab" href="#all-teachers">Teachers</a></li>
 											</ul>
 											<div class="tab-content" style="">
 												<div class="tab-pane active" id="all-admins">
@@ -405,7 +405,7 @@
 														<% end %>														
 													</ul>
 												</div>
-												<div class="tab-pane active" id="all-teachers">
+												<div class="tab-pane" id="all-teachers">
 													<ul class="list-unstyled list-inline">
 														<% if(!@teachers.blank?) %>
 															<% @teachers.each do |teacher| %>

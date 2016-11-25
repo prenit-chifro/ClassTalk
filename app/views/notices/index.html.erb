@@ -10,9 +10,12 @@
 				</li>	
 				
 			<% end %>
-			<%= link_to new_institute_notice_path(@institute), class:"new-notices-icons" do %>
-				<i class="material-icons">&#xE147;</i>
+			<% if(["Principal", "Institute Admin"]).include?(current_user.role) %>
+				<%= link_to new_institute_notice_path(@institute), class:"new-notices-icons" do %>
+					<i class="material-icons">&#xE147;</i>
+				<% end %>
 			<% end %>
+			
 		<% else %>
 			<% if(["Principal", "Institute Admin"]).include?(current_user.role) %>
 				<%= link_to new_institute_notice_path(@institute) do %>
