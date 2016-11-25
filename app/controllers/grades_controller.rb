@@ -11,7 +11,7 @@ class GradesController < ApplicationController
 	end
 
 	def index
-		@grades = @institute.grades
+		@grades = current_user.members_sections.map{|m| m.grade}.uniq
 	end
 
 	def new
