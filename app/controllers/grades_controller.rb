@@ -15,7 +15,7 @@ class GradesController < ApplicationController
 			@grades = current_user.members_sections.map{|m| m.grade}.uniq
 		end
 		if(@current_user.role == "Teacher")
-			@grade = current_user.teaching_sections_subjects_models.map(&:grade).uniq
+			@grades = current_user.teaching_sections_subjects_models.map(&:grade).uniq
 		end
 		if(current_user.role == "Principal" or current_user.role == "Institute Admin")
 			@grades = @institute.grades
