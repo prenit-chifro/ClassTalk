@@ -6,6 +6,30 @@
 @import "font-awesome";
 @import "fullcalendar";
 
+.pagination{
+	position: fixed;
+	bottom: 33px;
+	left: 50%;
+	margin-left: -150px;
+}
+
+.ajax-loader{
+	background: rgba(78, 77, 77, 0.4);
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+}
+.ajax-loader img{
+	width: 90px;
+    position: fixed;
+    top: 50%;
+    margin-top: -50px;
+    left: 50%;
+    margin-left: -50px;
+}
+
 h6.teachers-list-heading + div.classRoute{
 	display:none;
 }
@@ -1895,6 +1919,9 @@ div.calendar div.fc-agendaWeek-view tbody.fc-body div.fc-bg > table >tbody>tr>td
 	    font-size: 15px;
 		margin-right: 2px;
 	}
+	ul.pagination li a{
+		font-size:10px !important;
+	}
 }
 @media only screen and (max-width : 480px){
 	.right-menu{
@@ -1916,6 +1943,9 @@ div.calendar div.fc-agendaWeek-view tbody.fc-body div.fc-bg > table >tbody>tr>td
 	.calender-icon, .notice-icon, .attendance-icon{
 		font-size: 15px !Important;
 		margin-left: 2px;
+	}
+	ul.pagination li a{
+		font-size:15px;
 	}
 }
 @media (max-width:767px){

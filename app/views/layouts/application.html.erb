@@ -32,10 +32,12 @@
 
 		<%= csrf_meta_tags %>
 		<%= stylesheet_link_tag "application", media: "all", "data-turbolinks-track": "reload" %>
-		<%= stylesheet_link_tag "//fonts.googleapis.com/css?family=Julius+Sans+One" %>
 		<%= javascript_include_tag "application", "data-turbolinks-track": "reload" %>
-		<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-		<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBygb2VxPHEs8rV8j7dgreRvpowydmGrow&libraries=places" async defer></script>
+		<%= stylesheet_link_tag "//fonts.googleapis.com/css?family=Julius+Sans+One" %>
+		<% if((!params[:controller].blank? and params[:controller] == "attendance_records") or (user_signed_in? and current_user.role == "Institute Admin")) %>
+			<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+		<% end %>
+
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=0">
 		<meta name="current-user-id" content="<%= current_user.id if user_signed_in? %>">
 	</head>
@@ -102,6 +104,9 @@
 			</nav>
 			<%= yield %>
 			
+		</div>
+		<div class="ajax-loader" style="display:none;">
+			<%= image_tag "ring-alt.gif" %>
 		</div>
 		<% if(!@institute.blank?) %>
 			<footer class="footer text-center">

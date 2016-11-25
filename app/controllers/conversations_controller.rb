@@ -10,11 +10,17 @@ class ConversationsController < ApplicationController
 	end
 
 	def index
-		@conversations = current_user.participating_conversations.order(updated_at: :desc)
-		@sent_conversations = @conversations.where(creator_id: current_user.id)
-		
+		if(params[:page] and params[:page].to_i >= 2)
+			@conversations = current_user.participating_conversations.order(updated_at: :desc).page(params[:page]).per(10)
+			@sent_conversations = current_user.participating_conversations.where(creator_id: current_user.id).order(updated_at: :desc).page(params[:page]).per(10)
+		else
+			@conversations = current_user.participating_conversations.order(updated_at: :desc).page(1).per(10)
+			@sent_conversations = current_user.participating_conversations.where(creator_id: current_user.id).order(updated_at: :desc).page(1).per(10)
+		end
+
+		@all_conversations = current_user.participating_conversations.order(updated_at: :desc)
 		@unread_conversation_ids_array = []
-		@conversations.each do |conversation|
+		@all_conversations.each do |conversation|
 			conversation_participant_model = conversation.get_conversation_participant_model_for_participant(current_user)
 			unread_received_messages = conversation.messages.where("is_seen_by_all_participants != ? and created_at > ? and creator_id != ?", true, conversation_participant_model.created_at, current_user.id)
 			unread_received_messages.each do |message|
@@ -25,7 +31,7 @@ class ConversationsController < ApplicationController
 				end
 			end
 		end
-
+		
 		if(current_user.role == "Principal")
 			@institute = current_user.institutes.first
 			@admins = @institute.get_members_with_given_roles(["Institute Admin"])
@@ -341,51 +347,38 @@ class ConversationsController < ApplicationController
 			end
 
 			@conversation_participant_model = @conversation.get_conversation_participant_model_for_participant(current_user)
-			@messages = @conversation.messages.where("created_at >= ?", @conversation_participant_model.created_at).order(created_at: :desc)
+			
 			if(params[:page] and params[:page].to_i >= 2)
-				
-				if( !params[:message_category].blank? )
-					if(params[:message_category] == "Messages")
-						@Messages_category_messages = @messages.page(params[:page]).per(20).to_a.reverse!
-						set_seen_status_to_recieved_messages(@Messages_category_messages)
-						render "show", layout: false
-						return
-					end
-					if(params[:message_category] == "Media")
-						@Media_category_messages = Message.includes(:attachments).where.not(attachments: { attachable_id: nil }).where(id: @messages.map(&:id))
-						@Media_category_messages = Kaminari.paginate_array(@Media_category_messages).page(params[:page]).per(20).to_a.reverse!
-						set_seen_status_to_recieved_messages(@Media_category_messages)
-						render "show", layout: false
-						return
-					end
-					
-					if(!@conversation.message_categories.blank? and @conversation.message_categories.include?(params[:message_category]))
-						@conversation.message_categories.split(", ").each do |category|
-							instance_variable_set("@" + category + "_messages", @messages.where(category: category))
-							instance_variable_set("@" + category + "_messages", instance_variable_get("@" + category + "_messages").page(params[:page]).per(20).to_a.reverse!)
-							set_seen_status_to_recieved_messages(instance_variable_get("@" + category + "_messages"))
-						end
-						
-						render "show", layout: false
-						return
-					end
-							
-				end
-
-			else 
-
+				@messages = @conversation.messages.where("created_at >= ?", @conversation_participant_model.created_at).order(created_at: :desc).page(params[:page]).per(2)
 				if(!@conversation.message_categories.blank?)
 					@conversation.message_categories.split(", ").each do |category|
-						instance_variable_set("@" + category + "_messages", @messages.where(category: category).page(1).per(10))
+						instance_variable_set("@" + category + "_messages", @messages.where(category: category))
 						
 						set_seen_status_to_recieved_messages(instance_variable_get("@" + category + "_messages"))
 					end
 					
 				end
 				
-				@Media_category_messages = Message.includes(:attachments).where.not(attachments: { attachable_id: nil }).where(id: @messages.map(&:id)).page(1).per(10)
+				@Media_category_messages = Message.includes(:attachments).where.not(attachments: { attachable_id: nil }).where(id: @messages.map(&:id))
 
-				@Messages_category_messages = @messages.page(1).per(10)				
+				@Messages_category_messages = @messages
+					
+				set_seen_status_to_recieved_messages(@Messages_category_messages)
+				set_seen_status_to_recieved_messages(@Media_category_messages)
+			else 
+				@messages = @conversation.messages.where("created_at >= ?", @conversation_participant_model.created_at).order(created_at: :desc).page(1).per(2)
+				if(!@conversation.message_categories.blank?)
+					@conversation.message_categories.split(", ").each do |category|
+						instance_variable_set("@" + category + "_messages", @messages.where(category: category))
+						
+						set_seen_status_to_recieved_messages(instance_variable_get("@" + category + "_messages"))
+					end
+					
+				end
+				
+				@Media_category_messages = Message.includes(:attachments).where.not(attachments: { attachable_id: nil }).where(id: @messages.map(&:id))
+
+				@Messages_category_messages = @messages
 					
 				set_seen_status_to_recieved_messages(@Messages_category_messages)
 				set_seen_status_to_recieved_messages(@Media_category_messages)

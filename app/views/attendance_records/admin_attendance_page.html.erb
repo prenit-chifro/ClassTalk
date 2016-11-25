@@ -124,14 +124,12 @@
 
 	google.charts.load('current', {'packages':['corechart']})
 	<% if(!@all_attendance_records.blank?) %>
-    	google.charts.setOnLoadCallback(drawChart);
     	$(document).one("turbolinks:load", function(){
 	    	drawChart();
 	    });
     <% end %>	
     
     <% if(!@section_attendance_records.blank?) %>
-    	google.charts.setOnLoadCallback(drawClassChart);
     	$(document).one("turbolinks:load", function(){
 	    	drawClassChart();
 	    });

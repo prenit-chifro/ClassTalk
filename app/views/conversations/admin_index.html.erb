@@ -45,7 +45,6 @@
 				<li><a data-toggle="tab" href="#all-dayplan">Day Plan</a></li>
 				<li><a data-toggle="tab" href="#all-notices-analytics">Notices</a></li>
 				<li><a data-toggle="tab" href="#all-events-analytics">Events</a></li>
-				<li><a data-toggle="tab" href="#all-institute-analytics">Location</a></li>
 			</ul>
 			<div class="clearfix"></div>
 			<div class="tab-content admin-home-content admin-index-main" style="margin-top:40px;">
@@ -87,6 +86,7 @@
 								<% end %>
 							<% end %>
 						</div>
+						<%= paginate @conversations %>
 					</div>	
 				</div>
 				<div class="tab-pane" id="all-people">
@@ -431,11 +431,6 @@
 						<% end %>
 					</ul>	
 				</div>
-				<div class="tab-pane" id="all-institute-analytics">
-						
-					<div id="map"></div>
-					<div class="detect-div"></div>
-				</div>
 			</div>
 
 </div>					
@@ -647,9 +642,7 @@
 
 	$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
 		var target = $(this).attr('href');
-		if(target == "#all-institute-analytics"){
-			initMap();
-		}
+	
 		if(target == "#all-dayplan"){
 			initClassDayPlanCalendar();
 		}
@@ -1147,34 +1140,7 @@
 
 		Turbolinks.visit('/institutes/<%= @institute.id %>/attendance_records?start_date=' + start_date + '&end_date=' + end_date + '&grade_id=' + grade_id + '&section_id=' + section_id);
 	}
-	
 
-	var markers = [
-		["DAV Public School, Gurgaon", 29.5038646, 75.4734163]
-	];
-	
-	function initMap() {
-		var mapProp = {
-			center:new google.maps.LatLng(29.5038646,75.4734163),
-			zoom:7,
-			mapTypeId:google.maps.MapTypeId.ROADMAP
-		};
-		var map=new google.maps.Map(document.getElementById("map"),mapProp);
-
-		 var infowindow = new google.maps.InfoWindow(), marker, i;
-		for (i = 0; i < markers.length; i++) {
-			marker = new google.maps.Marker({
-				position: new google.maps.LatLng(markers[i][1], markers[i][2]),
-				map: map
-			});
-			google.maps.event.addListener(marker, 'click', (function(marker, i) {
-				return function() {
-					infowindow.setContent('' + markers[i][0]);
-					infowindow.open(map, marker);
-				}
-			})(marker, i));
-		}
-	}
 	var randomColors = ["#35a5a5",'#8cc4c4','#8b5861',"#d7b26f"];
 	$(".ch-thumb").each(function(index) {
         var len = randomColors.length;

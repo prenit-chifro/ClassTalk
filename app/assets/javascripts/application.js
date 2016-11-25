@@ -68,6 +68,10 @@ $(document).on("ready", function(){
 	App.sendIosDeviceTokenToBackend();
 });
 
+$(document).on('turbolinks:before-visit', function(event){
+	$(".ajax-loader").css("display", "block");	
+});
+
 $(document).ajaxComplete(function( event, xhr, requestOptions ) {
 	newCsrfToken = xhr.getResponseHeader('X-CSRF-Token');
 	if(newCsrfToken){
@@ -91,6 +95,7 @@ $(document).ajaxComplete(function( event, xhr, requestOptions ) {
 });
 
 $(document).on("turbolinks:load", function(){
+	$(".ajax-loader").css("display", "none");
 	App.currentUserId = $('meta[name="current-user-id"]').attr('content');
 	App.saveCurrentUrlOnAndroid();
 	
