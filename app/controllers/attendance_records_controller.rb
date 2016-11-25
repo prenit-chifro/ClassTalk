@@ -19,7 +19,7 @@ class AttendanceRecordsController < ApplicationController
 			params[:end_date] = Date.parse(params[:end_date])	
 		end
 
-		if(current_user.role == "Institute Admin")
+		if(current_user.role == "Institute Admin" or current_user.role == "Principal")
 
 			@all_section_member_models = current_user.members_sections
 			if(!@all_section_member_models.blank?)
@@ -58,8 +58,9 @@ class AttendanceRecordsController < ApplicationController
 				end
 				@total_section_absent_students = @total_section_students - @total_section_present_students
 
-				render "admin_attendance_page"
+				
 			end
+			render "admin_attendance_page"
 		end
 
 		if(current_user.role == "Teacher")
@@ -84,8 +85,9 @@ class AttendanceRecordsController < ApplicationController
 				end
 				@total_absent_students = @total_students - @total_present_students
 
-				render "teacher_attendance_page"
+				
 			end
+			render "teacher_attendance_page"
 		end
 
 		if(current_user.role == "Student")
@@ -109,8 +111,9 @@ class AttendanceRecordsController < ApplicationController
 				end
 				@total_absent_days = @total_days - @total_present_days
 
-				render "student_attendance_page"
+				
 			end
+			render "student_attendance_page"
 		end
 	end
 
