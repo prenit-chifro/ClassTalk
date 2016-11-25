@@ -371,9 +371,17 @@
 							</li>
 						<% end %>
 					<% end %>
-					<li class="custom-events">
-						<a data-toggle="tab" href="#all-custom-events"><span><i class="material-icons" style="font-size:12px;">&#xE145;</i></span><span>New Category</span></a>
-					</li>
+					<% if(!@conversation.is_institute_conversation and !@conversation.is_section_conversation and !@conversation.is_subject_conversation) %>
+						<% if(current_user.role != "Student" and current_user.role != "Parent") %>
+							<li class="custom-events">
+								<a data-toggle="tab" href="#all-custom-events"><span><i class="material-icons" style="font-size:12px;">&#xE145;</i></span><span>New Category</span></a>
+							</li>
+						<% end %>	
+					<% else %>	
+						<li class="custom-events">
+							<a data-toggle="tab" href="#all-custom-events"><span><i class="material-icons" style="font-size:12px;">&#xE145;</i></span><span>New Category</span></a>
+						</li>
+					<% end %>
 				</ul>
 			</div>	
 			<div class="tab-content admin-home-content" style="margin-top:50px; margin-bottom: 70px;">
@@ -442,9 +450,18 @@
 			</div>
 		</div>
 	</div>
-	<span class="personal-message-icon">
-		<i class="material-icons" data-toggle="modal" data-target="#customMessageModal">&#xE0C9;</i>
-	</span>
+	<% if(!@conversation.is_institute_conversation and !@conversation.is_section_conversation and !@conversation.is_subject_conversation) %>
+		<% if(current_user.role != "Student" and current_user.role != "Parent") %>
+			<span class="personal-message-icon">
+				<i class="material-icons" data-toggle="modal" data-target="#customMessageModal">&#xE0C9;</i>
+			</span>
+		<% end %>
+	<% else %>
+		<span class="personal-message-icon">
+			<i class="material-icons" data-toggle="modal" data-target="#customMessageModal">&#xE0C9;</i>
+		</span>
+	<% end %>
+	
 	<div id="customMessageModal" class="modal fade" role="dialog">
 		<div class="modal-dialog">
 			<div class="modal-content">
