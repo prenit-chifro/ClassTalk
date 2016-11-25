@@ -9,7 +9,7 @@
 		</h3>
 		<span>Assign Class and Subject </span>
 		<div class="clearfix mar-btm"></div>
-		<div class="col-sm-5 col-xs-6">
+		<div class="col-sm-6 col-xs-6">
 			<div class="form-group">
 		
 				<% options = [["Set Class", ""]] %>
@@ -20,7 +20,7 @@
 			</div>
 		</div>	
 
-		<div class="col-sm-5 col-xs-6">
+		<div class="col-sm-6 col-xs-6">
 			<div class="form-group">
 				
 				<% options = [["Set Subject", ""]] %>
@@ -30,7 +30,7 @@
 				<%= select_tag :subject_id, options_for_select(options, ["Set Subject", ""]),class: "form-control", required: :true %>
 			</div>
 		</div>
-		<div class="col-sm-2 col-xs-12">
+		<div class="col-sm-12 col-xs-12">
 			<button type="submit" class="btn btn-success" style="width: 100%;"> Save </button>
 		</div>
 	<% end %>
@@ -47,7 +47,7 @@
 		</h3>
 		<span>Assign Teacher and Subject </span>
 		<div class="clearfix mar-btm"></div>
-		<div class="col-sm-5 col-xs-6">
+		<div class="col-sm-6 col-xs-6">
 			<div class="form-group">
 				<% options = [["Set Teacher", ""]] %>
 				<% @teachers.each do |teacher| %>
@@ -57,7 +57,7 @@
 
 			</div>
 		</div>	
-		<div class="col-sm-5 col-xs-6">
+		<div class="col-sm-6 col-xs-6">
 			<div class="form-group">
 				<% options = [["Set Subject", ""]] %>
 				<% @subjects.each do |subject| %>
@@ -67,7 +67,7 @@
 				
 			</div>
 		</div>
-		<div class="col-sm-2 col-xs-12">
+		<div class="col-sm-12 col-xs-12">
 			<button type="submit" class="btn btn-success" style="width: 100%;"> Save </button>
 		</div>
 	<% end %>
