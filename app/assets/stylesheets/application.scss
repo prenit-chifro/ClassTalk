@@ -1471,6 +1471,7 @@ ul.sticky-notices li div.sticky-notices-tag{
 	-webkit-transform:rotate(-6deg);
 	-o-transform:rotate(-6deg);
 	-moz-transform:rotate(-6deg);
+	overflow-x: hidden;
 }
 
 ul.sticky-notices li{
@@ -1524,7 +1525,8 @@ ul.sticky-notices li:nth-child(3n) div.sticky-notices-tag{
     font-size: 12px;
     right: 0;
     left: 0;
-    background: #fff;
+    background: #6b8dab;
+    color: #fff;
 	-webkit-transform:rotate(-6deg);
 	-o-transform:rotate(-6deg);
 	-moz-transform:rotate(-6deg);
@@ -1795,6 +1797,9 @@ div.calendar div.fc-view-container tbody.fc-body td.fc-widget-content > div.fc-s
     text-align: center;
     padding: 7px;
 }
+.fc-time-grid .fc-event, .fc-time-grid .fc-bgevent{
+	text-align:center;
+}
 .fc-month-view .fc-today{
 	background: #56b0ca;
 }
@@ -1807,6 +1812,19 @@ div.calendar div.fc-view-container tbody.fc-body td.fc-widget-content > div.fc-s
 .fc-row{
 	margin-right:0;
 }
+
+::-webkit-scrollbar {
+    -webkit-appearance: none;
+    width: 7px;
+	height:4px;
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    background-color: rgba(0,0,0,.2);
+    -webkit-box-shadow: 0 0 1px rgba(255,255,255,.5);
+}
+
 @media (min-width:768px){
 	.left-self-image >li:nth-child(1){
 		display:none;
