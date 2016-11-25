@@ -77,7 +77,7 @@
       dayClick: function(date, jsEvent, view) {
         this["dayClickedFlag"] = true;
         $.ajax({
-        	url: "events/new.js?start_time= " + date.format() + '&end_time= ' + date.format(),
+        	url: "/institutes/<%= @institute.id %>/events/new.js?start_time= " + date.format() + '&end_time= ' + date.format(),
         	complete: function(data){
         		if(data.status == "200"){
         			eval(data.responseText);
@@ -88,7 +88,7 @@
       select: function(start, end) {
         if(this.dayClickedFlag && !this.dayClickedFlag){
           $.ajax({
-          url: "events/new.js?start_time=" + start.format() + '&end_time=' + end.format(),
+          url: "/institutes/<%= @institute.id %>/events/new.js?start_time=" + start.format() + '&end_time=' + end.format(),
           complete: function(data){
             if(data.status == "200"){
               eval(data.responseText);

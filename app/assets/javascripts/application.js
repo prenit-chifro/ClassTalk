@@ -17,8 +17,6 @@
 //= require moment 
 //= require bootstrap-datetimepicker
 //= require turbolinks
-//= require social-share-button
-//= require video
 //= require fullcalendar
 //= require fullcalendar/gcal
 //= require_tree .
@@ -148,6 +146,7 @@ $(document).on("turbolinks:load", function(){
 			$(".modal").find("button.close").trigger("click");
 		}
 	});	
+	
 	$(".teachers-list-heading").click(function(e){
 		$(this).find(".arrow-up-icon").toggleClass("arrow-down-icon");
 		$(this).parents("li").find("div.classRoute").slideToggle();
@@ -391,7 +390,26 @@ $(document).on("turbolinks:load", function(){
 	    	$("ul.index-conversation-modal li").show();
 	    }    
 	});
-
+	$('.search-conversation-new-page').on("keyup keydown", function() {
+	    var value = $(this).val();
+	    if(value){
+	    	$("ul.index-conversation-modal-inner li").show().filter(function () {
+			    return $(".media-heading", this).text().toLowerCase().indexOf(value.toLowerCase()) < 0;
+			}).hide();
+	    }else{
+	    	$("ul.index-conversation-modal-inner li").show();
+	    }    
+	});
+	$('.search-conversation-new-group-page').on("keyup keydown", function() {
+	    var value = $(this).val();
+	    if(value){
+	    	$("ul.index-conversation-modal-group li").show().filter(function () {
+			    return $(".media-heading", this).text().toLowerCase().indexOf(value.toLowerCase()) < 0;
+			}).hide();
+	    }else{
+	    	$("ul.index-conversation-modal-group li").show();
+	    }    
+	});
 	$(".open-contact-on-click-element").click(function(){
 		if(!$(this).parents(".radio").html()){
 			

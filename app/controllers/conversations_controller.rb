@@ -99,7 +99,7 @@ class ConversationsController < ApplicationController
 		end
 
 		if(current_user.role == "Teacher")
-			@principal = @institute.get_members_with_given_roles(["Principal"])
+			@principal = @institute.get_members_with_given_roles(["Principal"]).first
 			@admins = @institute.get_members_with_given_roles(["Institute Admin"])
 			@teachers = @institute.get_members_with_given_roles(["Teacher"])
 			@teaching_section_subject_models = current_user.teaching_sections_subjects_models
@@ -132,7 +132,7 @@ class ConversationsController < ApplicationController
 		if(current_user.role == "Institute Admin")
 			@institute = current_user.institutes.first
 			
-			@principal = @institute.get_members_with_given_roles(["Principal"])
+			@principal = @institute.get_members_with_given_roles(["Principal"]).first
 			@admins = @institute.get_members_with_given_roles(["Institute Admin"])
 			@teachers = @institute.get_members_with_given_roles(["Teacher"])
 			@institutes_grades_sections_models = @institute.institutes_grades_sections_models
@@ -140,7 +140,7 @@ class ConversationsController < ApplicationController
 		end
 
 		if(current_user.role == "Teacher")
-			@principal = @institute.get_members_with_given_roles(["Principal"])
+			@principal = @institute.get_members_with_given_roles(["Principal"]).first
 			@admins = @institute.get_members_with_given_roles(["Institute Admin"])
 			@teachers = @institute.get_members_with_given_roles(["Teacher"])
 			@teaching_section_subject_models = current_user.teaching_sections_subjects_models
@@ -255,7 +255,7 @@ class ConversationsController < ApplicationController
 			if(current_user.role == "Institute Admin")
 				@institute = current_user.institutes.first
 				
-				@principal = @institute.get_members_with_given_roles(["Principal"])
+				@principal = @institute.get_members_with_given_roles(["Principal"]).first
 				@admins = @institute.get_members_with_given_roles(["Institute Admin"])
 				@teachers = @institute.get_members_with_given_roles(["Teacher"])
 				@institutes_grades_sections_models = @institute.institutes_grades_sections_models
@@ -263,7 +263,7 @@ class ConversationsController < ApplicationController
 			end
 
 			if(current_user.role == "Teacher")
-				@principal = @institute.get_members_with_given_roles(["Principal"])
+				@principal = @institute.get_members_with_given_roles(["Principal"]).first
 				@admins = @institute.get_members_with_given_roles(["Institute Admin"])
 				@teachers = @institute.get_members_with_given_roles(["Teacher"])
 				@teaching_section_subject_models = current_user.teaching_sections_subjects_models
@@ -324,7 +324,7 @@ class ConversationsController < ApplicationController
 				@section = Section.find_by(id: @conversation.section_id)
 				
 				@classteacher = @section.get_classteacher_for_institute_and_grade(@institute, @grade)
-				@section_subject_models = @section.sections_subjects.where(institute_id: @institute.id)
+				@section_subject_models = @section.sections_subjects.where(institute_id: @institute.id, grade_id: @grade.id)
 				@students = @section.get_members_with_given_roles_for_institute_and_grade_with_role(@institute, @grade, ["Student"])
 				@parents = @section.get_members_with_given_roles_for_institute_and_grade_with_role(@institute, @grade, ["Parent"])
 			end

@@ -7,12 +7,12 @@
 
 <% else %>
 	<% content_for :heading do %>
-		<a class="mybtn btn btn-link btn-xs pull-left" href="/"><i class="material-icons">&#xE317;</i><%= @conversation.get_conversation_name_to_show_to_user(current_user).truncate(25) %></a>
+		<a class="mybtn btn btn-link btn-xs pull-left" href="/"><i class="material-icons">&#xE317;</i><%= @conversation.get_conversation_name_to_show_to_user(current_user).truncate(15) %></a>
 	<% end %>
 
 	<% if(true) %>
-		<div class="container-width classRoute" style="margin-top:50px;">
-			<ul class="nav nav-tabs" role="tablist" id="tablist">
+		<div class="container-width classRoute tabs-container" style="margin-top:50px; margin-bottom: 0;">
+			<ul class="nav nav-tabs admin-new-tabs" role="tablist" id="tablist">
 				<%  if(@conversation.is_section_conversation or @conversation.is_subject_conversation) or @conversation.is_institute_conversation%>
 				
 				<% else %>
@@ -61,7 +61,7 @@
 
 							<%= link_to add_new_member_institute_path(@institute) do %>
 								<div class="pull-right add-member">
-									<span>Create New Contact</span><i class="material-icons">&#xE7FE;</i>
+									<span>New Contact</span><i class="material-icons">&#xE7FE;</i>
 								</div>
 							<% end %>
 						<% end %>
@@ -84,7 +84,7 @@
 
 							<%= link_to add_new_member_institute_path(@institute) do %>
 								<div class="pull-right add-member">
-									<span>Create New Contact</span><i class="material-icons">&#xE7FE;</i>
+									<span>New Contact</span><i class="material-icons">&#xE7FE;</i>
 								</div>
 							<% end %>
 						<% end %>
@@ -106,7 +106,7 @@
 
 							<%= link_to add_new_member_institute_path(@institute) do %>
 								<div class="pull-right add-member">
-									<span>Create New Contact</span><i class="material-icons">&#xE7FE;</i>
+									<span>New Contact</span><i class="material-icons">&#xE7FE;</i>
 								</div>
 							<% end %>
 						<% end %>
@@ -129,7 +129,7 @@
 
 								<%= link_to add_new_member_institute_path(@institute) do %>
 									<div class="pull-right add-member">
-										<span>Create New Contact</span><i class="material-icons">&#xE7FE;</i>
+										<span>New Contact</span><i class="material-icons">&#xE7FE;</i>
 									</div>
 								<% end %>
 							<% end %>
@@ -153,7 +153,7 @@
 								
 								<%= link_to add_new_member_institute_path(@institute) do %>
 									<div class="pull-right add-member">
-										<span>Create New Contact</span><i class="material-icons">&#xE7FE;</i>
+										<span>New Contact</span><i class="material-icons">&#xE7FE;</i>
 									</div>
 								<% end %>
 							<% end %>
@@ -183,7 +183,7 @@
 
 							<%= link_to add_new_member_institute_path(@institute) do %>
 								<div class="pull-right add-member">
-									<span>Create New Contact</span><i class="material-icons">&#xE7FE;</i>
+									<span>New Contact</span><i class="material-icons">&#xE7FE;</i>
 								</div>
 							<% end %>
 						<% end %>
@@ -203,7 +203,7 @@
 								
 								<%= link_to add_new_member_institute_path(@institute) do %>
 									<div class="pull-right add-member">
-										<span>Create New Contact</span><i class="material-icons">&#xE7FE;</i>
+										<span>New Contact</span><i class="material-icons">&#xE7FE;</i>
 									</div>
 								<% end %>
 							<% end %>
@@ -226,7 +226,7 @@
 								
 								<%= link_to add_new_member_institute_path(@institute) do %>
 									<div class="pull-right add-member">
-										<span>Create New Contact</span><i class="material-icons">&#xE7FE;</i>
+										<span>New Contact</span><i class="material-icons">&#xE7FE;</i>
 									</div>
 								<% end %>
 							<% end %>
@@ -285,7 +285,7 @@
 							
 							<%= link_to add_new_member_institute_path(@institute) do %>
 								<div class="pull-right add-member">
-									<span>Create New Contact</span><i class="material-icons">&#xE7FE;</i>
+									<span>New Contact</span><i class="material-icons">&#xE7FE;</i>
 								</div>	
 							<% end %>
 						<% end %>
@@ -304,10 +304,11 @@
 								
 								<%= link_to add_new_member_institute_path(@institute) do %>
 									<div class="pull-right add-member">
-										<span>Create New Contact</span><i class="material-icons">&#xE7FE;</i>
+										<span>New Contact</span><i class="material-icons">&#xE7FE;</i>
 									</div>
 								<% end %>
 							<% end %>
+							<div class="clearfix mar-btm"></div>
 							<% if(!@students.blank?) %>
 								<% @students.each do |contact| %>
 									<%= render partial: "conversations/contact", locals: {contact: contact}	 %>	
@@ -328,10 +329,11 @@
 								
 								<%= link_to add_new_member_institute_path(@institute) do %>
 									<div class="pull-right add-member">
-										<span>Create New Contact</span><i class="material-icons">&#xE7FE;</i>
+										<span>New Contact</span><i class="material-icons">&#xE7FE;</i>
 									</div>
 								<% end %>
 							<% end %>
+							<div class="clearfix mar-btm"></div>
 							<% if(!@parents.blank?) %>
 								<% @parents.each do |contact| %>
 									<%= render partial: "conversations/contact", locals: {contact: contact} %>		

@@ -5,10 +5,14 @@
 @import "bootstrap-datetimepicker";
 @import "font-awesome";
 @import "fullcalendar";
- 
 
-
-
+h6.teachers-list-heading + div.classRoute{
+	display:none;
+}
+div#class-plan > ul li h6.teachers-list-heading + div.classRoute, 
+div#teacher-plan > ul li h6.teachers-list-heading + div.classRoute{
+	display:block;
+}
 /*universal*/
 a:hover,a:focus{
 	text-decoration:none !important;

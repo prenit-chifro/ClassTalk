@@ -33,7 +33,12 @@ class Section < ApplicationRecord
 	end	
 	
 	def get_subject_teacher_for_institute_and_grade_and_subject institute, grade, subject
-		self.sections_subjects.find_by(institute_id: institute.id, grade_id: grade.id, subject_id: subject.id).subject_teacher
+		section_subject_model = self.sections_subjects.find_by(institute_id: institute.id, grade_id: grade.id, subject_id: subject.id)
+		if(!section_subject_model.blank?)
+			return section_subject_model.subject_teacher
+		else
+			return nil
+		end
 	end
 	
 	def set_subject_teacher_for_institute_and_grade_and_subject institute, grade, subject, subject_teacher

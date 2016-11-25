@@ -27,7 +27,7 @@ class TimetableSlotsController < ApplicationController
             @grade = @timetable_slot.grade if !@timetable_slot.blank?
             @section = @timetable_slot.section if !@timetable_slot.blank?
             @teachers = @institute.get_members_with_given_roles(["Teacher"]) 
-            @subjects = @section.subjects
+            @subjects = @section.subjects.uniq
         end
         @subject = @timetable_slot.subject if !@timetable_slot.blank?
         @teacher = @timetable_slot.teacher if !@timetable_slot.blank?
@@ -112,7 +112,7 @@ class TimetableSlotsController < ApplicationController
                 @subjects = @institute.institutes_sections_subjects_models.map{|model| model.subject}.uniq
             else
                 @teachers = @institute.get_members_with_given_roles(["Teacher"]) 
-                @subjects = @section.subjects
+                @subjects = @section.subjects.uniq
             end
             
             render :new_slot_form
@@ -205,7 +205,13 @@ class TimetableSlotsController < ApplicationController
     end
 
     def destroy
-    
+        if(!@timetable_slot.blank?)
+            @slot_id = @timetable_slot.id
+            @grade_id = @timetable_slot.grade_id
+            @section_id = @timetable_slot.section_id
+            @teacher_id = @timetable_slot.teacher_id
+            @timetable_slot.destroy    
+        end
     end
 
 end

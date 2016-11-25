@@ -14,14 +14,14 @@
 					<form onsubmit="return false;" class="search-form search-conversation-new-group">
 						<div class="form-group has-feedback">
 							<i class="material-icons search-conversation-new-group-icon">&#xE8B6;</i> 
-							<input type="text" class="form-control" name="search" id="search-conversation-new-group">
+							<input type="text" class="form-control search-conversation-new-group-page" name="search" id="search-conversation-new-group">
 						</div>
 					</form>
 				</li>			
 			</ul>
 		</div>
 	</nav>	
-	<div class="container-width conversation-new-container new-group-member-container">
+	<div class="container-width conversation-new-container new-group-member-container" style="margin-bottom: 60px;">
 		<%= form_tag new_group_conversations_path, method: :post, remote: true, id: "new-group-form" do %>
 			<div class="row new-group-row">
 				<div class="col-lg-12 text-center">
@@ -42,8 +42,8 @@
 			<div class="attendance-body">
 				<ul class="list-inline list-conversation-group-search" style="margin:10px;">
 					<% if(current_user.role != "Student" and current_user.role != "Parent") %>
-						<div class="pull-left add-member">
-							<span><%= submit_tag :Add do %>Save<% end %>	</span><i class="material-icons">&#xE876;</i>
+						<div class="pull-left">
+							<button type="submit" class="btn btn-success">Save</button>
 						</div>
 					
 						<%= link_to add_new_member_institute_path(@institute) do %>			
@@ -53,18 +53,18 @@
 						<% end %>		
 					<% end %>
 					<div class="clearfix mar-btm"></div>
-					<ul class="list-unstyled teachers-list index-conversation-modal new-group-class">
+					<ul class="list-unstyled teachers-list new-group-class">
 						<% if(current_user.role == "Principal") %>
 							<li>
 								<h6 class="teachers-list-heading">Staff<i class="material-icons arrow-up-icon pull-right">&#xE316;</i></h6>
-								<div class="container-width classRoute">
+								<div class="container-width classRoute" style="display: block;">
 									<ul class="nav nav-tabs" role="tablist" id="tablist">
 										<li class="active"><a data-toggle="tab" href="#all-admins">Admins</a></li>
 										<li><a data-toggle="tab" href="#all-teachers">Teachers</a></li>
 									</ul>
 									<div class="tab-content" style="">
 										<div class="tab-pane active" id="all-admins">
-											<ul class="list-unstyled list-inline">
+											<ul class="list-unstyled list-inline index-conversation-modal-group">
 												<% if(!@admins.blank?) %>
 													<% @admins.each do |admin| %>
 														<% if(admin.id != current_user.id) %>
@@ -81,7 +81,7 @@
 											</ul>
 										</div>
 										<div class="tab-pane active" id="all-teachers">
-											<ul class="list-unstyled list-inline">
+											<ul class="list-unstyled list-inline index-conversation-modal-group">
 												<% if(!@teachers.blank?) %>
 													<% @teachers.each do |teacher| %>
 														<% if(teacher.id != current_user.id) %>
@@ -105,7 +105,7 @@
 						<% if(current_user.role == "Institute Admin") %>
 							<li>
 								<h6 class="teachers-list-heading">Staff<i class="material-icons arrow-up-icon pull-right">&#xE316;</i></h6>
-								<div class="container-width classRoute">
+								<div class="container-width classRoute" style="display: block;">
 									<ul class="nav nav-tabs" role="tablist" id="tablist">
 										<li class="active"><a data-toggle="tab" href="#all-principals">Principal</a></li>
 										<li><a data-toggle="tab" href="#all-admins">Admins</a></li>
@@ -113,7 +113,7 @@
 									</ul>
 									<div class="tab-content" style="">
 										<div class="tab-pane active" id="all-principals">
-											<ul class="list-unstyled list-inline">
+											<ul class="list-unstyled list-inline index-conversation-modal-group">
 												<% if(!@principal.blank?) %>
 													<% if(@principal.id != current_user.id) %>
 														<li>
@@ -128,7 +128,7 @@
 											</ul>
 										</div>
 										<div class="tab-pane" id="all-admins">
-											<ul class="list-unstyled list-inline">
+											<ul class="list-unstyled list-inline index-conversation-modal-group">
 												<% if(!@admins.blank?) %>
 													<% @admins.each do |admin| %>																
 														<% if(admin.id != current_user.id) %>
@@ -145,7 +145,7 @@
 											</ul>
 										</div>												
 										<div class="tab-pane" id="all-teachers">
-											<ul class="list-unstyled list-inline">
+											<ul class="list-unstyled list-inline index-conversation-modal-group">
 												<% if(!@teachers.blank?) %>
 													<% @teachers.each do |teacher| %>
 														<% if(teacher.id != current_user.id) %>
@@ -176,12 +176,12 @@
 										<h6 class="teachers-list-heading">Class <%= grade.grade_name + section.section_name %><i class="material-icons arrow-up-icon pull-right">&#xE316;</i></h6>
 										<div class="container-width classRoute">
 											<ul class="nav nav-tabs" role="tablist" id="tablist">
-												<li class="active"><a data-toggle="tab" href="#all-parents">Parents</a></li>
-												<li><a data-toggle="tab" href="#all-students">Students</a></li>														
+												<li class="active"><a data-toggle="tab" href="#all-parents-<%= grade_section_model.id %>">Parents</a></li>
+												<li><a data-toggle="tab" href="#all-students-<%= grade_section_model.id %>">Students</a></li>														
 											</ul>
 											<div class="tab-content" style="">
-												<div class="tab-pane active" id="all-parents">
-													<ul class="list-unstyled list-inline">
+												<div class="tab-pane active" id="all-parents-<%= grade_section_model.id %>">
+													<ul class="list-unstyled list-inline index-conversation-modal-group">
 														<% if(!parents.blank?) %>
 															<% parents.each do |parent| %>
 																<% if(parent.id != current_user.id) %>
@@ -197,8 +197,8 @@
 														<% end %>																
 													</ul>
 												</div>
-												<div class="tab-pane" id="all-students">
-													<ul class="list-unstyled list-inline">
+												<div class="tab-pane" id="all-students-<%= grade_section_model.id %>">
+													<ul class="list-unstyled list-inline index-conversation-modal-group">
 														<% if(!students.blank?) %>
 															<% students.each do |student| %>
 																<% if(student.id != current_user.id) %>
@@ -224,14 +224,14 @@
 						<% if(current_user.role == "Teacher") %>
 							<li>
 								<h6 class="teachers-list-heading">Staff<i class="material-icons arrow-up-icon pull-right">&#xE316;</i></h6>
-								<div class="container-width classRoute">
+								<div class="container-width classRoute" style="display: block;">
 									<ul class="nav nav-tabs" role="tablist" id="tablist">												
 										<li class="active"><a data-toggle="tab" href="#all-admins">Admin</a></li>
 										<li><a data-toggle="tab" href="#all-teachers">Teachers</a></li>												
 									</ul>
 									<div class="tab-content" style="">
 										<div class="tab-pane active" id="all-admins">
-											<ul class="list-unstyled list-inline">
+											<ul class="list-unstyled list-inline index-conversation-modal-group">
 												<% if(!@admins.blank?) %>
 													<% @admins.each do |admin| %>
 														<% if(admin.id != current_user.id) %>
@@ -248,7 +248,7 @@
 											</ul>
 										</div>
 										<div class="tab-pane" id="all-teachers">
-											<ul class="list-unstyled list-inline">
+											<ul class="list-unstyled list-inline index-conversation-modal-group">
 												<% if(!@teachers.blank?) %>
 													<% @teachers.each do |teacher| %>
 														<% if(teacher.id != current_user.id) %>
@@ -278,12 +278,12 @@
 										<h6 class="teachers-list-heading">Class <%= grade.grade_name + section.section_name %><i class="material-icons arrow-up-icon pull-right">&#xE316;</i></h6>
 										<div class="container-width classRoute">
 											<ul class="nav nav-tabs" role="tablist" id="tablist">
-												<li class="active"><a data-toggle="tab" href="#all-parents">Parents</a></li>
-												<li><a data-toggle="tab" href="#all-students">Students</a></li>														
+												<li class="active"><a data-toggle="tab" href="#all-parents-<%= section_subject_model.id %>">Parents</a></li>
+												<li><a data-toggle="tab" href="#all-students-<%= section_subject_model.id %>">Students</a></li>														
 											</ul>
 											<div class="tab-content" style="">
-												<div class="tab-pane active" id="all-parents">
-													<ul class="list-unstyled list-inline">
+												<div class="tab-pane active" id="all-parents-<%= section_subject_model.id %>">
+													<ul class="list-unstyled list-inline index-conversation-modal-group">
 														<% if(!parents.blank?) %>
 															<% parents.each do |parent| %>
 																<% if(parent.id != current_user.id) %>
@@ -299,8 +299,8 @@
 														<% end %>
 													</ul>
 												</div>
-												<div class="tab-pane" id="all-students">
-													<ul class="list-unstyled list-inline">
+												<div class="tab-pane" id="all-students-<%= section_subject_model.id %>">
+													<ul class="list-unstyled list-inline index-conversation-modal-group">
 														<% if(!students.blank?) %>
 															<% students.each do |student| %>
 																<% if(student.id != current_user.id) %>
@@ -327,14 +327,14 @@
 						<% if(current_user.role == "Parent" or current_user.role == "Student") %>
 							<li>
 								<h6 class="teachers-list-heading">Staff<i class="material-icons arrow-up-icon pull-right">&#xE316;</i></h6>
-								<div class="container-width classRoute">
+								<div class="container-width classRoute" style="display: block;">
 									<ul class="nav nav-tabs" role="tablist" id="tablist">
 										<li class="active"><a data-toggle="tab" href="#all-admins">Admin</a></li>
 										<li class="active"><a data-toggle="tab" href="#all-teachers">Teachers</a></li>
 									</ul>
 									<div class="tab-content" style="">
 										<div class="tab-pane active" id="all-admins">
-											<ul class="list-unstyled list-inline">
+											<ul class="list-unstyled list-inline index-conversation-modal-group">
 												<% if(!@admins.blank?) %>
 													<% @admins.each do |admin| %>
 														<% if(admin.id != current_user.id) %>
@@ -351,7 +351,7 @@
 											</ul>
 										</div>
 										<div class="tab-pane active" id="all-teachers">
-											<ul class="list-unstyled list-inline">
+											<ul class="list-unstyled list-inline index-conversation-modal-group">
 												<% if(!@teachers.blank?) %>
 													<% @teachers.each do |teacher| %>
 														<% if(teacher.id != current_user.id) %>

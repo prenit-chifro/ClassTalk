@@ -100,7 +100,7 @@
 						<% if(current_user.role == "Institute Admin") %>
 							<li>
 								<h6 class="teachers-list-heading">Staff<i class="material-icons arrow-up-icon pull-right">&#xE316;</i></h6>
-								<div class="container-width classRoute">
+								<div class="container-width classRoute" style="display: block;">
 									<ul class="nav nav-tabs" role="tablist" id="tablist">
 										<li class="active"><a data-toggle="tab" href="#all-principals">Principal</a></li>
 										<li><a data-toggle="tab" href="#all-admins">Admins</a></li>
@@ -453,7 +453,7 @@
 					<form onsubmit="return false;" class="search-form">
 						<div class="form-group has-feedback">
 							<i class="material-icons search-attendance-icon">&#xE8B6;</i> 
-							<input type="text" class="form-control" name="search" id="search">
+							<input type="text" class="form-control search-conversation-new-group" name="search" id="search">
 						</div>
 					</form>
 					<h4 class="modal-title">
@@ -464,7 +464,7 @@
 							</span>
 						<% end %>
 					</h4>
-					<span class="checkbox-counter text-muted"></span>
+					<span class="checkbox-counter text-muted">Select</span> <span class=" text-muted" style="font-size:11px;">Participants</span>
 				</div>
 				<%= form_tag conversations_path, method: :post, remote: true, id: "new-conversation-form" do %>
 
@@ -508,12 +508,12 @@
 						</div>
 						<hr>
 						<div class="">
-							<ul class="list-unstyled teachers-list index-conversation-modal">
+							<ul class="list-unstyled teachers-list">
 
 								<% if(current_user.role == "Institute Admin") %>
 									<li>
 										<h6 class="teachers-list-heading">Staff<i class="material-icons arrow-up-icon pull-right">&#xE316;</i></h6>
-										<div class="container-width classRoute">
+										<div class="container-width classRoute" style="display: block;">
 											<ul class="nav nav-tabs" role="tablist" id="tablist">
 												<li class="active"><a data-toggle="tab" href="#all-principals-modal">Principal</a></li>
 												<li><a data-toggle="tab" href="#all-admins-modal">Admins</a></li>
@@ -521,7 +521,7 @@
 											</ul>
 											<div class="tab-content" style="">
 												<div class="tab-pane active" id="all-principals-modal">
-													<ul class="list-unstyled list-inline">
+													<ul class="list-unstyled list-inline  index-conversation-modal">
 														<% if(!@principal.blank?) %>
 															<% if(@principal.id != current_user.id) %>
 																<li>
@@ -536,7 +536,7 @@
 													</ul>
 												</div>
 												<div class="tab-pane" id="all-admins-modal">
-													<ul class="list-unstyled list-inline">
+													<ul class="list-unstyled list-inline  index-conversation-modal">
 														<% if(!@admins.blank?) %>
 															<% @admins.each do |admin| %>																
 																<% if(admin.id != current_user.id) %>
@@ -553,7 +553,7 @@
 													</ul>
 												</div>												
 												<div class="tab-pane" id="all-teachers-modal">
-													<ul class="list-unstyled list-inline">
+													<ul class="list-unstyled list-inline  index-conversation-modal">
 														<% if(!@teachers.blank?) %>
 															<% @teachers.each do |teacher| %>
 																<% if(teacher.id != current_user.id) %>
@@ -583,13 +583,13 @@
 											<li>
 												<h6 class="teachers-list-heading">Class <%= grade.grade_name + section.section_name %><i class="material-icons arrow-up-icon pull-right">&#xE316;</i></h6>
 												<div class="container-width classRoute">
-													<ul class="nav nav-tabs" role="tablist" id="tablist">
-														<li class="active"><a data-toggle="tab" href="#all-parents-modal">Parents</a></li>
-														<li><a data-toggle="tab" href="#all-students-modal">Students</a></li>														
+													<ul class="nav nav-tabs  index-conversation-modal" role="tablist" id="tablist">
+														<li class="active"><a data-toggle="tab" href="#all-parents-modal-<%= grade_section_model.id %>">Parents</a></li>
+														<li><a data-toggle="tab" href="#all-students-modal-<%= grade_section_model.id %>">Students</a></li>														
 													</ul>
 													<div class="tab-content" style="">
-														<div class="tab-pane active" id="all-parents-modal">
-															<ul class="list-unstyled list-inline">
+														<div class="tab-pane active" id="all-parents-modal-<%= grade_section_model.id %>">
+															<ul class="list-unstyled list-inline  index-conversation-modal">
 																<% if(!parents.blank?) %>
 																	<% parents.each do |parent| %>
 																		<% if(parent.id != current_user.id) %>
@@ -605,8 +605,8 @@
 																<% end %>																
 															</ul>
 														</div>
-														<div class="tab-pane" id="all-students-modal">
-															<ul class="list-unstyled list-inline">
+														<div class="tab-pane" id="all-students-modal-<%= grade_section_model.id %>">
+															<ul class="list-unstyled list-inline  index-conversation-modal">
 																<% if(!students.blank?) %>
 																	<% students.each do |student| %>
 																		<% if(student.id != current_user.id) %>
@@ -709,13 +709,23 @@
 	      		}else{
 	      			window.open(event.url);
 	      		}
-  
+	                
 		        return false;
-				
 	      },
-		
+
+	      dayClick: function(date, jsEvent, view) {
+	        this["dayClickedFlag"] = true;
+	        $.ajax({
+	        	url: "/institutes/<%= @institute.id %>/events/new.js?start_time= " + date.format() + '&end_time= ' + date.format(),
+	        	complete: function(data){
+	        		if(data.status == "200"){
+	        			eval(data.responseText);
+	        		}
+	        	}
+	        });
+	      },
 	      select: function(start, end) {
-	        
+	        if(this.dayClickedFlag && !this.dayClickedFlag){
 	          $.ajax({
 	          url: "/institutes/<%= @institute.id %>/events/new.js?start_time=" + start.format() + '&end_time=' + end.format(),
 	          complete: function(data){
@@ -725,7 +735,7 @@
 	          }
 	        });
 	  
-	        
+	        }
 	        
 	        
 	        $(this).fullCalendar('unselect');
@@ -785,15 +795,17 @@
 	function initClassDayPlanCalendar(){
 
 		$.each($('.class-calendar'), function(index, calendarElement){
+
 		  var gradeId = $(calendarElement).attr("data-grade-id");
 		  var sectionId = $(calendarElement).attr("data-section-id");
+		  var dayClickFlag = false;
 		  calendarObjects[index] = $(calendarElement).fullCalendar({
 			  header: {
 			    left: 'prev,next today',
 			    center: 'title',
 			    right: 'agendaWeek,agendaDay'
 			  },
-			  defaultView: "agendaWeek",
+			  defaultView: "agendaDay",
 			  firstDay: 1,
 			  slotDuration: "00:30:00",
 			  scrollTime: "08:00:00",
@@ -836,8 +848,22 @@
 			            
 			      return false;
 			  },
+			  dayClick: function(date, jsEvent, view) {
+			  	
+		        dayClickFlag = true;
+		        $.ajax({
+			        url: '/institutes/<%= @institute.id%>/timetable_slots/new.js?grade_id=' + gradeId + '&section_id=' + sectionId + '&start_time=' + date.format() + '&end_time=' + date.add(30, 'minutes').format() + '.js',
+			        complete: function(data){
+			          if(data.status == "200"){
+			            $('#dayPlanModal').find('.modal-body').html(data.responseText);
+			            $('#dayPlanModal').modal('show');
+			          }
+			        }
+			      });
+		      },
 			  select: function(start, end) {
-			    if(!this.dayClickedFlag){
+				
+			    if(!dayClickFlag){
 			      $.ajax({
 			        url: '/institutes/<%= @institute.id%>/timetable_slots/new.js?grade_id=' + gradeId + '&section_id=' + sectionId + '&start_time=' + start.format() + '&end_time=' + end.format() + '.js',
 			        complete: function(data){
@@ -847,7 +873,7 @@
 			          }
 			        }
 			      });
-			      
+			      dayClickFlag = false;
 			    }
 			    
 			    
@@ -905,14 +931,14 @@
 	function initTeacherDayPlanCalendar(){
 		$.each($('.teacher-calendar'), function(index, calendarElement){
 		  var teacherId = $(calendarElement).attr("data-teacher-id");
-		  
+		  var dayClickFlag = false;
 		  teacherCalendarObjects[index] = $(calendarElement).fullCalendar({
 			  header: {
 			    left: 'prev,next today',
 			    center: 'title',
 			    right: 'agendaWeek,agendaDay'
 			  },
-			  defaultView: "agendaWeek",
+			  defaultView: "agendaDay",
 			  firstDay: 1,
 			  slotDuration: "00:30:00",
 			  scrollTime: "08:00:00",
@@ -937,6 +963,20 @@
 			  editable: true,
 			  selectable: true,
 			  selectHelper: true,
+			  dayClick: function(date, jsEvent, view) {
+			  	dayClickFlag = true;
+			  	  $.ajax({
+			        url: '/institutes/<%= @institute.id%>/timetable_slots/new.js?teacher_id=' + teacherId + '&start_time=' + date.format() + '&end_time=' + date.add(30, 'minutes').format(),
+			        complete: function(data){
+			          if(data.status == "200"){
+			            $('#dayPlanModal').find('.modal-body').html(data.responseText);
+			            $('#dayPlanModal').modal('show');
+			          }
+			        }
+			      });
+			      
+		        
+		      },
 			  eventClick: function(event, jsEvent, view) {
 			      
 			      if(event.edit_url){
@@ -944,7 +984,8 @@
 			          url: event.edit_url,
 			          complete: function(data){
 			            if(data.status == "200"){
-			              eval(data.responseText);
+			              $('#dayPlanModal').find('.modal-body').html(data.responseText);
+			              $('#dayPlanModal').modal('show');
 			            }
 			          }
 			        });
@@ -955,7 +996,7 @@
 			      return false;
 			  },
 			  select: function(start, end) {
-			    if(!this.dayClickedFlag){
+			    if(!dayClickFlag){
 			      $.ajax({
 			        url: '/institutes/<%= @institute.id%>/timetable_slots/new.js?teacher_id=' + teacherId + '&start_time=' + start.format() + '&end_time=' + end.format(),
 			        complete: function(data){
@@ -965,7 +1006,7 @@
 			          }
 			        }
 			      });
-			      
+			      dayClickFlag = false;
 			    }
 			    
 			    
@@ -1161,13 +1202,11 @@
 	function updateCheckboxCounter(){
 		var len = $("input[name='participant_ids[]']:checked").length;	
 		if(len>0){
-			$(".checkbox-counter").text(len + " Participient");
+			$(".checkbox-counter").text(len);
 		}else{
-			$(".checkbox-counter").text('');
+			$(".checkbox-counter").text('Select');
 		}
-		if(len>1){
-			$(".checkbox-counter").text(len + " Participients");
-		}		
+		
 	}	
 
 </script>
