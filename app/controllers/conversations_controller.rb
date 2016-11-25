@@ -440,7 +440,7 @@ class ConversationsController < ApplicationController
 		
 		recieved_messages.each do |message|
 			if(!message.is_seen_by_all_participants)
-				other_participant_ids_array = @conversation.participants.where.not(id: message.creator_id).map{|p| p.id}
+				other_participant_ids_array = message.conversation.participants.where.not(id: message.creator_id).map{|p| p.id}
 				message.seen_user_ids = "" if message.seen_user_ids.blank? 
 
 				seen_user_ids_array = message.seen_user_ids.split(", ").map{|id| id.to_i}.uniq
