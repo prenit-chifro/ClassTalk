@@ -548,6 +548,20 @@
 			</div>
 		</div>
 	</div>
+
+	<div id="submissionStatusModal" class="modal fade" role="dialog">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title">Submission Status</h4>
+				</div>
+				<div class="modal-body">
+					
+				</div>
+			</div>
+		</div>
+	</div>
 	
 	<script>
 		$(document).one("turbolinks:load", function(){
@@ -782,9 +796,9 @@
 			type: "GET",
 			success: function(data) {
 				if(data.trim().length == 0) {
-					$("#seenStatusModal").find(".modal-body").html("No one has yet acted on this message !");
+					$("#submissionStatusModal").find(".modal-body").html("No one has yet acted on this message !");
 				} else {
-					$("#seenStatusModal").find(".modal-body").html(data);
+					$("#submissionStatusModal").find(".modal-body").html(data);
 				}
 			}
 		});
