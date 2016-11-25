@@ -69,7 +69,7 @@
 		<% if(!conversation.last_message.attachments.blank?) %>
 			<% conversation.last_message.attachments.each do |attachment| %>
 				<p>
-					<iframe width="400" height= "200" src="https://docs.google.com/gview?url=https://classtalk.in<%= attachment.media.url %>&embedded=true&chrome=true"></iframe>
+					<iframe width="300" height= "200" src="https://docs.google.com/gview?url=https://classtalk.in<%= attachment.media.url %>&embedded=true&chrome=true"></iframe>
 				</p>
 			<% end %>	
 		<% end %>
