@@ -36,7 +36,7 @@
 					
 				<% message.acted_user_ids = "" if message.acted_user_ids.blank? %>
 				<% acted_user_ids_array = message.acted_user_ids.split(", ").map{|id| id.to_i}.uniq %>
-				<% if(acted_user_ids_array.include?(current_user.id) or acted_user_ids_array.include?(current_user.child_ids.split(", "))) %>
+				<% if(acted_user_ids_array.include?(current_user.id) or (!current_user.child_ids.blank? and acted_user_ids_array.include?(current_user.child_ids.split(", ")))) %>
 					<span class="checkmark pull-right" data-message-id=<%= message.id %> data-conversation-id=<%= conversation.id %>>Submitted</span>
 				<% else %>
 					<span class="checkmark pull-right" data-message-id=<%= message.id %> data-conversation-id=<%= conversation.id %>>Pending <%= acted_user_ids_array.length %></span>
