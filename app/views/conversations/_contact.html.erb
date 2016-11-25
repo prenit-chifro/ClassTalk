@@ -14,11 +14,14 @@
 						<i class="material-icons" style="color: #ea5b31;">face</i>
 					<% end %>	
 				</span>
-				<span>
-					<%= link_to conversations_path(participant_ids: [contact.id], conversation_id:"#{params[:conversation_id]}"), method: :post do %>
-						<i class="material-icons" style="color: #ea5b31;">&#xE0C9;</i>
-					<% end %>	
-				</span>
+				<% if(current_user.id != contact.id) %>
+					<span>
+						<%= link_to conversations_path(participant_ids: [contact.id], conversation_id:"#{params[:conversation_id]}"), method: :post do %>
+							<i class="material-icons" style="color: #ea5b31;">&#xE0C9;</i>
+						<% end %>	
+					</span>
+				<% end %>
+				
 			</div>
 			
 		</div>				
