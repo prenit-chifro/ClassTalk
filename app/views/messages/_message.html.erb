@@ -20,7 +20,7 @@
 					<span class="double-checkmark pull-right" data-message-id=<%= message.id %> data-conversation-id=<%= conversation.id %>>&nbsp;Seen by <%= seen_user_ids_array.length %></span>
 				<% end %>
 			<% end %>
-			<% if(message.creator_id == current_user.id and !conversation.message_categories.blank? and conversation.message_categories.include?(message.category)) %>
+			<% if((message.creator_id == current_user.id or current_user.role=="Institute Admin") and !conversation.message_categories.blank? and conversation.message_categories.include?(message.category)) %>
 					
 				<% student_participant_ids_array = conversation.participants.where.not(id: message.creator_id).where(role: "Student").map{|p| p.id} %>
 				<% message.acted_user_ids = "" if message.acted_user_ids.blank? %>
@@ -36,7 +36,7 @@
 					
 				<% message.acted_user_ids = "" if message.acted_user_ids.blank? %>
 				<% acted_user_ids_array = message.acted_user_ids.split(", ").map{|id| id.to_i}.uniq %>
-				<% if(acted_user_ids_array.include?(current_user.id) or acted_user_ids_array.include?(current_user.child_id)) %>
+				<% if(acted_user_ids_array.include?(current_user.id) or acted_user_ids_array.include?(current_user.child_ids.split(", "))) %>
 					<span class="checkmark pull-right" data-message-id=<%= message.id %> data-conversation-id=<%= conversation.id %>>Submitted</span>
 				<% else %>
 					<span class="checkmark pull-right" data-message-id=<%= message.id %> data-conversation-id=<%= conversation.id %>>Pending <%= acted_user_ids_array.length %></span>
@@ -50,7 +50,7 @@
 	<% if(!message.attachments.blank?) %>
 		<% message.attachments.each do |attachment| %>
 			<p style="max-width: 300px; margin: 0 auto;">
-				<iframe style="width: 100%;"> height= "200" src="https://docs.google.com/gview?url=https://classtalk.in<%= attachment.media.url %>&embedded=true&chrome=true"></iframe>
+				<iframe style="width: 100%;" height= "200" src="https://docs.google.com/gview?url=https://classtalk.in<%= attachment.media.url %>&embedded=true&chrome=true"></iframe>
 			</p>
 		<% end %>	
 	<% end %>
