@@ -13,13 +13,19 @@ class EventsController < ApplicationController
   end
 
   def new
-
+    if(current_user.role == "Student" or current_user.role == "Parent")
+      head :ok
+      return 
+    end
     @institutes = current_user.institutes
 
   end
 
   def edit
-
+    if(current_user.role == "Student" or current_user.role == "Parent")
+      head :ok
+      return 
+    end
   end
 
   def create
