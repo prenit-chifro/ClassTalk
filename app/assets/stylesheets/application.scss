@@ -1482,13 +1482,15 @@ ul.sticky-notices li{
 ul.sticky-notices li p.institute-notice{
 	font-family:arial;
 	font-size: 14px;
+	color: #8e8071;
 }
 ul.sticky-notices li h2{
 	margin: 0;
     font-size: 141%;
     font-weight: bold;
     padding-bottom: 10px;
-	font-family:"Reenie Beanie",arial,sans-serif;
+	font-family:"Reenie Beanie",arial,sans-serif;	    
+	color: #5ba1bb;
 }
 ul.sticky-notices li p{
 	font-family:"Reenie Beanie",arial,sans-serif;
@@ -1523,9 +1525,9 @@ ul.sticky-notices li:nth-child(3n) div.sticky-notices-tag{
     position: absolute;
     bottom: -13px;
     font-size: 12px;
-    right: -2px;
-    left: 5px;
-    background: #f5b16b;
+    right: 0;
+    left: 0;
+    background: #8e8071;
     color: #fff;
 	-webkit-transform:rotate(-6deg);
 	-o-transform:rotate(-6deg);
@@ -1811,6 +1813,30 @@ div.calendar div.fc-view-container tbody.fc-body td.fc-widget-content > div.fc-s
 }
 .fc-row{
 	margin-right:0;
+}
+
+div.calendar div.fc-agendaDay-view thead.fc-head > tr td.fc-head-container div.fc-row,
+div.calendar div.fc-agendaWeek-view thead.fc-head > tr td.fc-head-container div.fc-row,
+div.calendar div.fc-agendaDay-view tbody.fc-body > tr td.fc-widget-content div.fc-row,
+div.calendar div.fc-agendaWeek-view tbody.fc-body > tr td.fc-widget-content div.fc-row
+{
+	margin-right:0 !important;
+	border-right-width: 0 !important;
+}
+div.calendar div.fc-agendaDay-view thead.fc-head > tr td.fc-head-container > div.fc-row > table thead tr > th:nth-child(1),
+div.calendar div.fc-agendaWeek-view thead.fc-head > tr td.fc-head-container > div.fc-row > table thead tr > th:nth-child(1)
+{
+	padding: 4px;
+}
+div.fc-agendaDay-view tr.fc-minor td:nth-child(1),
+div.fc-agendaWeek-view tr.fc-minor td:nth-child(1),
+div.fc-agendaDay-view tr td.fc-time,
+div.fc-agendaWeek-view tr td.fc-time,
+div.calendar div.fc-agendaDay-view tbody.fc-body div.fc-bg > table >tbody>tr>td:nth-child(1),
+div.calendar div.fc-agendaWeek-view tbody.fc-body div.fc-bg > table >tbody>tr>td:nth-child(1),
+{
+	background: #56b0ca;
+	color:#fff;
 }
 
 ::-webkit-scrollbar {

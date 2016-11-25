@@ -1,5 +1,6 @@
 <%= form_tag institute_event_path(@institute, event), method: :patch, remote: true do %>
-	<%= event.institute.institute_name + ": " if !event.institute_id.blank? %> <%= event.grade_section_models.map{|model| "Class #{model.grade.grade_name} #{model.section.section_name}" }.join(", ") if !event.grade_section_ids.blank? %>
+	<p style="color: #d69641; font-size: 20px;"><%= event.institute.institute_name + ": " if !event.institute_id.blank? %></p>
+	<p style="color: #619bce;">Classes: <%= event.grade_section_models.map{|model| "#{model.grade.grade_name}#{model.section.section_name}" }.join(",  ") if !event.grade_section_ids.blank? %></p>
 	<div class="form-group">
 		<%= text_field_tag :title, event.title, placeholder: :Title, class: "form-control" %>
 	</div>

@@ -14,13 +14,19 @@
 				<i class="material-icons">&#xE147;</i>
 			<% end %>
 		<% else %>
-			<%= link_to new_institute_notice_path(@institute) do %>
+			<% if(["Principal", "Institute Admin"]).include?(current_user.role) %>
+				<%= link_to new_institute_notice_path(@institute) do %>
+					<p class="no-attendance-records">
+						You have no notices! Create One..
+					</p>
+				<% end %>	
+				<%= link_to new_institute_notice_path(@institute), class:"new-notices-icons" do %>
+					<i class="material-icons">&#xE147;</i>
+				<% end %>
+			<% else %>
 				<p class="no-attendance-records">
-					You have no notices! Create One..
-				</p>
-			<% end %>	
-			<%= link_to new_institute_notice_path(@institute), class:"new-notices-icons" do %>
-				<i class="material-icons">&#xE147;</i>
+					No Notice posted yet!
+				</p>	
 			<% end %>
 		<% end %>
 		
