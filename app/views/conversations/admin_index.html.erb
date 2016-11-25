@@ -166,11 +166,11 @@
 										<h6 class="teachers-list-heading">Class <%= grade.grade_name + section.section_name %><i class="material-icons arrow-up-icon pull-right">&#xE316;</i></h6>
 										<div class="container-width classRoute">
 											<ul class="nav nav-tabs" role="tablist" id="tablist">
-												<li class="active"><a data-toggle="tab" href="#all-parents">Parents</a></li>
-												<li><a data-toggle="tab" href="#all-students">Students</a></li>														
+												<li class="active"><a data-toggle="tab" href="#all-parents-<%= grade_section_model.id %>">Parents</a></li>
+												<li><a data-toggle="tab" href="#all-students-<%= grade_section_model.id %>">Students</a></li>														
 											</ul>
 											<div class="tab-content" style="">
-												<div class="tab-pane active" id="all-parents">
+												<div class="tab-pane active" id="all-parents-<%= grade_section_model.id %>">
 													<ul class="list-unstyled list-inline">
 														<% if(!parents.blank?) %>
 															<% parents.each do |parent| %>
@@ -186,7 +186,7 @@
 														<% end %>																
 													</ul>
 												</div>
-												<div class="tab-pane" id="all-students">
+												<div class="tab-pane" id="all-students-<%= grade_section_model.id %>">
 													<ul class="list-unstyled list-inline">
 														<% if(!students.blank?) %>
 															<% students.each do |student| %>
