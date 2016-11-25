@@ -23,7 +23,8 @@ class GradesController < ApplicationController
 	end
 
 	def show
-		@grade_section_models = @grade.grades_sections.where(institute_id: @institute.id)
+		@section_member_models = current_user.members_sections
+		@grade_section_models = @grade.grades_sections.where(institute_id: @institute.id, section_id: @section_member_models.map(&:section_id))
 	end
 
 	def edit
