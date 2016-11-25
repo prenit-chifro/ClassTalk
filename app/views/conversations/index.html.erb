@@ -37,7 +37,7 @@
 				<% end %>
 			<% end %>
 		</div>
-		<%= paginate @conversations, left: 1, right: 1 %>
+		<%= paginate @conversations, window: 1 %>
 	</div>	
 </div>
 <div class="container">
