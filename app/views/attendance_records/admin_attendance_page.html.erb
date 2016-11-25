@@ -80,25 +80,31 @@
 			<thead>
 			  	<tr>
 			    	<th>Student</th>
-		    		<% (@section_attendance_records.first.date..@section_attendance_records.last.date).to_a.each do |date| %>
-		    			<th><%= date.strftime("%b %d") %></th>	
-		    		<% end %>
+			    	<% if(!@section_attendance_records.blank?) %>
+			    		<% (@section_attendance_records.first.date..@section_attendance_records.last.date).to_a.each do |date| %>
+			    			<th><%= date.strftime("%b %d") %></th>	
+			    		<% end %>
+			    	<% end %>
+		    		
 			  	</tr>
 			</thead>
 			<tbody>
 			  	<% @section_students.each do |student| %>
 			  		<tr>
 				    	<td><%= student.first_name %></td>
-				    	<% (@section_attendance_records.first.date..@section_attendance_records.last.date).to_a.each do |date| %>
-				    		<% date_attendance_record = @section_attendance_records.find_by(date: date) %>
-				    		<% if(!date_attendance_record.blank? and date_attendance_record.present_student_ids.split(", ").include?(student.id.to_s)) %>
-				    			<th class="info">Present</th>		
-				    		<% else %>
-				    			<th class="warning">Absent</th>		
+				    	<% if(!@section_attendance_records.blank?) %>
+				    		<% (@section_attendance_records.first.date..@section_attendance_records.last.date).to_a.each do |date| %>
+					    		<% date_attendance_record = @section_attendance_records.find_by(date: date) %>
+					    		<% if(!date_attendance_record.blank? and date_attendance_record.present_student_ids.split(", ").include?(student.id.to_s)) %>
+					    			<th class="info">Present</th>		
+					    		<% else %>
+					    			<th class="warning">Absent</th>		
+					    		<% end %>
+				    			
 				    		<% end %>
-			    			
-			    		<% end %>
-				    
+					    
+				    	<% end %>
+				    	
 				  	</tr>
 			  	<% end %>
 			  	

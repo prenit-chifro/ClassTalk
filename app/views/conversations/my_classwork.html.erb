@@ -6,7 +6,7 @@
 <div class="container-width tabs-container classRoute tabs-container" style="margin-top:50px;">
 			
 		
-			<ul class="nav nav-tabs" role="tablist" id="tablist" style="position:fixed;z-index:5;left:0;right:0;">
+			<ul class="nav nav-tabs" role="tablist" id="tablist" style="position:fixed;z-index:5;left:0;right:0; top: 50px;">
 				<% if(!@message_categories_array.blank?) %>
 					<% i=0 %>
 					<% @message_categories_array.each do |category| %>
@@ -23,7 +23,7 @@
 				<% end %>
 			</ul>
 		
-		<div class="tab-content admin-home-content" style="margin-top:50px;">
+		<div class="tab-content admin-home-content" style="margin-top:84px;">
 			<% if(!@message_categories_array.blank?) %>
 				<% i=0 %>
 				<% @message_categories_array.each do |category| %>
