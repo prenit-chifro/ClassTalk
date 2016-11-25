@@ -503,7 +503,7 @@ ul.submenu>li:last-child a{
 	right: inherit !important;
 }
 /*universal*/
-.admin-home-content div[id*="all"]{
+.admin-home-content > div[id*="all"]{
 	max-height:100%;
 }
 #all-institute-analytics{
@@ -1790,7 +1790,6 @@ div.calendar div.fc-view-container tbody.fc-body td.fc-widget-content > div.fc-s
 	text-align: center;
 }
 .fc-row .fc-content-skeleton > table> tbody  td.fc-event-container a{
-	background-color: #ea5b31 !important;
     color: #fff !important;
 	border:none !important;
     text-align: center;
