@@ -88,15 +88,18 @@
         format: 'DD/MM/YYYY'
    	});
 
+	
+
     <% if(!@attendance_records.blank?) %>
-    	$(document).one("turbolinks:load", function(){
-	    	drawClassChart();
+    	$(document).one("ready turbolinks:load", function(){
+    		google.charts.load('current', {'packages':['corechart']});
+    		google.charts.setOnLoadCallback(drawClassChart);
 	    });
     <% end %>
       
 	function drawClassChart() {
-		google.charts.load('current', {'packages':['corechart']});
 
+		
 		var data = new google.visualization.DataTable();
 		<% if(@total_students > 0) %>
 			var rowsArray = [

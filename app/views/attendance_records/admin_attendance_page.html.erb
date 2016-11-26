@@ -122,16 +122,18 @@
         format: 'DD/MM/YYYY'
    	});
 
-	google.charts.load('current', {'packages':['corechart']})
+	
 	<% if(!@all_attendance_records.blank?) %>
-    	$(document).one("turbolinks:load", function(){
-	    	drawChart();
+    	$(document).one("ready turbolinks:load", function(){
+    		google.charts.load('current', {'packages':['corechart']});
+    		google.charts.setOnLoadCallback(drawChart);
 	    });
     <% end %>	
     
     <% if(!@section_attendance_records.blank?) %>
-    	$(document).one("turbolinks:load", function(){
-	    	drawClassChart();
+    	$(document).one("ready turbolinks:load", function(){
+    		google.charts.load('current', {'packages':['corechart']});
+    		google.charts.setOnLoadCallback(drawClassChart);
 	    });
     <% end %>
    

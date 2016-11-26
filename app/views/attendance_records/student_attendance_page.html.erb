@@ -82,10 +82,10 @@
         format: 'DD/MM/YYYY'
    	});
 
-	google.charts.load('current', {'packages':['corechart']});
 	<% if(!@attendance_records.blank?) %>
-		$(document).one("turbolinks:load", function(){
-	    	drawClassChart();
+		$(document).one("ready turbolinks:load", function(){
+    		google.charts.load('current', {'packages':['corechart']});
+    		google.charts.setOnLoadCallback(drawClassChart);
 	    });
 	<% end %>
       
