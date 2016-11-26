@@ -84,7 +84,6 @@
 
 	google.charts.load('current', {'packages':['corechart']});
 	<% if(!@attendance_records.blank?) %>
-		google.charts.setOnLoadCallback(drawClassChart);
 		$(document).one("turbolinks:load", function(){
 	    	drawClassChart();
 	    });
