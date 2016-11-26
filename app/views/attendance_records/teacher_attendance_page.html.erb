@@ -88,8 +88,6 @@
         format: 'DD/MM/YYYY'
    	});
 
-    google.charts.load('current', {'packages':['corechart']});
-
     <% if(!@attendance_records.blank?) %>
     	$(document).one("turbolinks:load", function(){
 	    	drawClassChart();
@@ -97,6 +95,7 @@
     <% end %>
       
 	function drawClassChart() {
+		google.charts.load('current', {'packages':['corechart']});
 
 		var data = new google.visualization.DataTable();
 		<% if(@total_students > 0) %>
