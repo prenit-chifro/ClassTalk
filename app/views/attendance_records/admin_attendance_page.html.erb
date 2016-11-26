@@ -48,16 +48,16 @@
 <div class="form-group col-sm-5 col-xs-5">
 	
 	<% options = [["Select Class", ""]] %>
-	<% @all_section_member_models.each do |section_member_model| %>
-		<% options << ["Class #{section_member_model.grade.grade_name}", section_member_model.grade.id] %>
+	<% @all_section_member_models.map(&:grade).uniq.each do |grade| %>
+		<% options << ["Class #{grade.grade_name}", grade.id] %>
 	<% end %>
 	<%= select_tag :grade_id, options_for_select(options, ["Class #{@grade.grade_name}", @grade.id]), id: "sel1", class: "form-control" %>
 </div>
 <div class="form-group col-sm-5 col-xs-5">
 	
 	<% options = [["Select Section", ""]] %>
-	<% @all_section_member_models.each do |section_member_model| %>
-		<% options << ["Section #{section_member_model.section.section_name}", section_member_model.section.id] %>
+	<% @all_section_member_models.map(&:section).uniq.each do |section| %>
+		<% options << ["Section #{section.section_name}", section.id] %>
 	<% end %>
 	<%= select_tag :section_id, options_for_select(options, ["Section #{@section.section_name}", @section.id]), id: "sel2", class: "form-control" %>
 </div>
