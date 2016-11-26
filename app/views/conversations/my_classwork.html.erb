@@ -44,7 +44,7 @@
 								<%= render partial: "messages/message", locals: {conversation: message.conversation, message: message} %>
 							<% end %>
 							
-							<%= paginate(@category_messages, :params => { :anchor => 'all-' + category }) %>
+							<%= paginate(@category_messages, window: 1, :params => { :anchor => 'all-' + category }) %>
 						<% end %>
 
 						

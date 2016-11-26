@@ -19,7 +19,7 @@ class ConversationsController < ApplicationController
 					sent_conversations_array << conversation
 				end
 			end
-			@sent_conversations = Conversation.where(id: sent_conversations_array.map(&:id)).page(params[:page]).per(10)
+			@sent_conversations = Conversation.where(id: sent_conversations_array.map(&:id)).order(updated_at: :desc).page(params[:page]).per(10)
 		else
 			@conversations = current_user.participating_conversations.order(updated_at: :desc).page(1).per(10)
 			@sent_conversations = current_user.participating_conversations.where(creator_id: current_user.id).order(updated_at: :desc).page(1).per(10)
@@ -29,7 +29,7 @@ class ConversationsController < ApplicationController
 					sent_conversations_array << conversation
 				end
 			end
-			@sent_conversations = Conversation.where(id: sent_conversations_array.map(&:id)).page(1).per(10)
+			@sent_conversations = Conversation.where(id: sent_conversations_array.map(&:id)).order(updated_at: :desc).page(1).per(10)
 		end
 
 		@all_conversations = current_user.participating_conversations.order(updated_at: :desc)
