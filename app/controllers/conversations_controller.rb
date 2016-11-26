@@ -474,7 +474,9 @@ class ConversationsController < ApplicationController
 						instance_variable_set("@" + category + "_messages", instance_variable_get("@" + category + "_messages") + conversation.messages.where(category: category).order(created_at: :desc))
 						
 					end
-					instance_variable_set("@"+ category + "_messages", Kaminari.paginate_array(instance_variable_get("@" + category + "_messages")).page(params[:page]).per(10))
+					instance_variable_set("@" + category + "_messages",  Message.where(id: instance_variable_get("@" + category + "_messages").map(&:id)))
+
+					instance_variable_set("@" + category + "_messages", instance_variable_get("@" + category + "_messages").page(params[:page]).per(10))
 					
 				else 
 					
@@ -485,8 +487,9 @@ class ConversationsController < ApplicationController
 						instance_variable_set("@" + category + "_messages", instance_variable_get("@" + category + "_messages") + conversation.messages.where(category: category).order(created_at: :desc))
 						
 					end
-					instance_variable_set("@"+ category + "_messages", Kaminari.paginate_array(instance_variable_get("@" + category + "_messages")).page(1).per(10))
-					
+					instance_variable_set("@" + category + "_messages",  Message.where(id: instance_variable_get("@" + category + "_messages").map(&:id)))
+
+					instance_variable_set("@" + category + "_messages", instance_variable_get("@" + category + "_messages").page(1).per(10))
 				end
 	        end
 	        
