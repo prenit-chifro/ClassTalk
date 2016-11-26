@@ -350,7 +350,7 @@ class ConversationsController < ApplicationController
 			
 			if(params[:page] and params[:page].to_i >= 2)
 				@Messages_category_messages = @conversation.messages.where("created_at >= ?", @conversation_participant_model.created_at).order(created_at: :desc).page(params[:page]).per(10)
-				@Media_category_messages = @conversation.messages.where("created_at >= ?", @conversation_participant_model.created_at).includes(:attachments).where.not(attachments: { attachable_id: nil }).page(params[:page]).per(10))
+				@Media_category_messages = @conversation.messages.where("created_at >= ?", @conversation_participant_model.created_at).includes(:attachments).where.not(attachments: { attachable_id: nil }).page(params[:page]).per(10)
 				
 				set_seen_status_to_recieved_messages(@Messages_category_messages)
 				set_seen_status_to_recieved_messages(@Media_category_messages)
@@ -366,7 +366,7 @@ class ConversationsController < ApplicationController
 			else 
 				
 				@Messages_category_messages = @conversation.messages.where("created_at >= ?", @conversation_participant_model.created_at).order(created_at: :desc).page(1).per(10)
-				@Media_category_messages = @conversation.messages.where("created_at >= ?", @conversation_participant_model.created_at).includes(:attachments).where.not(attachments: { attachable_id: nil }).page(1).per(10))
+				@Media_category_messages = @conversation.messages.where("created_at >= ?", @conversation_participant_model.created_at).includes(:attachments).where.not(attachments: { attachable_id: nil }).page(1).per(10)
 				
 				set_seen_status_to_recieved_messages(@Messages_category_messages)
 				set_seen_status_to_recieved_messages(@Media_category_messages)
@@ -466,21 +466,23 @@ class ConversationsController < ApplicationController
 	            conversation_participant_model = conversation.get_conversation_participant_model_for_participant(current_user)
 				
 				if(params[:page] and params[:page].to_i >= 2)
-					messages = conversation.messages.where("created_at >= ?", conversation_participant_model.created_at).order(created_at: :desc)
+					messages = conversation.messages.where("created_at >= ?", conversation_participant_model.created_at).order(created_at: :desc).page(params[:page]).per(10)
 					if(instance_variable_get("@" + category + "_messages").blank?)
-						instance_variable_set("@" + category + "_messages", messages.where(category: category).page(1).per(10))
+						instance_variable_set("@" + category + "_messages", conversation.messages.where(category: category).page(params[:page]).per(10))
+						set_seen_status_to_recieved_messages(conversation.messages.where(category: category).page(1).per(10))
 					else
-						instance_variable_set("@" + category + "_messages", instance_variable_get("@" + category + "_messages") + messages.where(category: category).page(1).per(10))
-						set_seen_status_to_recieved_messages(messages.where(category: category).page(1).per(10))
+						instance_variable_set("@" + category + "_messages", instance_variable_get("@" + category + "_messages") + messages.where(category: category).page(params[:page]).per(10))
+						set_seen_status_to_recieved_messages(conversation.messages.where(category: category).page(1).per(10))
 					end
 				else 
 					messages = conversation.messages.where("created_at >= ?", conversation_participant_model.created_at).order(created_at: :desc).page(1).per(10)
 					if(instance_variable_get("@" + category + "_messages").blank?)
-						instance_variable_set("@" + category + "_messages", messages.where(category: category).page(1).per(10))
+						instance_variable_set("@" + category + "_messages", conversation.messages.where(category: category).page(1).per(10))
+						set_seen_status_to_recieved_messages(conversation.messages.where(category: category).page(1).per(10))
 					else
-						instance_variable_set("@" + category + "_messages", instance_variable_get("@" + category + "_messages") + messages.where(category: category)
-						set_seen_status_to_recieved_messages(messages.where(category: category).page(1).per(10))
-					end								
+						instance_variable_set("@" + category + "_messages", instance_variable_get("@" + category + "_messages") + messages.where(category: category).page(1).per(10))
+						set_seen_status_to_recieved_messages(conversation.messages.where(category: category).page(1).per(10))
+					end
 				end
 	        end
 	        
