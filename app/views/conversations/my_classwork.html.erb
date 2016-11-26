@@ -39,6 +39,7 @@
 							<% category_messages.each do |message| %>
 								<%= render partial: "messages/message", locals: {conversation: message.conversation, message: message} %>
 							<% end %>
+							<%= paginate category_messages, window: 1 %>
 						<% end %>
 						
 					</div>
