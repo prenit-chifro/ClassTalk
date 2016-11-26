@@ -380,6 +380,7 @@
 						<% @Messages_category_messages.each do |message| %>
 							<%= render partial: "messages/message", locals: {conversation: @conversation, message: message} %>
 						<% end %>
+						<%= paginate @Messages_category_messages, window: 1, params: {anchor: "all-Messages"} %>
 					<% end %>
 
 				</div>
@@ -388,6 +389,7 @@
 						<% @Media_category_messages.each do |message| %>
 							<%= render partial: "messages/message", locals: {conversation: @conversation, message: message} %>
 						<% end %>
+						<%= paginate @Media_category_messages, window: 1, params: {anchor: "all-Media"} %>
 					<% end %>
 
 				</div>
@@ -401,6 +403,7 @@
 								<% category_messages.each do |message| %>
 									<%= render partial: "messages/message", locals: {conversation: @conversation, message: message} %>
 								<% end %>
+								<%= paginate category_messages, window: 1, params: {anchor: "all-" + category} %>
 							<% end %>
 							
 						</div>
@@ -437,7 +440,7 @@
 						<% end %>
 					</ul>
 				</div>
-				<%= paginate @Messages_category_messages, window: 1 %>
+				
 			</div>
 		</div>
 	</div>

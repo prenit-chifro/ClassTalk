@@ -12,10 +12,24 @@ class ConversationsController < ApplicationController
 	def index
 		if(params[:page] and params[:page].to_i >= 2)
 			@conversations = current_user.participating_conversations.order(updated_at: :desc).page(params[:page]).per(10)
-			@sent_conversations = current_user.participating_conversations.where(creator_id: current_user.id).order(updated_at: :desc).page(params[:page]).per(10)
+			@sent_conversations = current_user.participating_conversations.where(creator_id: current_user.id).order(updated_at: :desc)
+		 	sent_conversations_array = []
+		 	@sent_conversations.each do |conversation|
+				if(!conversation.messages.first.blank? and conversation.messages.first.creator_id == current_user.id)
+					sent_conversations_array << conversation
+				end
+			end
+			@sent_conversations = Conversation.where(id: sent_conversations_array.map(&:id)).page(params[:page]).per(10)
 		else
 			@conversations = current_user.participating_conversations.order(updated_at: :desc).page(1).per(10)
 			@sent_conversations = current_user.participating_conversations.where(creator_id: current_user.id).order(updated_at: :desc).page(1).per(10)
+			sent_conversations_array = []
+		 	@sent_conversations.each do |conversation|
+				if(!conversation.messages.first.blank? and conversation.messages.first.creator_id == current_user.id)
+					sent_conversations_array << conversation
+				end
+			end
+			@sent_conversations = Conversation.where(id: sent_conversations_array.map(&:id)).page(1).per(10)
 		end
 
 		@all_conversations = current_user.participating_conversations.order(updated_at: :desc)
@@ -455,49 +469,44 @@ class ConversationsController < ApplicationController
 	    @participating_conversations = current_user.participating_conversations
 	    @message_categories_array = []
 	    if(!@participating_conversations.blank?)
-	      @participating_conversations.each do |conversation|
-	        conversation.message_categories = "" if conversation.message_categories.blank?
-	        conversation_message_categories_array = conversation.message_categories.split(", ")
-	        conversation_message_categories_array.each do |category|
-	            if(!@message_categories_array.include?(category))
-	                @message_categories_array << category
-	            end
-
-	            conversation_participant_model = conversation.get_conversation_participant_model_for_participant(current_user)
-				
-				if(params[:page] and params[:page].to_i >= 2)
-					
-					if(instance_variable_get("@" + category + "_messages").blank?)
-						instance_variable_set("@" + category + "_messages", conversation.messages.where(category: category).order(created_at: :desc))
-						
-					else
-						instance_variable_set("@" + category + "_messages", instance_variable_get("@" + category + "_messages") + conversation.messages.where(category: category).order(created_at: :desc))
-						
-					end
-					instance_variable_set("@" + category + "_messages",  Message.where(id: instance_variable_get("@" + category + "_messages").map(&:id)))
-
-					instance_variable_set("@" + category + "_messages", instance_variable_get("@" + category + "_messages").page(params[:page]).per(10))
-					
-				else 
-					
-					if(instance_variable_get("@" + category + "_messages").blank?)
-						instance_variable_set("@" + category + "_messages", conversation.messages.where(category: category).order(created_at: :desc))
-						
-					else
-						instance_variable_set("@" + category + "_messages", instance_variable_get("@" + category + "_messages") + conversation.messages.where(category: category).order(created_at: :desc))
-						
-					end
-					instance_variable_set("@" + category + "_messages",  Message.where(id: instance_variable_get("@" + category + "_messages").map(&:id)))
-
-					instance_variable_set("@" + category + "_messages", instance_variable_get("@" + category + "_messages").page(1).per(10))
+			@participating_conversations.each do |conversation|
+				if(!conversation.message_categories.blank?)
+					conversation_message_categories_array = conversation.message_categories.split(", ")
+					conversation_message_categories_array.each do |category|
+			        if(!@message_categories_array.include?(category))
+			            @message_categories_array << category
+			            instance_variable_set("@" + category + "_messages", [])
+			        end
+			    end    
 				end
-	        end
-	        
-	      end
+			end
 
+			@participating_conversations.each do |conversation|	
+				conversation.message_categories = "" if conversation.message_categories.blank?
+				conversation_message_categories_array = conversation.message_categories.split(", ")
+				conversation_message_categories_array.each do |category|
+				    conversation_category_messages = conversation.messages.where(category: category).order(created_at: :desc)
+					if(!conversation_category_messages.blank?)
+						conversation_category_messages.each do |message|
+							instance_variable_get("@" + category + "_messages") << message
+						end	
+					end
+					
+
+				end
+
+			end
+
+			if(!@message_categories_array.blank?)	
+				@message_categories_array.each do |category|
+					if(params[:page] and params[:page].to_i >= 2)
+					  	instance_variable_set("@" + category + "_messages", Message.where(id: instance_variable_get("@" + category + "_messages").map(&:id)).page(params[:page]).per(10))
+				    else 
+				  	    instance_variable_set("@" + category + "_messages", Message.where(id: instance_variable_get("@" + category + "_messages").map(&:id)).page(1).per(10))	
+				    end
+				end
+			end
 
 	    end
-
-
  	end
 end

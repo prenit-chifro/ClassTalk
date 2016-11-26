@@ -75,18 +75,19 @@
 										<%= render partial: "conversations/conversation_small", locals: {conversation: conversation, user: current_user} %>
 													
 								<% end %>
+								<%= paginate @conversations, window: 1, params: {anchor: "all-inbox-messages"} %>
 							<% end %>
 						</div>
 						<div class="tab-pane" id="all-sent-messages">
-						<% if(!@sent_conversations.blank?) %>
+							<% if(!@sent_conversations.blank?) %>
 								<% @sent_conversations.each do |conversation| %>
-									<% if(!conversation.messages.first.blank? and conversation.messages.first.creator_id == current_user.id) %>
-										<%= render partial: "conversations/conversation_small", locals: {conversation: conversation, user: current_user} %>
-									<% end %>
+									<%= render partial: "conversations/conversation_small", locals: {conversation: conversation, user: current_user} %>
 								<% end %>
+								
+								<%= paginate @sent_conversations, window: 1, params: {anchor: "all-sent-messages"} %>
 							<% end %>
 						</div>
-						<%= paginate @conversations, window: 1 %>
+						
 					</div>	
 				</div>
 				<div class="tab-pane" id="all-people">
