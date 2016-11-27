@@ -354,7 +354,7 @@
 					<% if(!@conversation.message_categories.blank?) %>
 						<% @conversation.message_categories.split(", ").each do |category| %>
 							<li>								
-								<a data-toggle="tab" href="#all-<%=category%>" data-message-category-input-id="#<%= category %>-message-category-input"><%= category %></a>
+								<a data-toggle="tab" href="#all-<%=category.split(" ").join("_")%>" data-message-category-input-id="#<%= category.split(" ").join("_") %>-message-category-input"><%= category %></a>
 							</li>
 						<% end %>
 					<% end %>
@@ -397,13 +397,13 @@
 				<% if(!@conversation.message_categories.blank?) %>
 
 					<% @conversation.message_categories.split(", ").each do |category| %>
-						<div class="tab-pane messages <%= category %>-category-messages" id="all-<%= category %>">
-							<% category_messages = instance_variable_get("@" + category + "_messages") %>
+						<div class="tab-pane messages <%= category.split(" ").join("_") %>-category-messages" id="all-<%= category.split(" ").join("_") %>">
+							<% category_messages = instance_variable_get("@" + category.split(" ").join("_") + "_messages") %>
 							<% if(!category_messages.blank?) %>
 								<% category_messages.each do |message| %>
 									<%= render partial: "messages/message", locals: {conversation: @conversation, message: message} %>
 								<% end %>
-								<%= paginate category_messages, window: 1, params: {anchor: "all-" + category} %>
+								<%= paginate category_messages, window: 1, params: {anchor: "all-" + category.split(" ").join("_")} %>
 							<% end %>
 							
 						</div>

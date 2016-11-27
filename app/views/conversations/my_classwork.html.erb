@@ -17,7 +17,7 @@
 							<% active_or_not = "" %>
 						<% end %>
 						<li <%= active_or_not %>>								
-							<a data-toggle="tab" href="#all-<%=category%>" data-message-category-input-id="#<%= category %>-message-category-input"> <%= category %></a>
+							<a data-toggle="tab" href="#all-<%=category.split(" ").join("_")%>" data-message-category-input-id="#<%= category.split(" ").join("_") %>-message-category-input"> <%= category %></a>
 						</li>
 					<% end %>
 				<% end %>
@@ -35,20 +35,18 @@
 					<% else %>
 						<% active_or_not = "" %>
 					<% end %>
-					<div class="tab-pane messages <%= category %>-category-messages <%= active_or_not %>" id="all-<%=category%>">
+					<div class="tab-pane messages <%= category.split(" ").join("_") %>-category-messages <%= active_or_not %>" id="all-<%=category.split(" ").join("_")%>">
 
-						<% @category_messages = instance_variable_get("@" + category + "_messages") %>
+						<% @category_messages = instance_variable_get("@" + category.split(" ").join("_") + "_messages") %>
 						
 						<% if(!@category_messages.blank?) %>
 							<% @category_messages.each do |message| %>
 								<%= render partial: "messages/message", locals: {conversation: message.conversation, message: message} %>
 							<% end %>
 							
-							<%= paginate(@category_messages, window: 1, :params => { :anchor => 'all-' + category }) %>
+							<%= paginate(@category_messages, window: 1, :params => { :anchor => 'all-' + category.split(" ").join("_") }) %>
 						<% end %>
 
-						
-						<%# instance_variable_get("@" + category + "_messages").inspect %>
 					</div>
 
 				<% end %>

@@ -371,9 +371,9 @@ class ConversationsController < ApplicationController
 
 				if(!@conversation.message_categories.blank?)
 					@conversation.message_categories.split(", ").each do |category|
-						instance_variable_set("@" + category + "_messages", @conversation.messages.where("created_at >= ?", @conversation_participant_model.created_at).where(category: category).order(created_at: :desc).page(params[:page]).per(10))
+						instance_variable_set("@" + category.split(" ").join("_") + "_messages", @conversation.messages.where("created_at >= ?", @conversation_participant_model.created_at).where(category: category).order(created_at: :desc).page(params[:page]).per(10))
 						
-						set_seen_status_to_recieved_messages(instance_variable_get("@" + category + "_messages"))
+						set_seen_status_to_recieved_messages(instance_variable_get("@" + category.split(" ").join("_") + "_messages"))
 					end
 					
 				end
@@ -387,9 +387,9 @@ class ConversationsController < ApplicationController
 
 				if(!@conversation.message_categories.blank?)
 					@conversation.message_categories.split(", ").each do |category|
-						instance_variable_set("@" + category + "_messages", @conversation.messages.where("created_at >= ?", @conversation_participant_model.created_at).where(category: category).order(created_at: :desc).page(1).per(10))
+						instance_variable_set("@" + category.split(" ").join("_") + "_messages", @conversation.messages.where("created_at >= ?", @conversation_participant_model.created_at).where(category: category).order(created_at: :desc).page(1).per(10))
 						
-						set_seen_status_to_recieved_messages(instance_variable_get("@" + category + "_messages"))
+						set_seen_status_to_recieved_messages(instance_variable_get("@" + category.split(" ").join("_") + "_messages"))
 					end
 					
 				end
@@ -473,11 +473,13 @@ class ConversationsController < ApplicationController
 				if(!conversation.message_categories.blank?)
 					conversation_message_categories_array = conversation.message_categories.split(", ")
 					conversation_message_categories_array.each do |category|
-			        if(!@message_categories_array.include?(category))
-			            @message_categories_array << category
-			            instance_variable_set("@" + category + "_messages", [])
-			        end
-			    end    
+
+				        if(!@message_categories_array.include?(category))
+
+				            @message_categories_array << category
+				            instance_variable_set("@" + category.split(" ").join("_") + "_messages", [])
+				        end
+				    end    
 				end
 			end
 
@@ -488,7 +490,7 @@ class ConversationsController < ApplicationController
 				    conversation_category_messages = conversation.messages.where(category: category).order(created_at: :desc)
 					if(!conversation_category_messages.blank?)
 						conversation_category_messages.each do |message|
-							instance_variable_get("@" + category + "_messages") << message
+							instance_variable_get("@" + category.split(" ").join("_") + "_messages") << message
 						end	
 					end
 					
@@ -500,9 +502,9 @@ class ConversationsController < ApplicationController
 			if(!@message_categories_array.blank?)	
 				@message_categories_array.each do |category|
 					if(params[:page] and params[:page].to_i >= 2)
-					  	instance_variable_set("@" + category + "_messages", Message.where(id: instance_variable_get("@" + category + "_messages").map(&:id)).page(params[:page]).per(10))
+					  	instance_variable_set("@" + category.split(" ").join("_") + "_messages", Message.where(id: instance_variable_get("@" + category.split(" ").join("_") + "_messages").map(&:id)).page(params[:page]).per(10))
 				    else 
-				  	    instance_variable_set("@" + category + "_messages", Message.where(id: instance_variable_get("@" + category + "_messages").map(&:id)).page(1).per(10))	
+				  	    instance_variable_set("@" + category.split(" ").join("_") + "_messages", Message.where(id: instance_variable_get("@" + category.split(" ").join("_") + "_messages").map(&:id)).page(1).per(10))	
 				    end
 				end
 			end
