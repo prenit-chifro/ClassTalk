@@ -11,7 +11,10 @@
 	left: 50%;
 	margin-left: -150px;
 }
-
+.active-navigation a{
+	background: #6bbfdd;
+	border-bottom: 4px solid #fff;
+}
 .ajax-loader{
 	background: rgba(78, 77, 77, 0.4);
     position: absolute;
@@ -51,15 +54,15 @@ a:hover,a:focus{
 }
 .main-navbar-brand{
     font-size: 20px;
-    color: #c3d239 !important;
+    color: #fff !important;
     font-weight: bolder;
 }
 .main-navbar-brand:hover,.main-navbar-brand:focus{
-	color: #c3d239 !important;
+	color: #757575 !important;
 }
 .main-navbar-brand a{
 	font-size: 20px;
-    color: #c3d239 !important;
+    color: #fff !important;
     font-weight: bolder;
     text-decoration: none;
     display: block;	
@@ -67,7 +70,7 @@ a:hover,a:focus{
     margin-left: -10px;
 }
 p.no-attendance-records{
-    background: #ea5b31;
+    background: #2ad;
     padding: 10px;
     color: #fff;
     max-width: 300px;
@@ -79,7 +82,7 @@ p.no-attendance-records{
 
 .main-navbar-brand a i{
 	vertical-align: middle;
-    color: #c3d239;
+    color: #fff;
     margin-right: 4px;
 }
 .mar-btm{
@@ -91,7 +94,7 @@ p.no-attendance-records{
 .dot-unread{
 	background: #fff;
     border-radius: 50%;
-    color: #ea5b31;
+    color: #2ad;
     width: 20px;
     height: 20px;
     font-size: 11px;
@@ -291,7 +294,7 @@ div.edit-user-page > span+div.form-group + div.form-group
 }
 .main-grade> ul.detectul label{
 	display:block;
-	background: #ea5b31;
+	background: #2ad;
     color: #fff;
     padding: 10px;
     cursor: pointer;
@@ -376,7 +379,7 @@ div.division-subjects, div.division-upper-subjects,div.division-upper-sections{
     vertical-align: middle;
 }
 label.file-label>span.file-label-class{
-	background: #ea5b31;
+	background: #2ad;
     display: block;
     padding: 7px;
     color: #fff;
@@ -500,6 +503,8 @@ label.file-label > input[type=file]{
 }
 #navbar li a:hover, #navbar li a:focus{
 	color:#fff !important;
+	background: #6bbfdd !important;
+	border-bottom: 4px solid #fff;
 }
 
 ul.submenu{
@@ -507,7 +512,7 @@ ul.submenu{
     background: rgb(255, 255, 255);
 }
 ul.submenu>li a{
-	color: #ea5b31;
+	color: #2ad;
     display: block;
     padding: 9px;
     border-bottom: 1px solid #d6d6d6;
@@ -535,7 +540,7 @@ ul.submenu>li:last-child a{
 #all-institute-analytics>p, #all-notices-analytics>p{
 	background: #f1f1f1;
     padding: 10px;
-    color: #ea5b31;
+    color: #2ad;
     cursor: pointer;
     box-shadow: 1px 1px 3px #b1a9a9;
 	margin:10px;
@@ -545,7 +550,7 @@ ul.submenu>li:last-child a{
 	margin: 0;
     text-align: center;
 	margin-bottom:5px;
-    color: #ea5b31;
+    color: #2ad;
     font-family: 'Julius Sans One', sans-serif;
 }
 .turbolinks-progress-bar {
@@ -559,7 +564,7 @@ ul.submenu>li:last-child a{
 }
 
 .wrapper >.navbar-default{
-	background-color: #ea5b31;
+	background-color: #2ad;
     box-shadow: 1px 1px 6px #afacac;
 	border:none;
 }
@@ -572,7 +577,7 @@ ul.submenu>li:last-child a{
 }
 span.personal-message-icon{
 	display: block;
-    background: #ea5b31;
+    background: #2ad;
     width: 50px;
     height: 50px;
     position: fixed;
@@ -639,7 +644,7 @@ ul.index-conversation-modal div.classRoute>ul{
 }
 .main-media>.media-body>span{
 	font-size: 12px;
-    color: #ea5b31;
+    color: #2ad;
 }
 .img-xs{
 	width:40px;
@@ -674,7 +679,7 @@ h6.teachers-list-heading + div.classRoute{
 	bottom:0;
 	left:0;
 	right:0;
-	background-color: #484848;
+	background-color: #2ad;
 	z-index:4;
 }
 .footer-list{
@@ -684,21 +689,22 @@ h6.teachers-list-heading + div.classRoute{
 	float:left;
     border-left: 1px solid #b7b1b1;
 	cursor:pointer;
-	width:33%;
-	color:#bbb;
+	width:33.333%;
+	color:#fff;
+	padding:0;
 }
 .link-attendance{
 	font-size:11px;
 }
 ul.footer-list li a{
-	color:#bbb;
+	color:#fff;
 	text-decoration:none;
 	padding:10px;
 	display:block;
 }
 .calender-icon,.notice-icon,.attendance-icon{
     cursor: pointer;
-    color: #bbb;
+    color: #fff;
     vertical-align: middle;
     margin-left: 7px;
     font-size: 21px !important;
@@ -709,7 +715,7 @@ ul.footer-list li a{
     right: 9px;
 }
 .new-notices-icons i{
-	color: #ea5b31;
+	color: #2ad;
     font-size: 50px;
 }
 /*Class*/
@@ -718,7 +724,7 @@ div.classRoute{
 }
 div.classRoute >ul.nav-tabs{
 	border:none;
-	background: #ea5b31;
+	background: #2ad;
 	box-shadow: 1px 1px 6px #afacac;
 }
 div.classRoute >ul.nav-tabs >li{
@@ -866,7 +872,7 @@ ul.subject-list-subjects{
     padding: 10px;
     white-space: no-wrap;
     vertical-align: middle;
-    background-color: #ea5b31;
+    background-color: #2ad;
     box-shadow: 0px 0px 11px #4a4848;
     color: #fff;
 }
@@ -886,7 +892,7 @@ ul.subject-list-subjects{
 	z-index:1;
 }
 .stick ul#tablist{
-	background: #ea5b31;
+	background: #2ad;
     box-shadow: 1px 1px 8px #b5b3b3;
     border: none;
 }
@@ -900,7 +906,7 @@ ul.subject-list-subjects{
 .stick li.active a:focus, 
 .stick li.active a:hover
 {
-	background-color: #ea5b31 !important;
+	background-color: #2ad !important;
     color: #eee !important;
 }
 .stick li>a:focus, .stick li>a:hover{
@@ -1032,12 +1038,12 @@ form.search-form + h4.modal-title{
     padding: 10px;
 	margin:5px;
 	margin-bottom:0;
-	color:#ea5b31;
+	color:#2ad;
 	cursor:pointer;
 	box-shadow: 1px 1px 3px #b1a9a9;
 }
 #information >p a{
-	color:#ea5b31;
+	color:#2ad;
 	display:block;	
 }
 .log-out button{
@@ -1058,14 +1064,14 @@ form.search-form + h4.modal-title{
 }
 ul.my-classes-teacher-toggle{
 	padding: 10px;
-    background: #ea5b31;
+    background: #2ad;
     margin: 5px;
     margin-top: 0;
     box-shadow: 1px 1px 8px #9a9696;
 	display:none;
 }
 ul.my-classes-teacher-toggle> li{
-    color: #ea5b31;
+    color: #2ad;
     padding: 5px;
     background: #fff;
     margin: 7px;
@@ -1088,7 +1094,7 @@ ul.inner-toggle-my-teacher-classes{
 }
 ul.inner-toggle-my-teacher-classes>li{
 	padding: 10px;
-    background: #ea5b31;
+    background: #2ad;
     margin: 2px;
 }
 ul.inner-toggle-my-teacher-classes>li a{
@@ -1116,7 +1122,7 @@ h4.modal-title{
     margin-top: 10px;
 }
 .attachment-send-button {
-    background: #ea5b31;
+    background: #2ad;
     margin-top: 14px;
 }
 .attachment-send-button p {
@@ -1139,7 +1145,7 @@ h4.modal-title{
 .attachment-send-button>button{
 	padding: 5px;
     width: 80%;
-    background-color: #ea5b31;
+    background-color: #2ad;
 	border:none;
 }
 ul.teachers-list{
@@ -1162,7 +1168,7 @@ ul.new-group-class > li{
 }
 ul.teachers-list > li> h6{
     margin: 0;
-    background: #ea5b31;
+    background: #2ad;
     padding: 10px;
     color: #fff;
     box-shadow: none;
@@ -1306,18 +1312,18 @@ div.toggle-teachers-classes > ul>li label{
 #all-classes-analytics ul li button, div.admin-class-page ul li button{
     margin: 5px;
     background-color: #ffffff;
-    border-color: #ea5b31;
-    color: #ea5b31;
+    border-color: #2ad;
+    color: #2ad;
 	padding:0;
 }
 #all-classes-analytics ul li button:hover, div.admin-class-page ul li button:hover{
 	background:none !important;
-	border-color:#ea5b31 !important;
+	border-color:#2ad !important;
 }
 #all-classes-analytics ul li button a, div.admin-class-page ul li button a{
 	display: block;
     padding: 6px 12px;
-    color: #ea5b31;
+    color: #2ad;
 }
 .ch-item {
 	width: 200px;
@@ -1331,8 +1337,8 @@ div.toggle-teachers-classes > ul>li label{
     margin-top: 10px;
 }
 .btn-custom-info{
-	background-color: #ea5b31;
-    border-color: #ea5b31;
+	background-color: #2ad;
+    border-color: #2ad;
 }
 .btn-custom-info a{
 	color:#fff;
@@ -1380,7 +1386,7 @@ div.toggle-teachers-classes > ul>li label{
 	height: inherit;
 	border-radius: 50%;
 	overflow: hidden;
-	background:#ea5b31;
+	background:#2ad;
 	box-shadow: inset 0 0 0 5px rgba(0,0,0,0.05);
 }
 .ch-info h3 {
@@ -1656,29 +1662,32 @@ ul.right-self-image{
 	margin-right:0 !important;
 }
 ul.right-menu-toggle{
-	position: absolute;
-    top: 50px;
-    background: rgb(255, 255, 255);
+    position: absolute;
+    top: 39px;
+    background: white;
     padding-left: 0;
-    right: 0;
-    width: 124px;
-    box-shadow: 1px 1px 4px #ccc7c7;
-	z-index:1;
+    right:0;
+    width: 150px;
+    box-shadow: 1px 1px 12px #ccc7c7;
+    z-index: 1;
 }
 .main-image,.main-school-name{
 	display:block;
 }
 ul.right-menu-toggle li a{
-	color: #ea5b31;
+	color: #2ad;
     font-size: 14px;
     display: block;
+	padding:10px;
 }
 ul.right-menu-toggle li a:hover{
 	text-decoration:none;
 }
 .main-school-name{
-	background: #ea5b31;
+	color: #2ad;
     padding: 6px;
+	border-top: 1px solid #d2cfcf;
+    border-bottom: 1px solid #d2cfcf;
 }
 .main-school-name a{
 	color:#fff !important;
@@ -1768,7 +1777,7 @@ ul#attachment-toggle-show div.inner-list:hover > label span, ul#attachment-toggl
 }
 div.calendar div.fc-toolbar{
 	padding: 10px;
-    background: rgb(234, 91, 49);
+    background: #2ad;
     box-shadow: 1px 1px 6px #5d5d5d;
     color: #fff;
 }
@@ -1778,7 +1787,7 @@ div.calendar div.fc-toolbar{
 div.calendar div.fc-toolbar > div.fc-left >div.fc-button-group + button{
 	background: #ffffff;
     border: none;
-    color: #ea5b31;
+    color: #2ad;
     text-shadow: none;
     opacity: 1;
     border-radius: 0;
@@ -1787,7 +1796,7 @@ div.calendar div.fc-toolbar > div.fc-left >div.fc-button-group + button{
 div.calendar div.fc-toolbar > div.fc-right>div.fc-button-group>button{
 	background: #ffffff;
     border: none;
-    color: #ea5b31;
+    color: #2ad;
 }
 div.calendar div.fc-toolbar > div.fc-right>div.fc-button-group>button.fc-state-active{
 	background: #8f8d8d;
@@ -1924,7 +1933,11 @@ div.calendar div.fc-agendaWeek-view tbody.fc-body div.fc-bg > table >tbody>tr>td
 }
 @media only screen and (max-width : 480px){
 	.right-menu{
+		width:150px !important;
 		font-size:13px;
+	}
+	ul.right-menu-toggle {
+		right: 47px !important;
 	}
 	.main-navbar-brand{
 		padding-left: 3px;
@@ -1948,6 +1961,9 @@ div.calendar div.fc-agendaWeek-view tbody.fc-body div.fc-bg > table >tbody>tr>td
 	}
 }
 @media (max-width:767px){
+	ul.right-menu-toggle{
+		right:60px;
+	}
 	div.admin-class-page ul li .ch-thumb span{
 		margin-left: -43px;
 	}
@@ -1991,7 +2007,7 @@ div.calendar div.fc-agendaWeek-view tbody.fc-body div.fc-bg > table >tbody>tr>td
 		box-shadow:1px 1px 6px #afacac;
 	}
 	#navbar{
-		background: #ea5b31;
+		background: #2ad;
 		height: 100%;
 		max-height: 100% !important;
 		position: fixed;
@@ -2027,7 +2043,7 @@ div.calendar div.fc-agendaWeek-view tbody.fc-body div.fc-bg > table >tbody>tr>td
 		height: 40px;
 		text-align: center;
 		background: #e8e8e8;
-		color: #ea5b31;
+		color: #2ad;
 	}
 	.caret-dropdown > .caret{
 		margin-top:15px;
@@ -2058,7 +2074,7 @@ div.calendar div.fc-agendaWeek-view tbody.fc-body div.fc-bg > table >tbody>tr>td
 	}*/
 	.self-image a, .self-image a:hover{
 		background-color: #fff !important;
-		color: #ea5b31 !important;
+		color: #2ad !important;
 	}
 	.self-image a img{
 		box-shadow: 1px 1px 6px #afacac;

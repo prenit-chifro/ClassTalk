@@ -96,7 +96,10 @@ $(document).ajaxComplete(function( event, xhr, requestOptions ) {
 
 $(document).on("turbolinks:load", function(){
 	$(".ajax-loader").css("display", "none");
-
+	$('#navbar > ul.nav li a').click(function(e) {
+		var $this = $(this);
+		$this.parent().siblings().removeClass('active-navigation').end().addClass('active-navigation');
+	});
 	$(function(){
 		var hash = window.location.hash;
 		hash && $('ul.nav a[href="' + hash + '"]').tab('show');

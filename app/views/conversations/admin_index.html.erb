@@ -47,10 +47,10 @@
 				<li><a data-toggle="tab" href="#all-notices-analytics">Notices</a></li>
 			</ul>
 			<div class="clearfix"></div>
-			<div class="tab-content admin-home-content admin-index-main" style="margin-top:40px;">
+			<div class="tab-content admin-home-content admin-index-main" style="max-width:600px;margin:0 auto;margin-top:40px;">
 				<div class="tab-pane active" id="all-messages">
 					<div class="classRoute" style="margin-bottom:0;">
-						<ul class="nav nav-tabs text-center" role="tablist" id="tablist">		
+						<ul class="nav nav-tabs text-center" role="tablist" id="tablist" style="background:#98c2d2;">		
 							<li class="active" style="width:50%;"><a data-toggle="tab" href="#all-inbox-messages">Inbox
 								<% if(!@unread_conversation_ids_array.blank?) %>
 									<% if(@unread_conversation_ids_array.length > 0) %>
@@ -356,7 +356,7 @@
 				<div class="tab-pane" id="all-dayplan">
 					
 					<div class="container-width classRoute">
-						<ul class="nav nav-tabs text-center" role="tablist" id="tablist">		
+						<ul class="nav nav-tabs text-center" role="tablist" id="tablist" style="background:#98c2d2;">		
 							<li class="active" style="width:50%;">
 								<a data-toggle="tab" href="#class-plan">
 									Class Plan

@@ -48,7 +48,7 @@
 					
 					<ul class="nav navbar-nav navbar-right pull-right right-self-image" style="margin-right: 3px;">
 						<li>
-							<a class="navbar-brand right-menu" href="javascript:void(0)" style="padding: 15px;padding-left:4px;padding-right: 4px;"><%= current_user.role %></a>
+							<a class="navbar-brand right-menu text-center" href="javascript:void(0)" style="padding: 15px;padding-left:4px;padding-right: 4px;width:200px;"><%= @institute_conversation.conversation_name.truncate(20) %></a>
 							<button type="button" class="navbar-toggle collapsed pull-left hamburger-menu hamburger-menu-left-arrow" data-toggle="collapse" id="navbar-toggle-button">
 								<span></span>
 							</button>
@@ -61,13 +61,13 @@
 									</a>									
 								</li>
 								<% if(!@institute.blank?) %>
-									<li class="main-school-name text-center"><%= link_to conversation_path(@institute_conversation) do %><%= @institute_conversation.conversation_name %><% end %></li>
+									<li class="main-school-name text-center"><%= current_user.role %></li>
 								<% end %>
 								
 								<% if(user_signed_in?) %>
 									<li class="log-out">
 										<%= link_to destroy_user_session_path, method: :delete do %>
-											<button type="button" class="btn btn-danger" style="padding:6px;margin-top:-21px;">LogOut</button>
+											<button type="button" class="btn btn-danger" style="padding:6px;margin-top:-21px;color: #2ad;background:none; border:none;">LogOut</button>
 										<% end %>
 									</li>
 								<% end %>
@@ -82,33 +82,57 @@
 									<span>Profile</span>
 								</a>
 							</li>
-							<li>
-								<a href="/conversations">
-									<i class="material-icons menu-inner-icon">&#xE156;</i>
-									<span>Messages</span>
-								</a>
-							</li>	
-							<% if(!@institute.blank?) %>
-								<li>
-									<a href="<%= institute_grades_path(@institute) %>">
-										<i class="material-icons menu-inner-icon">&#xE86E;</i>
-										<span>My Classes</span>
+							<% if(!(params[:controller] == "conversations" and params[:action]=="index")) %>
+								<% if(params[:controller] == "conversations" and params[:action]=="index") %>
+									<% active_class="class=active-navigation" %>
+								<% else %>
+									<% active_class="" %>
+								<% end %>
+								<li <%= active_class %>>
+									
+									<a href="/conversations">
+										<i class="material-icons menu-inner-icon">&#xE156;</i>
+										<span>Messages</span>
 									</a>
-								</li>
-								<li>
-									<a href="<%= my_classwork_conversations_path %>">
-										<i class="material-icons menu-inner-icon">&#xE146;</i>
-										<span>My ClassWork</span>
-									</a>
-								</li>			
-								<li >
-									<a href="<%= institute_events_path(@institute) %>">
-										<i class="material-icons menu-inner-icon">&#xE8A3;</i>
-										<span>Event Calendar</span>
-									</a>								
-								</li>
+								</li>	
+								<% if(!@institute.blank?) %>
+									<% if(params[:controller] == "grades") %>
+										<% active_class="class=active-navigation" %>
+									<% else %>
+										<% active_class="" %>
+									<% end %>
+									<li <%= active_class %>>
+										<a href="<%= institute_grades_path(@institute) %>">
+											<i class="material-icons menu-inner-icon">&#xE86E;</i>
+											<span>My Classes</span>
+										</a>
+									</li>
+									<% if(params[:controller] == "conversations" and params[:action]=="my_classwork") %>
+										<% active_class="class=active-navigation" %>
+									<% else %>
+										<% active_class="" %>
+									<% end %>
+									<li <%= active_class %>>
+										<a href="<%= my_classwork_conversations_path %>">
+											<i class="material-icons menu-inner-icon">&#xE146;</i>
+											<span>My ClassWork</span>
+										</a>
+									</li>
+									<% if(params[:controller] == "events") %>
+										<% active_class="class=active-navigation" %>
+									<% else %>
+										<% active_class="" %>
+									<% end %>
+									<li <%= active_class %>>
+										<a href="<%= institute_events_path(@institute) %>">
+											<i class="material-icons menu-inner-icon">&#xE8A3;</i>
+											<span>Event Calendar</span>
+										</a>								
+									</li>
+									
+								<% end %>							
 								
-							<% end %>							
+							<% end %>
 							<li>
 								<a href="javascript:void(0)">
 									<i class="material-icons menu-inner-icon">&#xE0C6;</i>
@@ -129,23 +153,38 @@
 			<footer class="footer text-center">
 				<div class="container-width">
 					<ul class="list-inline footer-list">
-						<li>
+						<% if(params[:controller] == "timetable_slots") %>
+							<% active_class="class=active-navigation" %>
+						<% else %>
+							<% active_class="" %>
+						<% end %>
+						<li <%= active_class %>>
 							<%= link_to institute_timetable_slots_path(@institute) do %>
 								Day Plan<i class="material-icons calender-icon">&#xE8B5;</i>
 							<% end %>				
 						</li>
+						<% if(params[:controller] == "attendance_records") %>
+							<% active_class="class=active-navigation" %>
+						<% else %>
+							<% active_class="" %>
+						<% end %>
 						<% if(!@assigned_classteacher_grades_sections_model.blank?) %>
-							<li data-toggle="modal" data-target="#attendance-modal">
+							<li data-toggle="modal" data-target="#attendance-modal" <%= active_class %>>
 								<a href="javascript:void(0)">Attendance<i class="material-icons attendance-icon">&#xE85D;</i></a>
 							</li>
 						<% else %>
-							<li>
+							<li <%= active_class %>>
 								<%= link_to institute_attendance_records_path(@institute) do %>
 									Attendance<i class="material-icons attendance-icon">&#xE85D;</i>	
 								<% end %>					
 							</li>
-						<% end %>			
-						<li>
+						<% end %>
+						<% if(params[:controller] == "notices") %>
+							<% active_class="class=active-navigation" %>
+						<% else %>
+							<% active_class="" %>
+						<% end %>
+						<li <%= active_class %>>
 							<%= link_to institute_notices_path(@institute) do %>Notices<i class="material-icons notice-icon">&#xE616;</i><% end %>
 						</li>
 					</ul>
