@@ -11,8 +11,10 @@
 	left: 50%;
 	margin-left: -150px;
 }
+.active-navigation a, .active-navigation-footer a{
+	background: #6bbfdd;	
+}
 .active-navigation a{
-	background: #6bbfdd;
 	border-bottom: 4px solid #fff;
 }
 .ajax-loader{
