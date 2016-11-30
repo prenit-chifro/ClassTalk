@@ -11,18 +11,42 @@ class ConversationsController < ApplicationController
 
 	def index
 		if(params[:page] and params[:page].to_i >= 2)
-			@conversations = current_user.participating_conversations.order(updated_at: :desc).page(params[:page]).per(10)
+			@conversations = current_user.participating_conversations.order(updated_at: :desc)
+			
+			conversations_array = []
+			@conversations.each do |conversation|
+				if(conversation.is_group != true and !conversation.messages.last.blank? and conversation.messages.last.creator_id != current_user.id)	
+					conversations_array << conversation
+				end
+			end
+
+			@conversations = Conversation.where(id: conversations_array.map(&:id)).order(updated_at: :desc)
+			@all_conversations = @conversations
+			@conversations = @conversations.page(params[:page]).per(10)
+			
 			@sent_conversations = current_user.participating_conversations.where(creator_id: current_user.id).order(updated_at: :desc)
 		 	sent_conversations_array = []
 		 	@sent_conversations.each do |conversation|
-				if(!conversation.messages.first.blank? and conversation.messages.first.creator_id == current_user.id)
+				if(!conversation.messages.last.blank? and conversation.messages.last.creator_id == current_user.id and conversation.is_group == false)
 					sent_conversations_array << conversation
 				end
 			end
 			@sent_conversations = Conversation.where(id: sent_conversations_array.map(&:id)).order(updated_at: :desc).page(params[:page]).per(10)
 		else
-			@conversations = current_user.participating_conversations.order(updated_at: :desc).page(1).per(10)
-			@sent_conversations = current_user.participating_conversations.where(creator_id: current_user.id).order(updated_at: :desc).page(1).per(10)
+			@conversations = current_user.participating_conversations.order(updated_at: :desc)
+			
+			conversations_array = []
+			@conversations.each do |conversation|
+				if(conversation.is_group != true and !conversation.messages.last.blank? and conversation.messages.last.creator_id != current_user.id)	
+					conversations_array << conversation
+				end
+			end
+
+			@conversations = Conversation.where(id: conversations_array.map(&:id)).order(updated_at: :desc)
+			@all_conversations = @conversations
+			@conversations = @conversations.page(1).per(10)
+
+			@sent_conversations = current_user.participating_conversations.where(creator_id: current_user.id).order(updated_at: :desc)
 			sent_conversations_array = []
 		 	@sent_conversations.each do |conversation|
 				if(!conversation.messages.first.blank? and conversation.messages.first.creator_id == current_user.id)
@@ -32,7 +56,7 @@ class ConversationsController < ApplicationController
 			@sent_conversations = Conversation.where(id: sent_conversations_array.map(&:id)).order(updated_at: :desc).page(1).per(10)
 		end
 
-		@all_conversations = current_user.participating_conversations.order(updated_at: :desc)
+		#@all_conversations = current_user.participating_conversations.order(updated_at: :desc)
 		@unread_conversation_ids_array = []
 		@all_conversations.each do |conversation|
 			conversation_participant_model = conversation.get_conversation_participant_model_for_participant(current_user)
