@@ -102,8 +102,30 @@ $(document).on("turbolinks:load", function(){
 		hash && $('ul.nav a[href="' + hash + '"]').tab('show');
 
 		$('.nav-tabs a').click(function (e) {
-			window.location.hash = $(this).attr("href");
+			var hash = $(this).attr("href");
+			window.location.replace(('' + window.location).split('#')[0] + hash);
+
 		});
+
+		document.onmouseover = function() {
+		    //User's mouse is inside the page.
+		    window.innerDocClick = true;
+		}
+
+		document.onmouseleave = function() {
+		    //User's mouse has left the page.
+		    window.innerDocClick = false;
+		}
+
+		window.onhashchange = function() {
+		    if (window.innerDocClick) {
+		        //Your own in-page mechanism triggered the hash change
+		    } else {
+		    	//window.location.hash = "";
+		    	history.back();
+		        //Browser back button was clicked
+		    }
+		}
 	});
 	
 	App.currentUserId = $('meta[name="current-user-id"]').attr('content');
