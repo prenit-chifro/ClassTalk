@@ -436,35 +436,6 @@
 		</div>
 	</div>
 </div>
-<% if(!@assigned_classteacher_grades_sections_model.blank?) %>
-	<div class="modal fade" id="attendance-modal" role="dialog">
-		<div class="modal-dialog modal-lg">
-			<div class="modal-content">						
-				<div class="modal-header">
-					<div class="">
-						<button type="button" class="close" data-dismiss="modal">&times;</button>
-						<form onsubmit="return false;" class="search-form">
-							<div class="form-group has-feedback">
-								<i class="material-icons search-attendance-icon">&#xE8B6;</i> 
-								<input type="text" class="form-control search-attendance-input" name="search" id="search">
-							</div>
-						</form>
-						<h4 class="modal-title">
-							Class <%= @grade.grade_name %><%= @section.section_name %> Attendance 
-							<span><%= get_month_date_year(Time.now) %></span>
-							<%= link_to institute_attendance_records_path(@institute), class:"link-attendance" do %> 
-							<button class="btn btn-success pull-right" style="margin-right: 10px;">Past Attendace Records</button> <% end %>
-						</h4>
-					</div>	
-				</div>
-				<div class="attendance-form-div">
-					<%= render partial: "attendance_records/new_attendance_form", locals: {institute: @institute, grade: @grade, section: @section, class_students: @class_students, attendance_record: @todays_attendance_record} %>
-				</div>
-			</div>
-		</div>
-	</div>
-
-<% end %>
 
 <script>
 	$(".modal-label").on("click", function(e){

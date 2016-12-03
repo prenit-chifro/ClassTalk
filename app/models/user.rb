@@ -10,8 +10,6 @@ class User < ApplicationRecord
    	validates :email, uniqueness: { case_sensitive: true }, allow_blank: true, allow_nil: true
     validates :mobile_no, uniqueness: true, allow_nil: true, allow_blank: true, length: {is: 10}
 	
-	after_save :generate_unique_user_code
-	
 	attr_accessor :login_credential	
 	
 	has_one :profile_picture, class_name: :Attachment, dependent: :destroy, as: :attachable
@@ -231,6 +229,7 @@ class User < ApplicationRecord
 	end
 
 	after_create :generate_unique_user_code
+
 	def generate_unique_user_code
 		return true if !self.unique_user_code.blank?
 		first_name = self.first_name
@@ -256,7 +255,7 @@ class User < ApplicationRecord
 				last_name = "USR"
 			end
 		else
-			first_name = "CN"
+			first_name = "CT"
 			last_name = "USER"
 		end
 		
@@ -269,6 +268,15 @@ class User < ApplicationRecord
 		
 	end
 	
+	after_create :set_system_email_if_blank
+
+	def set_system_email_if_blank
+		if(self.email.blank?)
+			self.email = self.unique_user_code.downcase + "@classtalk.in"
+			self.save
+		end
+	end
+
 	after_create :create_profile_picture_for_user
 	
 	def create_profile_picture_for_user
@@ -279,6 +287,14 @@ class User < ApplicationRecord
 
 	def remember_me
 		return true
+	end
+
+	def email_required?
+		false
+	end
+
+	def mobile_no_required?
+		false
 	end
 
 end

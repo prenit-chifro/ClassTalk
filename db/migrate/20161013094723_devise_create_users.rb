@@ -20,17 +20,6 @@ class DeviseCreateUsers < ActiveRecord::Migration[5.0]
       t.datetime :last_sign_in_at
       t.string   :current_sign_in_ip
       t.string   :last_sign_in_ip
-
-      ## Confirmable
-      # t.string   :confirmation_token
-      # t.datetime :confirmed_at
-      # t.datetime :confirmation_sent_at
-      # t.string   :unconfirmed_email # Only if using reconfirmable
-
-      ## Lockable
-      # t.integer  :failed_attempts, default: 0, null: false # Only if lock strategy is :failed_attempts
-      # t.string   :unlock_token # Only if unlock strategy is :email or :both
-      # t.datetime :locked_at
 		
 	  # O-auth functionality
 	    t.string :oauth_provider
@@ -42,6 +31,12 @@ class DeviseCreateUsers < ActiveRecord::Migration[5.0]
 	  t.string :first_name
 	  t.string :last_name
 	  t.string :gender
+    t.string :roll_no
+    t.string :staff_id
+    t.datetime :date_of_birth
+    t.string :address
+    t.string :pincode
+    t.boolean :is_using_transport, default: false
 	  t.string :role
     t.string :child_ids
     t.integer :father_id
@@ -63,6 +58,8 @@ class DeviseCreateUsers < ActiveRecord::Migration[5.0]
 
     add_index :users, :first_name
     add_index :users, :last_name
+    add_index :users, :roll_no
+    add_index :users, :staff_id
     add_index :users, :role
     add_index :users, :is_registration_complete
       

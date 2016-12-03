@@ -1,0 +1,53 @@
+<div class="new-parent-step-2-form-div">
+	<h1> Add details of <%= @parent.first_name %> <%= @parent.last_name %>'s Child </h1>
+
+	<%= form_tag add_new_parent_institute_path(@institute), method: :post, multipart: true, remote: true, id: "parents-child-details-form" do %>
+		<%= hidden_field_tag :step, 2 %>
+		<%= hidden_field_tag :parent_id, @parent.id %>
+		<%= hidden_field_tag :grade_id, @grade.id %>
+		<%= hidden_field_tag :section_id, @section.id %>
+
+		<% if(!@students.blank?) %>
+			<% options = [["Select Child", ""]] %>
+			<% default_option = ["Select Child", ""] %>
+			<% @students.each do |student| %>
+				<% options << [student.first_name + " " + student.last_name, student.id] %>
+			<% end %>
+			<label> Select Child </label>
+			<%= select_tag :child_id, options_for_select(options, default_option), class: "form-control" %>
+			<button class="fill-child-details-button" onclick="showChildDetailForm();">
+				No one from above? Fill Details Manually
+			</button>
+			
+			<div class="child-details-div" style="display: none;">
+		<% else %>
+			<div class="child-details-div">
+				
+		<% end %>
+				<%= text_field_tag :child_first_name, nil, placeholder: "Child's First Name", required: true %>
+				<%= text_field_tag :child_last_name, nil, placeholder: "Child's Last Name", required: true %>
+				<br>
+				<%= email_field_tag :child_email, nil, placeholder: "Child's Email Address (Optional)" %>
+				<br>
+				<%= number_field_tag :child_mobile_no, nil, placeholder: "Child's Mobile No (Optional)" %>
+				<br>
+				<%= select_tag :child_gender, options_for_select([["Gender", ""], ["Male", "male"], ["Female", "female"]], ["Gender", ""]), required: true %>
+				<br>
+				<%= date_field_tag :child_date_of_birth, Time.now, required: true %>
+				<br>
+				<%= number_field_tag :child_roll_no, nil, placeholder: "Child's Admission No", required: true %>
+				<br>
+				
+			</div>	
+		
+		<%= submit_tag :Save, "data-disable-with" => "Saving..." %>
+
+	<% end %>
+
+	<script type="text/javascript">
+		function showChildDetailForm(){
+			$('.child-details-div').show();	
+		}
+	</script>
+</div>
+

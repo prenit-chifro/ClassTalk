@@ -17,6 +17,18 @@ Rails.application.routes.draw do
   		member do
   			get "add_new_member"
   			post "add_new_member"
+        
+        get "add_new_student"
+        post "add_new_student"
+
+        get "add_new_parent"
+        post "add_new_parent"
+
+        get "add_new_teacher"
+        post "add_new_teacher"
+
+        get "add_new_staff"
+        post "add_new_staff"
   		end
 
       resources :events
@@ -28,8 +40,22 @@ Rails.application.routes.draw do
       resources :attendance_records
 
       resources :grades do
+        collection do
+          get "add_new_grade"
+          post "add_new_grade"
+        end
         resources :sections do
-          resources :subjects
+          collection do
+            get "add_new_section"
+            post "add_new_section"
+          end
+          resources :subjects do
+             collection do
+              get "add_new_subject"
+              post "add_new_subject"
+            end 
+          end
+
         end
       end
   	end
@@ -52,7 +78,7 @@ Rails.application.routes.draw do
       collection do
         get "new_group"
         post "new_group"
-        get "my_classwork"
+        get "homework"
       end  
     end
 
@@ -69,45 +95,5 @@ Rails.application.routes.draw do
 	  end
 
     mount ActionCable.server => '/cable'
-    
-    get "another_route" => "home#another_route"
-    
-    get "messages_route" => "home#messages_route"
-    
-    get "subject_route" => "home#subject_route"
-    
-    get "self_route" => "home#self_route"
-    
-    get "another_profile_route" => "home#another_profile_route"
-    
-    get "institute_information_route" => "home#institute_information_route"
-    
-    get "teacher_notice_route" => "home#teacher_notice_route"
-    
-    get "teacher_attendance_route" => "home#teacher_attendance_route"
-
-  
-    
-    get "admin_main_route" => "home#admin_main_route"
-    
-    get "admin_class_page_route" => "home#admin_class_page_route"
-    
-    
-    
-    get "parent_index" => "home#parent_index"
-    
-    get "parent_another_route" => "home#parent_another_route"
-    
-    get "parent_subject_route" => "home#parent_subject_route"
-    
-    get "parent_self_route" => "home#parent_self_route"
-    
-    get "parent_another_profile_route" => "home#parent_another_profile_route"
-    
-    get "parent_institute_information_route" => "home#parent_institute_information_route"
-    
-    get "parent_notice_route" => "home#parent_notice_route"
-    
-    get "parent_attendance_route" => "home#parent_attendance_route"
-  	
+   	
 end

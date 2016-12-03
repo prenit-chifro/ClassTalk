@@ -387,6 +387,12 @@ ActiveRecord::Schema.define(version: 20161118074130) do
     t.string   "first_name"
     t.string   "last_name"
     t.string   "gender"
+    t.string   "roll_no"
+    t.string   "staff_id"
+    t.datetime "date_of_birth"
+    t.string   "address"
+    t.string   "pincode"
+    t.boolean  "is_using_transport",                           default: false
     t.string   "role"
     t.string   "child_ids"
     t.integer  "father_id"
@@ -407,6 +413,8 @@ ActiveRecord::Schema.define(version: 20161118074130) do
     t.index ["mobile_no"], name: "index_users_on_mobile_no", using: :btree
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", using: :btree
     t.index ["role"], name: "index_users_on_role", using: :btree
+    t.index ["roll_no"], name: "index_users_on_roll_no", using: :btree
+    t.index ["staff_id"], name: "index_users_on_staff_id", using: :btree
   end
 
   create_table "web_notification_subscriptions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|

@@ -1,0 +1,7 @@
+$('#new-parent-form')[0].reset();
+$('.new-parent-step-1-form-div').hide();
+
+if($('.new-parent-step-2-form-div').html()){
+	$('.new-parent-step-2-form-div').remove();
+}
+$('.new-parent-step-1-form-div').after('<%= j render "add_new_parent_step_2.html" %>');

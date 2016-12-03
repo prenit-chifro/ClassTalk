@@ -48,7 +48,7 @@
 					
 					<ul class="nav navbar-nav navbar-right pull-right right-self-image" style="margin-right: 3px;">
 						<li>
-							<a class="navbar-brand right-menu text-center" href="javascript:void(0)" style="padding: 15px;padding-left:4px;padding-right: 4px;width:200px;"><%= @institute_conversation.conversation_name.truncate(20) %></a>
+							<a class="navbar-brand right-menu text-center" href="javascript:void(0)" style="padding: 15px;padding-left:4px;padding-right: 4px;width:200px;"><%= @institute_conversation.conversation_name.truncate(20) if !@institute_conversation.blank? %></a>
 							<button type="button" class="navbar-toggle collapsed pull-left hamburger-menu hamburger-menu-left-arrow" data-toggle="collapse" id="navbar-toggle-button">
 								<span></span>
 							</button>
@@ -104,29 +104,29 @@
 									<li <%= active_class %>>
 										<a href="<%= institute_grades_path(@institute) %>">
 											<i class="material-icons menu-inner-icon">&#xE86E;</i>
-											<span>My Classes</span>
+											<span>Classes</span>
 										</a>
 									</li>
-									<% if(params[:controller] == "conversations" and params[:action]=="my_classwork") %>
+									<% if(params[:controller] == "conversations" and params[:action]=="homework") %>
 										<% active_class="class=active-navigation" %>
 									<% else %>
 										<% active_class="" %>
 									<% end %>
 									<li <%= active_class %>>
-										<a href="<%= my_classwork_conversations_path %>">
+										<a href="<%= homework_conversations_path %>">
 											<i class="material-icons menu-inner-icon">&#xE146;</i>
-											<span>My ClassWork</span>
+											<span>HomeWork</span>
 										</a>
 									</li>
-									<% if(params[:controller] == "events") %>
+									<% if(params[:controller] == "timetable_slots") %>
 										<% active_class="class=active-navigation" %>
 									<% else %>
 										<% active_class="" %>
 									<% end %>
 									<li <%= active_class %>>
-										<a href="<%= institute_events_path(@institute) %>">
+										<a href="<%= institute_timetable_slots_path(@institute) %>">
 											<i class="material-icons menu-inner-icon">&#xE8A3;</i>
-											<span>Event Calendar</span>
+											<span>Day Plan</span>
 										</a>								
 									</li>
 									
@@ -159,8 +159,8 @@
 							<% active_class="" %>
 						<% end %>
 						<li <%= active_class %>>
-							<%= link_to institute_timetable_slots_path(@institute) do %>
-								Day Plan<i class="material-icons calender-icon">&#xE8B5;</i>
+							<%= link_to institute_events_path(@institute) do %>
+								Event Calendar<i class="material-icons calender-icon">&#xE8B5;</i>
 							<% end %>				
 						</li>
 						<% if(params[:controller] == "attendance_records") %>

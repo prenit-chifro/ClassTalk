@@ -1,0 +1,7 @@
+$('#new-student-form')[0].reset();
+$('.new-student-step-1-form-div').hide();
+
+if($('.new-student-step-2-form-div').html()){
+	$('.new-student-step-2-form-div').remove();
+}
+$('.new-student-step-1-form-div').after('<%= j render "add_new_student_step_2.html" %>');

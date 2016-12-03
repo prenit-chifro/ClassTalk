@@ -20,17 +20,13 @@
 				or
 			</div>
 			<%- if devise_mapping.omniauthable? %>
-				<%- resource_class.omniauth_providers.each do |provider| %>
-					<div class="form-group forgot-password">
-						<div class="row">
-							<div class="col-sm-6 col-sm-offset-3">
-								<% this_provider="Facebook" if provider.to_s=="facebook" %>
-								<% this_provider="Google Plus" if provider.to_s=="google_oauth2" %>
-								<%= link_to "Sign in with #{this_provider}", omniauth_authorize_path(resource_name, provider), class: "form-control btn btn-social" %><br />
-							</div>
-						</div>	
-					</div>
-				<% end -%>
+				<div class="form-group forgot-password">
+					<div class="row">
+						<div class="col-sm-6 col-sm-offset-3">
+							<%= link_to "Sign in with Google Account", omniauth_authorize_path(resource_name, "google_oauth2"), class: "form-control btn btn-social" %><br />
+						</div>
+					</div>	
+				</div>
 			<% end -%>
 		</div>
 	</div>	

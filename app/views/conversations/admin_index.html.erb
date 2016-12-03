@@ -1,22 +1,6 @@
 <% content_for :heading do %>
-	Admin Panel
+	Admin DashBoard
 <% end %>
-	<div id="myModal" class="modal fade modal-calender" role="dialog">
-	  <div class="modal-dialog">
-		<div class="modal-content">
-		  <div class="modal-header">
-			<button type="button" class="close" data-dismiss="modal">&times;</button>
-			<h4 class="modal-title">Create or Update Event</h4>
-		  </div>
-		  <div class="modal-body">
-			<p></p>
-		  </div>
-		  <div class="modal-footer">
-			<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-		  </div>
-		</div>
-	  </div>
-	</div>
 	
 	<div id="dayPlanModal" class="modal fade modal-calender" role="dialog">
 	  <div class="modal-dialog">
@@ -38,20 +22,38 @@
 	<div class="container-width classRoute tabs-container conversation-big" style="margin-top:50px;">
 		
 			<ul class="nav nav-tabs admin-new-tabs" role="tablist" id="tablist" style="position:fixed;z-index:5;left:0;right:0;">		
-				<li class="active"><a data-toggle="tab" href="#all-messages">Messages</a></li>
-				<li><a data-toggle="tab" href="#all-people">Members</a></li>
+				<li class="active"><a data-toggle="tab" href="#all-messages">Messages</a>
+					<% if(!@unread_conversation_ids_array.blank?) %>
+						<% if(@unread_conversation_ids_array.length > 0) %>
+							<span class="dot-unread unread-conversation-no" style="display: inline-block;"> <%= @unread_conversation_ids_array.length %> </span> 
+						<% else %>
+							<span class="dot-unread unread-conversation-no" style="display: none;">0</span>
+						<% end %>
+						<span class="unread-conversation-ids" style="display: none;"><%= @unread_conversation_ids_array.join(", ") %></span>	
+					<% else %>
+						<span class="dot-unread unread-conversation-no" style="display: none;">0</span>
+						<span class="unread-conversation-ids" style="display: none;">""</span>	
+					<% end %> 
+				</li>
+				
+				<li><a data-toggle="tab" href="#all-homework">HomeWork</a></li>
+				<li><a data-toggle="tab" href="#all-students">Students</a></li>
+				<li><a data-toggle="tab" href="#all-parents">Parents</a></li>
+				<li><a data-toggle="tab" href="#all-staff">Staff</a></li>
 				<li><a data-toggle="tab" href="#all-classes-analytics">Classes</a></li>
-				<li><a data-toggle="tab" href="#all-attendance-admin-analytics">Attendance</a></li>
+				
 				<li><a data-toggle="tab" href="#all-dayplan">Day Plan</a></li>
-				<li><a data-toggle="tab" href="#all-events-analytics">Events</a></li>
-				<li><a data-toggle="tab" href="#all-notices-analytics">Notices</a></li>
+				
+				
 			</ul>
 			<div class="clearfix"></div>
+
+
 			<div class="tab-content admin-home-content admin-index-main" style="max-width:600px;margin:0 auto;margin-top:40px;">
 				<div class="tab-pane active" id="all-messages">
 					<div class="classRoute" style="margin-bottom:0;">
 						<ul class="nav nav-tabs text-center" role="tablist" id="tablist" style="background:#98c2d2;">		
-							<li class="active" style="width:50%;"><a data-toggle="tab" href="#all-inbox-messages">Inbox
+							<li class="active" style="width:33.33%;"><a data-toggle="tab" href="#all-inbox-messages">Inbox
 								<% if(!@unread_conversation_ids_array.blank?) %>
 									<% if(@unread_conversation_ids_array.length > 0) %>
 										<span class="dot-unread unread-conversation-no" style="display: inline-block;"> <%= @unread_conversation_ids_array.length %> </span> 
@@ -64,18 +66,24 @@
 									<span class="unread-conversation-ids" style="display: none;">""</span>	
 								<% end %> 
 							</a></li>
-							<li style="width:50%;"><a data-toggle="tab" href="#all-sent-messages">Sent</a></li>
+							<li style="width:33.33%;"><a data-toggle="tab" href="#all-sent-messages">Sent</a></li>
+							<li style="width:33.33%;">
+								<a data-toggle="tab" href="#all-group-messages">Groups</a>
+							</li>
+							
 						</ul>	
 					</div>
 					<div class="tab-content admin-home-content">
 						<div class="tab-pane active all-small-conversations" id="all-inbox-messages">
-							<% if(!@conversations.blank?) %>
-								<% @conversations.each do |conversation| %>
+							<% if(!@inbox_conversations.blank?) %>
+								<% @inbox_conversations.each do |conversation| %>
 									
 										<%= render partial: "conversations/conversation_small", locals: {conversation: conversation, user: current_user} %>
 													
 								<% end %>
-								<%= paginate @conversations, window: 1, params: {anchor: "all-inbox-messages"} %>
+								<%= paginate @inbox_conversations, window: 1, params: {anchor: "all-inbox-messages"} %>
+							<% else %>
+								<h1> You dont have any message in inbox that needs your response ! </h1>	
 							<% end %>
 						</div>
 						<div class="tab-pane" id="all-sent-messages">
@@ -85,30 +93,139 @@
 								<% end %>
 								
 								<%= paginate @sent_conversations, window: 1, params: {anchor: "all-sent-messages"} %>
+							<% else %>	
+								<h1> You dont have any sent message that others need to respond to ! </h1>	
 							<% end %>
 						</div>
-						
+						<div class="tab-pane" id="all-group-messages">	
+							<% if(!@group_conversations.blank?) %>
+								<% @group_conversations.each do |conversation| %>
+									
+										<%= render partial: "conversations/conversation_small", locals: {conversation: conversation, user: current_user} %>
+													
+								<% end %>
+								<%= paginate @group_conversations, window: 1, params: {anchor: "all-group-messages"} %>
+							<% else %>
+								<h1> No group messages ! </h1>		
+							<% end %>
+						</div>		
 					</div>	
 				</div>
-				<div class="tab-pane" id="all-people">
+
+				<div class="tab-pane" id="all-homework">
+					<% if(!@homework_messages.blank?) %>
+						<% @homework_messages.each do |message| %>
+							<%= render partial: "messages/message", locals: {conversation: message.conversation, message: message} %>
+						<% end %>
+						
+						<%= paginate @homework_messages, window: 1, params: {anchor: "all-homework"} %>
+					<% else %>
+						<h1> No HomeWork Posted </h1>
+					<% end %>
+
+				</div>
+				<div class="tab-pane" id="all-students">
 					<ul class="list-unstyled teachers-list index-conversation-modal">
-						<%= link_to add_new_member_institute_path(@institute) do %>
+						<%= link_to add_new_student_institute_path(@institute) do %>
 							<div class="pull-right add-member">
-								<span>Create New Contact</span><i class="material-icons">&#xE7FE;</i>
+								<span>Add Student</span><i class="material-icons">&#xE7FE;</i>
+							</div>
+						<% end %>
+						<div class="clearfix"></div>
+						<% if(current_user.role == "Institute Admin") %>
+							<% if(!@institutes_grades_sections_models.blank?) %>
+								<% @institutes_grades_sections_models.each do |grade_section_model|%>
+									<% grade = grade_section_model.grade %>
+									<% section = grade_section_model.section %>
+									<% students = section.get_members_with_given_roles_for_institute_and_grade_with_role(@institute, grade, ["Student"]) %>
+									<li>
+										<h6 class="teachers-list-heading">Class <%= grade.grade_name + section.section_name %><i class="material-icons arrow-up-icon pull-right">&#xE316;</i></h6>
+										<div class="container-width classRoute">
+											<ul class="list-unstyled list-inline">
+												<% if(!students.blank?) %>
+													<% students.each do |student| %>
+														<% if(student.id != current_user.id) %>
+															<li>
+																
+																<%= render partial: "conversations/contact", locals: {contact: student} %>
+																<span class="checkbox-style-block checkbox-style-block-<%= student.id %>"></span>
+																		
+															</li>
+														<% end %>	
+													<% end %>
+												<% else %>
+													<h1> No students in this Class </h1>	
+												<% end %>															
+											</ul>
+										</div>
+									</li>
+								<% end %>
+							<% end %>
+						<% end %>
+
+					</ul>
+				</div>
+				<div class="tab-pane" id="all-parents">
+					<ul class="list-unstyled teachers-list index-conversation-modal">
+						<%= link_to add_new_parent_institute_path(@institute) do %>
+							<div class="pull-right add-member">
+								<span>Add Parent</span><i class="material-icons">&#xE7FE;</i>
+							</div>
+						<% end %>
+						<div class="clearfix"></div>
+						<% if(current_user.role == "Institute Admin") %>
+							<% if(!@institutes_grades_sections_models.blank?) %>
+								<% @institutes_grades_sections_models.each do |grade_section_model|%>
+									<% grade = grade_section_model.grade %>
+									<% section = grade_section_model.section %>
+									<% parents = section.get_members_with_given_roles_for_institute_and_grade_with_role(@institute, grade, ["Parent"]) %>
+
+									<li>
+										<h6 class="teachers-list-heading">Class <%= grade.grade_name + section.section_name %><i class="material-icons arrow-up-icon pull-right">&#xE316;</i></h6>
+										<div class="container-width classRoute">
+											<ul class="list-unstyled list-inline">
+												<% if(!parents.blank?) %>
+													<% parents.each do |parent| %>
+														<% if(parent.id != current_user.id) %>
+															<li>
+																
+																<%= render partial: "conversations/contact", locals: {contact: parent} %>
+																<span class="checkbox-style-block checkbox-style-block-<%= parent.id %>"></span>
+																
+															</li>
+														<% end %>	
+													<% end %>
+												<% else %>
+													<h1> No Parents in this Class </h1>		
+												<% end %>																
+											</ul>
+										</div>
+									</li>
+								<% end %>
+							<% end %>
+						<% end %>
+
+					</ul>
+				</div>
+				<div class="tab-pane" id="all-staff">
+					<ul class="list-unstyled teachers-list index-conversation-modal">
+						<%= link_to add_new_staff_institute_path(@institute) do %>
+							<div class="pull-right add-member">
+								<span>Add Staff</span><i class="material-icons">&#xE7FE;</i>
 							</div>
 						<% end %>
 						<div class="clearfix"></div>
 						<% if(current_user.role == "Institute Admin") %>
 							<li>
-								<h6 class="teachers-list-heading">Staff<i class="material-icons arrow-up-icon pull-right">&#xE316;</i></h6>
+								<h6 class="teachers-list-heading">Authorities<i class="material-icons arrow-up-icon pull-right">&#xE316;</i></h6>
 								<div class="container-width classRoute" style="display: block;">
 									<ul class="nav nav-tabs" role="tablist" id="tablist">
-										<li class="active"><a data-toggle="tab" href="#all-principals">Principal</a></li>
-										<li><a data-toggle="tab" href="#all-admins">Admins</a></li>
-										<li><a data-toggle="tab" href="#all-teachers">Teachers</a></li>												
+										<li class="active"><a data-toggle="tab" href="#all-admins">Admins</a></li>												
+										<li><a data-toggle="tab" href="#all-principals">Principal</a></li>
+										
 									</ul>
 									<div class="tab-content" style="">
-										<div class="tab-pane active" id="all-principals">
+										<div class="tab-pane" id="all-principals">
 											<ul class="list-unstyled list-inline">
 												<% if(!@principal.blank?) %>
 													<% if(@principal.id != current_user.id) %>
@@ -123,7 +240,7 @@
 												<% end %>														
 											</ul>
 										</div>
-										<div class="tab-pane" id="all-admins">
+										<div class="tab-pane active" id="all-admins">
 											<ul class="list-unstyled list-inline">
 												<% if(!@admins.blank?) %>
 													<% @admins.each do |admin| %>																
@@ -138,82 +255,39 @@
 												<% end %>														
 											</ul>
 										</div>												
-										<div class="tab-pane" id="all-teachers">
-											<ul class="list-unstyled list-inline">
-												<% if(!@teachers.blank?) %>
-													<% @teachers.each do |teacher| %>
-														<% if(teacher.id != current_user.id) %>
-															<li>
-																<%= render partial: "conversations/contact", locals: {contact: teacher} %>
-																<span class="checkbox-style-block checkbox-style-block-<%= teacher.id %>"></span>													
-															</li>
-														<% end %>	
-													<% end %>
-												<% end %>														
-											</ul>
-										</div>												
 									</div>
 								</div>
 							</li>
 
-							<% if(!@institutes_grades_sections_models.blank?) %>
-								<% @institutes_grades_sections_models.each do |grade_section_model|%>
-									<% grade = grade_section_model.grade %>
-									<% section = grade_section_model.section %>
-									<% students = section.get_members_with_given_roles_for_institute_and_grade_with_role(@institute, grade, ["Student"]) %>
-									<% parents = section.get_members_with_given_roles_for_institute_and_grade_with_role(@institute, grade, ["Parent"]) %>
-
-									<li>
-										<h6 class="teachers-list-heading">Class <%= grade.grade_name + section.section_name %><i class="material-icons arrow-up-icon pull-right">&#xE316;</i></h6>
-										<div class="container-width classRoute">
-											<ul class="nav nav-tabs" role="tablist" id="tablist">
-												<li class="active"><a data-toggle="tab" href="#all-parents-<%= grade_section_model.id %>">Parents</a></li>
-												<li><a data-toggle="tab" href="#all-students-<%= grade_section_model.id %>">Students</a></li>														
-											</ul>
-											<div class="tab-content" style="">
-												<div class="tab-pane active" id="all-parents-<%= grade_section_model.id %>">
-													<ul class="list-unstyled list-inline">
-														<% if(!parents.blank?) %>
-															<% parents.each do |parent| %>
-																<% if(parent.id != current_user.id) %>
-																	<li>
-																		
-																		<%= render partial: "conversations/contact", locals: {contact: parent} %>
-																		<span class="checkbox-style-block checkbox-style-block-<%= parent.id %>"></span>
-																		
-																	</li>
-																<% end %>	
-															<% end %>
-														<% end %>																
-													</ul>
-												</div>
-												<div class="tab-pane" id="all-students-<%= grade_section_model.id %>">
-													<ul class="list-unstyled list-inline">
-														<% if(!students.blank?) %>
-															<% students.each do |student| %>
-																<% if(student.id != current_user.id) %>
-																	<li>
-																		
-																		<%= render partial: "conversations/contact", locals: {contact: student} %>
-																		<span class="checkbox-style-block checkbox-style-block-<%= student.id %>"></span>
-																				
-																	</li>
-																<% end %>	
-															<% end %>
-														<% end %>															
-													</ul>
-												</div>												
-											</div>
-										</div>
-									</li>
-								<% end %>
-							<% end %>
+							<li>
+								<h6 class="teachers-list-heading">Teachers<i class="material-icons arrow-up-icon pull-right">&#xE316;</i></h6>
+								
+								<ul class="list-unstyled list-inline">
+									<% if(!@teachers.blank?) %>
+										<% @teachers.each do |teacher| %>
+											<% if(teacher.id != current_user.id) %>
+												<li>
+													<%= render partial: "conversations/contact", locals: {contact: teacher} %>
+													<span class="checkbox-style-block checkbox-style-block-<%= teacher.id %>"></span>													
+												</li>
+											<% end %>	
+										<% end %>
+									<% else %>
+										<h1> No Teachers Added Yet </h1>	
+									<% end %>														
+								</ul>
+							</li>
 						<% end %>
 
 					</ul>
 				</div>
 				<div class="tab-pane" id="all-classes-analytics">
 					<ul class="list-unstyled list-inline text-center">
+						<%= link_to add_new_grade_institute_grades_path(@institute) do %>
+							<div class="pull-right add-member">
+								<span>Add Class</span><i class="material-icons">&#xE7FE;</i>
+							</div>
+						<% end %>
 						<% if(!@grades.blank?) %>
 							<% @grades.each do |grade| %>
 								<% grade_section_models = grade.grades_sections.where(institute_id: @institute.id) %>
@@ -238,121 +312,13 @@
 								</li>
 								
 							<% end %>
+						<% else %>
+							<h1> No Classes Added Yet.  </h1>	
 						<% end %>
 						
 					</ul>
 				</div>
-				<div class="tab-pane" id="all-attendance-admin-analytics">
-					<div class="col-sm-4 col-xs-5">
-						<div class="form-group">
-							<div class='input-group date from-input-date' id='startDatetimepicker'>
-								<input type='text' class="form-control" />
-								<span class="input-group-addon">
-									<i class="fa fa-calendar" aria-hidden="true"></i>								
-								</span>
-							</div>
-						</div>
-					</div>
-					<div class="col-sm-1 col-xs-2">
-						<span style="font-size: 16px;line-height: 2;color: #5cb85c;">to</span>
-					</div>
-					<div class="col-sm-4 col-xs-5">
-						<div class="form-group">
-							<div class='input-group date' id='endDatetimepicker'>
-								<input type='text' class="form-control" />
-								<span class="input-group-addon">
-									<i class="fa fa-calendar" aria-hidden="true"></i>								
-								</span>
-							</div>
-						</div>
-					</div>
-					<div class="col-sm-3 col-xs-12">
-						<button class="btn btn-success" onClick="fetchAttendanceData()" style="width: 100%;"> Go </button>
-					</div>
-					<div class="clearfix"></div>
-					<div  class="text-center text-muted">
-						<h3 style="margin:0;"> Institute Attendance Summary</h3>
-						<p style="margin:0;color:#ea5b31;"><%= params[:start_date].strftime("%b %d") %> - <%= params[:end_date].strftime("%b %d") %></p> 
-					</div>
-					<% if(!@all_attendance_records.blank?) %>
-						<div id="chart_div" style="max-width:400px;margin: 0 auto;">
-
-						</div>
-					<% else %>
-						<p class="no-attendance-records">Sorry! No records found ! </p>
-					<% end %>
-
-					<div class="form-group col-sm-5 col-xs-5">
-						
-						<% options = [["Select Class", ""]] %>
-						<% @all_section_member_models.each do |section_member_model| %>
-							<% options << ["Class #{section_member_model.grade.grade_name}", section_member_model.grade.id] %>
-						<% end %>
-						<%= select_tag :grade_id, options_for_select(options, ["Class #{@grade.grade_name}", @grade.id]), id: "sel1", class: "form-control" %>
-					</div>
-					<div class="form-group col-sm-5 col-xs-5">
-						
-						<% options = [["Select Section", ""]] %>
-						<% @all_section_member_models.each do |section_member_model| %>
-							<% options << ["Section #{section_member_model.section.section_name}", section_member_model.section.id] %>
-						<% end %>
-						<%= select_tag :section_id, options_for_select(options, ["Section #{@section.section_name}", @section.id]), id: "sel2", class: "form-control" %>
-					</div>
-					<div class="col-sm-2 col-xs-2">
-						<button class="btn btn-success" onClick="fetchAttendanceData()"> Go </button>
-					</div>
-					<div class="clearfix"></div>
-					<div  class="text-center text-muted">
-						<h3 style="margin:0;">Class <%= @grade.grade_name %><%= @section.section_name %> Students Attendance</h3>
-						<p style="margin:0;color:#ea5b31;"><%= params[:start_date].strftime("%b %d") %> - <%= params[:end_date].strftime("%b %d") %></p>
-					</div>	
-
-					<% if(!@section_attendance_records.blank?) %>
-						<div id="chart_div_class" style="max-width:400px;margin: 0 auto;">
-						
-						</div>
-
-						<div class="table-responsive">
-							<table class="table">
-								<thead>
-									<tr>
-										<th>Student</th>
-										<% (@section_attendance_records.first.date..@section_attendance_records.last.date).to_a.each do |date| %>
-											<th><%= date.strftime("%b %d") %></th>	
-										<% end %>
-									</tr>
-								</thead>
-								<tbody>
-									<% @section_students.each do |student| %>
-										<tr>
-											<td><%= student.first_name %></td>
-											<% (@section_attendance_records.first.date..@section_attendance_records.last.date).to_a.each do |date| %>
-												<% date_attendance_record = @section_attendance_records.find_by(date: date) %>
-												<% if(!date_attendance_record.blank? and date_attendance_record.present_student_ids.split(", ").include?(student.id.to_s)) %>
-													<th class="info">Present</th>		
-												<% else %>
-													<th class="warning">Absent</th>		
-												<% end %>
-												
-											<% end %>
-										
-										</tr>
-									<% end %>
-									
-								</tbody>
-							</table>
-						</div>
-					<% else %>
-						<p class="no-attendance-records">Sorry ! No records found !</p>
-					<% end %>
-				</div>
-				<div class="tab-pane" id="all-events-analytics">
-					<div class="event-calendar calendar" style="margin-top:0;">
-						
-					</div>
-
-					
-				</div>
+				
 				<div class="tab-pane" id="all-dayplan">
 					
 					<div class="container-width classRoute">
@@ -370,9 +336,9 @@
 						</ul>
 						<div class="tab-content admin-home-content">
 							<div class="tab-pane active" id="class-plan">
-								<% if(!@institutes_grade_section_models.blank?) %>
+								<% if(!@institutes_grades_sections_models.blank?) %>
 									<ul class="list-unstyled teachers-list index-conversation-modal" style ="max-height: none">
-										<% @institutes_grade_section_models.each do |grade_section_model| %>
+										<% @institutes_grades_sections_models.each do |grade_section_model| %>
 										
 											<% grade = grade_section_model.grade %>
 											<% section = grade_section_model.section %>
@@ -417,21 +383,7 @@
 						</div>
 					</div>	
 				</div>
-				<div class="tab-pane" id="all-notices-analytics" style="padding:30px;">
-					<ul class="list-unstyled sticky-notices">
-						<% if(!@notices.blank?) %>
-							<% @notices.each do |notice| %>
-								<li>
-									<%= render partial: "notices/notice", locals: {notice: notice} %>
-								</li>	
-								
-							<% end %>
-						<% end %>
-						<%= link_to new_institute_notice_path(@institute), class:"new-notices-icons", style: "top:96px;" do %>
-							<i class="material-icons">&#xE147;</i>
-						<% end %>
-					</ul>	
-				</div>
+				
 			</div>
 
 </div>					
@@ -580,11 +532,12 @@
 												<h6 class="teachers-list-heading">Class <%= grade.grade_name + section.section_name %><i class="material-icons arrow-up-icon pull-right">&#xE316;</i></h6>
 												<div class="container-width classRoute">
 													<ul class="nav nav-tabs  index-conversation-modal" role="tablist" id="tablist">
-														<li class="active"><a data-toggle="tab" href="#all-parents-modal-<%= grade_section_model.id %>">Parents</a></li>
-														<li><a data-toggle="tab" href="#all-students-modal-<%= grade_section_model.id %>">Students</a></li>														
+														<li class="active"><a data-toggle="tab" href="#all-students-modal-<%= grade_section_model.id %>">Students</a></li>					
+														<li><a data-toggle="tab" href="#all-parents-modal-<%= grade_section_model.id %>">Parents</a></li>
+																							
 													</ul>
 													<div class="tab-content" style="">
-														<div class="tab-pane active" id="all-parents-modal-<%= grade_section_model.id %>">
+														<div class="tab-pane" id="all-parents-modal-<%= grade_section_model.id %>">
 															<ul class="list-unstyled list-inline  index-conversation-modal">
 																<% if(!parents.blank?) %>
 																	<% parents.each do |parent| %>
@@ -601,7 +554,7 @@
 																<% end %>																
 															</ul>
 														</div>
-														<div class="tab-pane" id="all-students-modal-<%= grade_section_model.id %>">
+														<div class="tab-pane active" id="all-students-modal-<%= grade_section_model.id %>">
 															<ul class="list-unstyled list-inline  index-conversation-modal">
 																<% if(!students.blank?) %>
 																	<% students.each do |student| %>
@@ -647,10 +600,6 @@
 		if(target == "#all-dayplan"){
 			initClassDayPlanCalendar();
 		}
-		if(target == "#all-events-analytics"){
-			initEventCalendar();
-		}
-
 		if(target == "#class-plan"){
 			initClassDayPlanCalendar();
 		}
@@ -659,131 +608,6 @@
 		}
 	});
 
-	function initEventCalendar(){
-		var calendarObject = $('.event-calendar').fullCalendar({
-	      header: {
-	        left: 'prev,next today',
-	        center: 'title',
-	        right: 'month,agendaWeek,agendaDay'
-	      },
-	      defaultView: "month",
-	      firstDay: 1,
-	      slotDuration: "01:00:00",
-	      scrollTime: "07:00:00",
-	      eventSources: [
-	      	{	
-	      		googleCalendarApiKey: 'AIzaSyBygb2VxPHEs8rV8j7dgreRvpowydmGrow',
-	  		   	url: 'https://www.google.com/calendar/feeds/indian__en%40holiday.calendar.google.com/public/basic',
-
-	  		    color: '#ea5b31',   // an option!
-	  		    textColor: '#fff' // an option!
-
-	    		},
-	    		{
-	    		    url: '<%= institute_events_path(@institute) %>',
-	    		    color: '#4646a7',   // an option!
-	    		    textColor: '#fff' // an option!
-	    		}
-
-	      ],
-	      editable: true,
-	      selectable: true,
-	      selectHelper: true,
-	      eventClick: function(event, jsEvent, view) {
-	          
-	      		if(event.edit_url){
-	      			$.ajax({
-			        	url: event.edit_url,
-			        	complete: function(data){
-			        		if(data.status == "200"){
-			        			eval(data.responseText);
-			        		}
-			        	}
-			        });
-	      		}else{
-	      			window.open(event.url);
-	      		}
-	                
-		        return false;
-	      },
-
-	      dayClick: function(date, jsEvent, view) {
-	        this["dayClickedFlag"] = true;
-	        $.ajax({
-	        	url: "/institutes/<%= @institute.id %>/events/new.js?start_time= " + date.format() + '&end_time= ' + date.format(),
-	        	complete: function(data){
-	        		if(data.status == "200"){
-	        			eval(data.responseText);
-	        		}
-	        	}
-	        });
-	      },
-	      select: function(start, end) {
-	        if(this.dayClickedFlag && !this.dayClickedFlag){
-	          $.ajax({
-	          url: "/institutes/<%= @institute.id %>/events/new.js?start_time=" + start.format() + '&end_time=' + end.format(),
-	          complete: function(data){
-	            if(data.status == "200"){
-	              eval(data.responseText);
-	            }
-	          }
-	        });
-	  
-	        }
-	        
-	        
-	        $(this).fullCalendar('unselect');
-	      },
-	      eventDrop: function(event,dayDelta,minuteDelta,allDay,revertFunc) {
-	        
-	      	if(event.update_url){
-	      		if (confirm("update this event?")) {
-	              if(event.end){
-	                endTime = event.end
-	              }else{
-	                endTime = event.start  
-	              }
-	              
-		          	$.ajax({
-		      			url: event.update_url + "&start_time=" + event.start.format() + "&end_time=" + endTime.format() + "&is_all_day_event=" + allDay,
-			      		method: "PATCH",
-			        	complete: function(data){
-			        		if(data.status == "200"){
-			        			eval(data.responseText);
-			        		}
-			        	}	
-		      		});
-		        }
-	      		
-	      		
-	      	}else{
-
-	      	}
-	      },
-	      eventResize: function(event, delta, revertFunc) {
-		    if(event.update_url){
-		    	if (confirm("update this event?")) {
-		          	$.ajax({
-		      			url: event.update_url + "&start_time=" + event.start.format() + "&end_time=" + event.end.format(),
-			      		method: "PATCH",
-			        	complete: function(data){
-			        		if(data.status == "200"){
-			        			eval(data.responseText);
-			        		}
-			        	}	
-		      		});
-		        }
-	      		
-	      	}else{
-	      		
-	      	} 
-		        
-
-		  }
-	  	});
-	};
-		
-  		
 	var calendarObjects = [];
 	var teacherCalendarObjects = [];		
 	function initClassDayPlanCalendar(){
@@ -801,6 +625,8 @@
 			  },
 			  defaultView: "agendaDay",
 			  firstDay: 1,
+			  minTime: '08:00:00',
+        	  maxTime: '18:00:00',
 			  slotDuration: "00:30:00",
 			  scrollTime: "08:00:00",
 			  ignoreTimezone: true,
@@ -837,10 +663,7 @@
 			            }
 			          }
 			        });
-			      }else{
-			        window.open(event.url);
-			      }
-			            
+			      }     
 			      return false;
 			  },
 			  dayClick: function(date, jsEvent, view) {
@@ -920,8 +743,8 @@
 			  }
 			});
 		});
-	
-	}		
+
+	}	
 	
 	function initTeacherDayPlanCalendar(){
 		$.each($('.teacher-calendar'), function(index, calendarElement){
@@ -937,6 +760,8 @@
 			  firstDay: 1,
 			  slotDuration: "00:30:00",
 			  scrollTime: "08:00:00",
+			  minTime: '08:00:00',
+        	  maxTime: '18:00:00',
 			  ignoreTimezone: true,
 			  displayEventTime : false,
 			  eventSources: [
@@ -985,10 +810,7 @@
 			            }
 			          }
 			        });
-			      }else{
-			        window.open(event.url);
-			      }
-			            
+			      }     
 			      return false;
 			  },
 			  select: function(start, end) {
@@ -1056,115 +878,14 @@
 		});
 	}
 
-    $('#startDatetimepicker, #endDatetimepicker').datetimepicker({
-		defaultDate: new Date(),
-        format: 'DD/MM/YYYY'
-   	});
-
-	google.charts.load('current', {'packages':['corechart']})
-	<% if(!@all_attendance_records.blank?) %>
-    	google.charts.setOnLoadCallback(drawChart);;
-    <% end %>	
-    
-    <% if(!@section_attendance_records.blank?) %>
-    	google.charts.setOnLoadCallback(drawClassChart);
-    <% end %>
-   
-	function drawChart() {
-
-		var data = new google.visualization.DataTable();
-		data.addColumn('string', '');
-		data.addColumn('number', '');
-		<% if(@total_all_students > 0) %>
-			data.addRows([
-			  ['Present Students (in %)', <%= 100*@total_all_present_students/@total_all_students %>],
-			  ['Absent Students (in %)', <%= 100*@total_all_absent_students/@total_all_students %>]
-			]);
-		<% else %>
-			data.addRows([
-			  ['Present Students (in %)', 0],
-			  ['Absent Students (in %)', 0]
-			]);
-		<% end %>
-		
-
-		var options = {
-			width: 400,
-			height: 240,
-			title: 'Institute Attendance Analytics',
-			titlePosition: 'none',
-			colors: ['#5dd4b7', '#ea5b31'],
-			is3D: true
-		};
-
-		var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
-		chart.draw(data, options);
-	}
-
-	function drawClassChart() {
-
-		var data = new google.visualization.DataTable();
-		data.addColumn('string', '');
-		data.addColumn('number', '');
-
-		<% if(@total_section_students > 0) %>
-			data.addRows([
-			  ['Present Students (in %)', <%= 100*@total_section_present_students/@total_section_students %>],
-			  ['Absent Students (in %)', <%= 100*@total_section_absent_students/@total_section_students %>]
-			]);
-		<% else %>
-			data.addRows([
-			  ['Present Students (in %)', 0],
-			  ['Absent Students (in %)', 0]
-			]);
-		<% end %>
-		
-
-		var options = {
-			width: 400,
-			height: 240,
-			title: 'Class <%= @grade.grade_name %><%= @section.section_name %> Attendance',
-			titlePosition: 'none',
-			colors: ['#5dd4b7', '#ea5b31'],
-			is3D: true
-		};
-
-		var chart = new google.visualization.PieChart(document.getElementById('chart_div_class'));
-		chart.draw(data, options);
-	}
-
-	function fetchAttendanceData(){
-		start_date = $('#startDatetimepicker').data('date');
-		end_date = $('#endDatetimepicker').data('date');
-		grade_id = $( "#sel1 option:selected" ).val();
-		section_id = $( "#sel2 option:selected" ).val();
-
-		Turbolinks.visit('/institutes/<%= @institute.id %>/attendance_records?start_date=' + start_date + '&end_date=' + end_date + '&grade_id=' + grade_id + '&section_id=' + section_id);
-	}
-
-	var randomColors = ["#35a5a5",'#8cc4c4','#8b5861',"#d7b26f"];
+    var randomColors = ["#35a5a5",'#8cc4c4','#8b5861',"#d7b26f"];
 	$(".ch-thumb").each(function(index) {
         var len = randomColors.length;
         var randomNum = Math.floor(Math.random()*len);
         $(this).css("backgroundColor",randomColors[randomNum]);
         randomColors.slice(randomNum, 1);
     });
-
-</script>
-<script type="text/javascript">
-		$(function () {
-			$('#datetimepicker11, #datetimepicker12').datetimepicker({
-				icons: {
-                    time: "fa fa-clock-o",
-                    date: "fa fa-calendar",
-                    up: "fa fa-arrow-up",
-                    down: "fa fa-arrow-down"
-                }
-			});
-		});
-		
-			
-    $(".classRoute").parents("div.wrapper").find(".navbar-default").css("box-shadow", "none");	
+	$(".classRoute").parents("div.wrapper").find(".navbar-default").css("box-shadow", "none");	
 	$(".modal-label").on("click", function(e){
 		updateCheckboxCounter();
 	});
@@ -1176,6 +897,5 @@
 			$(".checkbox-counter").text('Select');
 		}
 		
-	}	
-
+	}
 </script>

@@ -1,0 +1,73 @@
+<div class="new-student-step-2-form-div">
+	<h1> Add details of <%= @student.first_name %> <%= @student.last_name %>'s Parents </h1>
+
+	<%= form_tag add_new_student_institute_path(@institute), method: :post, multipart: true, remote: true, id: "students-parents-details-form" do %>
+		<%= hidden_field_tag :step, 2 %>
+		<%= hidden_field_tag :student_id, @student.id %>
+		<%= hidden_field_tag :grade_id, @grade.id %>
+		<%= hidden_field_tag :section_id, @section.id %>
+
+		<% if(!@male_parents.blank?) %>
+			<% options = [["Select Father", ""]] %>
+			<% default_option = ["Select Father", ""] %>
+			<% @male_parents.each do |parent| %>
+				<% options << [parent.first_name + " " + parent.last_name, parent.id] %>
+			<% end %>
+			<label> Select Father </label>
+			<%= select_tag :father_id, options_for_select(options, default_option), class: "form-control" %>
+			<button class="fill-father-details-button" onclick="showFatherDetailForm();">
+				No one from above? Fill Details Manually
+			</button>
+			
+			<div class="father-details-div" style="display: none;">
+		<% else %>
+			<div class="father-details-div">
+				
+		<% end %>
+				<%= text_field_tag :father_first_name, nil, placeholder: "Father's First Name", required: true %>
+				<%= text_field_tag :father_last_name, nil, placeholder: "Father's Last Name", required: true %>
+				<br>
+				<%= email_field_tag :father_email, nil, placeholder: "Father's Email Address (Optional)" %>
+				<br>
+				<%= number_field_tag :father_mobile_no, nil, placeholder: "Father's Mobile No", required: true %>
+			
+			</div>	
+		
+		<% if(!@female_parents.blank?) %>
+			<% options = [["Select Mother", ""]] %>
+			<% default_option = ["Select Mother", ""] %>
+			<% @female_parents.each do |parent| %>
+				<% options << [parent.first_name + " " + parent.last_name, parent.id] %>
+			<% end %>
+			<label> Select Father </label>
+			<%= select_tag :mother_id, options_for_select(options, default_option), class: "form-control" %>
+			<button class="fill-father-details-button" onclick="showMotherDetailForm();">
+				No one from above? Fill Details Manually
+			</button>
+			
+			<div class="mother-details-div" style="display: none;">
+		<% else %>
+			<div class="mother-details-div">	
+		<% end %>
+				<%= text_field_tag :mother_first_name, nil, placeholder: "Mother's First Name", required: true %>
+				<%= text_field_tag :mother_last_name, nil, placeholder: "Mother's Last Name", required: true %>
+				<br>
+				<%= email_field_tag :mother_email, nil, placeholder: "Mother's Email Address (Optional)" %>
+				<br>
+				<%= number_field_tag :mother_mobile_no, nil, placeholder: "Mother's Mobile No", required: true %>
+				
+			</div>
+		<%= submit_tag :Save, "data-disable-with" => "Saving..." %>
+
+	<% end %>
+
+	<script type="text/javascript">
+		function showMotherDetailForm(){
+			$('mother-details-div').show();	
+		}
+		function showFatherDetailForm(){
+			$('father-details-div').show();	
+		}
+	</script>
+</div>
+

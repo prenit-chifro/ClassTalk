@@ -1,3 +1,6 @@
+<%= link_to destroy_user_session_path, method: :delete do %>
+	<button type="button" class="btn btn-danger" style="padding:6px;margin-top:-21px;color: #2ad;background:none; border:none;">LogOut</button>
+<% end %>
 <div class="container" style="margin-top:60px;">
 	<div class="row">
 		<%= form_tag complete_registration_user_path(@user), method: :post, multipart: true, remote: true, :class=>"form-complete-register", :id => "form-complete-register", "autocomplete"=>"off" do %>
@@ -26,7 +29,7 @@
 				</div>
 				<%= hidden_field_tag :institute_latitude, nil, id: "institute_latitude-field" %>
 				<%= hidden_field_tag :institute_longitude, nil, id: "institute_longitude-field" %>
-				
+				<br>
 				<div class="grades-div text-left" style="display: none;">
 					Choose Grades and Subjects your Institute offer
 					<% Grade.all.each do |grade| %>					
@@ -85,16 +88,15 @@
 					<%= button_tag(type:"submit", class: "form-control btn btn-login", data: {disable_with: "Saving"}) do %>
 						Save
 					<% end %>
-					<div class="form-control btn btn-info btn-info-complete">Reset</div>
 				</div>
 			</div>	
 		<% end %>
 	</div>
 </div>	
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBygb2VxPHEs8rV8j7dgreRvpowydmGrow&libraries=places&callback=initMap"
-        async defer></script>
 
 <script>
+	$(document).one("ready turbolinks:load", initMap);
+
 	<% if(["Principal", "Institute Admin"].include?(@user.role)) %>
 		$(".grades-div").show();
 	<% end %>
@@ -143,6 +145,7 @@
 	});
 
 	function initMap() {
+		
         var map = new google.maps.Map(document.getElementById('map'), {
           center: {lat: 28.6139, lng: 77.2090},
           zoom: 13
@@ -220,8 +223,5 @@
 		});
 		
 	});	
-	$(".btn-info-complete").on("click", function(){
-		$("#form-complete-register")[0].reset();
-	});
-
+	
 </script>

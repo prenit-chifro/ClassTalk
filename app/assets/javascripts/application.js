@@ -472,17 +472,22 @@ $(document).on("turbolinks:load", function(){
 		$(this).removeData('bs.modal').find(".modal-footer").empty();
 	});
 
-	$('#profile-pic-uploadBtn').on('change', function(event) {
+	$('.profile-pic-uploadBtn').on('change', function(event) {
+		
 		var files = event.target.files;
 		var image = files[0]
-		var reader = new FileReader();
-		reader.onload = function(file) {
-		  var img = new Image();
-		  img.src = file.target.result;
-		  img.className = "custom-profile-image img-circle";
-		  $('#user-profile-picture-inner-target').html(img);
+		var clickedInput = $(this);
+		if(image){
+			var reader = new FileReader();
+			reader.onload = function(file) {
+			  var img = new Image();
+			  img.src = file.target.result;
+			  img.className = "custom-profile-image img-circle";
+			  clickedInput.parents('.user-profile-picture-target').find('.user-profile-picture-inner-target').html(img);
+			}
+			reader.readAsDataURL(image);	
 		}
-		reader.readAsDataURL(image);
+		
 	});
 
 });

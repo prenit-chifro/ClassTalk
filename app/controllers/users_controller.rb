@@ -118,7 +118,7 @@ class UsersController < ApplicationController
 
   def complete_registration
     if(request.get?)
-      render 
+      render layout: "devise"
     elsif(request.post?)
       if(!@user.blank?)
         if(params[:role] == "Institute Admin" or params[:role] == "Principal")

@@ -1,61 +1,22 @@
 <% content_for :heading do %>
-	<a class="mybtn btn btn-link btn-xs pull-left" href="/"><i class="material-icons">&#xE317;</i>My ClassWork</a>
+	<a class="mybtn btn btn-link btn-xs pull-left" href="/"><i class="material-icons">&#xE317;</i>HomeWork</a>
 <% end %>
 
 <div class="detect-div"></div>
-<div class="container-width tabs-container classRoute tabs-container" style="margin-top:50px;">
-			
-		
-			<ul class="nav nav-tabs" role="tablist" id="tablist" style="position:fixed;z-index:5;left:0;right:0; top: 50px;">
-				<% if(!@message_categories_array.blank?) %>
-					<% i=0 %>
-					<% @message_categories_array.each do |category| %>
-						<% if(i==0) %>
-							<% active_or_not = 'class="active"' %>
-							<% i=1 %>
-						<% else %>
-							<% active_or_not = "" %>
-						<% end %>
-						<li <%= active_or_not %>>								
-							<a data-toggle="tab" href="#all-<%=category.split(" ").join("_")%>" data-message-category-input-id="#<%= category.split(" ").join("_") %>-message-category-input"> <%= category %></a>
-						</li>
-					<% end %>
-				<% end %>
-			</ul>
-		
-		<div class="tab-content admin-home-content" style="margin-top:84px;">
-			<% if(!@message_categories_array.blank?) %>
-
-				<% i=0 %>
-				<% @message_categories_array.each do |category| %>
-
-					<% if(i==0) %>
-						<% active_or_not = "active" %>
-						<% i=1  %>
-					<% else %>
-						<% active_or_not = "" %>
-					<% end %>
-					<div class="tab-pane messages <%= category.split(" ").join("_") %>-category-messages <%= active_or_not %>" id="all-<%=category.split(" ").join("_")%>">
-
-						<% @category_messages = instance_variable_get("@" + category.split(" ").join("_") + "_messages") %>
-						
-						<% if(!@category_messages.blank?) %>
-							<% @category_messages.each do |message| %>
-								<%= render partial: "messages/message", locals: {conversation: message.conversation, message: message} %>
-							<% end %>
-							
-							<%= paginate(@category_messages, window: 1, :params => { :anchor => 'all-' + category.split(" ").join("_") }) %>
-						<% end %>
-
-					</div>
-
-				<% end %>
-				
-			<% end %>	
-			
-		</div>
+<% if(!@homework_messages.blank?) %>
+	<% @homework_messages.each do |message| %>
+		<%= render partial: "messages/message", locals: {conversation: message.conversation, message: message} %>
+	<% end %>
 	
-</div>
+	<%= paginate @homework_messages, window: 1 %>
+<% else %>
+	<% if(current_user.role == "Teacher") %>
+		<h1> You have not posted any HomeWork ! </h1>
+	<% else %>
+		<h1> No HomeWork Posted </h1>
+	<% end %>
+<% end %>
+
 <div id="seenStatusModal" class="modal fade" role="dialog">
 	<div class="modal-dialog">
 		<div class="modal-content">

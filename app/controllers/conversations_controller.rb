@@ -1,5 +1,5 @@
 class ConversationsController < ApplicationController
-	before_action :set_conversation, except: [:index, :new, :create, :new_group, :add_new_member, :my_classwork] 
+	before_action :set_conversation, except: [:index, :new, :create, :new_group, :add_new_member, :homework] 
 
 	def set_conversation
 		@conversation = Conversation.find_by(id: params[:id])
@@ -13,16 +13,14 @@ class ConversationsController < ApplicationController
 		if(params[:page] and params[:page].to_i >= 2)
 			@conversations = current_user.participating_conversations.order(updated_at: :desc)
 			
-			conversations_array = []
+			inbox_conversations_array = []
 			@conversations.each do |conversation|
 				if(conversation.is_group != true and !conversation.messages.last.blank? and conversation.messages.last.creator_id != current_user.id)	
-					conversations_array << conversation
+					inbox_conversations_array << conversation
 				end
 			end
 
-			@conversations = Conversation.where(id: conversations_array.map(&:id)).order(updated_at: :desc)
-			@all_conversations = @conversations
-			@conversations = @conversations.page(params[:page]).per(10)
+			@inbox_conversations = Conversation.where(id: inbox_conversations_array.map(&:id)).order(updated_at: :desc).page(params[:page]).per(10)
 			
 			@sent_conversations = current_user.participating_conversations.where(creator_id: current_user.id).order(updated_at: :desc)
 		 	sent_conversations_array = []
@@ -32,33 +30,102 @@ class ConversationsController < ApplicationController
 				end
 			end
 			@sent_conversations = Conversation.where(id: sent_conversations_array.map(&:id)).order(updated_at: :desc).page(params[:page]).per(10)
+
+
+			@homework_conversations = @conversations.where("message_categories LIKE ?", "HomeWork%")
+			homework_messages_array = []
+
+			if(current_user.role == "Institute Admin")
+				if(!@homework_conversations.blank?)
+					@homework_conversations.each do |conversation|					
+					    conversation_homework_messages = conversation.messages.where(category: "HomeWork").order(created_at: :desc)
+						if(!conversation_homework_messages.blank?)
+							conversation_homework_messages.each do |message|
+								homework_messages_array << message
+							end	
+						end
+					end
+		    	end
+
+			end
+
+			if(current_user.role == "Teacher")
+				if(!@homework_conversations.blank?)
+					@homework_conversations.each do |conversation|					
+					    conversation_homework_messages = conversation.messages.where(category: "HomeWork", creator_id: current_user.id).order(created_at: :desc)
+						if(!conversation_homework_messages.blank?)
+							conversation_homework_messages.each do |message|
+								homework_messages_array << message
+							end	
+						end
+					end
+		    	end
+			end
+
+			@homework_messages = Message.where(id: homework_messages_array.map(&:id)).page(params[:page]).per(10)
+
 		else
 			@conversations = current_user.participating_conversations.order(updated_at: :desc)
 			
-			conversations_array = []
+			inbox_conversations_array = []
 			@conversations.each do |conversation|
 				if(conversation.is_group != true and !conversation.messages.last.blank? and conversation.messages.last.creator_id != current_user.id)	
-					conversations_array << conversation
+					inbox_conversations_array << conversation
 				end
 			end
 
-			@conversations = Conversation.where(id: conversations_array.map(&:id)).order(updated_at: :desc)
-			@all_conversations = @conversations
-			@conversations = @conversations.page(1).per(10)
-
-			@sent_conversations = current_user.participating_conversations.where(creator_id: current_user.id).order(updated_at: :desc)
+			@inbox_conversations = Conversation.where(id: inbox_conversations_array.map(&:id)).order(updated_at: :desc).page(1).per(10)
+		
 			sent_conversations_array = []
-		 	@sent_conversations.each do |conversation|
-				if(!conversation.messages.first.blank? and conversation.messages.first.creator_id == current_user.id)
+		 	@conversations.each do |conversation|
+				if(conversation.is_group != true and !conversation.messages.last.blank? and conversation.messages.last.creator_id == current_user.id)
 					sent_conversations_array << conversation
 				end
 			end
 			@sent_conversations = Conversation.where(id: sent_conversations_array.map(&:id)).order(updated_at: :desc).page(1).per(10)
+
+			group_conversations_array = []
+			@conversations.each do |conversation|
+				if(conversation.is_group == true)
+					group_conversations_array << conversation
+				end	
+			end
+			@group_conversations = Conversation.where(id: group_conversations_array.map(&:id)).order(updated_at: :desc).page(1).per(10)
+
+			@homework_conversations = @conversations.where("message_categories LIKE ?", "HomeWork%")
+			homework_messages_array = []
+
+			if(current_user.role == "Teacher")
+				if(!@homework_conversations.blank?)
+					@homework_conversations.each do |conversation|					
+					    conversation_homework_messages = conversation.messages.where(category: "HomeWork", creator_id: current_user.id).order(created_at: :desc)
+						if(!conversation_homework_messages.blank?)
+							conversation_homework_messages.each do |message|
+								homework_messages_array << message
+							end	
+						end
+					end
+		    	end
+		    else
+		    	if(!@homework_conversations.blank?)
+					@homework_conversations.each do |conversation|					
+					    conversation_homework_messages = conversation.messages.where(category: "HomeWork").order(created_at: :desc)
+						if(!conversation_homework_messages.blank?)
+							conversation_homework_messages.each do |message|
+								homework_messages_array << message
+							end	
+						end
+					end
+		    	end
+	
+			end
+
+			@homework_messages = Message.where(id: homework_messages_array.map(&:id)).page(1).per(10)
 		end
 
 		#@all_conversations = current_user.participating_conversations.order(updated_at: :desc)
 		@unread_conversation_ids_array = []
-		@all_conversations.each do |conversation|
+		@inbox_conversations.each do |conversation|
 			conversation_participant_model = conversation.get_conversation_participant_model_for_participant(current_user)
 			unread_received_messages = conversation.messages.where("is_seen_by_all_participants != ? and created_at > ? and creator_id != ?", true, conversation_participant_model.created_at, current_user.id)
 			unread_received_messages.each do |message|
@@ -85,84 +152,44 @@ class ConversationsController < ApplicationController
 			@grades = @institute.grades
 			@institutes_grades_sections_models = @institute.institutes_grades_sections_models
 
-			if(params[:start_date].blank?)
-				params[:start_date] = Date.today
-			else
-				params[:start_date] = Date.parse(params[:start_date])	
-			end
-			if(params[:end_date].blank?)
-				params[:end_date] = Date.today
-			else
-				params[:end_date] = Date.parse(params[:end_date])	
-			end
-
-			@all_section_member_models = current_user.members_sections
-			if(!@all_section_member_models.blank?)
-				if(params[:grade_id].blank?)
-					params[:grade_id] = @all_section_member_models.first.grade_id
-				end
-				if(params[:section_id].blank?)
-					params[:section_id] = @all_section_member_models.first.section_id
-				end
-				@all_attendance_records = @institute.attendance_records.where("date >= ? AND date <= ?", params[:start_date], params[:end_date])
-				if(@all_attendance_records.blank?)
-					
-					params[:start_date] = Date.yesterday
-					
-					@all_attendance_records = @institute.attendance_records.where("date >= ? AND date <= ?", params[:start_date], params[:end_date])
-				end
-				@all_students = @institute.get_members_with_given_roles(["Student"])
-
-				@total_all_students = @all_students.count * @all_attendance_records.count
-				@total_all_present_students = 0
-				@all_attendance_records.each do |record|
-					@total_all_present_students = @total_all_present_students + record.present_student_ids.split(", ").count
-				end
-				@total_all_absent_students = @total_all_students - @total_all_present_students
-
-				@grade = Grade.find_by(id: params[:grade_id])
-				@section = Section.find_by(id: params[:section_id])
-				
-				@section_students =  @section.get_members_with_given_roles_for_institute_and_grade_with_role(@institute, @grade, "Student")
-				@section_attendance_records = @all_attendance_records.where(grade_id: @grade.id, section_id: @section.id)
-				
-				@total_section_students = @section_students.count * @section_attendance_records.count
-				@total_section_present_students = 0
-				@section_attendance_records.each do |record|
-					@total_section_present_students = @total_section_present_students + record.present_student_ids.split(", ").count
-				end
-				@total_section_absent_students = @total_section_students - @total_section_present_students
-
-				@institutes_grade_section_models = @institute.institutes_grades_sections_models
-                @teachers = @institute.get_members_with_given_roles(["Teacher"]) 
-                @notices = Notice.where(institute_id: @institute.id).order(updated_at: :desc).page(1).per(10)
-			end
-
+            @teachers = @institute.get_members_with_given_roles(["Teacher"]) 
+                
 			render "admin_index"
 
 		end
 
 		if(current_user.role == "Teacher")
+			@institute = current_user.institutes.first
+			
 			@principal = @institute.get_members_with_given_roles(["Principal"]).first
 			@admins = @institute.get_members_with_given_roles(["Institute Admin"])
 			@teachers = @institute.get_members_with_given_roles(["Teacher"])
-			@teaching_section_subject_models = current_user.teaching_sections_subjects_models
-
+			
+			@all_section_member_models = current_user.members_sections
+			@grades = @all_section_member_models.map(&:grade).uniq
 			@assigned_classteacher_grades_sections_model = current_user.assigned_classteacher_grades_sections_models.first
 			if(!@assigned_classteacher_grades_sections_model.blank?)
 				@todays_attendance_record = current_user.created_attendance_records.find_by(date: Date.today)
 
-				@institute = @assigned_classteacher_grades_sections_model.institute
 				@grade = @assigned_classteacher_grades_sections_model.grade
 				@section = @assigned_classteacher_grades_sections_model.section
 				@class_students =  @section.get_members_with_given_roles_for_institute_and_grade_with_role(@institute, @grade, "Student")
 			end
 
+			render "teacher_index"
+
 		end
 
 		if(current_user.role == "Student" or current_user.role == "Parent")
+			@principal = @institute.get_members_with_given_roles(["Principal"]).first
 			@admins = @institute.get_members_with_given_roles(["Institute Admin"])
 			@teachers = @institute.get_members_with_given_roles(["Teacher"])
+			
+			@all_section_member_models = current_user.members_sections
+			@grades = @all_section_member_models.map(&:grade).uniq
+			
+			render "student_index"
+
 		end
 	end
 	
@@ -489,50 +516,43 @@ class ConversationsController < ApplicationController
 		@unread_conversation_ids_array.delete(@conversation.id) if !@unread_conversation_ids_array.blank?
 	end
 
-	def my_classwork
-	    @participating_conversations = current_user.participating_conversations
-	    @message_categories_array = []
-	    if(!@participating_conversations.blank?)
-			@participating_conversations.each do |conversation|
-				if(!conversation.message_categories.blank?)
-					conversation_message_categories_array = conversation.message_categories.split(", ")
-					conversation_message_categories_array.each do |category|
+	def homework
 
-				        if(!@message_categories_array.include?(category))
+		@homework_conversations = current_user.participating_conversations.where("message_categories LIKE ?", "HomeWork%").order(updated_at: :desc)
+		homework_messages_array = []
 
-				            @message_categories_array << category
-				            instance_variable_set("@" + category.split(" ").join("_") + "_messages", [])
-				        end
-				    end    
-				end
-			end
-
-			@participating_conversations.each do |conversation|	
-				conversation.message_categories = "" if conversation.message_categories.blank?
-				conversation_message_categories_array = conversation.message_categories.split(", ")
-				conversation_message_categories_array.each do |category|
-				    conversation_category_messages = conversation.messages.where(category: category).order(created_at: :desc)
-					if(!conversation_category_messages.blank?)
-						conversation_category_messages.each do |message|
-							instance_variable_get("@" + category.split(" ").join("_") + "_messages") << message
+		if(current_user.role == "Institute Admin")
+			if(!@homework_conversations.blank?)
+				@homework_conversations.each do |conversation|					
+				    conversation_homework_messages = conversation.messages.where(category: "HomeWork").order(created_at: :desc)
+					if(!conversation_homework_messages.blank?)
+						conversation_homework_messages.each do |message|
+							homework_messages_array << message
 						end	
 					end
-					
-
 				end
+	    	end
 
-			end
+		end
 
-			if(!@message_categories_array.blank?)	
-				@message_categories_array.each do |category|
-					if(params[:page] and params[:page].to_i >= 2)
-					  	instance_variable_set("@" + category.split(" ").join("_") + "_messages", Message.where(id: instance_variable_get("@" + category.split(" ").join("_") + "_messages").map(&:id)).page(params[:page]).per(10))
-				    else 
-				  	    instance_variable_set("@" + category.split(" ").join("_") + "_messages", Message.where(id: instance_variable_get("@" + category.split(" ").join("_") + "_messages").map(&:id)).page(1).per(10))	
-				    end
+		if(current_user.role == "Teacher")
+			if(!@homework_conversations.blank?)
+				@homework_conversations.each do |conversation|					
+				    conversation_homework_messages = conversation.messages.where(category: "HomeWork", creator_id: current_user.id).order(created_at: :desc)
+					if(!conversation_homework_messages.blank?)
+						conversation_homework_messages.each do |message|
+							homework_messages_array << message
+						end	
+					end
 				end
-			end
-
+	    	end
+		end
+	    
+	    if(!params[:page].blank? and params[:page].to_i >= 2)
+	    	@homework_messages = Message.where(id: homework_messages_array.map(&:id)).page(params[:page]).per(10)
+	    else
+	    	@homework_messages = Message.where(id: homework_messages_array.map(&:id)).page(1).per(10)
 	    end
+	    
  	end
 end
