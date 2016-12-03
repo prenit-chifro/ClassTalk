@@ -28,11 +28,21 @@
 	</div>
 	<div class="form-group">
 		<label>Start Date-Time:</label>
-		<%= datetime_field_tag :start_time, DateTime.parse(start_time).strftime("%Y-%m-%dT%H:%M"), class: "form-control" %>
+		<div class='input-group date' id='startNewDatetimePicker'>
+			<input type='text' class="form-control" />
+			<span class="input-group-addon">
+				<i class="fa fa-calendar" aria-hidden="true"></i>								
+			</span>
+		</div>
 	</div>
 	<div class="form-group">
 		<label>Finish Date-Time:</label>
-		<%= datetime_field_tag :end_time, DateTime.parse(end_time).strftime("%Y-%m-%dT%H:%M"), class: "form-control" %>
+		<div class='input-group date' id='endNewDatetimePicker'>
+			<input type='text' class="form-control" />
+			<span class="input-group-addon">
+				<i class="fa fa-calendar" aria-hidden="true"></i>								
+			</span>
+		</div>
 	</div>
 	<div class="form-group form-inline new-event-checkbox">
 		
@@ -64,6 +74,9 @@
 		
 	});
 
-
+	$('#startNewDatetimePicker, #endNewDatetimePicker').datetimepicker({
+		defaultDate: new Date(),
+        format: 'DD/MM/YYYY HH:MM'
+   	});
 
 </script>
