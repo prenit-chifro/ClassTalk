@@ -6,6 +6,17 @@
 @import "font-awesome";
 @import "fullcalendar";
 
+
+
+.nothing-posted{
+	background: #8aa2ab;
+    font-family: cursive;
+    color: #feffff;
+    font-size: 25px;
+    text-align: center;
+    padding: 10px;
+    box-shadow: 1px 1px 8px #a7a5a5;
+}
 .pagination{
 	position: absolute;
 	left: 50%;
@@ -176,9 +187,6 @@ p.no-attendance-records{
 }
 
 div.forgot-password a.btn-social,.user-panel .panel-body .col-lg-12> div.form-group a.btn-social{
-	background-color:#3b5998;
-}
-div.forgot-password + div.forgot-password a.btn-social ,.user-panel .panel-body .col-lg-12> div.form-group + div.form-group a.btn-social{
 	background-color:#db4437;
 }
 .btn-social{
@@ -244,7 +252,7 @@ div.user-profile-picture-inner-target > label span + input[type=file]{
 	display:none;
 }
 .form-button-register button,.form-button-register div{
-	width:200px;
+	width:300px;
 	margin:2px;
 }
 .btn-info-complete{
@@ -1170,7 +1178,7 @@ ul.new-group-class > li{
 }
 ul.teachers-list > li> h6{
     margin: 0;
-    background: #2ad;
+    background: #98c2d2;
     padding: 10px;
     color: #fff;
     box-shadow: none;
@@ -1894,6 +1902,10 @@ div.calendar div.fc-agendaWeek-view tbody.fc-body div.fc-bg > table >tbody>tr>td
 	.left-self-image >li:nth-child(1){
 		display:none;
 	}
+	.form-inline .form-control{
+		margin-bottom:10px;
+		width:100%;
+	}
 	#navbar-toggle-button{
 		display:none;
 	}
@@ -1931,6 +1943,11 @@ div.calendar div.fc-agendaWeek-view tbody.fc-body div.fc-bg > table >tbody>tr>td
 	}
 	ul.pagination li a{
 		font-size:10px !important;
+	}
+}
+@media only screen and(max-width: 475px){
+	.width-form-group{
+		width:47% !important;
 	}
 }
 @media only screen and (max-width : 480px){

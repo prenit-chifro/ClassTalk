@@ -1,42 +1,60 @@
 <% content_for :heading do %>
   <a class="mybtn btn btn-link btn-xs pull-left" href="/"><i class="material-icons">&#xE317;</i>Add Parent</a>
 <% end %>
-<div style="margin-top: 50px;"></div>
-<div class="new-parent-step-1-form-div">
+<div class="container new-parent-step-1-form-div"  style="max-width:700px;margin:0 auto;margin-top: 60px;margin-bottom:50px;">
 	<%= form_tag add_new_parent_institute_path(@institute), method: :post, multipart: true, remote: true, id: "new-parent-form" do %>
 		<%= hidden_field_tag :step, 1 %>
-		
-		<%= text_field_tag :first_name, nil, placeholder: "First Name", required: true %>
-		<%= text_field_tag :last_name, nil, placeholder: "Last Name", required: true %>
-		<br>
-		<%= email_field_tag :email, nil, placeholder: "Email Address (Optional)" %>
-		<br>
-		<%= number_field_tag :mobile_no, nil, placeholder: "Mobile No", required: true %>
-		<br>
-		<%= select_tag :gender, options_for_select([["Gender", ""], ["Male", "male"], ["Female", "female"]], ["Gender", ""]), required: true %>
-		<br>
-		<%= text_field_tag :address, nil, placeholder: "Address", required: true %>
-		<br>
-		<%= number_field_tag :pincode, nil, placeholder: "Pin Code", required: true %>
-		<br>
-		<% if(!@grades.blank?) %>
-			<% options = [["Select Class", ""]] %>
-			<% @grades.each do |grade| %>
-				<% options << ["Class #{grade.grade_name}", grade.id] %>
+		<div class="form-inline form-inline-select">
+			<div class="form-group">
+				<%= text_field_tag :first_name, nil, placeholder: "First Name", class: "form-control", required: true %>
+			</div>
+			<div class="form-group">
+				<%= text_field_tag :last_name, nil, placeholder: "Last Name", class: "form-control", required: true %>
+			</div>
+		</div>
+		<div class="form-group">
+			<%= email_field_tag :email, nil, placeholder: "Email Address (Optional)", class: "form-control" %>
+		</div>
+		<div class="form-group">
+			<%= number_field_tag :mobile_no, nil, placeholder: "Mobile No", class: "form-control", required: true %>
+		</div>
+		<div class="form-group">
+			<%= select_tag :gender, options_for_select([["Gender", ""], ["Male", "male"], ["Female", "female"]], ["Gender", ""]), class: "form-control", required: true %>
+		</div>
+		<div class="form-group">
+			<%= text_field_tag :address, nil, placeholder: "Address", class: "form-control", required: true %>
+		</div>
+		<div class="form-group">
+			<%= number_field_tag :pincode, nil, placeholder: "Pin Code", class: "form-control", required: true %>
+		</div>
+		<div class="form-group">
+			<% if(!@grades.blank?) %>
+				<% options = [["Select Class", ""]] %>
+				<% @grades.each do |grade| %>
+					<% options << ["Class #{grade.grade_name}", grade.id] %>
+				<% end %>
+				<%= select_tag :grade_id, options_for_select(options, ["Select Class", ""]), class: "form-control", required: true %>
 			<% end %>
-			<%= select_tag :grade_id, options_for_select(options, ["Select Class", ""]), required: true %>
-		<% end %>
-		<% if(!@sections.blank?) %>
-			<% options = [["Select Section", ""]] %>
-			<% @sections.each do |section| %>
-				<% options << ["Section #{section.section_name}", section.id] %>
+		</div>
+		<div class="form-group">
+			<% if(!@sections.blank?) %>
+				<% options = [["Select Section", ""]] %>
+				<% @sections.each do |section| %>
+					<% options << ["Section #{section.section_name}", section.id] %>
+				<% end %>
+				<%= select_tag :section_id, options_for_select(options, ["Select Section", ""]), class: "form-control", required: true %>
 			<% end %>
-			<%= select_tag :section_id, options_for_select(options, ["Select Section", ""]), required: true %>
-		<% end %>
-		<br>
-		Is His/Her child using School Transport <%= check_box_tag :is_using_transport, true, false, required: true  %> 
-		<br>
-		<%= submit_tag :Next, "data-disable-with" => "Please Wait..." %>
+		</div>
+		<div class="nothing-posted" style="font-size:12px;margin-bottom:10px;">
+			<span style="vertical-align:middle;">Is His/Her child using School Transport</span> <%= check_box_tag :is_using_transport, true, false,style:"vertical-align:middle", required: true  %> 
+		</div>
+		<div class="text-center col-md-6 col-md-offset-3">
+			<div class="form-group form-button-register">
+				<%= button_tag(type:"submit", class: "form-control btn btn-login", data: {disable_with: "Please wait..."}) do %>
+					Next
+				<% end %>
+			</div>
+		</div>	
 
 	<% end %>
 </div>

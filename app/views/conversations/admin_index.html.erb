@@ -83,7 +83,7 @@
 								<% end %>
 								<%= paginate @inbox_conversations, window: 1, params: {anchor: "all-inbox-messages"} %>
 							<% else %>
-								<h1> You dont have any message in inbox that needs your response ! </h1>	
+								<h1 class="nothing-posted"> You dont have any message in inbox that needs your response ! </h1>	
 							<% end %>
 						</div>
 						<div class="tab-pane" id="all-sent-messages">
@@ -94,7 +94,7 @@
 								
 								<%= paginate @sent_conversations, window: 1, params: {anchor: "all-sent-messages"} %>
 							<% else %>	
-								<h1> You dont have any sent message that others need to respond to ! </h1>	
+								<h1 class="nothing-posted"> You dont have any sent message that others need to respond to ! </h1>	
 							<% end %>
 						</div>
 						<div class="tab-pane" id="all-group-messages">	
@@ -120,7 +120,7 @@
 						
 						<%= paginate @homework_messages, window: 1, params: {anchor: "all-homework"} %>
 					<% else %>
-						<h1> No HomeWork Posted </h1>
+						<h1 class="nothing-posted"> No HomeWork Posted </h1>
 					<% end %>
 
 				</div>
@@ -154,7 +154,7 @@
 														<% end %>	
 													<% end %>
 												<% else %>
-													<h1> No students in this Class </h1>	
+													<h1 class="nothing-posted" style="margin-top:0;box-shadow:none;"> No students in this Class </h1>	
 												<% end %>															
 											</ul>
 										</div>
@@ -196,7 +196,7 @@
 														<% end %>	
 													<% end %>
 												<% else %>
-													<h1> No Parents in this Class </h1>		
+													<h1 class="nothing-posted" style="margin-top:0;box-shadow:none;"> No Parents in this Class </h1>		
 												<% end %>																
 											</ul>
 										</div>
@@ -261,21 +261,22 @@
 
 							<li>
 								<h6 class="teachers-list-heading">Teachers<i class="material-icons arrow-up-icon pull-right">&#xE316;</i></h6>
-								
-								<ul class="list-unstyled list-inline">
-									<% if(!@teachers.blank?) %>
-										<% @teachers.each do |teacher| %>
-											<% if(teacher.id != current_user.id) %>
-												<li>
-													<%= render partial: "conversations/contact", locals: {contact: teacher} %>
-													<span class="checkbox-style-block checkbox-style-block-<%= teacher.id %>"></span>													
-												</li>
-											<% end %>	
-										<% end %>
-									<% else %>
-										<h1> No Teachers Added Yet </h1>	
-									<% end %>														
-								</ul>
+								<div class="container-width classRoute">
+									<ul class="list-unstyled list-inline">
+										<% if(!@teachers.blank?) %>
+											<% @teachers.each do |teacher| %>
+												<% if(teacher.id != current_user.id) %>
+													<li>
+														<%= render partial: "conversations/contact", locals: {contact: teacher} %>
+														<span class="checkbox-style-block checkbox-style-block-<%= teacher.id %>"></span>													
+													</li>
+												<% end %>	
+											<% end %>
+										<% else %>
+											<h1 class="nothing-posted" style="margin-top:0;box-shadow:none;"> No Teachers Added Yet </h1>	
+										<% end %>														
+									</ul>
+								</div>	
 							</li>
 						<% end %>
 
