@@ -1,7 +1,7 @@
 <% content_for :heading do %>
 	New Conversation
 <% end %>
-<nav class="navbar navbar-inverse main-app-header main-app-conversation-new-header" style="margin-top:50px;margin-bottom:0;background:#ea5b31;border:none;">
+<nav class="navbar navbar-inverse navbar-fixed-top main-app-header main-app-conversation-new-header" style="margin-top:50px;margin-bottom:0;background:#2ad;border:none;">
 	<div class="container-fluid">
 		<div class="navbar-header main-app-header main-app-conversation-new-header pull-left">
 			<a class="mybtn btn btn-link btn-xs pull-left" href="<%= conversation_path(id: params[:conversation_id]) %>" style="padding:10px;"><i class="material-icons">&#xE317;</i></a>
@@ -20,7 +20,7 @@
 		</ul>
 	</div>
 </nav>	
-<div class="container-width conversation-new-container new-group-member-container">
+<div class="container-width conversation-new-container new-group-member-container" style="margin-top:120px;margin-bottom:60px;">
 	<%= form_tag conversations_path(conversation_id: params[:conversation_id]), method: :post, remote: true, id: "new-conversation-form" do %>
 		<div class="">
 			<ul class="list-inline list-conversation-group-search " style="margin:10px;">

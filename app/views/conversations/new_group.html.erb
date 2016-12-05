@@ -2,7 +2,7 @@
 	New Group
 <% end %>
 <% if(!current_user.role.include?("Student") and !current_user.role.include?("Parent")) %>
-	<nav class="navbar navbar-inverse main-app-header main-app-conversation-new-header" style="margin-top:50px;margin-bottom:0;border: 0;background:#ea5b31;border:none;">
+	<nav class="navbar navbar-inverse navbar-fixed-top main-app-header main-app-conversation-new-header" style="margin-top:50px;margin-bottom:0;border: 0;background:#2ad;border:none;">
 		<div class="container-fluid">
 			<div class="navbar-header main-app-header main-app-conversation-new-header pull-left">
 				<a class="mybtn btn btn-link btn-xs pull-left" href="/" style="padding:10px;"><i class="material-icons">&#xE317;</i></a>
@@ -21,7 +21,7 @@
 			</ul>
 		</div>
 	</nav>	
-	<div class="container-width conversation-new-container new-group-member-container" style="margin-bottom: 60px;">
+	<div class="container-width conversation-new-container new-group-member-container" style="margin-top:100px;margin-bottom: 60px;">
 		<%= form_tag new_group_conversations_path, method: :post, remote: true, id: "new-group-form" do %>
 			<div class="row new-group-row">
 				<div class="col-lg-12 text-center">

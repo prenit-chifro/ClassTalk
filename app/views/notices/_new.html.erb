@@ -1,10 +1,7 @@
-<div class="classRoute">
-	<div class="container-fluid" style="margin-top:50px;border-bottom:1px solid #e7e7e7;background: #ea5b31;">
-		<div class="navbar-header main-app-header main-app-conversation-new-header pull-left">
-			<a class="mybtn btn btn-link btn-xs pull-left" href="<%= institute_notices_path(@institute) %>"><i class="material-icons">&#xE317;</i></a>
-		</div>	
-	</div>
-    
+<% content_for :heading do %>
+	<a class="mybtn btn btn-link btn-xs pull-left" href="<%= institute_notices_path(@institute) %>"><i class="material-icons">&#xE317;</i></a>
+<% end %>
+<div class="classRoute" style="margin-top:50px;">
 	<div class="container">
 		<div class="sticky-notes-new">
 		<%= form_tag institute_notices_path(@institute), method: :post, remote: true do %>
@@ -33,10 +30,9 @@
 			<div class="form-group">
 				<%= text_area_tag :description, nil, placeholder: "Notice Text", class: "form-control" %>
 			</div>
-			
-			<%= button_tag(type:"submit",class: "new-group-submit-button") do %>
-				<i class="material-icons">&#xE876;</i>
-			<% end %>
+			<div class="col-sm-12 col-xs-12">
+				<button type="submit" class="btn btn-success" style="width: 100%;"> Save </button>
+			</div>
 		<% end %>
 		</div>	
 	</div>	
@@ -56,9 +52,7 @@
 		$(".grade-section-checkbox-input").prop("checked", $(this).prop("checked"));
 	});
 	if (window.location.href.indexOf("notices") > -1) {
-		$('body').css('background-color', 'rgb(212, 212, 212)');
+		$('body').css('background-color', '#2ad');
 	}
 	$(".classRoute").parents("div.wrapper").find(".navbar-default").css("box-shadow", "none");
-	$(".classRoute").parents("div.wrapper").find(".navbar-default").css("border-bottom", "1px solid #e7e7e7"); 
-
 </script>
