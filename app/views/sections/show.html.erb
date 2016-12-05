@@ -1,0 +1,103 @@
+<% content_for :heading do %>
+	<a class="mybtn btn btn-link btn-xs pull-left" href="/"><i class="material-icons">&#xE317;</i>Class <%= @grade.grade_name %> <%= @section.section_name %></a>
+<% end %>
+
+<div class="container-width classRoute tabs-container" style="margin-top:50px; margin-bottom: 0;">
+	<ul class="nav nav-tabs admin-new-tabs" role="tablist" id="tablist">
+		<li class="active"><a data-toggle="tab" href="#all-classteachers">Classteacher</a></li>
+		<li><a data-toggle="tab" href="#all-subjects">Subjects</a></li>
+		<% if(["Principal", "Institute Admin", "Teacher"].include?(current_user.role)) %>
+			<li><a data-toggle="tab" href="#all-students">Students</a></li>	
+			<li><a data-toggle="tab" href="#all-parents">Parents</a></li>
+		<% end %>
+	</ul>
+	<div class="tab-content">
+		<div class="tab-pane active" id="all-classteachers">
+			<% if(!current_user.role.include?("Student") and !current_user.role.include?("Parent")) %>
+				<%= link_to add_new_staff_institute_path(@institute) do %>
+					<div class="pull-right add-member">
+						<span>Add Staff</span><i class="material-icons">&#xE7FE;</i>
+					</div>
+				<% end %>
+			<% end %>
+			<div class="clearfix mar-btm"></div>
+			<%= render partial: "conversations/contact", locals: {contact: @classteacher} if !@classteacher.blank? %>		
+			
+		</div>
+
+		<% if(["Principal", "Institute Admin", "Teacher"].include?(current_user.role)) %>
+			<div class="tab-pane" id="all-students">
+				<% if(!current_user.role.include?("Student") and !current_user.role.include?("Parent")) %>
+					<%= link_to add_new_student_institute_path(@institute) do %>
+						<div class="pull-right add-member">
+							<span>Add Student</span><i class="material-icons">&#xE7FE;</i>
+						</div>
+					<% end %>
+				<% end %>
+				<div class="clearfix mar-btm"></div>
+				<% if(!@students.blank?) %>
+					<% @students.each do |contact| %>
+						<%= render partial: "conversations/contact", locals: {contact: contact} %>		
+					<% end %>
+				<% end %>		
+
+				
+			</div>
+			<div class="tab-pane" id="all-parents">
+				<% if(!current_user.role.include?("Student") and !current_user.role.include?("Parent")) %>
+										
+					<%= link_to add_new_parent_institute_path(@institute) do %>
+						<div class="pull-right add-member">
+							<span>Add Parent</span><i class="material-icons">&#xE7FE;</i>
+						</div>
+					<% end %>
+				<% end %>
+				<div class="clearfix mar-btm"></div>
+				<% if(!@parents.blank?) %>
+					<% @parents.each do |contact| %>
+						<%= render partial: "conversations/contact", locals: {contact: contact} %>		
+					<% end %>
+				<% end %>
+			</div>
+		<% end %>
+
+		<div class="tab-pane" id="all-subjects">
+			<% if(!current_user.role.include?("Student") and !current_user.role.include?("Parent")) %>
+										
+				<%= link_to new_institute_grade_section_subject_path(@institute, @grade, @section) do %>
+					<div class="pull-right add-member">
+						<span>Add Subject</span><i class="material-icons">&#xE7FE;</i>
+					</div>
+				<% end %>
+			<% end %>
+			
+			<ul class="list-unstyled list-inline text-center">
+				<% if(!@section_subject_models.blank?) %>
+					<% @section_subject_models.each do |section_subject_model| %>
+						<% subject = section_subject_model.subject %>
+															
+						<% subject_teacher =  @section.get_subject_teacher_for_institute_and_grade_and_subject(@institute, @grade, subject) %>
+						<% students_count =  @section.sections_members.where(institute_id: @institute.id, member_role: "Student").count %>
+						<li>
+							<div class="ch-item">	
+								<div class="ch-info">
+									<h3><%= subject_teacher.first_name if !subject_teacher.blank?%> <%= subject_teacher.last_name  if !subject_teacher.blank? %></h3>
+									
+									<p><%= subject_teacher.first_name if !subject_teacher.blank?%> <%= subject_teacher.last_name  if !subject_teacher.blank? %><a href="<%= institute_grade_section_subject_path(@institute, @grade, @section, subject) %>" style="font-size:6px;"><%= subject.subject_name %></a></p>
+								</div>
+								<div class="ch-thumb">
+									<span style="font-size:14px;margin-left:-32px;"><%= subject.subject_name %></span>
+									<span><%= students_count %> Students</span>
+								</div>
+							</div>
+							<button class="btn btn-info btn-custom-info"><%= link_to institute_grade_section_subject_path(@institute, @grade, @section, subject) do %>Go To <%= subject.subject_name %><% end %></button>
+						</li>
+						
+					<% end %>
+				<% end %>
+				
+			</ul>
+		
+		</div>
+	</div>
+</div>			

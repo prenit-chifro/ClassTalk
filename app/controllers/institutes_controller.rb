@@ -1,6 +1,6 @@
 class InstitutesController < ApplicationController
   
-  before_action :set_institute, except: [:index]
+  before_action :set_institute, except: [:index, :new, :create]
   def set_institute
     @institute = Institute.find_by(id: params[:id])
   end 
@@ -18,7 +18,20 @@ class InstitutesController < ApplicationController
   end
 
   def show
-
+      if(!@institute.blank?)
+          @institute_conversation = Conversation.find_by(institute_id: @institute.id, grade_id: nil, section_id: nil, subject_id: nil, is_custom_group: false)
+          @principals = @institute.get_members_with_given_roles(["Principal"])
+          @admins = @institute.get_members_with_given_roles(["Institute Admin"])
+          @teachers = @institute.get_members_with_given_roles(["Teacher"])
+          @students = @institute.get_members_with_given_roles(["Student"])
+          @parents = @institute.get_members_with_given_roles(["Parent"])
+          if(current_user.role.include?("Institute Admin"))
+              @grades = @institute.grades
+          else
+              @section_member_models = current_user.members_sections
+              @grades = @section_member_models.map(&:grade).uniq 
+          end
+      end
   end
 
   def edit
@@ -329,7 +342,7 @@ class InstitutesController < ApplicationController
                 end
             end
             @student.save if !@student.blank?
-            
+
             @institute.add_member(@father.id, current_user.id, "Parent") if !@father.blank? 
             @institute.add_member(@mother.id, current_user.id, "Parent") if !@mother.blank? 
 
@@ -510,23 +523,123 @@ class InstitutesController < ApplicationController
     end
   end
 
-  def add_new_teacher
+  def add_new_staff
     if(request.get?)
-      render 
+        render "add_new_staff.html"
     end
 
     if(request.post?)
+        if(!params[:step].blank? and params[:step].to_i == 1)
+            @staff = nil
+            if(!params[:email].blank?)
+                @staff = User.find_by(email: params[:email])
+            end
+            if(@staff.blank? and !params[:mobile_no].blank?)
+                @staff = User.find_by(mobile_no: params[:mobile_no])
+            end
+            if(@staff.blank?)
+                password = Random.new.rand(1000..9999).to_s
+                @staff = User.new(role: "Student")
+                @staff.password = password
+                @staff.first_name = params[:first_name] if !params[:first_name].blank?
+                @staff.last_name = params[:last_name] if !params[:last_name].blank?
+                @staff.mobile_no = params[:mobile_no] if !params[:mobile_no].blank?
+                @staff.email = params[:email] if !params[:email].blank?
+                @staff.gender = params[:gender] if !params[:gender].blank?
+                
+                @staff.address = params[:address] if !params[:address].blank?
+                @staff.pincode = params[:pincode] if !params[:pincode].blank?
+                @staff.role = params[:role] if !params[:role].blank?
+                @staff.staff_id = params[:staff_id] if !params[:staff_id].blank?
+                @staff.is_using_transport = params[:is_using_transport] if !params[:is_using_transport].blank?
+                @staff.is_registration_complete = true
+                
+                @staff.save
+                save_user_password_with_system_encryption_key(@staff, password)
+                send_user_account_password_through_email(@staff, password) if !params[:email].blank?
+                send_user_account_password_through_sms(@staff, password) if !@staff.mobile_no.blank?
+          
+            end
+            @institute.add_member(@staff.id, current_user.id, params[:role]) if !params[:role].blank?
+            @institute_conversation = Conversation.find_by(institute_id: @institute.id, grade_id: nil, section_id: nil, subject_id: nil, is_custom_group: false)
+            @institute_conversation.add_participant(@staff.id, current_user.id) if !@institute_conversation.blank? and !@staff.blank? 
 
+            @institutes_grades_sections_models = @institute.institutes_grades_sections_models
+            @grades = @institutes_grades_sections_models.map(&:grade).uniq
+            @sections = @institutes_grades_sections_models.map(&:section).uniq
+            
+            render "add_new_staff_step_1.js"
+        end
+        if(!params[:step].blank? and params[:step].to_i == 2)
+            if(!params[:staff_id].blank?)
+                @staff = User.find_by(id: params[:staff_id])
+            end
+            
+            if(@staff.role == "Teacher" and !params[:classteacher_grade_id].blank? and !params[:classteacher_section_id].blank?)
+              grade = @institute.grades.find_by(id: params[:classteacher_grade_id])
+              section = grade.get_sections_for_institute(@institute).find_by(id: params[:classteacher_section_id])
+                
+              section.add_member_for_institute_and_grade(@institute, grade, current_user, @staff, "Teacher") if !section.blank?
+              section.set_classteacher_for_institute_and_grade(@institute, grade, @staff) if !section.blank?
+              section_conversation = Conversation.find_by(institute_id: @institute.id, grade_id: grade.id, section_id: section.id, subject_id: nil, is_custom_group: false) if !section.blank?
+              
+              section_conversation.add_participant(@staff.id, current_user.id) if !section_conversation.blank? if !section.blank?
+                
+              
+            end
+            
+            if(@staff.role == "Teacher" and !params[:grades].blank?)
+              params[:grades].each do |grade_name, grade_extras|
+                grade = @institute.grades.find_by(grade_name: grade_name)
+                grade_extras[:section_names].each do |section_name|
+                  section = grade.get_sections_for_institute(@institute).find_by(section_name: section_name) if !grade.blank?
+                  
+                  grade_extras[:subject_names].each do |subject_name|
+                    subject = section.get_subjects_for_institute_and_grade(@institute, grade).find_by(subject_name: subject_name) if !section.blank?
+                    section.set_subject_teacher_for_institute_and_grade_and_subject(@institute, grade, subject, @staff) if !section.blank?
+
+                    subject_conversation = Conversation.find_by(institute_id: @institute.id, grade_id: grade.id, section_id: section.id, subject_id: subject.id, is_custom_group: false) if !section.blank? and !subject.blank?
+                    subject_conversation.add_participant(@staff.id, current_user.id) if !subject_conversation.blank? and !section.blank?
+                  end
+                  
+                  section_conversation = Conversation.find_by(institute_id: @institute.id, grade_id: grade.id, section_id: section.id, subject_id: nil) if !section.blank?
+                  section_conversation.add_participant(@staff.id, current_user.id) if !section_conversation.blank?
+                  
+                end
+              end
+            end
+            
+            render "add_new_staff.js"
+        end
     end
   end
 
-  def add_new_staff
+  def give_admin_right
     if(request.get?)
 
+        @current_admins = @institute.get_members_with_given_roles(["Institute Admin"])
+        @teachers = @institute.get_members_with_given_roles(["Teacher"])
+        render 
+    elsif(request.post?)
+        if(!params[:staff_id].blank?)
+            @staff = User.find_by(id: params[:staff_id])
+            if(!@staff.blank?)
+                if(params[:start_time] <= Time.now)
+                    AdminRightWorker.perform(@staff.id, "Add")
+                else
+                    AdminRightWorker.perform_at(params[:start_time], @staff.id, "Add")  
+                end
+
+                if(params[:end_time] <= Time.now)
+                    AdminRightWorker.perform(@staff.id, "Remove")
+                else
+                    AdminRightWorker.perform_at(params[:end_time], @staff.id, "Remove")  
+                end
+
+            end
+        end
     end
 
-    if(request.post?)
 
-    end
   end  
 end

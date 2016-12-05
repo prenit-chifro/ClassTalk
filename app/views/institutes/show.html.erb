@@ -1,2 +1,159 @@
-<h1>Institutes#show</h1>
-<p>Find me in app/views/institutes/show.html.erb</p>
+<% content_for :heading do %>
+	<a class="mybtn btn btn-link btn-xs pull-left" href="/"><i class="material-icons">&#xE317;</i>
+		<% if(current_user.role.include?("Institute Admin") or current_user.role.include?("Principal")) %>
+			Manage Institute
+		<% else %>
+			My Institute
+		<% end %>	
+	</a>
+<% end %>
+
+<div class="container-width classRoute tabs-container" style="margin-top:50px; margin-bottom: 0;">
+	<ul class="nav nav-tabs admin-new-tabs" role="tablist" id="tablist">
+		<li class="active"><a data-toggle="tab" href="#all-admins">Admins</a></li>
+		<li><a data-toggle="tab" href="#all-principals">Principals</a></li>
+		<li><a data-toggle="tab" href="#all-teachers">Teachers</a></li>
+		<% if(["Principal", "Institute Admin", "Teacher"].include?(current_user.role)) %>
+			<li><a data-toggle="tab" href="#all-students">Students</a></li>	
+			<li><a data-toggle="tab" href="#all-parents">Parents</a></li>
+		<% end %>
+		<li><a data-toggle="tab" href="#all-classes">Classes</a></li>
+	</ul>
+	<div class="tab-content">
+		<div class="tab-pane active" id="all-admins">
+			<% if(current_user.role.include?("Principal") or current_user.role.include?("Institute Admin")) %>
+				<%= link_to give_admin_right_institute_path(@institute) do %>
+					<div class="pull-right add-member">
+						<span>Share Admin Rights</span><i class="material-icons">&#xE7FE;</i>
+					</div>
+				<% end %>
+				<%= link_to add_new_staff_institute_path(@institute, role: "Institute Admin") do %>
+					<div class="pull-right add-member">
+						<span>Add Admin</span><i class="material-icons">&#xE7FE;</i>
+					</div>
+				<% end %>
+			<% end %>
+			<div class="clearfix mar-btm"></div>
+			<% if(!@admins.blank?) %>
+				<% @admins.each do |admin| %>
+					<%= render partial: "conversations/contact", locals: {contact: admin}	 %>	
+				<% end %>
+			<% end %>
+		</div>
+		<div class="tab-pane" id="all-principals">
+			<% if(current_user.role.include?("Principal") or current_user.role.include?("Institute Admin")) %>
+				<%= link_to add_new_staff_institute_path(@institute, role: "Principal") do %>
+					<div class="pull-right add-member">
+						<span>Add Principal</span><i class="material-icons">&#xE7FE;</i>
+					</div>
+				<% end %>
+			<% end %>
+			<div class="clearfix mar-btm"></div>
+			<% if(!@principals.blank?) %>
+				<% @principals.each do |principal| %>
+					<%= render partial: "conversations/contact", locals: {contact: principal}	 %>	
+				<% end %>
+			<% end %>
+		</div>
+
+		<div class="tab-pane" id="all-teachers">
+			<% if(current_user.role.include?("Principal") or current_user.role.include?("Institute Admin")) %>
+				<%= link_to add_new_staff_institute_path(@institute, role: "Teacher") do %>
+					<div class="pull-right add-member">
+						<span>Add Teacher</span><i class="material-icons">&#xE7FE;</i>
+					</div>
+				<% end %>
+			<% end %>
+			<div class="clearfix mar-btm"></div>
+			<% if(!@teachers.blank?) %>
+				<% @teachers.each do |contact| %>
+					<%= render partial: "conversations/contact", locals: {contact: contact}	 %>	
+				<% end %>
+			<% end %>
+		</div>
+
+		<% if(["Principal", "Institute Admin", "Teacher"].include?(current_user.role)) %>
+			<div class="tab-pane" id="all-students">
+				<% if(current_user.role.include?("Principal") or current_user.role.include?("Institute Admin")) %>
+					<%= link_to add_new_student_institute_path(@institute) do %>
+						<div class="pull-right add-member">
+							<span>Add Student</span><i class="material-icons">&#xE7FE;</i>
+						</div>
+					<% end %>
+				<% end %>
+				<div class="clearfix mar-btm"></div>
+				<% if(!@students.blank?) %>
+					<% @students.each do |contact| %>
+						<%= render partial: "conversations/contact", locals: {contact: contact} %>		
+					<% end %>
+				<% end %>		
+
+				
+			</div>
+
+			<div class="tab-pane" id="all-parents">
+				<% if(current_user.role.include?("Principal") or current_user.role.include?("Institute Admin")) %>
+					<%= link_to add_new_parent_institute_path(@institute) do %>
+						<div class="pull-right add-member">
+							<span>Add Parent</span><i class="material-icons">&#xE7FE;</i>
+						</div>
+					<% end %>
+				<% end %>
+				<div class="clearfix mar-btm"></div>
+				<% if(!@parents.blank?) %>
+					<% @parents.each do |contact| %>
+						<%= render partial: "conversations/contact", locals: {contact: contact} %>		
+					<% end %>
+				<% end %>
+			</div>
+			<div class="tab-pane" id="all-classes">
+				<% if(current_user.role.include?("Principal") or current_user.role.include?("Institute Admin")) %>
+					<%= link_to new_institute_grade_path(@institute) do %>
+						<div class="pull-right add-member">
+							<span>Add Classes</span><i class="material-icons">&#xE7FE;</i>
+						</div>
+					<% end %>
+				<% end %>
+				
+				<ul class="list-unstyled list-inline text-center">
+					<% if(!@grades.blank?) %>
+						<% @grades.each do |grade| %>
+							<% grade_section_models = grade.grades_sections.where(institute_id: @institute.id) %>
+							<% grades_sections_members_models = grade.grades_sections_members_models.where(institute_id: @institute.id) %>
+							<% teachers_count =  grades_sections_members_models.where(member_role: "Teacher").map(&:member).uniq.count%>
+							<% students_count =  grades_sections_members_models.where(member_role: "Student").map(&:member).uniq.count%>
+							<% parents_count =  grades_sections_members_models.where(member_role: "Parent").map(&:member).uniq.count%>
+
+							<li>
+								<div class="ch-item">	
+									<div class="ch-info">
+										<h3><%= teachers_count %> Teachers</h3>
+										
+										<p><%= students_count %> Students<br><%= parents_count %> Parents<a href="<%= institute_grade_path(@institute, grade) %>"><%= grade.grade_name %></a></p>
+									</div>
+									<div class="ch-thumb">
+										<span>Class <%= grade.grade_name %></span>
+										<span><%= grade_section_models.count %> Sections</span>
+									</div>
+								</div>
+								<button class="btn btn-info btn-custom-info"><%= link_to institute_grade_path(@institute, grade) do %>Go To Class <%= grade.grade_name %><% end %></button>
+							</li>
+							
+						<% end %>
+					<% end %>
+					
+				</ul>
+			</div>
+		<% end %>
+	</div>
+</div>			
+<script>
+	var randomColors = ["#35a5a5",'#8cc4c4','#8b5861',"#d7b26f"];
+	$(".ch-thumb").each(function(index) {
+        var len = randomColors.length;
+        var randomNum = Math.floor(Math.random()*len);
+        $(this).css("backgroundColor",randomColors[randomNum]);
+        randomColors.slice(randomNum, 1);
+    });
+
+</script>

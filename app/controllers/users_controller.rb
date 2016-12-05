@@ -133,7 +133,7 @@ class UsersController < ApplicationController
             if(!params[:institute_latitude].blank? and !params[:institute_longitude].blank?)
               @institute.create_location(latitude: params[:institute_latitude], longitude: params[:institute_longitude])
             end
-            @institute_conversation = @user.created_conversations.create(conversation_name: params[:institute_name].capitalize.truncate(50), institute_id: @institute.id, is_custom_group: false, message_categories: "Notice")
+            @institute_conversation = @user.created_conversations.create(conversation_name: params[:institute_name].capitalize.truncate(50), institute_id: @institute.id, is_custom_group: false, message_categories: "")
             
             if(!params[:grades].blank?)
               params[:grades].each do |grade_id, grade_extras|
@@ -144,13 +144,13 @@ class UsersController < ApplicationController
                   section = Section.find_by(id: section_id)
                   @institute.institutes_grades_sections_models.create(grade_id: grade.id, section_id: section.id, creator_id: @user.id) if !grade.blank? and !section.blank?
                   
-                  @section_conversation = @user.created_conversations.create(conversation_name: "Class #{grade.grade_name} #{section.section_name}, #{@institute.short_name}".truncate(20), institute_id: @institute.id, grade_id: grade.id, section_id: section.id, message_categories: "HomeWork, Test", is_custom_group: false) if !grade.blank? and !section.blank?
+                  @section_conversation = @user.created_conversations.create(conversation_name: "Class #{grade.grade_name} #{section.section_name}, #{@institute.short_name}".truncate(20), institute_id: @institute.id, grade_id: grade.id, section_id: section.id, message_categories: "HomeWork", is_custom_group: false) if !grade.blank? and !section.blank?
 
                   grade_extras[:subject_ids].each do |subject_id|
                     subject = Subject.find_by(id: subject_id)
                     @institute.institutes_sections_subjects_models.create(institute_id: @institute.id, grade_id: grade.id, section_id: section.id, subject_id: subject.id, creator_id: @user.id) if !grade.blank? and !section.blank? and !subject.blank?
 
-                    @subject_conversation = @user.created_conversations.create(conversation_name: "#{subject.subject_name}, #{grade.grade_name} #{section.section_name}, #{@institute.short_name}".truncate(20), institute_id: @institute.id, grade_id: grade.id, section_id: section.id, subject_id: subject.id, message_categories: "HomeWork, Test", is_custom_group: false) if !grade.blank? and !section.blank? and !subject.blank?
+                    @subject_conversation = @user.created_conversations.create(conversation_name: "#{subject.subject_name}, #{grade.grade_name} #{section.section_name}, #{@institute.short_name}".truncate(20), institute_id: @institute.id, grade_id: grade.id, section_id: section.id, subject_id: subject.id, message_categories: "HomeWork", is_custom_group: false) if !grade.blank? and !section.blank? and !subject.blank?
                   end
                   
                 end

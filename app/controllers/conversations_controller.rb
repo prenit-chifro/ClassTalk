@@ -31,6 +31,13 @@ class ConversationsController < ApplicationController
 			end
 			@sent_conversations = Conversation.where(id: sent_conversations_array.map(&:id)).order(updated_at: :desc).page(params[:page]).per(10)
 
+			group_conversations_array = []
+			@conversations.each do |conversation|
+				if(conversation.is_group == true)
+					group_conversations_array << conversation
+				end	
+			end
+			@group_conversations = Conversation.where(id: group_conversations_array.map(&:id)).order(updated_at: :desc).page(params[:page]).per(10)
 
 			@homework_conversations = @conversations.where("message_categories LIKE ?", "HomeWork%")
 			homework_messages_array = []

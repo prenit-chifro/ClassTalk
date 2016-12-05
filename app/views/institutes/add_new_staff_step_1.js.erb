@@ -1,0 +1,13 @@
+$('#new-staff-form')[0].reset();
+<% if(!@staff.blank? and @staff.role == "Teacher") %>
+	$('.new-staff-step-1-form-div').hide();
+
+	if($('.new-staff-step-2-form-div').html()){
+		$('.new-staff-step-2-form-div').remove();
+	}
+	$('.new-staff-step-1-form-div').after('<%= j render "add_new_staff_step_2.html" %>');
+	
+<% else %>
+	alert("new <%= @staff.role %> added succesffully !");
+	
+<% end %>
