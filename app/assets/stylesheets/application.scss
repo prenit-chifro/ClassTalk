@@ -167,6 +167,14 @@ p.no-attendance-records{
 .btn-login:hover,
 .btn-login:focus {
 	color: #009688;
+	background-color: #fff !important;
+	transition: all 1s;
+	-webkit-transition: all 1s;
+	-moz-transition: all 1s;
+}
+.btn-manual-details:hover,
+.btn-manual-details:focus{
+	color:#9c6a6a;
 	background-color: #fff;
 	transition: all 1s;
 	-webkit-transition: all 1s;
@@ -617,8 +625,15 @@ div.add-member>i,span.add-member>i{
     font-size: 18px;
 }
 ul.index-conversation-modal div.classRoute>ul{
-	box-shadow:1px 1px 1px #afacac;
-	background: #c7c7c7;
+	box-shadow: 1px 1px 10px #afacac;
+    background: #ffffff;
+    margin: 0px;
+    padding: 10px;
+	max-height:200px;
+	overflow:scroll;
+}
+ul.index-conversation-modal{
+	max-height:100% !important;
 }
  /*dropdown-submenu*/
 

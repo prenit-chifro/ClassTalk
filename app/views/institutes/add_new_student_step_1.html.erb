@@ -2,7 +2,7 @@
   <a class="mybtn btn btn-link btn-xs pull-left" href="/"><i class="material-icons">&#xE317;</i>Add Student</a>
 <% end %>
 
-<div class="container new-student-step-1-form-div"  style="max-width:700px;margin:0 auto;margin-top: 60px;margin-bottom:50px;">
+<div class="container new-student-step-1-form-div"  style="max-width:700px;margin:0 auto;margin-top: 60px;margin-bottom:50px;position:relative;">
 	<%= form_tag add_new_student_institute_path(@institute), method: :post, multipart: true, remote: true, id: "new-student-form" do %>
 		<%= hidden_field_tag :step, 1 %>
 		<div class="form-inline form-inline-select">

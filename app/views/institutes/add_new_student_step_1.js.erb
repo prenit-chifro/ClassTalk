@@ -1,7 +1,12 @@
 $('#new-student-form')[0].reset();
-$('.new-student-step-1-form-div').hide();
+var animateNextPage = $(".new-student-step-1-form-div");
+
+$(animateNextPage).stop().animate({
+    "left": "-1100px"
+}, 500, function(){$(animateNextPage).css("display", "none");});
 
 if($('.new-student-step-2-form-div').html()){
 	$('.new-student-step-2-form-div').remove();
 }
 $('.new-student-step-1-form-div').after('<%= j render "add_new_student_step_2.html" %>');
+

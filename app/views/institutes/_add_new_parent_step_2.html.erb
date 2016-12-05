@@ -1,5 +1,5 @@
-<div class="new-parent-step-2-form-div">
-	<h1> Add details of <%= @parent.first_name %> <%= @parent.last_name %>'s Child </h1>
+<div class="new-parent-step-2-form-div" style="max-width:600px;margin: 0 auto;margin-top:60px;position:relative;">
+	<h1 class="nothing-posted"> Add details of <%= @parent.first_name %> <%= @parent.last_name %>'s Child </h1>
 
 	<%= form_tag add_new_parent_institute_path(@institute), method: :post, multipart: true, remote: true, id: "parents-child-details-form" do %>
 		<%= hidden_field_tag :step, 2 %>
@@ -14,33 +14,59 @@
 				<% options << [student.first_name + " " + student.last_name, student.id] %>
 			<% end %>
 			<label> Select Child </label>
-			<%= select_tag :child_id, options_for_select(options, default_option), class: "form-control" %>
-			<button class="fill-child-details-button" onclick="showChildDetailForm();">
-				No one from above? Fill Details Manually
-			</button>
-			
+			<div class="form-group">
+				<%= select_tag :child_id, options_for_select(options, default_option), class: "form-control" %>
+			</div>	
+			<div class="text-center col-md-6 col-md-offset-3">
+				<div class="form-group form-button-register">
+					<div class="fill-child-details-button form-control btn btn-login btn-manual-details" style="font-size: 12px;background: #9c6a6a;" onclick="showChildDetailForm();">
+						No one from above? Fill Details Manually
+					</div>
+				</div>
+			</div>	
 			<div class="child-details-div" style="display: none;">
 		<% else %>
 			<div class="child-details-div">
 				
 		<% end %>
-				<%= text_field_tag :child_first_name, nil, placeholder: "Child's First Name", required: true %>
-				<%= text_field_tag :child_last_name, nil, placeholder: "Child's Last Name", required: true %>
-				<br>
-				<%= email_field_tag :child_email, nil, placeholder: "Child's Email Address (Optional)" %>
-				<br>
-				<%= number_field_tag :child_mobile_no, nil, placeholder: "Child's Mobile No (Optional)" %>
-				<br>
-				<%= select_tag :child_gender, options_for_select([["Gender", ""], ["Male", "male"], ["Female", "female"]], ["Gender", ""]), required: true %>
-				<br>
-				<%= date_field_tag :child_date_of_birth, Time.now, required: true %>
-				<br>
-				<%= number_field_tag :child_roll_no, nil, placeholder: "Child's Admission No", required: true %>
-				<br>
+				<div class="form-inline form-inline-select">					
+					<div class="form-group">
+						<%= text_field_tag :child_first_name, nil, placeholder: "Child's First Name", class: "form-control", required: true %>
+					</div>
+					<div class="form-group">
+						<%= text_field_tag :child_last_name, nil, placeholder: "Child's Last Name", class: "form-control", required: true %>
+					</div>
+				</div>	
+				<div class="form-group">	
+					<%= email_field_tag :child_email, nil, placeholder: "Child's Email Address (Optional)" , class: "form-control" %>
+				</div>
+				<div class="form-group">
+					<%= number_field_tag :child_mobile_no, nil, placeholder: "Child's Mobile No (Optional)", class: "form-control" %>
+				</div>
+				<div class="form-group">
+					<%= select_tag :child_gender, options_for_select([["Gender", ""], ["Male", "male"], ["Female", "female"]], ["Gender", ""]), class: "form-control", required: true %>
+				</div>
+				<div class="form-group">
+					<div class='input-group date' id='StudentBirthdayDatetimepicker'>
+						<input type='text' class="form-control" />
+						<span class="input-group-addon">
+							<i class="fa fa-calendar" aria-hidden="true"></i>								
+						</span>
+					</div>		
+				</div>
+				<div class="form-group">
+					<%= number_field_tag :child_roll_no, nil, placeholder: "Child's Admission No", class: "form-control", required: true %>
+				</div>
 				
 			</div>	
 		
-		<%= submit_tag :Save, "data-disable-with" => "Saving..." %>
+		<div class="text-center col-md-6 col-md-offset-3" style="margin-bottom:70px;">
+			<div class="form-group form-button-register">
+				<%= button_tag(type:"submit", class: "form-control btn btn-login", data: {disable_with: "Saving..."}) do %>
+					Save
+				<% end %>
+			</div>
+		</div>	
 
 	<% end %>
 
@@ -50,4 +76,9 @@
 		}
 	</script>
 </div>
-
+<script>
+	$('#StudentBirthdayDatetimepicker').datetimepicker({
+		defaultDate: new Date(),
+        format: 'DD/MM/YYYY'
+   	});
+</script>

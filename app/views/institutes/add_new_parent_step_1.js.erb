@@ -1,5 +1,9 @@
 $('#new-parent-form')[0].reset();
-$('.new-parent-step-1-form-div').hide();
+var animateNextPage = $(".new-parent-step-1-form-div");
+
+$(animateNextPage).stop().animate({
+    "left": "-1100px"
+}, 500, function(){$(animateNextPage).css("display", "none");});
 
 if($('.new-parent-step-2-form-div').html()){
 	$('.new-parent-step-2-form-div').remove();

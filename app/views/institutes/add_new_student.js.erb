@@ -1,3 +1,7 @@
 alert("new student added successfully");
 $('.new-student-step-2-form-div').remove();
-$('.new-student-step-1-form-div').show();
+var animateNextPage = $(".new-student-step-1-form-div");
+
+$(animateNextPage).stop().animate({
+    "left": "0px"
+}, 500, function(){$(animateNextPage).css("display", "block");});

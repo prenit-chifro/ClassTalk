@@ -1,5 +1,5 @@
-<div class="new-student-step-2-form-div">
-	<h1> Add details of <%= @student.first_name %> <%= @student.last_name %>'s Parents </h1>
+<div class="new-student-step-2-form-div" style="max-width:600px;margin: 0 auto;margin-top:60px;position:relative;">
+	<h1 class="nothing-posted"> Add details of <%= @student.first_name %> <%= @student.last_name %>'s Parents </h1>
 
 	<%= form_tag add_new_student_institute_path(@institute), method: :post, multipart: true, remote: true, id: "students-parents-details-form" do %>
 		<%= hidden_field_tag :step, 2 %>
@@ -14,24 +14,36 @@
 				<% options << [parent.first_name + " " + parent.last_name, parent.id] %>
 			<% end %>
 			<label> Select Father </label>
-			<%= select_tag :father_id, options_for_select(options, default_option), class: "form-control" %>
-			<button class="fill-father-details-button" onclick="showFatherDetailForm();">
-				No one from above? Fill Details Manually
-			</button>
-			
+			<div class="form-group">
+				<%= select_tag :father_id, options_for_select(options, default_option), class: "form-control" %>
+			</div>
+			<div class="text-center col-md-6 col-md-offset-3">
+				<div class="form-group form-button-register">
+					<div class="fill-child-details-button form-control btn btn-login btn-manual-details" style="font-size: 12px;background: #9c6a6a;" onclick="showFatherDetailForm();">				
+						No one from above? Fill Details Manually
+					</div>
+				</div>
+			</div>
 			<div class="father-details-div" style="display: none;">
 		<% else %>
 			<div class="father-details-div">
 				
 		<% end %>
-				<%= text_field_tag :father_first_name, nil, placeholder: "Father's First Name", required: true %>
-				<%= text_field_tag :father_last_name, nil, placeholder: "Father's Last Name", required: true %>
-				<br>
-				<%= email_field_tag :father_email, nil, placeholder: "Father's Email Address (Optional)" %>
-				<br>
-				<%= number_field_tag :father_mobile_no, nil, placeholder: "Father's Mobile No", required: true %>
-			
-			</div>	
+				<div class="form-inline form-inline-select">
+					<div class="form-group">
+						<%= text_field_tag :father_first_name, nil, placeholder: "Father's First Name", class: "form-control", required: true %>
+					</div>
+					<div class="form-group">
+						<%= text_field_tag :father_last_name, nil, placeholder: "Father's Last Name", class: "form-control", required: true %>
+					</div>
+				</div>	
+				<div class="form-group">
+					<%= email_field_tag :father_email, nil, placeholder: "Father's Email Address (Optional)",class: "form-control" %>
+				</div>
+				<div class="form-group">
+					<%= number_field_tag :father_mobile_no, nil, placeholder: "Father's Mobile No", class: "form-control", required: true %>
+				</div>
+			</div>
 		
 		<% if(!@female_parents.blank?) %>
 			<% options = [["Select Mother", ""]] %>
@@ -49,16 +61,28 @@
 		<% else %>
 			<div class="mother-details-div">	
 		<% end %>
-				<%= text_field_tag :mother_first_name, nil, placeholder: "Mother's First Name", required: true %>
-				<%= text_field_tag :mother_last_name, nil, placeholder: "Mother's Last Name", required: true %>
-				<br>
-				<%= email_field_tag :mother_email, nil, placeholder: "Mother's Email Address (Optional)" %>
-				<br>
-				<%= number_field_tag :mother_mobile_no, nil, placeholder: "Mother's Mobile No", required: true %>
-				
+				<div class="form-inline form-inline-select">
+					<div class="form-group">
+						<%= text_field_tag :mother_first_name, nil, placeholder: "Mother's First Name", class: "form-control", required: true %>
+					</div>
+					<div class="form-group">
+						<%= text_field_tag :mother_last_name, nil, placeholder: "Mother's Last Name", class: "form-control", required: true %>
+					</div>
+				</div>	
+				<div class="form-group">
+					<%= email_field_tag :mother_email, nil, placeholder: "Mother's Email Address (Optional)", class: "form-control" %>
+				</div>
+				<div class="form-group">
+					<%= number_field_tag :mother_mobile_no, nil, placeholder: "Mother's Mobile No", class: "form-control", required: true %>
+				</div>	
 			</div>
-		<%= submit_tag :Save, "data-disable-with" => "Saving..." %>
-
+			<div class="text-center col-md-6 col-md-offset-3">
+				<div class="form-group form-button-register">
+					<%= button_tag(type:"submit", class: "form-control btn btn-login", data: {disable_with: "Saving..."}) do %>
+						Save
+					<% end %>
+				</div>
+			</div>	
 	<% end %>
 
 	<script type="text/javascript">
