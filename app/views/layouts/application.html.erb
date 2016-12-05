@@ -48,7 +48,7 @@
 					
 					<ul class="nav navbar-nav navbar-right pull-right right-self-image" style="margin-right: 3px;">
 						<li>
-							<a class="navbar-brand right-menu text-center" href="javascript:void(0)" style="padding: 15px;padding-left:4px;padding-right: 4px;width:200px;"><%= @institute_conversation.conversation_name.truncate(20) if !@institute_conversation.blank? %></a>
+							<a class="navbar-brand right-menu text-center" href="javascript:void(0)" style="padding: 15px;padding-left:4px;padding-right: 4px;width:200px;"><%= @institute.institute_name.truncate(20) if !@institute.blank? %></a>
 							<button type="button" class="navbar-toggle collapsed pull-left hamburger-menu hamburger-menu-left-arrow" data-toggle="collapse" id="navbar-toggle-button">
 								<span></span>
 							</button>
@@ -57,11 +57,20 @@
 									<a href="/users/<%= current_user.id %>">
 										<img src="<%= current_user.profile_picture.media.url(:thumb) %>" class="img-circle img-xs" >
 										<br>
-										<span><%= current_user.first_name.capitalize %></span>
+										<span><%= current_user.first_name.capitalize %></span><br>
+										<span><%= current_user.role %></span>
 									</a>									
 								</li>
 								<% if(!@institute.blank?) %>
-									<li class="main-school-name text-center"><%= current_user.role %></li>
+									<li class="main-school-name text-center">
+										<a href="/institutes/<%= @institute.id %>">
+											<% if(current_user.role.include?("Institute Admin") or current_user.role.include?("Principal")) %>
+												Manage Institute
+											<% else %>
+												My Institute
+											<% end %>
+										</a>
+									</li>
 								<% end %>
 								
 								<% if(user_signed_in?) %>

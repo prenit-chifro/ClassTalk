@@ -1,0 +1,7 @@
+$('#new-class-form')[0].reset();
+$('.new-class-step-1-form-div').hide();
+
+if($('.new-class-step-2-form-div').html()){
+	$('.new-class-step-2-form-div').remove();
+}
+$('.new-class-step-1-form-div').after('<%= j render "add_new_class_step_2.html" %>');

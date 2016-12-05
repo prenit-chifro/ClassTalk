@@ -1,0 +1,7 @@
+$('#new-section-form')[0].reset();
+$('.new-section-step-1-form-div').hide();
+
+if($('.new-section-step-2-form-div').html()){
+	$('.new-section-step-2-form-div').remove();
+}
+$('.new-section-step-1-form-div').after('<%= j render "add_new_section_step_2.html" %>');

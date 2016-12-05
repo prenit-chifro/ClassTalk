@@ -29,6 +29,9 @@ Rails.application.routes.draw do
 
         get "add_new_staff"
         post "add_new_staff"
+
+        get "give_admin_right"
+        post "give_admin_right"
   		end
 
       resources :events

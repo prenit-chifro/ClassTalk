@@ -1,0 +1,60 @@
+<% content_for :heading do %>
+  <a class="mybtn btn btn-link btn-xs pull-left" href="/"><i class="material-icons">&#xE317;</i>Add Subjects to Class <%= @grade.grade_name %></a>
+<% end %>
+<div style="margin-top: 100px;"></div>
+<div class="new-subject-step-1-form-div">
+	<%= form_tag institute_grade_section_subjects_path(@institute, @grade, @section), method: :post, multipart: true, remote: true, id: "new-subject-form" do %>
+		<%= hidden_field_tag :step, 1 %>
+			
+		<div class="grades-div text-left">
+			
+			<% @subjects.each do |subject| %>					
+				<div class="main-grade">
+
+					<ul class="detectul">
+						<li class="listitems"> 
+							<div class="checkbox">
+								<label for="grades-division-<%= subject.id %>" class="grades-division">
+									<%= check_box_tag "subject_ids[#{subject.id}][subject_id]", subject.id, false, { class: "checkbox grade-names-input", id: "grades-division-#{subject.id}"} %>
+									<span> <%= subject.subject_name %></span>
+									<span><i class="material-icons circle-arrow-down-icon" style="top:9px;right:6px;font-size:27px;color: #fff;">&#xE313;</i></span>
+								</label>
+							</div>
+						</li>
+					</ul>	
+					<div class="division-criterias" style="display:none;">
+						<% if(!@teachers.blank?) %>
+				    		<h1> Select <%= subject.subject_name %> Teacher of Class <%= @grade.grade_name %><%= @section.section_name %> </h1>		
+							<% options = [["Subject Teacher", ""]] %>	
+							<% default_option = ["Subject Teacher", ""] %>
+							<% @teachers.each do |teacher| %>
+								<% options << [teacher.first_name + " " + teacher.last_name, teacher.id] %>
+							<% end %>
+							<%= select_tag "subject_ids[#{subject.id}][subject_teacher_id]", options_for_select(options, default_option) %>
+						<% end %>
+
+					</div>	
+				</div>					
+			<% end %>
+		</div>			
+		<%= submit_tag :Next, "data-disable-with" => "Please Wait..." %>
+
+	<% end %>
+</div>
+<div style="margin-bottom: 100px;"></div>
+<script type="text/javascript">
+	$(document).on('change','.grade-names-input',function(){
+		if($(this).is(':checked')) {
+			$(this).parents(".main-grade").find(".division-criterias").slideDown();
+			$(this).parents("ul.detectul").find(".circle-arrow-down-icon").addClass("arrow-circle-up");
+		} else {
+			$(this).parents(".main-grade").find(".division-criterias").slideUp();
+			$(this).parents("ul.detectul").find(".circle-arrow-down-icon").removeClass("arrow-circle-up");
+		}
+	});
+	$(".all-sections").change(function(e){
+		$(this).parents(".main-grade").find(".division-upper-sections input:checkbox").prop('checked', $(this).prop("checked"));
+	});
+
+</script>>
+

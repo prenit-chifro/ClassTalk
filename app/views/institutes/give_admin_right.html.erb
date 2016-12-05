@@ -1,0 +1,20 @@
+<div style="margin-top: 50px;">
+</div>
+
+<% if(!@teachers.blank?) %>
+	<%= form_tag give_admin_right_institute_path(@institute), method: :post, multipart: true, remote: true do %>
+		<% options = [["Staff", ""]] %>
+		<% default_option = ["Staff", ""] %>
+		<% @teachers.each do |teacher| %>
+			<% options << [teacher.first_name + " " + teacher.last_name, teacher.id] %>
+		<% end %>	
+		<%= select_tag :staff_id, options_for_select(options, default_option), required: true %>
+		<p>Start Time </p>
+		<%= datetime_field_tag :start_time, Time.now, required: true %>
+		<p>End Time </p>
+		<%= datetime_field_tag :end_time, Time.now + 1.day , required: true %>
+		<%= submit_tag "Save", "data-disable-with" => "Saving ..." %>
+	<% end %>
+<% else %>
+	<h1> No Staff to give Admin Rights to !</h1>
+<% end %>
