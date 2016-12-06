@@ -293,6 +293,7 @@
 								<span>Add Class</span><i class="material-icons">&#xE7FE;</i>
 							</div>
 						<% end %>
+						<div class="clearfix"></div>
 						<% if(!@grades.blank?) %>
 							<% @grades.each do |grade| %>
 								<% grade_section_models = grade.grades_sections.where(institute_id: @institute.id) %>
