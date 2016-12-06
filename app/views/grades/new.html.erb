@@ -1,23 +1,23 @@
 <% content_for :heading do %>
   <a class="mybtn btn btn-link btn-xs pull-left" href="/"><i class="material-icons">&#xE317;</i>Add Classes and Sections</a>
 <% end %>
-<div style="margin-top: 100px;"></div>
+<div style="margin-top: 45px;"></div>
 <div class="new-class-step-1-form-div">
 	<%= form_tag institute_grades_path(@institute), method: :post, multipart: true, remote: true, id: "new-class-form" do %>
 		<%= hidden_field_tag :step, 1 %>
 			
-		<div class="grades-div text-left">
+		<div class="grades-div text-left teachers-grades-div-circle">
 			
 			<% @grades.each do |grade| %>					
-				<div class="main-grade">
+				<div class="main-grade main-grade-circle">
 
-					<ul class="detectul">
+					<ul class="detectul detectCircle-ul">
+						<span class="add-class-checkbox"></span>
 						<li class="listitems"> 
 							<div class="checkbox">
 								<label for="grades-division-<%= grade.id %>" class="grades-division">
 									<%= check_box_tag "grade_ids[]", grade.id, false, { class: "checkbox grade-names-input", id: "grades-division-#{grade.id}"} %>
-									<span>Class <%= grade.grade_name %></span>
-									<span><i class="material-icons circle-arrow-down-icon" style="top:9px;right:6px;font-size:27px;color: #fff;">&#xE313;</i></span>
+									<span>Class <%= grade.grade_name %></span>									
 								</label>
 							</div>
 						</li>
@@ -38,24 +38,32 @@
 					</div>	
 				</div>					
 			<% end %>
-		</div>			
-		<%= submit_tag :Next, "data-disable-with" => "Please Wait..." %>
-
+		</div>	
+		<div class="clearfix"></div>
+		<div class="text-center col-md-6 col-md-offset-3">
+			<div class="form-group form-button-register">
+				<%= button_tag(type:"submit", class: "form-control btn btn-login", data: {disable_with: "Please Wait..."}) do %>
+					Next
+				<% end %>
+			</div>
+		</div>
 	<% end %>
 </div>
-<div style="margin-bottom: 100px;"></div>
+<div style="margin-bottom: 70px;"></div>
 <script type="text/javascript">
 	$(document).on('change','.grade-names-input',function(){
 		if($(this).is(':checked')) {
 			$(this).parents(".main-grade").find(".division-criterias").slideDown();
-			$(this).parents("ul.detectul").find(".circle-arrow-down-icon").addClass("arrow-circle-up");
+			$(this).parents("ul.detectCircle-ul").addClass("detectCircle-ul-background");
+			$(this).parents("ul.detectCircle-ul").find(".add-class-checkbox").addClass("detectCircle-ul-background-checkbox");
 		} else {
 			$(this).parents(".main-grade").find(".division-criterias").slideUp();
-			$(this).parents("ul.detectul").find(".circle-arrow-down-icon").removeClass("arrow-circle-up");
+			$(this).parents("ul.detectCircle-ul").removeClass("detectCircle-ul-background");
+			$(this).parents("ul.detectCircle-ul").find(".add-class-checkbox").removeClass("detectCircle-ul-background-checkbox");
 		}
 	});
 	$(".all-sections").change(function(e){
 		$(this).parents(".main-grade").find(".division-upper-sections input:checkbox").prop('checked', $(this).prop("checked"));
 	});
 
-</script>>
+</script>
