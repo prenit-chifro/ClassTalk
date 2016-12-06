@@ -7,12 +7,14 @@
 @import "fullcalendar";
 
 
-
+body{
+	overflow-y:scroll;
+}
 .nothing-posted{
 	background: #8aa2ab;
     font-family: cursive;
     color: #feffff;
-    font-size: 25px;
+    font-size: 17px;
     text-align: center;
     padding: 10px;
     box-shadow: 1px 1px 8px #a7a5a5;
@@ -303,13 +305,69 @@ div.edit-user-page > span+div.form-group + div.form-group
 	padding: 4px;
 	margin-top: -14px;
 }
+.teachers-grades-div-circle{
+	margin-top:0;
+	box-shadow: none;
+}
 .main-grade> ul.detectul div.checkbox{
 	margin-bottom:0;
+}
+.main-grade-circle{
+	display:inline-block;
+	padding:5px;
+	max-width:200px;
+	float: left;
 }
 .main-grade> ul.detectul{
 	margin: 0;
     padding: 0;
     list-style: none;
+}
+.main-grade-circle > ul.detectCircle-ul {
+	width: 190px;    
+    padding: 10px;    
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;	
+	transition: all 2s;
+	-webkit-transition: all 2s;
+	-moz-transition: all 2s;
+	position:relative;
+}
+.detectCircle-ul-background{
+	box-shadow: 1px 1px 7px #787575;
+	background: #767879;
+	transition: all 2s;
+	-webkit-transition: all 2s;
+	-moz-transition: all 2s;
+}
+.detectCircle-ul-background-checkbox {	
+	display:block;
+	width: 30px;
+    height: 30px;
+    background: #b3ced8;
+    position: absolute;
+    border-radius: 50%;
+    left: 30px;
+    top: 20px;
+    z-index: 2;
+    box-shadow: 1px 1px 2px #4c4b4b;
+}
+.detectCircle-ul-background-checkbox:before{
+	content: "";
+	display:block;
+	background:transparent;
+	width: 6px;
+    border-bottom: 2px solid #fff;
+    height: 13px;
+    border-right: 2px solid #fff;
+    transform: rotate(45deg);
+    -o-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+	z-index:2;
+	position: absolute;
+    top: 7px;
+    left: 10px;
 }
 .main-grade> ul.detectul label{
 	display:block;
@@ -320,12 +378,35 @@ div.edit-user-page > span+div.form-group + div.form-group
 	position:relative;
 	box-shadow: 1px 1px 5px #b1afaf;
 }
+.main-grade-circle > ul.detectCircle-ul label{
+	border-radius: 50%;
+    width: 150px;
+    height: 150px;
+    margin: 0 auto;
+    background: #517f90;
+    box-shadow: 1px 1px 7px #000;
+    color: #fff;
+    position: relative;
+}
 .main-grade> ul.detectul label input{
 	margin-left: 0;
+}
+.main-grade-circle > ul.detectCircle-ul label input{
+	display:none;
+	position:absolute;
+	left:-10000px;
+	top:-10000px;
 }
 .main-grade> ul.detectul label input + span{
 	vertical-align: middle;
 	margin-left: 21px;
+}
+.main-grade-circle> ul.detectCircle-ul label input + span{
+	position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-left: -30px;
+    margin-top: -23px;
 }
 .main-grade> ul.detectul label input + span + span{
 	position: absolute;
@@ -633,8 +714,14 @@ ul.index-conversation-modal div.classRoute>ul{
 	max-height:200px;
 	overflow:scroll;
 }
+
 ul.index-conversation-modal{
 	max-height:100% !important;
+}
+ul.index-conversation-modal div.negation-classRoute > ul{
+	background:#2ad;
+	overflow:hidden;
+	padding:0;
 }
  /*dropdown-submenu*/
 
