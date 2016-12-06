@@ -1,40 +1,44 @@
 <% if(!@staff.blank?) %>
 	<% if(@staff.role == "Teacher") %>
-		<div class="new-staff-step-2-form-div">
+		<div class="new-staff-step-2-form-div" style="max-width:600px;margin:0 auto;">
 
 			<%= form_tag add_new_staff_institute_path(@institute), method: :post, multipart: true, remote: true, id: "students-staff-details-form" do %>
 				<%= hidden_field_tag :step, 2 %>
 				<%= hidden_field_tag :staff_id, @staff.id %>
 
-				<h1> Is <%= @staff.first_name %> <%= @staff.last_name %> ClassTeacher of any class ? If yes, then please select her class below </h1>
-
-				<% if(!@grades.blank?) %>
-					<% options = [["Select Class", ""]] %>
-					<% @grades.each do |grade| %>
-						<% options << ["Class #{grade.grade_name}", grade.id] %>
-					<% end %>
-					<%= select_tag :classteacher_grade_id, options_for_select(options, ["Select Class", ""]), required: true %>
-				<% end %>
-				<% if(!@sections.blank?) %>
-					<% options = [["Select Section", ""]] %>
-					<% @sections.each do |section| %>
-						<% options << ["Section #{section.section_name}", section.id] %>
-					<% end %>
-					<%= select_tag :classteacher_section_id, options_for_select(options, ["Select Section", ""]), required: true %>
-				<% end %>
-					
-				<h1> Does <%= @staff.first_name %> <%= @staff.last_name %> teaches any subject? If yes, then please select his/her subjects and classes below </h1>
+				<h1 class="nothing-posted" style="margin-top:70px;"> Is <%= @staff.first_name %> <%= @staff.last_name %> ClassTeacher of any class ? If yes, then please select her class below </h1>
+				<div class="form-inline form-inline-select">
+					<div class="form-group">
+						<% if(!@grades.blank?) %>
+							<% options = [["Select Class", ""]] %>
+							<% @grades.each do |grade| %>
+								<% options << ["Class #{grade.grade_name}", grade.id] %>
+							<% end %>
+							<%= select_tag :classteacher_grade_id, options_for_select(options, ["Select Class", ""]), class:"form-control", required: true %>
+						<% end %>
+					</div>	
+					<div class="form-group">
+						<% if(!@sections.blank?) %>
+							<% options = [["Select Section", ""]] %>
+							<% @sections.each do |section| %>
+								<% options << ["Section #{section.section_name}", section.id] %>
+							<% end %>
+							<%= select_tag :classteacher_section_id, options_for_select(options, ["Select Section", ""]), class:"form-control", required: true %>
+						<% end %>
+					</div>
+				</div>
+				<h1 class="nothing-posted"> Does <%= @staff.first_name %> <%= @staff.last_name %> teaches any subject? If yes, then please select his/her subjects and classes below </h1>
 	
-				<div class="teachers-grades-div text-left">
+				<div class="teachers-grades-div text-left teachers-grades-div-circle">
 					<% @grades.each do |grade| %>
-						<div class="main-grade">
-							<ul class="detectul">
+						<div class="main-grade main-grade-circle">
+							<ul class="detectul detectCircle-ul">
+								<span class="add-class-checkbox"></span>
 								<li class="listitems"> 
 									<div class="checkbox">
 										<label for="teachers-grades-division-<%= grade.id %>" class="grades-division">
 											<%= check_box_tag "grade_names[]", grade.grade_name, false, { class: "checkbox teachers-grade-names-input", id:"teachers-grades-division-#{grade.id}"} %>
-											<span>Grade <%= grade.grade_name %></span>
-											<span><i class="material-icons circle-arrow-down-icon" style="top:9px;right:6px;font-size:27px;color: #fff;">&#xE313;</i></span>
+											<span>Grade <%= grade.grade_name %></span>											
 										</label>	
 									</div>
 								</li>
@@ -48,7 +52,7 @@
 
 										<% Section.all.each do |section| %>
 											<%= check_box_tag "grades[#{grade.grade_name}][section_names][]", section.section_name, false, {"data-role" => "none", class: "grade-section-names-input"} %>
-											<span>Section <%= section.section_name %></span>
+											<span> <%= section.section_name %></span>
 										<% end %>
 									</div>
 								</div>
@@ -72,18 +76,28 @@
 						</div>
 					<% end %>
 				</div>
-				<%= submit_tag :Save, "data-disable-with" => "Saving..." %>
-
+				<div class="clearfix"></div>
+				<div style="margin-bottom:70px">
+					<div class="text-center col-md-6 col-md-offset-3">
+						<div class="form-group form-button-register">
+							<%= button_tag(type:"submit", class: "form-control btn btn-login", data: {disable_with: "Saving..."}) do %>
+								Save
+							<% end %>
+						</div>
+					</div>
+				</div>
 			<% end %>
 
 			<script type="text/javascript">
 				$(document).on('change','.teachers-grade-names-input',function(){
 					if($(this).is(':checked')) {
 						$(this).parents(".main-grade").find(".division-criterias").slideDown();
-						$(this).parents("ul.detectul").find(".circle-arrow-down-icon").addClass("arrow-circle-up");
+						$(this).parents("ul.detectCircle-ul").addClass("detectCircle-ul-background");
+						$(this).parents("ul.detectCircle-ul").find(".add-class-checkbox").addClass("detectCircle-ul-background-checkbox");
 					} else {
-						$(this).parents(".main-grade").find(".division-criterias").slideUp();
-						$(this).parents("ul.detectul").find(".circle-arrow-down-icon").removeClass("arrow-circle-up");
+						$(this).parents(".main-grade").find(".division-criterias").slideUp();						
+						$(this).parents("ul.detectCircle-ul").removeClass("detectCircle-ul-background");
+						$(this).parents("ul.detectCircle-ul").find(".add-class-checkbox").removeClass("detectCircle-ul-background-checkbox");
 					}
 				});
 				$(".teachers-all-subjects").change(function (e) {
