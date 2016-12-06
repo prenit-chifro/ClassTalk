@@ -10,14 +10,14 @@
 				</li>	
 				
 			<% end %>
-			<% if(["Principal", "Institute Admin"]).include?(current_user.role) %>
+			<% if(current_user.role.include?("Principal") or current_user.role.include?("Institute Admin")) %>
 				<%= link_to new_institute_notice_path(@institute), class:"new-notices-icons" do %>
 					<i class="material-icons">&#xE147;</i>
 				<% end %>
 			<% end %>
 			
 		<% else %>
-			<% if(["Principal", "Institute Admin"]).include?(current_user.role) %>
+			<% if(current_user.role.include?("Principal") or current_user.role.include?("Institute Admin")) %>
 				<%= link_to new_institute_notice_path(@institute) do %>
 					<p class="no-attendance-records">
 						You have no notices! Create One..

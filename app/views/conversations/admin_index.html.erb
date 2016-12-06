@@ -12,9 +12,6 @@
 		  <div class="modal-body">
 			<p></p>
 		  </div>
-		  <div class="modal-footer">
-			<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-		  </div>
 		</div>
 	  </div>
 	</div>
@@ -106,7 +103,7 @@
 								<% end %>
 								<%= paginate @group_conversations, window: 1, params: {anchor: "all-group-messages"} %>
 							<% else %>
-								<h1> No group messages ! </h1>		
+								<h1 class="nothing-posted"> No group messages ! </h1>		
 							<% end %>
 						</div>		
 					</div>	
@@ -132,7 +129,7 @@
 							</div>
 						<% end %>
 						<div class="clearfix"></div>
-						<% if(current_user.role == "Institute Admin") %>
+						<% if(current_user.role.include?("Principal") or current_user.role.include?("Institute Admin")) %>
 							<% if(!@institutes_grades_sections_models.blank?) %>
 								<% @institutes_grades_sections_models.each do |grade_section_model|%>
 									<% grade = grade_section_model.grade %>
@@ -160,6 +157,8 @@
 										</div>
 									</li>
 								<% end %>
+							<% else %>
+								<h1 class="nothing-posted"> No Students Added Yet.  </h1>		
 							<% end %>
 						<% end %>
 
@@ -173,7 +172,7 @@
 							</div>
 						<% end %>
 						<div class="clearfix"></div>
-						<% if(current_user.role == "Institute Admin") %>
+						<% if(current_user.role.include?("Principal") or current_user.role.include?("Institute Admin")) %>
 							<% if(!@institutes_grades_sections_models.blank?) %>
 								<% @institutes_grades_sections_models.each do |grade_section_model|%>
 									<% grade = grade_section_model.grade %>
@@ -202,6 +201,8 @@
 										</div>
 									</li>
 								<% end %>
+							<% else %>
+								<h1 class="nothing-posted"> No Parents Added Yet.  </h1>		
 							<% end %>
 						<% end %>
 
@@ -215,7 +216,7 @@
 							</div>
 						<% end %>
 						<div class="clearfix"></div>
-						<% if(current_user.role == "Institute Admin") %>
+						<% if(current_user.role.include?("Principal") or current_user.role.include?("Institute Admin")) %>
 							<li>
 								<h6 class="teachers-list-heading">Authorities<i class="material-icons arrow-up-icon pull-right">&#xE316;</i></h6>
 								<div class="container-width classRoute negation-classRoute" style="display: block;">
@@ -227,18 +228,25 @@
 									<div class="tab-content" style="">
 										<div class="tab-pane" id="all-principals">
 											<ul class="list-unstyled list-inline">
-												<% if(!@principal.blank?) %>
-													<% if(@principal.id != current_user.id) %>
+												<% if(!@principals.blank?) %>
+													<% @principals.each do |principal| %>
 														<li>
-															<%= render partial: "conversations/contact", locals: {contact: @principal} %>
-															<span class="checkbox-style-block checkbox-style-block-<%= @principal.id %>">
+															<%= render partial: "conversations/contact", locals: {contact: principal} %>
+															<span class="checkbox-style-block checkbox-style-block-<%= principal.id %>">
 																
 															</span>		
 																		
 														</li>
 													<% end %>
 												<% else %>
-													<div class="nothing-posted"> Yet No principal added!</div>
+													<%= link_to add_new_staff_institute_path(@institute, role: "Principal") do %>
+														<div class="pull-right add-member">
+															<span>Add Principal</span><i class="material-icons">&#xE7FE;</i>
+														</div>
+													<% end %>
+													<div class="clearfix"></div>
+													<br>
+													<div class="nothing-posted"> No Principal added yet !</div>
 												<% end %>														
 											</ul>
 										</div>
@@ -246,16 +254,22 @@
 											<ul class="list-unstyled list-inline">
 												<% if(!@admins.blank?) %>
 													<% @admins.each do |admin| %>																
-														<% if(admin.id != current_user.id) %>
-															<li>
-																<%= render partial: "conversations/contact", locals: {contact: admin} %>
-																<span class="checkbox-style-block checkbox-style-block-<%= admin.id %>"></span>
-																
-															</li>
-														<% end %>	
+														<li>
+															<%= render partial: "conversations/contact", locals: {contact: admin} %>
+															<span class="checkbox-style-block checkbox-style-block-<%= admin.id %>"></span>
+															
+														</li>
+													
 													<% end %>
 												<% else %>
-													<div class="nothing-posted"> Yet No Admin added!</div>
+													<%= link_to add_new_staff_institute_path(@institute, role: "Institute Admin") do %>
+														<div class="pull-right add-member">
+															<span>Add Admin</span><i class="material-icons">&#xE7FE;</i>
+														</div>
+													<% end %>
+													<div class="clearfix"></div>
+													<br>
+													<div class="nothing-posted"> No Admin added yet !</div>
 												<% end %>														
 											</ul>
 										</div>												
@@ -277,6 +291,13 @@
 												<% end %>	
 											<% end %>
 										<% else %>
+											<%= link_to add_new_staff_institute_path(@institute, role: "Teacher") do %>
+												<div class="pull-right add-member">
+													<span>Add Teacher</span><i class="material-icons">&#xE7FE;</i>
+												</div>
+											<% end %>
+											<div class="clearfix"></div>
+											<br>
 											<h1 class="nothing-posted" style="margin-top:0;box-shadow:none;"> No Teachers Added Yet </h1>	
 										<% end %>														
 									</ul>
@@ -319,7 +340,7 @@
 								
 							<% end %>
 						<% else %>
-							<h1> No Classes Added Yet.  </h1>	
+							<h1 class="nothing-posted"> No Classes Added Yet.  </h1>	
 						<% end %>
 						
 					</ul>
@@ -364,7 +385,15 @@
 											<% end %>			
 
 										<% end %>
-									</ul>			
+									</ul>
+								<% else %>
+									<%= link_to new_institute_grade_path(@institute) do %>
+										<div class="pull-left add-member">
+											<span>Add Class</span><i class="material-icons">&#xE7FE;</i>
+										</div>
+									<% end %>
+									<div class="clearfix"></div>
+									<h1 class="nothing-posted"> No Classes Added Yet.  </h1>					
 								<% end %>
 							</div>
 							<div class="tab-pane" id="teacher-plan">
@@ -383,7 +412,15 @@
 											</li>
 										
 										<% end %>
-									</ul>			
+									</ul>
+								<% else %>
+									<%= link_to add_new_staff_institute_path(@institute, role: "Teacher") do %>
+										<div class="pull-right add-member">
+											<span>Add Teacher</span><i class="material-icons">&#xE7FE;</i>
+										</div>
+									<% end %>
+									<div class="clearfix"></div>
+									<h1 class="nothing-posted"> No Teachers Added Yet.  </h1>					
 								<% end %>
 							</div>		
 						</div>
@@ -464,62 +501,87 @@
 						<div class="">
 							<ul class="list-unstyled teachers-list">
 
-								<% if(current_user.role == "Institute Admin") %>
+								<% if(current_user.role.include?("Principal") or current_user.role.include?("Institute Admin")) %>
 									<li>
 										<h6 class="teachers-list-heading">Staff<i class="material-icons arrow-up-icon pull-right">&#xE316;</i></h6>
 										<div class="container-width classRoute" style="display: block;">
 											<ul class="nav nav-tabs" role="tablist" id="tablist">
-												<li class="active"><a data-toggle="tab" href="#all-principals-modal">Principal</a></li>
+												<li class="active"><a data-toggle="tab" href="#all-teachers-modal">Teachers</a></li>									
 												<li><a data-toggle="tab" href="#all-admins-modal">Admins</a></li>
-												<li><a data-toggle="tab" href="#all-teachers-modal">Teachers</a></li>												
+												<li><a data-toggle="tab" href="#all-principals-modal">Principal</a></li>
+															
 											</ul>
 											<div class="tab-content" style="">
-												<div class="tab-pane active" id="all-principals-modal">
+												<div class="tab-pane" id="all-principals-modal">
 													<ul class="list-unstyled list-inline  index-conversation-modal">
-														<% if(!@principal.blank?) %>
-															<% if(@principal.id != current_user.id) %>
+														<% if(!@principals.blank?) %>
+															<% @principals.each do |principal| %>
+															
 																<li>
-																	<label for="contact-new-group-<%= @principal.id %>" class="modal-label">
-																		<%= check_box_tag "participant_ids[]", @principal.id, false,class:"contact-new-group-page", id:"contact-new-group-#{@principal.id}" %>						
-																		<%= render partial: "conversations/contact", locals: {contact: @principal} %>
-																		<span class="checkbox-style-block checkbox-style-block-<%= @principal.id %>"></span>																
+																	<label for="contact-new-group-<%= principal.id %>" class="modal-label">
+																		<%= check_box_tag "participant_ids[]", principal.id, false,class:"contact-new-group-page", id:"contact-new-group-#{principal.id}" %>						
+																		<%= render partial: "conversations/contact", locals: {contact: principal} %>
+																		<span class="checkbox-style-block checkbox-style-block-<%= principal.id %>"></span>																
 																	</label>																
 																</li>
 															<% end %>
+														<% else %>
+															<%= link_to add_new_staff_institute_path(@institute, role: "Principal") do %>
+																<div class="pull-right add-member">
+																	<span>Add Teacher</span><i class="material-icons">&#xE7FE;</i>
+																</div>
+															<% end %>
+															<div class="clearfix"></div>
+															<h1 class="nothing-posted"> No Principals added yet ! </h1>	
 														<% end %>														
 													</ul>
 												</div>
 												<div class="tab-pane" id="all-admins-modal">
 													<ul class="list-unstyled list-inline  index-conversation-modal">
 														<% if(!@admins.blank?) %>
-															<% @admins.each do |admin| %>																
-																<% if(admin.id != current_user.id) %>
-																	<li>
-																		<label for="contact-new-group-<%= admin.id %>" class="modal-label">
-																			<%= check_box_tag "participant_ids[]", admin.id, false,class:"contact-new-group-page", id:"contact-new-group-#{admin.id}" %>
-																			<%= render partial: "conversations/contact", locals: {contact: admin} %>
-																			<span class="checkbox-style-block checkbox-style-block-<%= admin.id %>"></span>
-																		</label>	
-																	</li>
-																<% end %>	
+															<% @admins.each do |admin| %>				
+																<li>
+																	<label for="contact-new-group-<%= admin.id %>" class="modal-label">
+																		<%= check_box_tag "participant_ids[]", admin.id, false,class:"contact-new-group-page", id:"contact-new-group-#{admin.id}" %>
+																		<%= render partial: "conversations/contact", locals: {contact: admin} %>
+																		<span class="checkbox-style-block checkbox-style-block-<%= admin.id %>"></span>
+																	</label>	
+																</li>
+															
 															<% end %>
+														<% else %>	
+															<%= link_to add_new_staff_institute_path(@institute, role: "Institute Admin") do %>
+																<div class="pull-right add-member">
+																	<span>Add Admin</span><i class="material-icons">&#xE7FE;</i>
+																</div>
+															<% end %>
+															<div class="clearfix"></div>
+															<h1 class="nothing-posted"> No Admins added yet ! </h1>	
 														<% end %>														
 													</ul>
 												</div>												
-												<div class="tab-pane" id="all-teachers-modal">
+												<div class="tab-pane active" id="all-teachers-modal">
 													<ul class="list-unstyled list-inline  index-conversation-modal">
 														<% if(!@teachers.blank?) %>
 															<% @teachers.each do |teacher| %>
-																<% if(teacher.id != current_user.id) %>
-																	<li>
-																		<label for="contact-new-group-<%= teacher.id %>" class="modal-label">
-																			<%= check_box_tag "participant_ids[]", teacher.id, false,class:"contact-new-group-page", id:"contact-new-group-#{teacher.id}" %>
-																			<%= render partial: "conversations/contact", locals: {contact: teacher} %>
-																			<span class="checkbox-style-block checkbox-style-block-<%= teacher.id %>"></span>																	
-																		</label>									
-																	</li>
-																<% end %>	
+															
+																<li>
+																	<label for="contact-new-group-<%= teacher.id %>" class="modal-label">
+																		<%= check_box_tag "participant_ids[]", teacher.id, false,class:"contact-new-group-page", id:"contact-new-group-#{teacher.id}" %>
+																		<%= render partial: "conversations/contact", locals: {contact: teacher} %>
+																		<span class="checkbox-style-block checkbox-style-block-<%= teacher.id %>"></span>																	
+																	</label>									
+																</li>
+															
 															<% end %>
+														<% else %>
+															<%= link_to add_new_staff_institute_path(@institute, role: "Teacher") do %>
+																<div class="pull-right add-member">
+																	<span>Add Teacher</span><i class="material-icons">&#xE7FE;</i>
+																</div>
+															<% end %>
+															<div class="clearfix"></div>
+															<h1 class="nothing-posted"> No Teachers added yet ! </h1>		
 														<% end %>														
 													</ul>
 												</div>												
@@ -557,6 +619,14 @@
 																			</li>
 																		<% end %>	
 																	<% end %>
+																<% else %>
+																	<%= link_to add_new_parent_institute_path(@institute) do %>
+																		<div class="pull-right add-member">
+																			<span>Add Parent</span><i class="material-icons">&#xE7FE;</i>
+																		</div>
+																	<% end %>
+																	<div class="clearfix"></div>
+																	<h1 class="nothing-posted"> No Parents added yet ! </h1>		
 																<% end %>																
 															</ul>
 														</div>
@@ -574,6 +644,14 @@
 																			</li>
 																		<% end %>	
 																	<% end %>
+																<% else %>
+																	<%= link_to add_new_student_institute_path(@institute, role: "Teacher") do %>
+																		<div class="pull-right add-member">
+																			<span>Add Student</span><i class="material-icons">&#xE7FE;</i>
+																		</div>
+																	<% end %>
+																	<div class="clearfix"></div>
+																	<h1 class="nothing-posted"> No Students added yet ! </h1>	
 																<% end %>															
 															</ul>
 														</div>												

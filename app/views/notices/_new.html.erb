@@ -1,5 +1,5 @@
 <% content_for :heading do %>
-	<a class="mybtn btn btn-link btn-xs pull-left" href="<%= institute_notices_path(@institute) %>"><i class="material-icons">&#xE317;</i></a>
+	<a class="mybtn btn btn-link btn-xs pull-left" href="<%= institute_notices_path(@institute) %>"><i class="material-icons">&#xE317;</i> New Notice</a>
 <% end %>
 <div class="classRoute" style="margin-top:50px;">
 	<div class="container">
@@ -52,7 +52,7 @@
 		$(".grade-section-checkbox-input").prop("checked", $(this).prop("checked"));
 	});
 	if (window.location.href.indexOf("notices") > -1) {
-		$('body').css('background-color', '#2ad');
+		$('body').css('background-color', 'rgb(188, 214, 224)');
 	}
 	$(".classRoute").parents("div.wrapper").find(".navbar-default").css("box-shadow", "none");
 </script>

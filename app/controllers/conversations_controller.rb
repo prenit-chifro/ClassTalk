@@ -42,20 +42,6 @@ class ConversationsController < ApplicationController
 			@homework_conversations = @conversations.where("message_categories LIKE ?", "HomeWork%")
 			homework_messages_array = []
 
-			if(current_user.role == "Institute Admin")
-				if(!@homework_conversations.blank?)
-					@homework_conversations.each do |conversation|					
-					    conversation_homework_messages = conversation.messages.where(category: "HomeWork").order(created_at: :desc)
-						if(!conversation_homework_messages.blank?)
-							conversation_homework_messages.each do |message|
-								homework_messages_array << message
-							end	
-						end
-					end
-		    	end
-
-			end
-
 			if(current_user.role == "Teacher")
 				if(!@homework_conversations.blank?)
 					@homework_conversations.each do |conversation|					
@@ -67,6 +53,17 @@ class ConversationsController < ApplicationController
 						end
 					end
 		    	end
+		    else
+		    	if(!@homework_conversations.blank?)
+					@homework_conversations.each do |conversation|					
+					    conversation_homework_messages = conversation.messages.where(category: "HomeWork").order(created_at: :desc)
+						if(!conversation_homework_messages.blank?)
+							conversation_homework_messages.each do |message|
+								homework_messages_array << message
+							end	
+						end
+					end
+		    	end	
 			end
 
 			@homework_messages = Message.where(id: homework_messages_array.map(&:id)).page(params[:page]).per(10)
@@ -143,18 +140,12 @@ class ConversationsController < ApplicationController
 			end
 		end
 		
-		if(current_user.role == "Principal")
-			@institute = current_user.institutes.first
-			@admins = @institute.get_members_with_given_roles(["Institute Admin"])
-			@teachers = @institute.get_members_with_given_roles(["Teacher"])
-		end
+		@principals = @institute.get_members_with_given_roles(["Principal"])
+		@admins = @institute.get_members_with_given_roles(["Institute Admin"])
+		@teachers = @institute.get_members_with_given_roles(["Teacher"])
 
-		if(current_user.role == "Institute Admin")
-			@institute = current_user.institutes.first
+		if(current_user.role.include?("Principal") or current_user.role.include?("Institute Admin")) 
 			
-			@principal = @institute.get_members_with_given_roles(["Principal"]).first
-			@admins = @institute.get_members_with_given_roles(["Institute Admin"])
-			@teachers = @institute.get_members_with_given_roles(["Teacher"])
 			@grades = @institute.grades
 			@institutes_grades_sections_models = @institute.institutes_grades_sections_models
 
@@ -165,12 +156,6 @@ class ConversationsController < ApplicationController
 		end
 
 		if(current_user.role == "Teacher")
-			@institute = current_user.institutes.first
-			
-			@principal = @institute.get_members_with_given_roles(["Principal"]).first
-			@admins = @institute.get_members_with_given_roles(["Institute Admin"])
-			@teachers = @institute.get_members_with_given_roles(["Teacher"])
-			
 			@all_section_member_models = current_user.members_sections
 			@grades = @all_section_member_models.map(&:grade).uniq
 			@assigned_classteacher_grades_sections_model = current_user.assigned_classteacher_grades_sections_models.first
@@ -187,10 +172,6 @@ class ConversationsController < ApplicationController
 		end
 
 		if(current_user.role == "Student" or current_user.role == "Parent")
-			@principal = @institute.get_members_with_given_roles(["Principal"]).first
-			@admins = @institute.get_members_with_given_roles(["Institute Admin"])
-			@teachers = @institute.get_members_with_given_roles(["Teacher"])
-			
 			@all_section_member_models = current_user.members_sections
 			@grades = @all_section_member_models.map(&:grade).uniq
 			

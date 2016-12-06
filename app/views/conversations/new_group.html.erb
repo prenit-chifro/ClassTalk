@@ -73,7 +73,7 @@
 												
 													<li>
 														<label for="contact-new-group-<%= principal.id %>" class="modal-label">
-															<%= check_box_tag "admin_ids[]", @principal.id, false,class:"contact-new-group-page", id:"contact-new-group-#{@principal.id}" %>						
+															<%= check_box_tag "admin_ids[]", principal.id, false,class:"contact-new-group-page", id:"contact-new-group-#{principal.id}" %>						
 															<%= render partial: "conversations/contact", locals: {contact: principal} %>
 															<span class="checkbox-style-block checkbox-style-block-<%= principal.id %>"></span>																
 														</label>																

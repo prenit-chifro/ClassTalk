@@ -13,7 +13,7 @@
 		<li class="active"><a data-toggle="tab" href="#all-admins">Admins</a></li>
 		<li><a data-toggle="tab" href="#all-principals">Principals</a></li>
 		<li><a data-toggle="tab" href="#all-teachers">Teachers</a></li>
-		<% if(["Principal", "Institute Admin", "Teacher"].include?(current_user.role)) %>
+		<% if(current_user.role.include?("Principal") or current_user.role.include?("Institute Admin") or current_user.role.include?("Teacher")) %>
 			<li><a data-toggle="tab" href="#all-students">Students</a></li>	
 			<li><a data-toggle="tab" href="#all-parents">Parents</a></li>
 		<% end %>
@@ -44,6 +44,8 @@
 				<% @admins.each do |admin| %>
 					<%= render partial: "conversations/contact", locals: {contact: admin}	 %>	
 				<% end %>
+			<% else %>	
+				<h1 class="nothing-posted"> No Admins added yet ! </h1>		
 			<% end %>
 		</div>
 		<div class="tab-pane" id="all-principals">
@@ -59,6 +61,8 @@
 				<% @principals.each do |principal| %>
 					<%= render partial: "conversations/contact", locals: {contact: principal}	 %>	
 				<% end %>
+			<% else %>	
+				<h1 class="nothing-posted"> No Principals added yet ! </h1>			
 			<% end %>
 		</div>
 
@@ -75,10 +79,12 @@
 				<% @teachers.each do |contact| %>
 					<%= render partial: "conversations/contact", locals: {contact: contact}	 %>	
 				<% end %>
+			<% else %>	
+				<h1 class="nothing-posted"> No Teachers added yet ! </h1>			
 			<% end %>
 		</div>
 
-		<% if(["Principal", "Institute Admin", "Teacher"].include?(current_user.role)) %>
+		<% if(current_user.role.include?("Principal") or current_user.role.include?("Institute Admin") or current_user.role.include?("Teacher")) %>
 			<div class="tab-pane" id="all-students">
 				<% if(current_user.role.include?("Principal") or current_user.role.include?("Institute Admin")) %>
 					<%= link_to add_new_student_institute_path(@institute) do %>
@@ -92,9 +98,10 @@
 					<% @students.each do |contact| %>
 						<%= render partial: "conversations/contact", locals: {contact: contact} %>		
 					<% end %>
+				<% else %>	
+					<h1 class="nothing-posted"> No Students added yet ! </h1>				
 				<% end %>		
 
-				
 			</div>
 
 			<div class="tab-pane" id="all-parents">
@@ -110,6 +117,8 @@
 					<% @parents.each do |contact| %>
 						<%= render partial: "conversations/contact", locals: {contact: contact} %>		
 					<% end %>
+				<% else %>	
+					<h1 class="nothing-posted"> No Parents added yet ! </h1>				
 				<% end %>
 			</div>
 			<div class="tab-pane" id="all-classes">
@@ -146,6 +155,9 @@
 							</li>
 							
 						<% end %>
+					<% else %>
+						<div class="clearfix"></div>	
+						<h1 class="nothing-posted"> No Classes added yet ! </h1>					
 					<% end %>
 					
 				</ul>
