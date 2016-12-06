@@ -12,7 +12,7 @@
 		<% end %>
 	</ul>
 	<div class="tab-content">
-		<div class="tab-pane active" id="all-classteachers">
+		<div class="tab-pane active" id="all-classteachers" style="max-height:100%; margin-bottom:70px;">
 			<% if(!current_user.role.include?("Student") and !current_user.role.include?("Parent")) %>
 				<%= link_to add_new_staff_institute_path(@institute) do %>
 					<div class="pull-right add-member">
@@ -26,7 +26,7 @@
 		</div>
 
 		<% if(["Principal", "Institute Admin", "Teacher"].include?(current_user.role)) %>
-			<div class="tab-pane" id="all-students">
+			<div class="tab-pane" id="all-students" style="max-height:100%;margin-bottom:70px;">
 				<% if(!current_user.role.include?("Student") and !current_user.role.include?("Parent")) %>
 					<%= link_to add_new_student_institute_path(@institute) do %>
 						<div class="pull-right add-member">
@@ -43,7 +43,7 @@
 
 				
 			</div>
-			<div class="tab-pane" id="all-parents">
+			<div class="tab-pane" id="all-parents" style="max-height:100%;margin-bottom:70px;">
 				<% if(!current_user.role.include?("Student") and !current_user.role.include?("Parent")) %>
 										
 					<%= link_to add_new_parent_institute_path(@institute) do %>
@@ -51,6 +51,7 @@
 							<span>Add Parent</span><i class="material-icons">&#xE7FE;</i>
 						</div>
 					<% end %>
+					<div class="clearfix"></div>
 				<% end %>
 				<div class="clearfix mar-btm"></div>
 				<% if(!@parents.blank?) %>
@@ -61,7 +62,7 @@
 			</div>
 		<% end %>
 
-		<div class="tab-pane" id="all-subjects">
+		<div class="tab-pane" id="all-subjects" style="max-height:100%;margin-bottom:70px;">
 			<% if(!current_user.role.include?("Student") and !current_user.role.include?("Parent")) %>
 										
 				<%= link_to new_institute_grade_section_subject_path(@institute, @grade, @section) do %>
@@ -69,6 +70,7 @@
 						<span>Add Subject</span><i class="material-icons">&#xE7FE;</i>
 					</div>
 				<% end %>
+				<div class="clearfix"></div>
 			<% end %>
 			
 			<ul class="list-unstyled list-inline text-center">
@@ -100,4 +102,14 @@
 		
 		</div>
 	</div>
-</div>			
+</div>
+<script>
+	$(".classRoute").parents("div.wrapper").find(".navbar-default").css("box-shadow", "none");
+	var randomColors = ["#35a5a5",'#8cc4c4','#8b5861',"#d7b26f"];
+	$(".ch-thumb").each(function(index) {
+        var len = randomColors.length;
+        var randomNum = Math.floor(Math.random()*len);
+        $(this).css("backgroundColor",randomColors[randomNum]);
+        randomColors.slice(randomNum, 1);
+    });
+</script>			
