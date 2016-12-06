@@ -1,43 +1,52 @@
 <% content_for :heading do %>
   <a class="mybtn btn btn-link btn-xs pull-left" href="/"><i class="material-icons">&#xE317;</i>Add Class <%= @grade.grade_name %> Sections</a>
 <% end %>
-<div style="margin-top: 100px;"></div>
+<div style="margin-top: 45px;"></div>
 <div class="new-section-step-1-form-div">
 	<%= form_tag institute_grade_sections_path(@institute, @grade), method: :post, multipart: true, remote: true, id: "new-section-form" do %>
 		<%= hidden_field_tag :step, 1 %>
 			
-		<div class="grades-div text-left">
+		<div class="grades-div text-left teachers-grades-div-circle">
 			
 			<% @sections.each do |section| %>					
-				<div class="main-grade">
+				<div class="main-grade main-grade-circle">
 
-					<ul class="detectul">
+					<ul class="detectul detectCircle-ul">
+						<span class="add-class-checkbox"></span>
 						<li class="listitems"> 
 							<div class="checkbox">
 								<label for="grades-division-<%= section.id %>" class="grades-division">
 									<%= check_box_tag "section_ids[#{section.id}][section_id]", section.id, false, { class: "checkbox grade-names-input", id: "grades-division-#{section.id}"} %>
-									<span>Section <%= section.section_name %></span>
-									<span><i class="material-icons circle-arrow-down-icon" style="top:9px;right:6px;font-size:27px;color: #fff;">&#xE313;</i></span>
+									<span>Section <%= section.section_name %></span>									
 								</label>
 							</div>
 						</li>
 					</ul>	
 					<div class="division-criterias" style="display:none;">
 						<% if(!@teachers.blank?) %>
-				    		<h1> Select ClassTeacher of Class <%= @grade.grade_name %><%= section.section_name %> </h1>		
-							<% options = [["Select ClassTeacher", ""]] %>	
-							<% default_option = ["Select ClassTeacher", ""] %>
-							<% @teachers.each do |teacher| %>
-								<% options << [teacher.first_name + " " + teacher.last_name, teacher.id] %>
-							<% end %>
-							<%= select_tag "section_ids[#{section.id}][classteacher_id]", options_for_select(options, default_option) %>
+				    		<h1 style="font-size: 15px;margin: 0;margin-bottom: 4px;"> Select ClassTeacher of Class <%= @grade.grade_name %><%= section.section_name %> </h1>		
+							<div class="form-group">
+								<% options = [["Select ClassTeacher", ""]] %>	
+								<% default_option = ["Select ClassTeacher", ""] %>
+								<% @teachers.each do |teacher| %>
+									<% options << [teacher.first_name + " " + teacher.last_name, teacher.id] %>
+								<% end %>
+								<%= select_tag "section_ids[#{section.id}][classteacher_id]", options_for_select(options, default_option), class: "form-control" %>
+							</div>
 						<% end %>
 
 					</div>	
 				</div>					
 			<% end %>
 		</div>			
-		<%= submit_tag :Next, "data-disable-with" => "Please Wait..." %>
+		<div class="clearfix"></div>
+		<div class="text-center col-md-6 col-md-offset-3">
+			<div class="form-group form-button-register">
+				<%= button_tag(type:"submit", class: "form-control btn btn-login", data: {disable_with: "Please Wait..."}) do %>
+					Next
+				<% end %>
+			</div>
+		</div>
 
 	<% end %>
 </div>
@@ -46,14 +55,16 @@
 	$(document).on('change','.grade-names-input',function(){
 		if($(this).is(':checked')) {
 			$(this).parents(".main-grade").find(".division-criterias").slideDown();
-			$(this).parents("ul.detectul").find(".circle-arrow-down-icon").addClass("arrow-circle-up");
+			$(this).parents("ul.detectCircle-ul").addClass("detectCircle-ul-background");
+			$(this).parents("ul.detectCircle-ul").find(".add-class-checkbox").addClass("detectCircle-ul-background-checkbox");
 		} else {
 			$(this).parents(".main-grade").find(".division-criterias").slideUp();
-			$(this).parents("ul.detectul").find(".circle-arrow-down-icon").removeClass("arrow-circle-up");
+			$(this).parents("ul.detectCircle-ul").removeClass("detectCircle-ul-background");
+			$(this).parents("ul.detectCircle-ul").find(".add-class-checkbox").removeClass("detectCircle-ul-background-checkbox");
 		}
 	});
 	$(".all-sections").change(function(e){
 		$(this).parents(".main-grade").find(".division-upper-sections input:checkbox").prop('checked', $(this).prop("checked"));
 	});
 
-</script>>
+</script>
