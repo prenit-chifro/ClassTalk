@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161118074130) do
+ActiveRecord::Schema.define(version: 20161206072414) do
 
   create_table "android_devices", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "gcm_registration_id"
@@ -74,8 +74,9 @@ ActiveRecord::Schema.define(version: 20161118074130) do
     t.integer  "conversation_id"
     t.integer  "participant_id"
     t.integer  "participant_adder_id"
-    t.datetime "created_at",           null: false
-    t.datetime "updated_at",           null: false
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
+    t.boolean  "is_admin",             default: false
     t.index ["conversation_id"], name: "index_conversation_participants_on_conversation_id", using: :btree
     t.index ["participant_id"], name: "index_conversation_participants_on_participant_id", using: :btree
   end
@@ -92,8 +93,9 @@ ActiveRecord::Schema.define(version: 20161118074130) do
     t.boolean  "is_custom_group",    default: true
     t.string   "requestor_ids",      default: ""
     t.string   "blocked_ids",        default: ""
-    t.datetime "created_at",                        null: false
-    t.datetime "updated_at",                        null: false
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
+    t.boolean  "is_open_group",      default: false
     t.index ["blocked_ids"], name: "index_conversations_on_blocked_ids", using: :btree
     t.index ["conversation_name"], name: "index_conversations_on_conversation_name", using: :btree
     t.index ["creator_id"], name: "index_conversations_on_creator_id", using: :btree

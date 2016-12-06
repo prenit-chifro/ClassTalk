@@ -24,9 +24,15 @@
 			<% if(current_user.role.include?("Principal") or current_user.role.include?("Institute Admin")) %>
 				<%= link_to give_admin_right_institute_path(@institute) do %>
 					<div class="pull-right add-member">
-						<span>Share Admin Rights</span><i class="material-icons">&#xE7FE;</i>
+						<span>Give Admin Rights</span><i class="material-icons">&#xE7FE;</i>
 					</div>
 				<% end %>
+				<%= link_to revoke_admin_right_institute_path(@institute) do %>
+					<div class="pull-right add-member">
+						<span>Revole Admin Rights</span><i class="material-icons">&#xE7FE;</i>
+					</div>
+				<% end %>
+				
 				<%= link_to add_new_staff_institute_path(@institute, role: "Institute Admin") do %>
 					<div class="pull-right add-member">
 						<span>Add Admin</span><i class="material-icons">&#xE7FE;</i>

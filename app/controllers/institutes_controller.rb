@@ -1,5 +1,10 @@
 class InstitutesController < ApplicationController
-  
+
+  before_action :set_timezone, only: [:give_admin_right, :revoke_admin_right]
+  def set_timezone
+      Time.zone = "New Delhi"
+  end
+
   before_action :set_institute, except: [:index, :new, :create]
   def set_institute
     @institute = Institute.find_by(id: params[:id])
@@ -617,29 +622,55 @@ class InstitutesController < ApplicationController
   def give_admin_right
     if(request.get?)
 
-        @current_admins = @institute.get_members_with_given_roles(["Institute Admin"])
-        @teachers = @institute.get_members_with_given_roles(["Teacher"])
+        @current_admins = @institute.members.where("role LIKE ?", "%, Institute Admin")
+        @teachers = @institute.members.where("role LIKE ?", "%Teacher").where.not(id: @current_admins.map(&:id))
         render 
     elsif(request.post?)
         if(!params[:staff_id].blank?)
             @staff = User.find_by(id: params[:staff_id])
             if(!@staff.blank?)
                 if(params[:start_time] <= Time.now)
-                    AdminRightWorker.perform(@staff.id, "Add")
+                    AdminRightWorker.new.perform(@staff.id, "Add")
                 else
-                    AdminRightWorker.perform_at(params[:start_time], @staff.id, "Add")  
+                    AdminRightWorker.perform_at(Time.parse(params[:start_time]), @staff.id, "Add")  
                 end
 
                 if(params[:end_time] <= Time.now)
-                    AdminRightWorker.perform(@staff.id, "Remove")
+                    AdminRightWorker.new.perform(@staff.id, "Remove")
                 else
-                    AdminRightWorker.perform_at(params[:end_time], @staff.id, "Remove")  
+                    AdminRightWorker.perform_at(Time.parse(params[:end_time]), @staff.id, "Remove")  
                 end
-
+                redirect_to institute_path(@institute), format: :js
             end
         end
     end
 
+
+  end
+
+  def revoke_admin_right
+    if(request.get?)
+        @current_admins = @institute.members.where("role LIKE ?", "%, Institute Admin")
+        render 
+    elsif(request.post?)
+        if(!params[:admin_ids].blank?)
+            @admins = User.where(id: params[:admin_ids])
+            if(!@admins.blank?)
+                @admins.each do |admin|
+                    if(!admin.role.include?("Institute Admin"))
+                      return
+                    else
+                      if(admin.role.include?(", Institute Admin"))
+                        admin.update(role: admin.role.gsub(", Institute Admin", ""))  
+                      end
+                    end
+                end
+
+            end
+            redirect_to institute_path(@institute), format: :js
+        end
+
+    end
 
   end  
 end

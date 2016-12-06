@@ -1,5 +1,10 @@
 class EventsController < ApplicationController
 
+  before_action :set_timezone
+  def set_timezone
+      Time.zone = "New Delhi"
+  end
+
   before_action :set_event, only: [:show, :edit, :update, :destroy]
 
   def index
@@ -30,7 +35,7 @@ class EventsController < ApplicationController
 
   def create
     if(!params[:title].blank? and !params[:start_time].blank? and !params[:end_time].blank? and !params[:is_official].blank?)
-        @event = current_user.created_events.new(title: params[:title], description: params[:description], start_time: DateTime.parse(params[:start_time]), end_time: DateTime.parse(params[:end_time]), is_official: params[:is_official], is_all_day_event: params[:is_all_day_event])
+        @event = current_user.created_events.new(title: params[:title], description: params[:description], start_time: Time.parse(params[:start_time]), end_time: Time.parse(params[:end_time]), is_official: params[:is_official], is_all_day_event: params[:is_all_day_event])
 
         @event.institute_id = params[:institute_id]
         if(!params[:grade_section_ids].blank?)
@@ -66,8 +71,8 @@ class EventsController < ApplicationController
       @event.institute_id = params[:institute_id] if !params[:institute_id].blank?
       @event.title = params[:title] if !params[:title].blank?
       @event.description = params[:description] if !params[:description].blank?
-      @event.start_time = DateTime.parse(params[:start_time]) if !params[:start_time].blank?
-      @event.end_time = DateTime.parse(params[:end_time]) if !params[:end_time].blank?
+      @event.start_time = Time.parse(params[:start_time]) if !params[:start_time].blank?
+      @event.end_time = Time.parse(params[:end_time]) if !params[:end_time].blank?
       @event.is_official = params[:is_official] if !params[:is_official].blank?
       @event.is_all_day_event = params[:is_all_day_event] if !params[:is_all_day_event].blank?
       if(!params[:grade_section_ids].blank?)

@@ -113,17 +113,9 @@ class Conversation < ApplicationRecord
 		self.participants.map(&:id).include?(user_id)
 	end
 	
-	def add_participant participant_id, participant_adder_id
-		if(participant_id != participant_adder_id and self.is_custom_group)
-			if(self.requestor_ids.blank?)
-				self.update(requestor_ids: "#{participant_adder_id}")
-			else
-				new_string = self.requestor_ids + ", #{participant_adder_id}"
-				self.update(requestor_ids: new_string)
-			end
-		end
+	def add_participant participant_id, participant_adder_id, is_admin=false
 		if(!check_if_participant(participant_id))
-			self.conversation_participant_models.create(participant_id: participant_id, participant_adder_id: participant_adder_id)
+			self.conversation_participant_models.create(participant_id: participant_id, participant_adder_id: participant_adder_id, is_admin: is_admin)
 		end
 	end
 		
@@ -253,7 +245,7 @@ class Conversation < ApplicationRecord
 	after_create :add_creators_participant_model
 
 	def add_creators_participant_model
-		self.add_participant(self.creator_id, self.creator_id)
+		self.add_participant(self.creator_id, self.creator_id, true)
 	end
 	
 end

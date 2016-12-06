@@ -1,0 +1,20 @@
+<% content_for :heading do %>
+  <a class="mybtn btn btn-link btn-xs pull-left" href="/institutes/<%= @institute.id %>"><i class="material-icons">&#xE317;</i> 
+  	Revoke Admin Rights
+  </a>
+<% end %>
+
+<div style="margin-top: 50px;">
+</div>
+
+<% if(!@current_admins.blank?) %>
+	<%= form_tag revoke_admin_right_institute_path(@institute), method: :post, multipart: true, remote: true do %>
+		<% @current_admins.each do |admin| %>
+			<%= "#{admin.first_name} #{admin.last_name}" %> <%= check_box_tag "admin_ids[]", admin.id, false %>
+		<% end %>	
+		<br>
+		<%= submit_tag "Revoke Admin Rights", "data-disable-with" => "Revoking ..." %>
+	<% end %>
+<% else %>
+	<h1> No staff has been given Admin Rights !</h1>
+<% end %>

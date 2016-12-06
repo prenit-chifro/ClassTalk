@@ -32,6 +32,9 @@ Rails.application.routes.draw do
 
         get "give_admin_right"
         post "give_admin_right"
+
+        get "revoke_admin_right"
+        post "revoke_admin_right"
   		end
 
       resources :events

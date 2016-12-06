@@ -201,43 +201,15 @@ class ConversationsController < ApplicationController
 	end
 	
 	def new
-		if(current_user.role == "Principal")
-			@institute = current_user.institutes.first
-			@admins = @institute.get_members_with_given_roles(["Institute Admin"])
-			@teachers = @institute.get_members_with_given_roles(["Teacher"])
-		end
-
-		if(current_user.role == "Institute Admin")
-			@institute = current_user.institutes.first
-			
-			@principal = @institute.get_members_with_given_roles(["Principal"]).first
-			@admins = @institute.get_members_with_given_roles(["Institute Admin"])
-			@teachers = @institute.get_members_with_given_roles(["Teacher"])
+		@principals = @institute.get_members_with_given_roles(["Principal"])
+		@admins = @institute.get_members_with_given_roles(["Institute Admin"])
+		@teachers = @institute.get_members_with_given_roles(["Teacher"])
+		if(current_user.role.include?("Principal") or current_user.role.include?("Institute Admin"))			
 			@institutes_grades_sections_models = @institute.institutes_grades_sections_models
-			
 		end
 
 		if(current_user.role == "Teacher")
-			@principal = @institute.get_members_with_given_roles(["Principal"]).first
-			@admins = @institute.get_members_with_given_roles(["Institute Admin"])
-			@teachers = @institute.get_members_with_given_roles(["Teacher"])
 			@teaching_section_subject_models = current_user.teaching_sections_subjects_models
-
-			@assigned_classteacher_grades_sections_model = current_user.assigned_classteacher_grades_sections_models.first
-			if(!@assigned_classteacher_grades_sections_model.blank?)
-				@todays_attendance_record = current_user.created_attendance_records.find_by(date: Date.today)
-
-				@institute = @assigned_classteacher_grades_sections_model.institute
-				@grade = @assigned_classteacher_grades_sections_model.grade
-				@section = @assigned_classteacher_grades_sections_model.section
-				@class_students =  @section.get_members_with_given_roles_for_institute_and_grade_with_role(@institute, @grade, "Student")
-			end
-
-		end
-
-		if(current_user.role == "Student" or current_user.role == "Parent")
-			@admins = @institute.get_members_with_given_roles(["Institute Admin"])
-			@teachers = @institute.get_members_with_given_roles(["Teacher"])
 		end
 	end
 
@@ -324,57 +296,37 @@ class ConversationsController < ApplicationController
 
 	def new_group
 		if(request.get?)
-			if(current_user.role == "Principal")
-				@institute = current_user.institutes.first
-				@admins = @institute.get_members_with_given_roles(["Institute Admin"])
-				@teachers = @institute.get_members_with_given_roles(["Teacher"])
-			end
-
-			if(current_user.role == "Institute Admin")
-				@institute = current_user.institutes.first
-				
-				@principal = @institute.get_members_with_given_roles(["Principal"]).first
-				@admins = @institute.get_members_with_given_roles(["Institute Admin"])
-				@teachers = @institute.get_members_with_given_roles(["Teacher"])
-				@institutes_grades_sections_models = @institute.institutes_grades_sections_models
-				
-			end
-
-			if(current_user.role == "Teacher")
-				@principal = @institute.get_members_with_given_roles(["Principal"]).first
-				@admins = @institute.get_members_with_given_roles(["Institute Admin"])
-				@teachers = @institute.get_members_with_given_roles(["Teacher"])
-				@teaching_section_subject_models = current_user.teaching_sections_subjects_models
-
-				@assigned_classteacher_grades_sections_model = current_user.assigned_classteacher_grades_sections_models.first
-				if(!@assigned_classteacher_grades_sections_model.blank?)
-					@todays_attendance_record = current_user.created_attendance_records.find_by(date: Date.today)
-
-					@institute = @assigned_classteacher_grades_sections_model.institute
-					@grade = @assigned_classteacher_grades_sections_model.grade
-					@section = @assigned_classteacher_grades_sections_model.section
-					@class_students =  @section.get_members_with_given_roles_for_institute_and_grade_with_role(@institute, @grade, "Student")
-				end
-
-			end
-
-			if(current_user.role == "Student" or current_user.role == "Parent")
-				@admins = @institute.get_members_with_given_roles(["Institute Admin"])
-				@teachers = @institute.get_members_with_given_roles(["Teacher"])
-			end
+			@principals = @institute.get_members_with_given_roles(["Principal"])
+			@admins = @institute.get_members_with_given_roles(["Institute Admin"])
+			@teachers = @institute.get_members_with_given_roles(["Teacher"])
+			
 			render "new_group"
 
 		elsif(request.post?) 
 			if(!params[:conversation_name].blank?)
-				new_conversation = current_user.created_conversations.create(conversation_name: params[:conversation_name])
-				new_conversation.banner_image.update(media: params[:banner_image]) if !params[:banner_image].blank?
-				if(!params[:participant_ids].blank?)
-					participants = User.where(id: params[:participant_ids].split(","))
-					participants.each do |participant|
-						new_conversation.add_participant(participant.id, current_user.id)
+				@conversation = current_user.created_conversations.create(conversation_name: params[:conversation_name], is_open_group: params[:is_open_group])
+				@conversation.banner_image.update(media: params[:banner_image]) if !params[:banner_image].blank?
+				if(params[:is_open_group] == false and !params[:admin_ids].blank?)
+					group_admins = User.where(id: params[:admin_ids])
+					group_admins.each do |group_admin|
+						@conversation.add_participant(group_admin.id, current_user.id, true)
 					end
 				end
-				redirect_to conversation_path(new_conversation), format: :js	
+				
+				@principals = @institute.get_members_with_given_roles(["Principal"])
+				@admins = @institute.get_members_with_given_roles(["Institute Admin"])
+				@teachers = @institute.get_members_with_given_roles(["Teacher"])
+				
+				if(current_user.role == "Institute Admin")
+					@institutes_grades_sections_models = @institute.institutes_grades_sections_models
+				end
+
+				if(current_user.role == "Teacher")
+					@teaching_section_subject_models = current_user.teaching_sections_subjects_models
+				end
+				
+				redirect_to new_conversation_path(conversation_id: @conversation.id), format: :js
+				
 			end
 		end
 			

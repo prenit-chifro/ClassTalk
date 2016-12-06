@@ -1,4 +1,8 @@
 class TimetableSlotsController < ApplicationController
+    before_action :set_timezone
+    def set_timezone
+        Time.zone = "New Delhi"
+    end
   
     before_action :set_grade_and_section, except: [:index]
 
