@@ -29,7 +29,7 @@ test:
   <<: *default
   username: root
   password: 
-  database: class_talk_development
+  database: class_talk_test
 
 
 # As with config/secrets.yml, you never want to store sensitive information,

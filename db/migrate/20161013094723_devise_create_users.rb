@@ -26,40 +26,32 @@ class DeviseCreateUsers < ActiveRecord::Migration[5.0]
       t.string :oauth_uid
 
 	  # Extra user data
-	  t.boolean :email_verified, default: false
-	  t.boolean :mobile_no_verified, default: false
-	  t.string :first_name
-	  t.string :last_name
-	  t.string :gender
-    t.string :roll_no
-    t.string :staff_id
-    t.datetime :date_of_birth
-    t.string :address
-    t.string :pincode
-    t.boolean :is_using_transport, default: false
-	  t.string :role
-    t.string :child_ids
-    t.integer :father_id
-    t.integer :mother_id
-	  t.string :system_encrypted_password
-	  t.string :system_password_encryption_key
-	  t.string :system_password_encryption_iv
-	  t.string :send_account_password_on_android_device_flag, default: false
-	  t.string :unique_user_code
-	  t.boolean :is_online, default: false
-    t.boolean :is_registration_complete, default: false
-	  
-    t.timestamps null: false
-  end
+      t.boolean :email_verified, default: false
+      t.boolean :mobile_no_verified, default: false
+      t.string :first_name
+      t.string :last_name
+      t.string :gender
+      t.string :role
+      t.string :child_ids
+      t.integer :father_id
+      t.integer :mother_id
+      t.string :system_encrypted_password
+      t.string :system_password_encryption_key
+      t.string :system_password_encryption_iv
+      t.string :send_account_password_on_android_device_flag, default: false
+      t.string :unique_user_code
+      t.boolean :is_online, default: false
+      t.boolean :is_registration_complete, default: false
+
+      t.timestamps null: false
+    end
 
     add_index :users, :email
-  	add_index :users, :mobile_no
-  	add_index :users, :reset_password_token
+    add_index :users, :mobile_no
+    add_index :users, :reset_password_token
 
     add_index :users, :first_name
     add_index :users, :last_name
-    add_index :users, :roll_no
-    add_index :users, :staff_id
     add_index :users, :role
     add_index :users, :is_registration_complete
       

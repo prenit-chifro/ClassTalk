@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161206072414) do
+ActiveRecord::Schema.define(version: 20161206112343) do
 
   create_table "android_devices", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "gcm_registration_id"
@@ -389,12 +389,6 @@ ActiveRecord::Schema.define(version: 20161206072414) do
     t.string   "first_name"
     t.string   "last_name"
     t.string   "gender"
-    t.string   "roll_no"
-    t.string   "staff_id"
-    t.datetime "date_of_birth"
-    t.string   "address"
-    t.string   "pincode"
-    t.boolean  "is_using_transport",                           default: false
     t.string   "role"
     t.string   "child_ids"
     t.integer  "father_id"
@@ -408,6 +402,14 @@ ActiveRecord::Schema.define(version: 20161206072414) do
     t.boolean  "is_registration_complete",                     default: false
     t.datetime "created_at",                                                   null: false
     t.datetime "updated_at",                                                   null: false
+    t.string   "role_no",                                      default: ""
+    t.string   "staff_id",                                     default: ""
+    t.datetime "date_of_birth"
+    t.string   "address",                                      default: ""
+    t.integer  "pincode"
+    t.boolean  "is_using_transport",                           default: false
+    t.string   "roll_no",                                      default: ""
+    t.index ["address"], name: "index_users_on_address", using: :btree
     t.index ["email"], name: "index_users_on_email", using: :btree
     t.index ["first_name"], name: "index_users_on_first_name", using: :btree
     t.index ["is_registration_complete"], name: "index_users_on_is_registration_complete", using: :btree

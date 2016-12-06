@@ -130,7 +130,6 @@ class ConversationsController < ApplicationController
 			@homework_messages = Message.where(id: homework_messages_array.map(&:id)).page(1).per(10)
 		end
 
-		#@all_conversations = current_user.participating_conversations.order(updated_at: :desc)
 		@unread_conversation_ids_array = []
 		@inbox_conversations.each do |conversation|
 			conversation_participant_model = conversation.get_conversation_participant_model_for_participant(current_user)
