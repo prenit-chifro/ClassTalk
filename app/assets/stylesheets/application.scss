@@ -1918,9 +1918,17 @@ ul#attachment-toggle-show div.inner-list:hover > label span, ul#attachment-toggl
 }
 div.calendar div.fc-toolbar{
 	padding: 10px;
-    background: #2ad;
+    background: #98c2d2;
     box-shadow: 1px 1px 6px #5d5d5d;
     color: #fff;
+	margin-bottom:0;
+}
+
+div.event-index div.calendar div.fc-toolbar{
+	margin-top:70px;
+}
+div.timetable-index-page div.calendar div.fc-toolbar{
+	    background: #7b929b;
 }
 .class-calendar div.fc-toolbar, .teacher-calendar div.fc-toolbar{
 	box-shadow: 1px 2px 2px #5d5d5d !important;

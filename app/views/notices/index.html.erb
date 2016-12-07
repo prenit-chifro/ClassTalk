@@ -1,7 +1,7 @@
 <% content_for :heading do %>
 	<a class="mybtn btn btn-link btn-xs pull-left" href="/"><i class="material-icons">&#xE317;</i>Notices</a>
 <% end %>
-<div id="all-notices-analytics" style="padding:30px;max-height: inherit;margin-top: 60px;">
+<div id="all-notices-analytics" style="max-width:600px;margin:0 auto;padding:30px;max-height: inherit;margin-top: 60px;">
 	<ul class="list-unstyled sticky-notices">
 		<% if(!@notices.blank?) %>
 			<% @notices.each do |notice| %>
@@ -11,7 +11,7 @@
 				
 			<% end %>
 			<% if(current_user.role.include?("Principal") or current_user.role.include?("Institute Admin")) %>
-				<%= link_to new_institute_notice_path(@institute), class:"new-notices-icons" do %>
+				<%= link_to new_institute_notice_path(@institute), class:"new-notices-icons", style: "top:inherit; bottom:60px;" do %>
 					<i class="material-icons">&#xE147;</i>
 				<% end %>
 			<% end %>
@@ -23,7 +23,7 @@
 						You have no notices! Create One..
 					</p>
 				<% end %>	
-				<%= link_to new_institute_notice_path(@institute), class:"new-notices-icons" do %>
+				<%= link_to new_institute_notice_path(@institute), class:"new-notices-icons", style: "top:inherit; bottom:60px;" do %>
 					<i class="material-icons">&#xE147;</i>
 				<% end %>
 			<% else %>
@@ -35,3 +35,9 @@
 		
 	</ul>	
 </div>
+
+<script>
+	if (window.location.href.indexOf("notices") > -1) {
+		$('body').css('background-color', 'rgb(188, 214, 224)');
+	}
+</script>
