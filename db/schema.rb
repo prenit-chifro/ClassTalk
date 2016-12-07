@@ -305,6 +305,7 @@ ActiveRecord::Schema.define(version: 20161206112343) do
     t.string   "category"
     t.boolean  "content_available",                  default: false
     t.text     "notification",      limit: 65535
+    t.index ["app_id", "delivered", "failed", "deliver_after"], name: "index_rapns_notifications_multi", using: :btree
     t.index ["delivered", "failed"], name: "index_rpush_notifications_multi", using: :btree
   end
 
@@ -402,13 +403,12 @@ ActiveRecord::Schema.define(version: 20161206112343) do
     t.boolean  "is_registration_complete",                     default: false
     t.datetime "created_at",                                                   null: false
     t.datetime "updated_at",                                                   null: false
-    t.string   "role_no",                                      default: ""
+    t.string   "roll_no",                                      default: ""
     t.string   "staff_id",                                     default: ""
     t.datetime "date_of_birth"
     t.string   "address",                                      default: ""
     t.integer  "pincode"
     t.boolean  "is_using_transport",                           default: false
-    t.string   "roll_no",                                      default: ""
     t.index ["address"], name: "index_users_on_address", using: :btree
     t.index ["email"], name: "index_users_on_email", using: :btree
     t.index ["first_name"], name: "index_users_on_first_name", using: :btree
