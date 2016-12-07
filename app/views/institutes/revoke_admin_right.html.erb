@@ -1,20 +1,27 @@
 <% content_for :heading do %>
   <a class="mybtn btn btn-link btn-xs pull-left" href="/institutes/<%= @institute.id %>"><i class="material-icons">&#xE317;</i> 
-  	Revoke Admin Rights
+  	Revoke Rights
   </a>
 <% end %>
 
-<div style="margin-top: 50px;">
-</div>
+<div style="max-width: 600px; margin: 0 auto; margin-top: 70px;">
+	<% if(!@current_admins.blank?) %>
 
-<% if(!@current_admins.blank?) %>
-	<%= form_tag revoke_admin_right_institute_path(@institute), method: :post, multipart: true, remote: true do %>
-		<% @current_admins.each do |admin| %>
-			<%= render partial: "conversations/contact", locals: {contact: admin} %> <%= check_box_tag "admin_ids[]", admin.id, false %>
-		<% end %>	
-		<br>
-		<%= submit_tag "Revoke Admin Rights", "data-disable-with" => "Revoking ..." %>
+		<%= form_tag revoke_admin_right_institute_path(@institute), method: :post, multipart: true, remote: true do %>
+			<% @current_admins.each do |admin| %>
+				<label for="contact-new-group-<%= admin.id %>" class="modal-label">
+					<%= check_box_tag "admin_ids[]", admin.id, false,class:"contact-new-group-page", id:"contact-new-group-#{admin.id}" %>						
+					<%= render partial: "conversations/contact", locals: {contact: admin} %>
+					<span class="checkbox-style-block checkbox-style-block-<%= admin.id %>"></span>																
+				</label>						
+				
+			<% end %>	
+			<br>
+			<div class="col-sm-12 col-xs-12">
+				<button type="submit" data-disable-with="Revoking ..." class="btn btn-success" style="width: 100%;"> Revoke </button>
+			</div>
+		<% end %>
+	<% else %>
+		<h1> No staff has been given Admin Rights !</h1>
 	<% end %>
-<% else %>
-	<h1> No staff has been given Admin Rights !</h1>
-<% end %>
+</div>

@@ -62,7 +62,7 @@
 					<% @teachers.each do |teacher| %>
 									
 						<li>
-							<h6 class="teachers-list-heading"><%= teacher.first_name %> <%= teacher.last_name %> (<%= teacher.details %>)<i class="material-icons arrow-up-icon pull-right">&#xE316;</i></h6>
+							<h6 class="teachers-list-heading" style="background:#b0b0b0;"><%= teacher.first_name %> <%= teacher.last_name %> (<%= teacher.details %>)<i class="material-icons arrow-up-icon pull-right">&#xE316;</i></h6>
 							<div class="container-width classRoute">
 								<div class="calendar teacher-calendar" data-teacher-id="<%= teacher.id %>">
 			

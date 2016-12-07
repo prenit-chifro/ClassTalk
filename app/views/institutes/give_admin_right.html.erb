@@ -1,26 +1,55 @@
 <% content_for :heading do %>
   <a class="mybtn btn btn-link btn-xs pull-left" href="/institutes/<%= @institute.id %>"><i class="material-icons">&#xE317;</i> 
-  	Give Admin Rights
+  	Give Rights
   </a>
 <% end %>
-
-<div style="margin-top: 50px;">
-</div>
-
-<% if(!@teachers.blank?) %>
-	<%= form_tag give_admin_right_institute_path(@institute), method: :post, multipart: true, remote: true do %>
-		<% options = [["Staff", ""]] %>
-		<% default_option = ["Staff", ""] %>
-		<% @teachers.each do |teacher| %>
-			<% options << [teacher.first_name + " " + teacher.last_name, teacher.id] %>
-		<% end %>	
-		<%= select_tag :staff_id, options_for_select(options, default_option), required: true %>
-		<p>Start Time </p>
-		<%= datetime_field_tag :start_time, Time.now.strftime("%Y-%m-%dT%H:%M"), required: true %>
-		<p>End Time </p>
-		<%= datetime_field_tag :end_time, (Time.now + 1.day).strftime("%Y-%m-%dT%H:%M") , required: true %>
-		<%= submit_tag "Save", "data-disable-with" => "Saving ..." %>
+<div style="max-width: 600px; margin: 0 auto; margin-top: 70px;">
+	<% if(!@teachers.blank?) %>
+		<%= form_tag give_admin_right_institute_path(@institute), method: :post, multipart: true, remote: true do %>
+			<div class="form-group">
+				<% options = [["Staff", ""]] %>
+				<% default_option = ["Staff", ""] %>
+				<% @teachers.each do |teacher| %>
+					<% options << [teacher.first_name + " " + teacher.last_name, teacher.id] %>
+				<% end %>	
+				<%= select_tag :staff_id, options_for_select(options, default_option), class: "form-control", required: true %>
+			</div>
+			<div class="col-sm-4 col-xs-5">
+				<div class="form-group">
+					<div class='input-group date from-input-date' id='startDatetimepicker'>
+						<input type='text' class="form-control" name="start_time" value='<%= Time.now.strftime("%Y-%m-%dT%H:%M") %>' required />
+						<span class="input-group-addon">
+							<i class="fa fa-calendar" aria-hidden="true"></i>								
+						</span>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-1 col-xs-2 text-center">
+				<span style="font-size: 16px;line-height: 2;color: #5cb85c;">to</span>
+			</div>
+			<div class="col-sm-4 col-xs-5">
+				<div class="form-group">
+					<div class='input-group date' id='endDatetimepicker'>
+						<input type='text' class="form-control" name="end_time" value='<%= (Time.now + 1.day).strftime("%Y-%m-%dT%H:%M") %>' required />
+						<span class="input-group-addon">
+							<i class="fa fa-calendar" aria-hidden="true"></i>								
+						</span>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-3 col-xs-12">
+				<button class="btn btn-success" style="width: 100%;"> Save </button>
+			</div>	
+			
+			
+		<% end %>
+	<% else %>
+		<h1> No Staff to give Admin Rights to !</h1>
 	<% end %>
-<% else %>
-	<h1> No Staff to give Admin Rights to !</h1>
-<% end %>
+</div>
+<script type="text/javascript">
+	$('#startDatetimepicker, #endDatetimepicker').datetimepicker({
+		defaultDate: new Date(),
+        format: 'DD/MM/YYYY'
+   	});
+</script>
