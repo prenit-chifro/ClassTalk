@@ -6,7 +6,7 @@
 		
 			<ul class="nav nav-tabs admin-new-tabs" role="tablist" id="tablist" style="position:fixed;z-index:5;left:0;right:0;">		
 				<li class="active"><a data-toggle="tab" href="#all-messages">Messages</a></li>
-				<li><a data-toggle="tab" href="#all-groups">Groups</a></li>
+				
 				<li><a data-toggle="tab" href="#all-homework">HomeWork</a></li>
 				<li><a data-toggle="tab" href="#all-students">Students</a></li>
 				<li><a data-toggle="tab" href="#all-staff">Staff</a></li>
@@ -17,12 +17,11 @@
 			</ul>
 			<div class="clearfix"></div>
 
-
 			<div class="tab-content admin-home-content admin-index-main" style="max-width:600px;margin:0 auto;margin-top:40px;">
 				<div class="tab-pane active" id="all-messages">
 					<div class="classRoute" style="margin-bottom:0;">
 						<ul class="nav nav-tabs text-center" role="tablist" id="tablist" style="background:#98c2d2;">		
-							<li class="active" style="width:50%;"><a data-toggle="tab" href="#all-inbox-messages">Inbox
+							<li class="active" style="width:33.33%;"><a data-toggle="tab" href="#all-inbox-messages">Inbox
 								<% if(!@unread_conversation_ids_array.blank?) %>
 									<% if(@unread_conversation_ids_array.length > 0) %>
 										<span class="dot-unread unread-conversation-no" style="display: inline-block;"> <%= @unread_conversation_ids_array.length %> </span> 
@@ -35,7 +34,8 @@
 									<span class="unread-conversation-ids" style="display: none;">""</span>	
 								<% end %> 
 							</a></li>
-							<li style="width:50%;"><a data-toggle="tab" href="#all-sent-messages">Sent</a></li>
+							<li style="width:33.33%;"><a data-toggle="tab" href="#all-sent-messages">Sent</a></li>
+							<li style="width:33.33%;"><a data-toggle="tab" href="#all-group-messages">Groups</a></li>
 						</ul>	
 					</div>
 					<div class="tab-content admin-home-content">
@@ -48,7 +48,7 @@
 								<% end %>
 								<%= paginate @inbox_conversations, window: 1, params: {anchor: "all-inbox-messages"} %>
 							<% else %>
-								<h1> You dont have any message in inbox that needs your response ! </h1>	
+								<h1 class="nothing-posted"> You dont have any message in inbox that needs your response ! </h1>	
 							<% end %>
 						</div>
 						<div class="tab-pane" id="all-sent-messages">
@@ -59,25 +59,25 @@
 								
 								<%= paginate @sent_conversations, window: 1, params: {anchor: "all-sent-messages"} %>
 							<% else %>	
-								<h1> You dont have any sent message that others need to respond to ! </h1>		
+								<h1 class="nothing-posted"> You dont have any sent message that others need to respond to ! </h1>		
+							<% end %>
+						</div>
+						<div class="tab-pane" id="all-group-messages">
+							<% if(!@group_conversations.blank?) %>
+								<% @group_conversations.each do |conversation| %>
+									
+										<%= render partial: "conversations/conversation_small", locals: {conversation: conversation, user: current_user} %>
+													
+								<% end %>
+								<%= paginate @group_conversations, window: 1, params: {anchor: "all-groups"} %>
+							<% else %>
+								<h1 class="nothing-posted"> No group messages ! </h1>	
 							<% end %>
 						</div>
 						
 					</div>	
 				</div>
 
-				<div class="tab-pane" id="all-groups">
-					<% if(!@group_conversations.blank?) %>
-						<% @group_conversations.each do |conversation| %>
-							
-								<%= render partial: "conversations/conversation_small", locals: {conversation: conversation, user: current_user} %>
-											
-						<% end %>
-						<%= paginate @group_conversations, window: 1, params: {anchor: "all-groups"} %>
-					<% else %>
-						<h1> No group messages ! </h1>	
-					<% end %>
-				</div>
 				<div class="tab-pane" id="all-homework">
 					<% if(!@homework_messages.blank?) %>
 						<% @homework_messages.each do |message| %>
@@ -86,7 +86,7 @@
 						
 						<%= paginate @homework_messages, window: 1, params: {anchor: "all-homework"} %>
 					<% else %>
-						<h1> You have not posted any HomeWork ! </h1>
+						<h1 class="nothing-posted"> You have not posted any HomeWork ! </h1>
 					<% end %>
 
 				</div>
@@ -113,15 +113,17 @@
 													<ul class="list-unstyled list-inline">
 														<% if(!parents.blank?) %>
 															<% parents.each do |parent| %>
-																<% if(parent.id != current_user.id) %>
-																	<li>
-																		
-																		<%= render partial: "conversations/contact", locals: {contact: parent} %>
-																		<span class="checkbox-style-block checkbox-style-block-<%= parent.id %>"></span>
-																		
-																	</li>
-																<% end %>	
+																
+																<li>
+																	
+																	<%= render partial: "conversations/contact", locals: {contact: parent} %>
+																	<span class="checkbox-style-block checkbox-style-block-<%= parent.id %>"></span>
+																	
+																</li>
+															
 															<% end %>
+														<% else %>
+															<h1 class="nothing-posted"> No Parents added in this Class yet ! </h1>				
 														<% end %>																
 													</ul>
 												</div>
@@ -129,15 +131,17 @@
 													<ul class="list-unstyled list-inline">
 														<% if(!students.blank?) %>
 															<% students.each do |student| %>
-																<% if(student.id != current_user.id) %>
-																	<li>
-																		
-																		<%= render partial: "conversations/contact", locals: {contact: student} %>
-																		<span class="checkbox-style-block checkbox-style-block-<%= student.id %>"></span>
-																				
-																	</li>
-																<% end %>	
+																
+																<li>
+																	
+																	<%= render partial: "conversations/contact", locals: {contact: student} %>
+																	<span class="checkbox-style-block checkbox-style-block-<%= student.id %>"></span>
+																			
+																</li>
+															
 															<% end %>
+														<% else %>
+															<h1 class="nothing-posted"> No Students added in this Class yet ! </h1>			
 														<% end %>															
 													</ul>
 												</div>												
@@ -145,6 +149,8 @@
 										</div>
 									</li>
 								<% end %>
+							<% else %>
+								<h1 class="nothing-posted"> No Students added yet ! </h1>		
 							<% end %>
 						
 
@@ -153,51 +159,54 @@
 				<div class="tab-pane" id="all-staff">
 					<ul class="list-unstyled teachers-list index-conversation-modal">
 						
-						
-							<li>
-								<h6 class="teachers-list-heading">Authorities<i class="material-icons arrow-up-icon pull-right">&#xE316;</i></h6>
-								<div class="container-width classRoute" style="display: block;">
-									<ul class="nav nav-tabs" role="tablist" id="tablist">
-										<li class="active"><a data-toggle="tab" href="#all-principals">Principal</a></li>
-										<li><a data-toggle="tab" href="#all-admins">Admins</a></li>												
-									</ul>
-									<div class="tab-content" style="">
-										<div class="tab-pane active" id="all-principals">
-											<ul class="list-unstyled list-inline">
-												<% if(!@principal.blank?) %>
-													<% if(@principal.id != current_user.id) %>
-														<li>
-															<%= render partial: "conversations/contact", locals: {contact: @principal} %>
-															<span class="checkbox-style-block checkbox-style-block-<%= @principal.id %>">
-																
-															</span>		
-																		
-														</li>
-													<% end %>
-												<% end %>														
-											</ul>
-										</div>
-										<div class="tab-pane" id="all-admins">
-											<ul class="list-unstyled list-inline">
-												<% if(!@admins.blank?) %>
-													<% @admins.each do |admin| %>																
-														<% if(admin.id != current_user.id) %>
-															<li>
-																<%= render partial: "conversations/contact", locals: {contact: admin} %>
-																<span class="checkbox-style-block checkbox-style-block-<%= admin.id %>"></span>
-																
-															</li>
-														<% end %>	
-													<% end %>
-												<% end %>														
-											</ul>
-										</div>												
+						<li>
+							<h6 class="teachers-list-heading">Authorities<i class="material-icons arrow-up-icon pull-right">&#xE316;</i></h6>
+							<div class="container-width classRoute" style="display: block;">
+								<ul class="nav nav-tabs" role="tablist" id="tablist">
+									<li class="active"><a data-toggle="tab" href="#all-admins">Admins</a></li>												
+									<li><a data-toggle="tab" href="#all-principals">Principal</a></li>
+									
+								</ul>
+								<div class="tab-content" style="">
+									<div class="tab-pane" id="all-principals">
+										<ul class="list-unstyled list-inline">
+											<% if(!@principals.blank?) %>
+												<% @principals.each do |principal| %>
+													<li>
+														<%= render partial: "conversations/contact", locals: {contact: principal} %>
+														<span class="checkbox-style-block checkbox-style-block-<%= principal.id %>">
+															
+														</span>		
+																	
+													</li>
+												<% end %>
+											<% else %>
+												<h1 class="nothing-posted" style="margin-top:0;box-shadow:none;"> No Principals added yet ! </h1>		
+											<% end %>														
+										</ul>
 									</div>
+									<div class="tab-pane active" id="all-admins">
+										<ul class="list-unstyled list-inline">
+											<% if(!@admins.blank?) %>
+												<% @admins.each do |admin| %>							
+													<li>
+														<%= render partial: "conversations/contact", locals: {contact: admin} %>
+														<span class="checkbox-style-block checkbox-style-block-<%= admin.id %>"></span>
+														
+													</li>
+												
+												<% end %>
+											<% else %>
+												<h1 class="nothing-posted" style="margin-top:0;box-shadow:none;"> No Admins added yet ! </h1>		
+											<% end %>														
+										</ul>
+									</div>	
+
 								</div>
-							</li>
+							</div>
+						</li>
 
-						
-
+							
 					</ul>
 				</div>
 				<div class="tab-pane" id="all-classes-analytics">
@@ -226,6 +235,8 @@
 								</li>
 								
 							<% end %>
+						<% else %>
+							<h1 class="nothing-posted" style="margin-top:0;box-shadow:none;"> No Classes added yet ! </h1>		
 						<% end %>
 						
 					</ul>
@@ -487,6 +498,29 @@
 		
 	});
 
+	$(".classRoute").parents("div.wrapper").find(".navbar-default").css("box-shadow", "none");	
+	$(".modal-label").on("click", function(e){
+		updateCheckboxCounter();
+	});
+
+	var randomColors = ["#35a5a5",'#8cc4c4','#8b5861',"#d7b26f"];
+	$(".ch-thumb").each(function(index) {
+        var len = randomColors.length;
+        var randomNum = Math.floor(Math.random()*len);
+        $(this).css("backgroundColor",randomColors[randomNum]);
+        randomColors.slice(randomNum, 1);
+    });
+
+	function updateCheckboxCounter(){
+		var len = $("input[name='participant_ids[]']:checked").length;	
+		if(len>0){
+			$(".checkbox-counter").text(len);
+		}else{
+			$(".checkbox-counter").text('Select');
+		}
+		
+	}	
+
 	var teacherCalendarObjects = [];		
 	
 	function initTeacherDayPlanCalendar(){
@@ -527,21 +561,5 @@
 		  });
 		});
   	}		
-
-</script>
-<script type="text/javascript">
-    $(".classRoute").parents("div.wrapper").find(".navbar-default").css("box-shadow", "none");	
-	$(".modal-label").on("click", function(e){
-		updateCheckboxCounter();
-	});
-	function updateCheckboxCounter(){
-		var len = $("input[name='participant_ids[]']:checked").length;	
-		if(len>0){
-			$(".checkbox-counter").text(len);
-		}else{
-			$(".checkbox-counter").text('Select');
-		}
-		
-	}	
 
 </script>

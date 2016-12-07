@@ -210,9 +210,19 @@
 				</div>
 				<div class="tab-pane" id="all-staff">
 					<ul class="list-unstyled teachers-list index-conversation-modal">
-						<%= link_to add_new_staff_institute_path(@institute) do %>
+						<%= link_to add_new_staff_institute_path(@institute, role: "Institute Admin") do %>
 							<div class="pull-right add-member">
-								<span>Add Staff</span><i class="material-icons">&#xE7FE;</i>
+								<span>Add Admin</span><i class="material-icons">&#xE7FE;</i>
+							</div>
+						<% end %>
+						<%= link_to add_new_staff_institute_path(@institute, role: "Teacher") do %>
+							<div class="pull-right add-member">
+								<span>Add Teacher</span><i class="material-icons">&#xE7FE;</i>
+							</div>
+						<% end %>
+						<%= link_to add_new_staff_institute_path(@institute, role: "Principal") do %>
+							<div class="pull-right add-member">
+								<span>Add Principal</span><i class="material-icons">&#xE7FE;</i>
 							</div>
 						<% end %>
 						<div class="clearfix"></div>

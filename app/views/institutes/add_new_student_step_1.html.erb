@@ -39,19 +39,27 @@
 		<div class="form-group">
 			<% if(!@grades.blank?) %>
 				<% options = [["Select Class", ""]] %>
+				<% default_option = ["Select Class", ""] %>
 				<% @grades.each do |grade| %>
 					<% options << ["Class #{grade.grade_name}", grade.id] %>
+					<% if(!params[:grade_id].blank? and params[:grade_id].to_i == grade.id) %>
+						<% default_option = [grade.grade_name, grade.id] %>
+					<% end %>
 				<% end %>
-				<%= select_tag :grade_id, options_for_select(options, ["Select Class", ""]),class: "form-control", required: true %>
+				<%= select_tag :grade_id, options_for_select(options, default_option),class: "form-control", required: true %>
 			<% end %>
 		</div>
 		<div class="form-group">
 			<% if(!@sections.blank?) %>
 				<% options = [["Select Section", ""]] %>
+				<% default_option = ["Select Section", ""] %>
 				<% @sections.each do |section| %>
 					<% options << ["Section #{section.section_name}", section.id] %>
+					<% if(!params[:section_id].blank? and params[:section_id].to_i == section.id) %>
+						<% default_option = [section.section_name, section.id] %>
+					<% end %>
 				<% end %>
-				<%= select_tag :section_id, options_for_select(options, ["Select Section", ""]), class: "form-control", required: true %>
+				<%= select_tag :section_id, options_for_select(options, default_option), class: "form-control", required: true %>
 			<% end %>
 		</div>	
 		<div class="form-group">

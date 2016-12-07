@@ -598,7 +598,7 @@ class InstitutesController < ApplicationController
                 grade = @institute.grades.find_by(grade_name: grade_name)
                 grade_extras[:section_names].each do |section_name|
                   section = grade.get_sections_for_institute(@institute).find_by(section_name: section_name) if !grade.blank?
-                  
+                  section.add_member_for_institute_and_grade(@institute, grade, current_user, @staff, "Teacher") if !section.blank?
                   grade_extras[:subject_names].each do |subject_name|
                     subject = section.get_subjects_for_institute_and_grade(@institute, grade).find_by(subject_name: subject_name) if !section.blank?
                     section.set_subject_teacher_for_institute_and_grade_and_subject(@institute, grade, subject, @staff) if !section.blank?

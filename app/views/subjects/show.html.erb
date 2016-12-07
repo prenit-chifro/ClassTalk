@@ -12,23 +12,39 @@
 	</ul>
 	<div class="tab-content">
 		<div class="tab-pane active" id="all-subjectteachers">
-			<% if(!current_user.role.include?("Student") and !current_user.role.include?("Parent")) %>
-				
-				<%= link_to add_new_staff_institute_path(@institute) do %>
-					<div class="pull-right add-member">
-						<span>Add Staff</span><i class="material-icons">&#xE7FE;</i>
-					</div>	
+			
+			<% if(!@subjectteacher.blank?) %>
+				<% if(!current_user.role.include?("Student") and !current_user.role.include?("Parent")) %>
+					<a>
+						<div class="pull-right add-member" onclick="getSubjectTeacherForm();">
+							<span>Set Subject Teacher</span><i class="material-icons">&#xE7FE;</i>
+						</div>
+					</a>
 				<% end %>
+				
+				<div class="clearfix mar-btm"></div>
+				
+				<%= render partial: "conversations/contact", locals: {contact: @subjectteacher}%>	
+			<% else %>
+				<% if(!current_user.role.include?("Student") and !current_user.role.include?("Parent")) %>
+					<a>
+						<div class="pull-right add-member" onclick="getSubjectTeacherForm();">
+							<span>Set Subject Teacher</span><i class="material-icons">&#xE7FE;</i>
+						</div>
+					</a>
+				<% end %>
+				
+				<div class="clearfix mar-btm"></div>
+				<h1 class="nothing-posted" style="margin-top:0;box-shadow:none;"> Subject Teacher of this Subject is not set yet !</h1>	
 			<% end %>
-			<div class="clearfix mar-btm"></div>
-			<%= render partial: "conversations/contact", locals: {contact: @subjectteacher} if !@subjectteacher.blank?%>	
+			
 		</div>
 
 		<% if(["Principal", "Institute Admin", "Teacher"].include?(current_user.role)) %>
 			<div class="tab-pane" id="all-students">
 				<% if(!current_user.role.include?("Student") and !current_user.role.include?("Parent")) %>
 					
-					<%= link_to add_new_student_institute_path(@institute) do %>
+					<%= link_to add_new_student_institute_path(@institute, grade_id: @grade.id, section_id: @section.id) do %>
 						<div class="pull-right add-member">
 							<span>Add Student</span><i class="material-icons">&#xE7FE;</i>
 						</div>
@@ -39,6 +55,8 @@
 					<% @students.each do |contact| %>
 						<%= render partial: "conversations/contact", locals: {contact: contact}	 %>	
 					<% end %>
+				<% else %>
+					<h1 class="nothing-posted" style="margin-top:0;box-shadow:none;"> No Students added to this Class yet !</h1>		
 				<% end %>		
 
 				
@@ -47,7 +65,7 @@
 			<div class="tab-pane" id="all-parents">
 				<% if(!current_user.role.include?("Student") and !current_user.role.include?("Parent")) %>
 					
-					<%= link_to add_new_parent_institute_path(@institute) do %>
+					<%= link_to add_new_parent_institute_path(@institute, grade_id: @grade.id, section_id: @section.id) do %>
 						<div class="pull-right add-member">
 							<span>Add Parent</span><i class="material-icons">&#xE7FE;</i>
 						</div>
@@ -58,8 +76,38 @@
 					<% @parents.each do |contact| %>
 						<%= render partial: "conversations/contact", locals: {contact: contact} %>		
 					<% end %>
+				<% else %>
+					<h1 class="nothing-posted" style="margin-top:0;box-shadow:none;"> No Parents added to this Class yet !</h1>			
 				<% end %>
 			</div>
 		<% end %>	
 	</div>
-</div>			
+</div>	
+<div id="myModal" class="modal fade modal-calender" role="dialog">
+  <div class="modal-dialog">
+	<div class="modal-content">
+	  <div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal">&times;</button>
+		<h4 class="modal-title">Set or Update ClassTeacher of Class <%= @grade.grade_name %><%= @section.section_name %></h4>
+	  </div>
+	  <div class="modal-body">
+		
+	  </div>
+	</div>
+  </div>
+</div>		
+<script>
+	function getSubjectTeacherForm(){
+
+    	$.ajax({
+  			url: "<%= set_subject_teacher_institute_grade_section_subject_path(@institute, @grade, @section, @subject) %>.js",
+      		method: "GET",
+        	complete: function(data){
+        		if(data.status == "200"){
+        			$("#myModal").find(".modal-body").html(data.responseText);
+        			$("#myModal").modal('show');
+        		}
+        	}	
+    	});
+    };	
+</script>			

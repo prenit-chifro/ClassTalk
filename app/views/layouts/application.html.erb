@@ -61,14 +61,10 @@
 										<span><%= current_user.role %></span>
 									</a>									
 								</li>
-								<% if(!@institute.blank?) %>
+								<% if(!@institute.blank? and current_user.role.include?("Institute Admin")) %>
 									<li class="main-school-name text-center">
 										<a href="/institutes/<%= @institute.id %>">
-											<% if(current_user.role.include?("Institute Admin") or current_user.role.include?("Principal")) %>
-												Manage Institute
-											<% else %>
-												My Institute
-											<% end %>
+											Manage Institute
 										</a>
 									</li>
 								<% end %>
@@ -142,12 +138,7 @@
 								<% end %>							
 								
 							<% end %>
-							<li>
-								<a href="javascript:void(0)">
-									<i class="material-icons menu-inner-icon">&#xE0C6;</i>
-									<span>Help</span>
-								</a>
-							</li>						
+							
 						</ul>
 					</div>
 				</div>

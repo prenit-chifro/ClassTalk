@@ -40,9 +40,10 @@ class SubjectsController < ApplicationController
             @subject_conversation = current_user.created_conversations.create(conversation_name: "#{subject.subject_name}, #{@grade.grade_name}#{@section.section_name}".truncate(20), institute_id: @institute.id, grade_id: @grade.id, section_id: @section.id, subject_id: subject.id, message_categories: "HomeWork", is_custom_group: false) if !@grade.blank? and !@section.blank? and !subject.blank?
             if(!subject_extras[:subject_teacher_id].blank?)
             	subject_teacher = User.find_by(id: subject_extras[:subject_teacher_id])
+            	@section.add_member_for_institute_and_grade(@institute, @grade, current_user, subject_teacher, "Teacher")
             	@section.set_subject_teacher_for_institute_and_grade_and_subject(@institute, @grade, subject, subject_teacher) if !subject_teacher.blank?
-            	@subject_conversation.add_participant(subject_teacher.id, current_user.id) if !subject_teacher.blank?  
-            	@section_conversation.add_participant(subject_teacher.id, current_user.id) if !@section_conversation.blank? and !subject_teacher.blank?
+            	@subject_conversation.add_participant(subject_teacher.id, current_user.id, true) if !subject_teacher.blank?  
+            	@section_conversation.add_participant(subject_teacher.id, current_user.id, true) if !@section_conversation.blank? and !subject_teacher.blank?
             end
             
           end
@@ -68,6 +69,29 @@ class SubjectsController < ApplicationController
 	end
 
 	def destroy 
+
+	end
+
+	def set_subject_teacher
+		if(request.get?)
+			@subject_teacher = @section.get_subject_teacher_for_institute_and_grade_and_subject(@institute, @grade, @subject)
+			@teachers = @institute.get_members_with_given_roles(["Teacher"])
+		 	render "set_subject_teacher.html", layout: false if request.xhr?
+		elsif(request.post?)
+			@subject_teacher = User.find_by(id: params[:subject_teacher_id])
+			if(!@subject_teacher.blank?)
+				@section.add_member_for_institute_and_grade(@institute, @grade, current_user, @subject_teacher, "Teacher")
+				@section.set_subject_teacher_for_institute_and_grade_and_subject(@institute, @grade, @subject, @subject_teacher) 
+				@subject_conversation = Conversation.find_by(is_custom_group: false, institute_id: @institute.id, grade_id: @grade.id, section_id: @section.id, subject_id: @subject.id)
+				@subject_conversation.add_participant(@subject_teacher.id, current_user.id, true) if !@subject_conversation.blank? and !@subject_teacher.blank?  
+				@section_conversation = Conversation.find_by(is_custom_group: false, institute_id: @institute.id, grade_id: @grade.id, section_id: @section.id, subject_id: nil)
+				@section_conversation.add_participant(@subject_teacher.id, current_user.id, true) if !@section_conversation.blank? and !@subject_teacher.blank?
+				respond_to do |format|
+					format.html {redirect_to institute_grade_section_subject_path(@institute, @grade, @section, @subject)}
+					format.js {render "set_subject_teacher.js", layout: false}	
+				end
+			end
+		end
 
 	end
 

@@ -4,31 +4,46 @@
 
 <div class="container-width classRoute tabs-container" style="margin-top:50px; margin-bottom: 0;">
 	<ul class="nav nav-tabs admin-new-tabs" role="tablist" id="tablist">
-		<li class="active"><a data-toggle="tab" href="#all-classteachers">Classteacher</a></li>
+		<li class="active"><a data-toggle="tab" href="#all-classteachers">ClassTeacher</a></li>
 		<li><a data-toggle="tab" href="#all-subjects">Subjects</a></li>
-		<% if(["Principal", "Institute Admin", "Teacher"].include?(current_user.role)) %>
+		<% if(current_user.role.include?("Principal") or current_user.role.include?("Institute Admin") or current_user.role.include?("Teacher")) %>
 			<li><a data-toggle="tab" href="#all-students">Students</a></li>	
 			<li><a data-toggle="tab" href="#all-parents">Parents</a></li>
 		<% end %>
 	</ul>
 	<div class="tab-content">
 		<div class="tab-pane active" id="all-classteachers" style="max-height:100%; margin-bottom:70px;">
-			<% if(!current_user.role.include?("Student") and !current_user.role.include?("Parent")) %>
-				<%= link_to add_new_staff_institute_path(@institute) do %>
-					<div class="pull-right add-member">
-						<span>Add Staff</span><i class="material-icons">&#xE7FE;</i>
-					</div>
+			
+			<% if(!@classteacher.blank?) %>
+				<% if(current_user.role.include?("Principal") or current_user.role.include?("Institute Admin")) %>
+					<a>
+						<div class="pull-right add-member" onclick="getClassTeacherForm();">
+							<span>Set ClassTeacher</span><i class="material-icons">&#xE7FE;</i>
+						</div>
+					</a>					
 				<% end %>
+				<div class="clearfix mar-btm"></div>
+				<%= render partial: "conversations/contact", locals: {contact: @classteacher} %>
+
+			<% else %>
+				<% if(current_user.role.include?("Principal") or current_user.role.include?("Institute Admin")) %>
+					<a>
+						<div class="pull-right add-member" onclick="getClassTeacherForm();">
+							<span>Set ClassTeacher</span><i class="material-icons">&#xE7FE;</i>
+						</div>
+					</a>					
+				<% end %>
+				<div class="clearfix mar-btm"></div>
+				<h1 class="nothing-posted" style="margin-top:0;box-shadow:none;"> ClassTeacher of this class is not set yet !</h1>	
 			<% end %>
-			<div class="clearfix mar-btm"></div>
-			<%= render partial: "conversations/contact", locals: {contact: @classteacher} if !@classteacher.blank? %>		
+			
 			
 		</div>
 
-		<% if(["Principal", "Institute Admin", "Teacher"].include?(current_user.role)) %>
+		<% if(current_user.role.include?("Principal") or current_user.role.include?("Institute Admin") or current_user.role.include?("Teacher")) %>
 			<div class="tab-pane" id="all-students" style="max-height:100%;margin-bottom:70px;">
-				<% if(!current_user.role.include?("Student") and !current_user.role.include?("Parent")) %>
-					<%= link_to add_new_student_institute_path(@institute) do %>
+				<% if(!current_user.role.include?("Teacher")) %>
+					<%= link_to add_new_student_institute_path(@institute, grade_id: @grade.id, section_id: @section.id) do %>
 						<div class="pull-right add-member">
 							<span>Add Student</span><i class="material-icons">&#xE7FE;</i>
 						</div>
@@ -37,8 +52,10 @@
 				<div class="clearfix mar-btm"></div>
 				<% if(!@students.blank?) %>
 					<% @students.each do |contact| %>
-						<%= render partial: "conversations/contact", locals: {contact: contact} %>		
+						<%= render partial: "conversations/contact", locals: {contact: contact} %>	
 					<% end %>
+				<% else %>	
+					<h1 class="nothing-posted" style="margin-top:0;box-shadow:none;"> No Students added in this class yet !</h1>	
 				<% end %>		
 
 				
@@ -46,10 +63,13 @@
 			<div class="tab-pane" id="all-parents" style="max-height:100%;margin-bottom:70px;">
 				<% if(!current_user.role.include?("Student") and !current_user.role.include?("Parent")) %>
 										
-					<%= link_to add_new_parent_institute_path(@institute) do %>
-						<div class="pull-right add-member">
-							<span>Add Parent</span><i class="material-icons">&#xE7FE;</i>
-						</div>
+					<% if(!current_user.role.include?("Teacher")) %>
+						<%= link_to add_new_parent_institute_path(@institute, grade_id: @grade.id, section_id: @section.id) do %>
+							<div class="pull-right add-member">
+								<span>Add Parent</span><i class="material-icons">&#xE7FE;</i>
+							</div>
+						<% end %>
+						
 					<% end %>
 					<div class="clearfix"></div>
 				<% end %>
@@ -58,12 +78,14 @@
 					<% @parents.each do |contact| %>
 						<%= render partial: "conversations/contact", locals: {contact: contact} %>		
 					<% end %>
+				<% else %>
+					<h1 class="nothing-posted" style="margin-top:0;box-shadow:none;"> No Parents added in this class yet !</h1>		
 				<% end %>
 			</div>
 		<% end %>
 
 		<div class="tab-pane" id="all-subjects" style="max-height:100%;margin-bottom:70px;">
-			<% if(!current_user.role.include?("Student") and !current_user.role.include?("Parent")) %>
+			<% if(current_user.role.include?("Principal") or current_user.role.include?("Institute Admin")) %>
 										
 				<%= link_to new_institute_grade_section_subject_path(@institute, @grade, @section) do %>
 					<div class="pull-right add-member">
@@ -96,12 +118,27 @@
 						</li>
 						
 					<% end %>
+				<% else %>
+					<h1 class="nothing-posted" style="margin-top:0;box-shadow:none;"> No Subjects added in this class yet !</h1>		
 				<% end %>
 				
 			</ul>
 		
 		</div>
 	</div>
+</div>
+<div id="myModal" class="modal fade modal-calender" role="dialog">
+  <div class="modal-dialog">
+	<div class="modal-content">
+	  <div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal">&times;</button>
+		<h4 class="modal-title">Set or Update ClassTeacher of Class <%= @grade.grade_name %><%= @section.section_name %></h4>
+	  </div>
+	  <div class="modal-body">
+		
+	  </div>
+	</div>
+  </div>
 </div>
 <script>
 	$(".classRoute").parents("div.wrapper").find(".navbar-default").css("box-shadow", "none");
@@ -112,4 +149,18 @@
         $(this).css("backgroundColor",randomColors[randomNum]);
         randomColors.slice(randomNum, 1);
     });
+
+    function getClassTeacherForm(){
+
+    	$.ajax({
+  			url: "<%= set_classteacher_institute_grade_section_path(@institute, @grade, @section) %>.js",
+      		method: "GET",
+        	complete: function(data){
+        		if(data.status == "200"){
+        			$("#myModal").find(".modal-body").html(data.responseText);
+        			$("#myModal").modal('show');
+        		}
+        	}	
+    	});
+    };	
 </script>			

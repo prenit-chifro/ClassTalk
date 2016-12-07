@@ -4,12 +4,15 @@
 <% end %>
 <div class="container-width" style="margin-top:60px;">
 	<ul class="list-unstyled list-inline text-center">
-		<%= link_to new_institute_grade_section_path(@institute, @grade) do %>
-			<div class="pull-right add-member">
-				<span>Add Section</span><i class="material-icons">&#xE7FE;</i>
-			</div>
+		<% if(current_user.role.include?("Principal") or current_user.role.include?("Institute Admin")) %>
+			<%= link_to new_institute_grade_section_path(@institute, @grade) do %>
+				<div class="pull-right add-member">
+					<span>Add Section</span><i class="material-icons">&#xE7FE;</i>
+				</div>
+			<% end %>
+			<div class="clearfix"></div>
 		<% end %>
-		<div class="clearfix"></div>
+		
 		<% if(!@grade_section_models.blank?) %>
 			<% @grade_section_models.each do |grade_section_model| %>
 				<% section = grade_section_model.section %>
@@ -35,6 +38,8 @@
 				</li>
 				
 			<% end %>
+		<% else %>
+			<h1 class="nothing-posted" style="margin-top:0;box-shadow:none;"> No Sections Added Yet </h1>	
 		<% end %>
 	</ul>
 </div>

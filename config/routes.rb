@@ -55,10 +55,21 @@ Rails.application.routes.draw do
             get "add_new_section"
             post "add_new_section"
           end
+
+          member do 
+            get "set_classteacher"
+            post "set_classteacher"
+          end 
+
           resources :subjects do
-             collection do
+            collection do
               get "add_new_subject"
               post "add_new_subject"
+            end 
+
+            member do 
+              get "set_subject_teacher"
+              post "set_subject_teacher"
             end 
           end
 

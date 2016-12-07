@@ -1,0 +1,31 @@
+<% if(!@teachers.blank?) %>
+	<%= form_tag set_subject_teacher_institute_grade_section_subject_path(@institute, @grade, @section, @subject), multipart: true, remote: true do %>
+		<% options = [["Subject Teacher", "Subject Teacher"]] %>
+		
+		<% if(@subject_teacher.blank?) %>
+			<% default_option = ["Subject Teacher", "Subject Teacher"] %>
+		<% else %>
+			<% default_option = ["#{@subject_teacher.first_name} #{@subject_teacher.last_name}", @subject_teacher.id] %>
+		<% end %>
+		<% @teachers.each do |teacher| %>
+			<% options << ["#{teacher.first_name} #{teacher.last_name}", teacher.id] %>
+		<% end %>
+		<div class="col-sm-12 col-xs-12">
+			<div class="form-group">
+				<%= select_tag :subject_teacher_id, options_for_select(options, default_option), required: true %>
+			</div>
+		</div>
+		
+		<div class="col-sm-12 col-xs-12">
+			<button type="submit" class="btn btn-success" style="width: 100%;" data-disable-with="Setting ..."> Set </button>
+		</div>
+	<% end %>
+<% else %>
+	<%= link_to add_new_staff_institute_path(@institute, role: "Teacher") do %>
+		<div class="pull-right add-member">
+			<span>Add Teacher</span><i class="material-icons">&#xE7FE;</i>
+		</div>
+	<% end %>
+	<div class="clearfix mar-btm"></div>
+	<h1 class="nothing-posted"> No Teachers added yet !</h1>
+<% end %>
