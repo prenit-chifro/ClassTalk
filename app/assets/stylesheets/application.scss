@@ -9,6 +9,31 @@
 
 body{
 	overflow-y:scroll;
+	overflow-x:hidden;
+}
+.carousel-control.left span, .carousel-control.right span{
+	background: #000;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    left: 31px;
+}
+.carousel-inner{
+	max-width: 420px;
+    margin: 0 auto;
+}
+.carousel-control.left span:before, .carousel-control.right span:before{
+	top: 18px;
+    position: absolute;
+    left: 21px;
+    font-size: 22px;
+}
+.carousel-control.right span{
+    right: 31px;
+    left: inherit;
+}
+.carousel-indicators{
+	display:none;
 }
 .nothing-posted{
 	background: #8aa2ab;
@@ -2038,6 +2063,18 @@ div.calendar div.fc-agendaWeek-view tbody.fc-body div.fc-bg > table >tbody>tr>td
 		color: #fff;
 		padding: 8px;
 	}
+}
+@media only screen and (max-width: 470px){
+	.carousel-inner{
+		max-width: 320px;
+		margin: 0 auto;		
+	}
+	.carousel-inner .item .main-grade-circle{
+		margin: 0 auto;
+		display:block;
+		float:none;
+	}
+	
 }
 @media only screen and (max-width:350px){
 	.main-navbar-brand a i{
