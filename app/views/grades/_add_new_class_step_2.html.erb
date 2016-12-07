@@ -3,7 +3,7 @@
 		<%= hidden_field_tag :step, 2 %>
 
 		<% if(!@grade_section_models.blank?) %>
-			<div id="myCarousel" class="carousel slide" data-ride="carousel">
+			<div id="myCarousel" class="carousel slide" data-ride="carousel" style="max-width:800px;margin:0 auto;">
 			  <!-- Indicators -->
 			  
 			  <ol class="carousel-indicators">
@@ -21,7 +21,7 @@
 			  </ol>
 				
 			  <!-- Wrapper for slides -->
-			  <div class="carousel-inner" role="listbox">
+			<div class="carousel-inner" role="listbox">
 			    <% i=0 %>
 			  	<% @grade_section_models.each_with_index do |grade_section_model, i| %>
 			  		<% grade = grade_section_model.grade %>
@@ -32,37 +32,60 @@
 		  				<div class="item">
 				  	<% end %>
 							<% if(!@teachers.blank?) %>
-					    		<h1> Select ClassTeacher of Class <%= grade.grade_name %><%= section.section_name %> </h1>		
-								<% options = [["Select ClassTeacher", ""]] %>	
-								<% default_option = ["Select ClassTeacher", ""] %>
-								<% @teachers.each do |teacher| %>
-									<% options << [teacher.first_name + " " + teacher.last_name, teacher.id] %>
-								<% end %>
-								<%= select_tag "grade_ids[#{grade.id}][section_ids][#{section.id}][classteacher_id]", options_for_select(options, default_option) %>
+					    		<h1 class="nothing-posted" style="background:#2ad;"> Select ClassTeacher of Class <%= grade.grade_name %><%= section.section_name %> </h1>		
+								<div class="form-group">
+									<% options = [["Select ClassTeacher", ""]] %>	
+									<% default_option = ["Select ClassTeacher", ""] %>
+									<% @teachers.each do |teacher| %>
+										<% options << [teacher.first_name + " " + teacher.last_name, teacher.id] %>
+									<% end %>
+									<%= select_tag "grade_ids[#{grade.id}][section_ids][#{section.id}][classteacher_id]", options_for_select(options, default_option), class: "form-control" %>
+								</div>
 							<% end %>
 
 							<% if(!@subjects.blank?) %>
-								<h1> Add Subjects in Class <%= grade.grade_name %><%= section.section_name %> </h1>
-								<% @subjects.each do |subject| %>
-									<%= subject.subject_name %> <%= check_box_tag "grade_ids[#{grade.id}][section_ids][#{section.id}][subject_ids][#{subject.id}][subject_id]", subject.id, false %>
-
-									<% if(!@teachers.blank?) %>
-							    		<h1> Select Subject Teacher of <%= subject.subject_name %>, Class <%= grade.grade_name %><%= section.section_name %> </h1>		
-										<% options = [["Select SubjectTeacher", ""]] %>	
-										<% default_option = ["Select SubjectTeacher", ""] %>
-										<% @teachers.each do |teacher| %>
-											<% options << [teacher.first_name + " " + teacher.last_name, teacher.id] %>
-										<% end %>
-										<%= select_tag "grade_ids[#{grade.id}][section_ids][#{section.id}][subject_ids][#{subject.id}][subject_teacher_id]", options_for_select(options, default_option) %>
-									<% end %>	
-								<% end %>
+								<h1 class="nothing-posted" style="background:#2ad;"> Add Subjects in Class <%= grade.grade_name %><%= section.section_name %> </h1>
+								<div class="grades-div text-left teachers-grades-div-circle">
+									<% @subjects.each do |subject| %>
+										<div class="main-grade main-grade-circle">
+											<ul class="detectul detectCircle-ul">
+												<span class="add-class-checkbox"></span>
+												<li class="listitems"> 
+													<div class="checkbox">
+														<label for="grades-division-<%= section.id %>-<%= subject.id %>" class="grades-division">
+															<%= check_box_tag "grade_ids[#{grade.id}][section_ids][#{section.id}][subject_ids][#{subject.id}][subject_id]", subject.id, false, { class: "checkbox grade-names-input", id: "grades-division-#{section.id}-#{subject.id}"} %>
+															<span><%= subject.subject_name %> </span>
+														</label>
+													</div>
+												</li>
+											</ul>	
+											<div class="division-criterias" style="display:none;">
+												<% if(!@teachers.blank?) %>
+													<h1 style="font-size: 15px;margin: 0;margin-bottom: 4px;"> Select Subject Teacher of <%= subject.subject_name %>, Class <%= grade.grade_name %><%= section.section_name %> </h1>		
+													<div class="form-group">
+														<% options = [["Select SubjectTeacher", ""]] %>	
+														<% default_option = ["Select SubjectTeacher", ""] %>
+														<% @teachers.each do |teacher| %>
+															<% options << [teacher.first_name + " " + teacher.last_name, teacher.id] %>
+														<% end %>
+														<%= select_tag "grade_ids[#{grade.id}][section_ids][#{section.id}][subject_ids][#{subject.id}][subject_teacher_id]", options_for_select(options, default_option), class: "form-control" %>
+													</div>
+												<% end %>
+											</div>	
+										</div>
+									<% end %>
+								</div>
 								
 							<% end %>
 						</div>	
 					 
 			  	<% end %>
-			  	<div class="item">
-					<%= submit_tag :Save, "data-disable-with" => "Saving..." %>	
+			  	<div class="item text-center col-md-6 col-md-offset-3" style="margin-top:100px;">
+					<div class="form-group form-button-register">
+						<%= button_tag(type:"submit", class: "form-control btn btn-login", data: {disable_with: "Saving...."}) do %>
+							Save
+						<% end %>
+					</div>
 				</div>		
 
 			  </div>
@@ -81,4 +104,20 @@
 		<% end %>	
 	<% end %>
 </div>
+<script type="text/javascript">
+	$(document).on('change','.grade-names-input',function(){
+		if($(this).is(':checked')) {
+			$(this).parents(".main-grade").find(".division-criterias").slideDown();
+			$(this).parents("ul.detectCircle-ul").addClass("detectCircle-ul-background");
+			$(this).parents("ul.detectCircle-ul").find(".add-class-checkbox").addClass("detectCircle-ul-background-checkbox");
+		} else {
+			$(this).parents(".main-grade").find(".division-criterias").slideUp();
+			$(this).parents("ul.detectCircle-ul").removeClass("detectCircle-ul-background");
+			$(this).parents("ul.detectCircle-ul").find(".add-class-checkbox").removeClass("detectCircle-ul-background-checkbox");
+		}
+	});
+	$(".all-sections").change(function(e){
+		$(this).parents(".main-grade").find(".division-upper-sections input:checkbox").prop('checked', $(this).prop("checked"));
+	});
 
+</script>
