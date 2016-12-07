@@ -2,7 +2,13 @@
   <a class="mybtn btn btn-link btn-xs pull-left" href="/"><i class="material-icons">&#xE317;</i></a>
   Grades
 <% end %>
-<div class="container-width" style="margin-top:60px;">
+<div class="container-width" style="max-width: 600px; margin: 0 auto; margin-top:60px; margin-bottom:70px;">
+	<%= link_to new_institute_grade_path(@institute) do %>
+		<div class="pull-right add-member">
+			<span>Add Class</span><i class="material-icons">&#xE7FE;</i>
+		</div>
+	<% end %>
+	<div class="clearfix mar-btm"></div>
 	<ul class="list-unstyled list-inline text-center">
 		<% if(!@grades.blank?) %>
 			<% @grades.each do |grade| %>
@@ -28,6 +34,8 @@
 				</li>
 				
 			<% end %>
+		<% else %>
+			<h1 class="nothing-posted"> No Classes Added yet </h1>	
 		<% end %>
 		
 	</ul>

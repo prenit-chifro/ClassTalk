@@ -61,13 +61,6 @@
 										<span><%= current_user.role %></span>
 									</a>									
 								</li>
-								<% if(!@institute.blank? and current_user.role.include?("Institute Admin")) %>
-									<li class="main-school-name text-center">
-										<a href="/institutes/<%= @institute.id %>">
-											Manage Institute
-										</a>
-									</li>
-								<% end %>
 								
 								<% if(user_signed_in?) %>
 									<li class="log-out">
@@ -137,6 +130,18 @@
 									
 								<% end %>							
 								
+							<% end %>
+							<% if(!@institute.blank? and current_user.role.include?("Institute Admin")) %>
+								<% if(params[:controller] == "institutes" and params[:action] == "show") %>
+									<% active_class="class=active-navigation" %>
+								<% else %>
+									<% active_class="" %>
+								<% end %>
+								<li <%= active_class %>>
+									<a href="/institutes/<%= @institute.id %>">
+										Manage
+									</a>
+								</li>
 							<% end %>
 							
 						</ul>

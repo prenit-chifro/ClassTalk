@@ -1,54 +1,59 @@
 <% content_for :heading do %>
   <a class="mybtn btn btn-link btn-xs pull-left" href="/"><i class="material-icons">&#xE317;</i>Add Classes and Sections</a>
 <% end %>
-<div style="margin-top: 45px;"></div>
-<div class="new-class-step-1-form-div">
-	<%= form_tag institute_grades_path(@institute), method: :post, multipart: true, remote: true, id: "new-class-form" do %>
-		<%= hidden_field_tag :step, 1 %>
-			
-		<div class="grades-div text-left teachers-grades-div-circle">
-			
-			<% @grades.each do |grade| %>					
-				<div class="main-grade main-grade-circle">
+<div style="margin-top: 50px;"></div>
+<% if(@grades.blank?) %>
+	<h1 class="nothing-posted">No Classes added yet</h1>
+<% else %>
+	<div class="new-class-step-1-form-div" style="max-width: 700px; margin: 0 auto;">
+		<%= form_tag institute_grades_path(@institute), method: :post, multipart: true, remote: true, id: "new-class-form" do %>
+			<%= hidden_field_tag :step, 1 %>
+				
+			<div class="grades-div text-left teachers-grades-div-circle">
+				
+				<% @grades.each do |grade| %>					
+					<div class="main-grade main-grade-circle">
 
-					<ul class="detectul detectCircle-ul">
-						<span class="add-class-checkbox"></span>
-						<li class="listitems"> 
-							<div class="checkbox">
-								<label for="grades-division-<%= grade.id %>" class="grades-division">
-									<%= check_box_tag "grade_ids[]", grade.id, false, { class: "checkbox grade-names-input", id: "grades-division-#{grade.id}"} %>
-									<span>Class <%= grade.grade_name %></span>									
-								</label>
-							</div>
-						</li>
-					</ul>	
-					<div class="division-criterias" style="display:none;">
-						<div class="division-section">
-							<span class="text-muted division-criteria-style division-criteria-subject-style">All Sections: </span>
-							<input type="checkbox" name="subject-selector" class="all-sections" id="all-sections"/>
-							<div class="division-upper-sections">	
-								<% @sections.each do |section| %>
-									<%= check_box_tag "grades[#{grade.id}][section_ids][]", section.id, false, {"data-role" => "none", class: "grade-section-names-input"} %>
-									<span><%= section.section_name %></span>
-								<% end %>
+						<ul class="detectul detectCircle-ul">
+							<span class="add-class-checkbox"></span>
+							<li class="listitems"> 
+								<div class="checkbox">
+									<label for="grades-division-<%= grade.id %>" class="grades-division">
+										<%= check_box_tag "grade_ids[]", grade.id, false, { class: "checkbox grade-names-input", id: "grades-division-#{grade.id}"} %>
+										<span>Class <%= grade.grade_name %></span>									
+									</label>
+								</div>
+							</li>
+						</ul>	
+						<div class="division-criterias" style="display:none;">
+							<div class="division-section">
+								<span class="text-muted division-criteria-style division-criteria-subject-style">All Sections: </span>
+								<input type="checkbox" name="subject-selector" class="all-sections" id="all-sections"/>
+								<div class="division-upper-sections">	
+									<% @sections.each do |section| %>
+										<%= check_box_tag "grades[#{grade.id}][section_ids][]", section.id, false, {"data-role" => "none", class: "grade-section-names-input"} %>
+										<span><%= section.section_name %></span>
+									<% end %>
+									
+								</div>
 								
-							</div>
-							
+							</div>	
 						</div>	
-					</div>	
-				</div>					
-			<% end %>
-		</div>	
-		<div class="clearfix"></div>
-		<div class="text-center col-md-6 col-md-offset-3">
-			<div class="form-group form-button-register">
-				<%= button_tag(type:"submit", class: "form-control btn btn-login", data: {disable_with: "Please Wait..."}) do %>
-					Next
+					</div>					
 				<% end %>
+			</div>	
+			<div class="clearfix"></div>
+			<div class="text-center col-md-6 col-md-offset-3">
+				<div class="form-group form-button-register">
+					<%= button_tag(type:"submit", class: "form-control btn btn-login", data: {disable_with: "Please Wait..."}) do %>
+						Next
+					<% end %>
+				</div>
 			</div>
-		</div>
-	<% end %>
-</div>
+		<% end %>
+	</div>
+<% end %>
+
 <div style="margin-bottom: 70px;"></div>
 <script type="text/javascript">
 	$(document).on('change','.grade-names-input',function(){

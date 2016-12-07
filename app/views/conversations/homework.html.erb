@@ -2,7 +2,7 @@
 	<a class="mybtn btn btn-link btn-xs pull-left" href="/"><i class="material-icons">&#xE317;</i>HomeWork</a>
 <% end %>
 
-<div class="detect-div"></div>
+<div class="detect-div" style="margin-top: 50px;"></div>
 <% if(!@homework_messages.blank?) %>
 	<% @homework_messages.each do |message| %>
 		<%= render partial: "messages/message", locals: {conversation: message.conversation, message: message} %>
@@ -11,9 +11,9 @@
 	<%= paginate @homework_messages, window: 1 %>
 <% else %>
 	<% if(current_user.role == "Teacher") %>
-		<h1> You have not posted any HomeWork ! </h1>
+		<h1 class="nothing-posted"> You have not posted any HomeWork ! </h1>
 	<% else %>
-		<h1> No HomeWork Posted </h1>
+		<h1 class="nothing-posted"> No HomeWork Posted </h1>
 	<% end %>
 <% end %>
 
@@ -46,13 +46,6 @@
 <script>
 
 	$(".classRoute").parents("div.wrapper").find(".navbar-default").css("box-shadow", "none");
-	var randomColors = ["#35a5a5",'#8cc4c4','#8b5861',"#d7b26f"];
-	$(".ch-thumb").each(function(index) {
-        var len = randomColors.length;
-        var randomNum = Math.floor(Math.random()*len);
-        $(this).css("backgroundColor",randomColors[randomNum]);
-        randomColors.slice(randomNum, 1);
-    });
 	$(".double-checkmark").on("click", function(){
 		var messageId = $(this).attr("data-message-id");
 		var conversationId = $(this).attr("data-conversation-id");

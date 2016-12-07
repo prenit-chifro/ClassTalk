@@ -2,7 +2,7 @@
 	<a class="mybtn btn btn-link btn-xs pull-left" href="<%= user_path(@user) %>"><i class="material-icons">&#xE317;</i><%= @user.first_name %> <%= @user.last_name %></a>
 <% end %>
 
-<div class="container-width conversation-new-container new-group-member-container" style="margin-top:50px; margin-bottom: 70px;">
+<div class="container-width conversation-new-container new-group-member-container" style="max-width: 600px; margin: 0 auto; margin-top:50px; margin-bottom: 70px;">
 	
 		<%= form_tag user_path(@user), method: :put, multipart: true, remote: true, class:"form-complete-register","autocomplete"=>"off" do %>
 		<div class="row new-group-row">

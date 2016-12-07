@@ -10,7 +10,7 @@
 <% if(!@current_admins.blank?) %>
 	<%= form_tag revoke_admin_right_institute_path(@institute), method: :post, multipart: true, remote: true do %>
 		<% @current_admins.each do |admin| %>
-			<%= "#{admin.first_name} #{admin.last_name}" %> <%= check_box_tag "admin_ids[]", admin.id, false %>
+			<%= render partial: "conversations/contact", locals: {contact: admin} %> <%= check_box_tag "admin_ids[]", admin.id, false %>
 		<% end %>	
 		<br>
 		<%= submit_tag "Revoke Admin Rights", "data-disable-with" => "Revoking ..." %>

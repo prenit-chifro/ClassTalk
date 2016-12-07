@@ -128,7 +128,7 @@
 								<span>Add Student</span><i class="material-icons">&#xE7FE;</i>
 							</div>
 						<% end %>
-						<div class="clearfix"></div>
+						<div class="clearfix mar-btm"></div>
 						<% if(current_user.role.include?("Principal") or current_user.role.include?("Institute Admin")) %>
 							<% if(!@institutes_grades_sections_models.blank?) %>
 								<% @institutes_grades_sections_models.each do |grade_section_model|%>
@@ -151,6 +151,12 @@
 														<% end %>	
 													<% end %>
 												<% else %>
+													<%= link_to add_new_student_institute_path(@institute, grade_id: grade.id, section_id: section.id) do %>
+														<div class="pull-right add-member">
+															<span>Add Student</span><i class="material-icons">&#xE7FE;</i>
+														</div>
+													<% end %>
+													<div class="clearfix mar-btm"></div>
 													<h1 class="nothing-posted" style="margin-top:0;box-shadow:none;"> No students in this Class </h1>	
 												<% end %>															
 											</ul>
@@ -171,7 +177,7 @@
 								<span>Add Parent</span><i class="material-icons">&#xE7FE;</i>
 							</div>
 						<% end %>
-						<div class="clearfix"></div>
+						<div class="clearfix mar-btm"></div>
 						<% if(current_user.role.include?("Principal") or current_user.role.include?("Institute Admin")) %>
 							<% if(!@institutes_grades_sections_models.blank?) %>
 								<% @institutes_grades_sections_models.each do |grade_section_model|%>
@@ -195,6 +201,12 @@
 														<% end %>	
 													<% end %>
 												<% else %>
+													<%= link_to add_new_parent_institute_path(@institute, grade_id: grade.id, section_id: section.id) do %>
+														<div class="pull-right add-member">
+															<span>Add Parent</span><i class="material-icons">&#xE7FE;</i>
+														</div>
+													<% end %>
+													<div class="clearfix mar-btm"></div>	
 													<h1 class="nothing-posted" style="margin-top:0;box-shadow:none;"> No Parents in this Class </h1>		
 												<% end %>																
 											</ul>
@@ -225,7 +237,7 @@
 								<span>Add Principal</span><i class="material-icons">&#xE7FE;</i>
 							</div>
 						<% end %>
-						<div class="clearfix"></div>
+						<div class="clearfix mar-btm"></div>
 						<% if(current_user.role.include?("Principal") or current_user.role.include?("Institute Admin")) %>
 							<li>
 								<h6 class="teachers-list-heading">Authorities<i class="material-icons arrow-up-icon pull-right">&#xE316;</i></h6>
