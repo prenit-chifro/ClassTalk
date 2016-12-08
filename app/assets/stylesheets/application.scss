@@ -11,6 +11,15 @@ body{
 	overflow-y:scroll;
 	overflow-x:hidden;
 }
+.dot-unread-position{
+	position: absolute;
+	top: 10px;
+	left:14px;
+}
+.btn-danger:hover{
+	background-color: #2ad;
+	
+}
 .carousel-control.left span, .carousel-control.right span{
 	background: #000;
     border-radius: 50%;

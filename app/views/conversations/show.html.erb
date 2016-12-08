@@ -57,11 +57,13 @@
 						<% end %>
 					<% end %>
 					<div class="clearfix mar-btm"></div>
-					<% if(!@conversation.other_participants(current_user).blank?) %>
-						<% @conversation.other_participants(current_user).each do |contact| %>
-							<%= render partial: "conversations/contact", locals: {contact: contact}	 %>	
+					<div class="conversation-partial" style="max-width:600px;margin: 0 auto;">
+						<% if(!@conversation.other_participants(current_user).blank?) %>
+							<% @conversation.other_participants(current_user).each do |contact| %>
+								<%= render partial: "conversations/contact", locals: {contact: contact}	 %>	
+							<% end %>
 						<% end %>
-					<% end %>
+					</div>	
 				</div>
 			<% end %>
 			<% if(@conversation.is_institute_conversation) %>
@@ -80,11 +82,13 @@
 						<% end %>
 					<% end %>
 					<div class="clearfix mar-btm"></div>
-					<% if(!@contacts.blank?) %>
-						<% @contacts.each do |contact| %>
-							<%= render partial: "conversations/contact", locals: {contact: contact}	 %>	
+					<div class="conversation-partial" style="max-width:600px;margin: 0 auto;">
+						<% if(!@contacts.blank?) %>
+							<% @contacts.each do |contact| %>
+								<%= render partial: "conversations/contact", locals: {contact: contact}	 %>	
+							<% end %>
 						<% end %>
-					<% end %>
+					</div>	
 				</div>
 
 				<div class="tab-pane" id="all-teachers">
@@ -102,11 +106,13 @@
 						<% end %>
 					<% end %>
 					<div class="clearfix mar-btm"></div>
-					<% if(!@teachers.blank?) %>
-						<% @teachers.each do |contact| %>
-							<%= render partial: "conversations/contact", locals: {contact: contact}	 %>	
+					<div class="conversation-partial" style="max-width:600px;margin: 0 auto;">
+						<% if(!@teachers.blank?) %>
+							<% @teachers.each do |contact| %>
+								<%= render partial: "conversations/contact", locals: {contact: contact}	 %>	
+							<% end %>
 						<% end %>
-					<% end %>
+					</div>	
 				</div>
 
 				<% if(["Principal", "Institute Admin", "Teacher"].include?(current_user.role)) %>
@@ -125,13 +131,13 @@
 							<% end %>
 						<% end %>
 						<div class="clearfix mar-btm"></div>
-						<% if(!@students.blank?) %>
-							<% @students.each do |contact| %>
-								<%= render partial: "conversations/contact", locals: {contact: contact} %>		
-							<% end %>
-						<% end %>		
-
-						
+						<div class="conversation-partial" style="max-width:600px;margin: 0 auto;">
+							<% if(!@students.blank?) %>
+								<% @students.each do |contact| %>
+									<%= render partial: "conversations/contact", locals: {contact: contact} %>		
+								<% end %>
+							<% end %>		
+						</div>						
 					</div>
 
 					<div class="tab-pane" id="all-parents">
@@ -149,11 +155,13 @@
 							<% end %>
 						<% end %>
 						<div class="clearfix mar-btm"></div>
-						<% if(!@parents.blank?) %>
-							<% @parents.each do |contact| %>
-								<%= render partial: "conversations/contact", locals: {contact: contact} %>		
+						<div class="conversation-partial" style="max-width:600px;margin: 0 auto;">
+							<% if(!@parents.blank?) %>
+								<% @parents.each do |contact| %>
+									<%= render partial: "conversations/contact", locals: {contact: contact} %>		
+								<% end %>
 							<% end %>
-						<% end %>
+						</div>	
 					</div>
 				<% end %>
 
@@ -175,8 +183,9 @@
 						<% end %>
 					<% end %>
 					<div class="clearfix mar-btm"></div>
-					<%= render partial: "conversations/contact", locals: {contact: @classteacher} if !@classteacher.blank? %>		
-					
+					<div class="conversation-partial" style="max-width:600px;margin: 0 auto;">
+						<%= render partial: "conversations/contact", locals: {contact: @classteacher} if !@classteacher.blank? %>		
+					</div>
 				</div>
 
 				<% if(["Principal", "Institute Admin", "Teacher"].include?(current_user.role)) %>
@@ -195,13 +204,13 @@
 							<% end %>
 						<% end %>
 						<div class="clearfix mar-btm"></div>
-						<% if(!@students.blank?) %>
-							<% @students.each do |contact| %>
-								<%= render partial: "conversations/contact", locals: {contact: contact} %>		
-							<% end %>
-						<% end %>		
-
-						
+						<div class="conversation-partial" style="max-width:600px;margin: 0 auto;">
+							<% if(!@students.blank?) %>
+								<% @students.each do |contact| %>
+									<%= render partial: "conversations/contact", locals: {contact: contact} %>		
+								<% end %>
+							<% end %>		
+						</div>						
 					</div>
 					<div class="tab-pane" id="all-parents">
 						<% if(!current_user.role.include?("Student") and !current_user.role.include?("Parent")) %>
@@ -218,11 +227,13 @@
 							<% end %>
 						<% end %>
 						<div class="clearfix mar-btm"></div>
-						<% if(!@parents.blank?) %>
-							<% @parents.each do |contact| %>
-								<%= render partial: "conversations/contact", locals: {contact: contact} %>		
+						<div class="conversation-partial" style="max-width:600px;margin: 0 auto;">
+							<% if(!@parents.blank?) %>
+								<% @parents.each do |contact| %>
+									<%= render partial: "conversations/contact", locals: {contact: contact} %>		
+								<% end %>
 							<% end %>
-						<% end %>
+						</div>	
 					</div>
 				<% end %>
 
@@ -277,7 +288,9 @@
 						<% end %>
 					<% end %>
 					<div class="clearfix mar-btm"></div>
-					<%= render partial: "conversations/contact", locals: {contact: @subjectteacher} if !@subjectteacher.blank?%>	
+					<div class="conversation-partial" style="max-width:600px;margin: 0 auto;">
+						<%= render partial: "conversations/contact", locals: {contact: @subjectteacher} if !@subjectteacher.blank?%>	
+					</div>
 				</div>
 
 				<% if(["Principal", "Institute Admin", "Teacher"].include?(current_user.role)) %>
@@ -296,13 +309,13 @@
 							<% end %>
 						<% end %>
 						<div class="clearfix mar-btm"></div>
-						<% if(!@students.blank?) %>
-							<% @students.each do |contact| %>
-								<%= render partial: "conversations/contact", locals: {contact: contact}	 %>	
-							<% end %>
-						<% end %>		
-
-						
+						<div class="conversation-partial" style="max-width:600px;margin: 0 auto;">
+							<% if(!@students.blank?) %>
+								<% @students.each do |contact| %>
+									<%= render partial: "conversations/contact", locals: {contact: contact}	 %>	
+								<% end %>
+							<% end %>		
+						</div>				
 					</div>
 
 					<div class="tab-pane" id="all-parents">
@@ -321,11 +334,13 @@
 							<% end %>
 						<% end %>
 						<div class="clearfix mar-btm"></div>
-						<% if(!@parents.blank?) %>
-							<% @parents.each do |contact| %>
-								<%= render partial: "conversations/contact", locals: {contact: contact} %>		
+						<div class="conversation-partial" style="max-width:600px;margin: 0 auto;">
+							<% if(!@parents.blank?) %>
+								<% @parents.each do |contact| %>
+									<%= render partial: "conversations/contact", locals: {contact: contact} %>		
+								<% end %>
 							<% end %>
-						<% end %>
+						</div>	
 					</div>
 				<% end %>
 			<% end %>
@@ -374,7 +389,7 @@
 				<% end %>
 			</ul>
 		</div>	
-		<div class="tab-content admin-home-content" style="margin-top:50px; margin-bottom: 70px;">
+		<div class="tab-content admin-home-content" style="max-width:600px; margin: 0 auto; margin-top:50px; margin-bottom: 70px;">
 			<div class="tab-pane active messages Messages-category-messages" id="all-Messages">
 				<% if(!@Messages_category_messages.blank?) %>
 					<% @Messages_category_messages.each do |message| %>

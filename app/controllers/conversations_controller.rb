@@ -139,7 +139,18 @@ class ConversationsController < ApplicationController
 				end
 			end
 		end
-		
+		@unread_group_conversation_ids_array = []
+		@group_conversations.each do |conversation|
+			conversation_participant_model = conversation.get_conversation_participant_model_for_participant(current_user)
+			unread_received_messages = conversation.messages.where("is_seen_by_all_participants != ? and created_at > ? and creator_id != ?", true, conversation_participant_model.created_at, current_user.id)
+			unread_received_messages.each do |message|
+				seen_user_ids_array = message.seen_user_ids.split(", ").map{|id| id.to_i}.uniq
+				if(!seen_user_ids_array.include?(current_user.id))
+					@unread_group_conversation_ids_array << conversation.id
+					break
+				end
+			end
+		end
 		@principals = @institute.get_members_with_given_roles(["Principal"])
 		@admins = @institute.get_members_with_given_roles(["Institute Admin"])
 		@teachers = @institute.get_members_with_given_roles(["Teacher"])

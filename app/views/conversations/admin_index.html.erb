@@ -22,13 +22,13 @@
 				<li class="active"><a data-toggle="tab" href="#all-messages">Messages</a>
 					<% if(!@unread_conversation_ids_array.blank?) %>
 						<% if(@unread_conversation_ids_array.length > 0) %>
-							<span class="dot-unread unread-conversation-no" style="display: inline-block;"> <%= @unread_conversation_ids_array.length %> </span> 
+							<span class="dot-unread unread-conversation-no dot-unread-position" style="display: inline-block;"> <%= @unread_conversation_ids_array.length %> </span> 
 						<% else %>
-							<span class="dot-unread unread-conversation-no" style="display: none;">0</span>
+							<span class="dot-unread unread-conversation-no dot-unread-position" style="display: none;">0</span>
 						<% end %>
 						<span class="unread-conversation-ids" style="display: none;"><%= @unread_conversation_ids_array.join(", ") %></span>	
 					<% else %>
-						<span class="dot-unread unread-conversation-no" style="display: none;">0</span>
+						<span class="dot-unread unread-conversation-no dot-unread-position" style="display: none;">0</span>
 						<span class="unread-conversation-ids" style="display: none;">""</span>	
 					<% end %> 
 				</li>

@@ -6,17 +6,13 @@
 		
 			<ul class="nav nav-tabs admin-new-tabs" role="tablist" id="tablist" style="position:fixed;z-index:5;left:0;right:0;">		
 				<li class="active"><a data-toggle="tab" href="#all-messages">Messages</a></li>
-				
 				<li><a data-toggle="tab" href="#all-homework">HomeWork</a></li>
 				<li><a data-toggle="tab" href="#all-students">Students</a></li>
 				<li><a data-toggle="tab" href="#all-staff">Staff</a></li>
 				<li><a data-toggle="tab" href="#all-classes-analytics">Classes</a></li>
-				<li><a data-toggle="tab" href="#all-dayplan">Day Plan</a></li>
-				
-				
+				<li><a data-toggle="tab" href="#all-dayplan">Day Plan</a></li>			
 			</ul>
 			<div class="clearfix"></div>
-
 			<div class="tab-content admin-home-content admin-index-main" style="max-width:600px;margin:0 auto;margin-top:40px;">
 				<div class="tab-pane active" id="all-messages">
 					<div class="classRoute" style="margin-bottom:0;">
@@ -24,13 +20,13 @@
 							<li class="active" style="width:33.33%;"><a data-toggle="tab" href="#all-inbox-messages">Inbox
 								<% if(!@unread_conversation_ids_array.blank?) %>
 									<% if(@unread_conversation_ids_array.length > 0) %>
-										<span class="dot-unread unread-conversation-no" style="display: inline-block;"> <%= @unread_conversation_ids_array.length %> </span> 
+										<span class="dot-unread unread-conversation-no dot-unread-position" style="display: inline-block;"> <%= @unread_conversation_ids_array.length %> </span> 
 									<% else %>
-										<span class="dot-unread unread-conversation-no" style="display: none;">0</span>
+										<span class="dot-unread unread-conversation-no dot-unread-position" style="display: none;">0</span>
 									<% end %>
 									<span class="unread-conversation-ids" style="display: none;"><%= @unread_conversation_ids_array.join(", ") %></span>	
 								<% else %>
-									<span class="dot-unread unread-conversation-no" style="display: none;">0</span>
+									<span class="dot-unread unread-conversation-no dot-unread-position" style="display: none;">0</span>
 									<span class="unread-conversation-ids" style="display: none;">""</span>	
 								<% end %> 
 							</a></li>
@@ -102,25 +98,20 @@
 
 									<li>
 										<h6 class="teachers-list-heading">Class <%= grade.grade_name + section.section_name %><i class="material-icons arrow-up-icon pull-right">&#xE316;</i></h6>
-										<div class="container-width classRoute">
+										<div class="container-width classRoute negation-classRoute">
 											<ul class="nav nav-tabs" role="tablist" id="tablist">
 												<li class="active"><a data-toggle="tab" href="#all-students-<%= section_member_model.id %>">Students</a></li>	
-												<li><a data-toggle="tab" href="#all-parents-<%= section_member_model.id %>">Parents</a></li>
-																									
+												<li><a data-toggle="tab" href="#all-parents-<%= section_member_model.id %>">Parents</a></li>																									
 											</ul>
 											<div class="tab-content" style="">
 												<div class="tab-pane" id="all-parents-<%= section_member_model.id %>">
 													<ul class="list-unstyled list-inline">
 														<% if(!parents.blank?) %>
-															<% parents.each do |parent| %>
-																
-																<li>
-																	
+															<% parents.each do |parent| %>																
+																<li>																	
 																	<%= render partial: "conversations/contact", locals: {contact: parent} %>
-																	<span class="checkbox-style-block checkbox-style-block-<%= parent.id %>"></span>
-																	
-																</li>
-															
+																	<span class="checkbox-style-block checkbox-style-block-<%= parent.id %>"></span>																	
+																</li>															
 															<% end %>
 														<% else %>
 															<h1 class="nothing-posted"> No Parents added in this Class yet ! </h1>				
@@ -164,8 +155,7 @@
 							<div class="container-width classRoute" style="display: block;">
 								<ul class="nav nav-tabs" role="tablist" id="tablist">
 									<li class="active"><a data-toggle="tab" href="#all-admins">Admins</a></li>												
-									<li><a data-toggle="tab" href="#all-principals">Principal</a></li>
-									
+									<li><a data-toggle="tab" href="#all-principals">Principal</a></li>									
 								</ul>
 								<div class="tab-content" style="">
 									<div class="tab-pane" id="all-principals">
@@ -252,24 +242,18 @@
 							</li>
 						</ul>
 						<div class="tab-content admin-home-content">
-							<div class="tab-pane active" id="teacher-plan">
-								
-									<ul class="list-unstyled teachers-list index-conversation-modal" style ="max-height: none">
-										
-														
-											<li>
-												<h6 class="teachers-list-heading"><%= current_user.first_name %> <%= current_user.last_name %> (<%= current_user.details %>)<i class="material-icons arrow-up-icon pull-right">&#xE316;</i></h6>
-												<div class="container-width classRoute">
-													<div class="calendar teacher-calendar" data-teacher-id="<%= current_user.id %>" style="margin-top:0; box-shadow: 1px 2px 2px #5d5d5d;">
-								
-													</div>
+							<div class="tab-pane active" id="teacher-plan">								
+								<ul class="list-unstyled teachers-list index-conversation-modal" style ="max-height: none">													
+									<li>
+										<h6 class="teachers-list-heading"><%= current_user.first_name %> <%= current_user.last_name %> (<%= current_user.details %>)<i class="material-icons arrow-up-icon pull-right">&#xE316;</i></h6>
+										<div class="container-width classRoute">
+											<div class="calendar teacher-calendar" data-teacher-id="<%= current_user.id %>" style="margin-top:0; box-shadow: 1px 2px 2px #5d5d5d;">
+						
+											</div>
 
-												</div>	
-											</li>
-										
-										
-									</ul>			
-								
+										</div>	
+									</li>									
+								</ul>							
 							</div>		
 						</div>
 					</div>

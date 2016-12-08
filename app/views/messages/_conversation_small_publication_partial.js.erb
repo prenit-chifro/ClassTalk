@@ -3,17 +3,31 @@ var conversationSmallDiv = $('.conversation-small[data-conversation-id=' + '<%= 
 if(conversationSmallDiv.length != 0){
 	conversationSmallDiv.remove();
 }
-	
-if($('.all-small-conversations').html()){
-	$('.all-small-conversations').prepend('<%= conversation_small_partial %>');	
-	var unreadConversationIdsArray = $('.unread-conversation-ids').html().split(", ");
-	if(unreadConversationIdsArray.indexOf("<%= conversation.id %>") < 0){
-		conversationNoDiv = $('.unread-conversation-no');
-		conversationNo = parseInt(conversationNoDiv.html());
-		conversationNo++;
-		conversationNoDiv.html(conversationNo);
-		$('.unread-conversation-ids').html($('.unread-conversation-ids').html() + ", <%= conversation.id %>");
-		conversationNoDiv.css("display", "block");
-	}	
-}
+<% if(conversation.is_group == false) %>
+	if($('.all-small-conversations').html()){
+		$('.all-small-conversations').prepend('<%= conversation_small_partial %>');	
+		var unreadConversationIdsArray = $('.unread-conversation-ids').html().split(", ");
+		if(unreadConversationIdsArray.indexOf("<%= conversation.id %>") < 0){
+			conversationNoDiv = $('.unread-conversation-no');
+			conversationNo = parseInt(conversationNoDiv.html());
+			conversationNo++;
+			conversationNoDiv.html(conversationNo);
+			$('.unread-conversation-ids').html($('.unread-conversation-ids').html() + ", <%= conversation.id %>");
+			conversationNoDiv.css("display", "block");
+		}	
+	}
+<% else %>
+	if($('.all-group-small-conversations').html()){
+		$('.all-group-small-conversations').prepend('<%= conversation_small_partial %>');	
+		var unreadConversationIdsArray = $('.unread-group-conversation-ids').html().split(", ");
+		if(unreadConversationIdsArray.indexOf("<%= conversation.id %>") < 0){
+			conversationNoDiv = $('.unread-group-conversation-no');
+			conversationNo = parseInt(conversationNoDiv.html());
+			conversationNo++;
+			conversationNoDiv.html(conversationNo);
+			$('.unread-group-conversation-ids').html($('.unread-group-conversation-ids').html() + ", <%= conversation.id %>");
+			conversationNoDiv.css("display", "block");
+		}	
+	}
+<% end %>	
 
