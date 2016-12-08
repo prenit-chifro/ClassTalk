@@ -212,7 +212,7 @@ class InstitutesController < ApplicationController
                 @student.mobile_no = params[:mobile_no] if !params[:mobile_no].blank?
                 @student.email = params[:email] if !params[:email].blank?
                 @student.gender = params[:gender] if !params[:gender].blank?
-                @student.date_of_birth = params[:date_of_birth] if !params[:date_of_birth].blank?
+                @student.date_of_birth = Date.parse(params[:date_of_birth]) if !params[:date_of_birth].blank?
                 @student.address = params[:address] if !params[:address].blank?
                 @student.pincode = params[:pincode] if !params[:pincode].blank?
                 @student.role_no = params[:role_no] if !params[:role_no].blank?

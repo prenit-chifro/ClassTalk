@@ -44,9 +44,11 @@
 			<% end %>
 			<%= select_tag :role, options_for_select([["Select Role", ""], ["Principal", "Principal"], ["Institute Admin","Institute Admin"], ["Teacher", "Teacher"]], default_option), class: "form-control", required: true %>
 		</div>
-		<div class="nothing-posted" style="font-size:12px;margin-bottom:10px;">
-			<span style="vertical-align:middle;">Is using School Transport</span> <%= check_box_tag :is_using_transport, true, false %> 
-		</div>
+		<label for="transport-checkbox">
+			<div class="nothing-posted" style="font-size:12px;margin-bottom:10px;">
+				<span style="vertical-align:middle;">Is using School Transport</span> <%= check_box_tag :is_using_transport, true, false, style:"vertical-align:middle", id: "transport-checkbox" %> 
+			</div>
+		</label>
 		<div class="text-center col-md-6 col-md-offset-3">
 			<div class="form-group form-button-register">
 				<%= button_tag(type:"submit", class: "form-control btn btn-login", data: {disable_with: "Please wait..."}) do %>
