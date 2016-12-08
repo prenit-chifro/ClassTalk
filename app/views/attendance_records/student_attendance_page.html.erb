@@ -112,7 +112,7 @@
 		var options = {
 			width: 400,
 			height: 240,
-			title: 'Class <%= @grade.grade_name %><%= @section.section_name %> Attendance',
+			title: "<%= current_user.first_name %> <%= current_user.last_name %>'s Attendance",
 			titlePosition: 'none',
 			colors: ['#5dd4b7', '#ea5b31'],
 			is3D: true

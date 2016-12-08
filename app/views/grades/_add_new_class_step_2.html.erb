@@ -39,7 +39,7 @@
 									<% @teachers.each do |teacher| %>
 										<% options << [teacher.first_name + " " + teacher.last_name, teacher.id] %>
 									<% end %>
-									<%= select_tag "grade_ids[#{grade.id}][section_ids][#{section.id}][classteacher_id]", options_for_select(options, default_option), class: "form-control" %>
+									<%= select_tag "grade_ids_for_class_teacher[#{grade.id}][section_ids_for_class_teacher][#{section.id}][classteacher_id]", options_for_select(options, default_option), class: "form-control" %>
 								</div>
 							<% end %>
 
@@ -53,7 +53,7 @@
 												<li class="listitems"> 
 													<div class="checkbox">
 														<label for="grades-division-<%= section.id %>-<%= subject.id %>" class="grades-division">
-															<%= check_box_tag "grade_ids[#{grade.id}][section_ids][#{section.id}][subject_ids][#{subject.id}][subject_id]", subject.id, false, { class: "checkbox grade-names-input", id: "grades-division-#{section.id}-#{subject.id}"} %>
+															<%= check_box_tag "grade_ids_for_subject[#{grade.id}][section_ids_for_subject][#{section.id}][subject_ids][]", subject.id, false, { class: "checkbox grade-names-input", id: "grades-division-#{section.id}-#{subject.id}"} %>
 															<span><%= subject.subject_name %> </span>
 														</label>
 													</div>
@@ -68,7 +68,7 @@
 														<% @teachers.each do |teacher| %>
 															<% options << [teacher.first_name + " " + teacher.last_name, teacher.id] %>
 														<% end %>
-														<%= select_tag "grade_ids[#{grade.id}][section_ids][#{section.id}][subject_ids][#{subject.id}][subject_teacher_id]", options_for_select(options, default_option), class: "form-control" %>
+														<%= select_tag "grade_ids_for_subject_teacher[#{grade.id}][section_ids_for_subject_teacher][#{section.id}][subject_ids_for_subject_teacher][#{subject.id}][subject_teacher_id]", options_for_select(options, default_option), class: "form-control" %>
 													</div>
 												<% end %>
 											</div>	

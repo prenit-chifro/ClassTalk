@@ -16,7 +16,7 @@
 						<li class="listitems"> 
 							<div class="checkbox">
 								<label for="grades-division-<%= section.id %>" class="grades-division">
-									<%= check_box_tag "section_ids[#{section.id}][section_id]", section.id, false, { class: "checkbox grade-names-input", id: "grades-division-#{section.id}"} %>
+									<%= check_box_tag "section_ids[]", section.id, false, { class: "checkbox grade-names-input", id: "grades-division-#{section.id}"} %>
 									<span>Section <%= section.section_name %></span>									
 								</label>
 							</div>
@@ -31,7 +31,7 @@
 								<% @teachers.each do |teacher| %>
 									<% options << [teacher.first_name + " " + teacher.last_name, teacher.id] %>
 								<% end %>
-								<%= select_tag "section_ids[#{section.id}][classteacher_id]", options_for_select(options, default_option), class: "form-control" %>
+								<%= select_tag "section_ids_for_class_teacher[#{section.id}][classteacher_id]", options_for_select(options, default_option), class: "form-control" %>
 							</div>
 						<% end %>
 

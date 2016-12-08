@@ -80,6 +80,19 @@
 									<span>Profile</span>
 								</a>
 							</li>
+							<% if(!@institute.blank? and (current_user.role.include?("Principal") or current_user.role.include?("Institute Admin"))) %>
+								<% if(params[:controller] == "institutes" and params[:action] == "show") %>
+									<% active_class="class=active-navigation" %>
+								<% else %>
+									<% active_class="" %>
+								<% end %>
+								<li <%= active_class %>>
+									<a href="/institutes/<%= @institute.id %>">
+										<i class="material-icons menu-inner-icon">&#xE146;</i>Manage
+									</a>
+								</li>
+							<% end %>
+							
 							<% if(!(params[:controller] == "conversations" and params[:action]=="index")) %>
 								<% if(params[:controller] == "conversations" and params[:action]=="index") %>
 									<% active_class="class=active-navigation" %>
@@ -130,18 +143,6 @@
 									
 								<% end %>							
 								
-							<% end %>
-							<% if(!@institute.blank? and current_user.role.include?("Institute Admin")) %>
-								<% if(params[:controller] == "institutes" and params[:action] == "show") %>
-									<% active_class="class=active-navigation" %>
-								<% else %>
-									<% active_class="" %>
-								<% end %>
-								<li <%= active_class %>>
-									<a href="/institutes/<%= @institute.id %>">
-										Manage
-									</a>
-								</li>
 							<% end %>
 							
 						</ul>

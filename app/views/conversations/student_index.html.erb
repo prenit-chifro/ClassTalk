@@ -2,231 +2,240 @@
 	<%= current_user.role %> DashBoard
 <% end %>
 	
-	<div class="container-width classRoute tabs-container conversation-big" style="margin-top:50px;">
+<div class="container-width classRoute tabs-container conversation-big" style="margin-top:50px;">
+	
+	<ul class="nav nav-tabs admin-new-tabs" role="tablist" id="tablist" style="position:fixed;z-index:5;left:0;right:0;">		
+		<li class="active"><a data-toggle="tab" href="#all-messages">Messages</a></li>
+		<li><a data-toggle="tab" href="#all-homework">HomeWork</a></li>
+		<li><a data-toggle="tab" href="#all-staff">Staff</a></li>
+		<li><a data-toggle="tab" href="#all-classes-analytics">Classes</a></li>
+		<li><a data-toggle="tab" href="#all-dayplan">Day Plan</a></li>
 		
-			<ul class="nav nav-tabs admin-new-tabs" role="tablist" id="tablist" style="position:fixed;z-index:5;left:0;right:0;">		
-				<li class="active"><a data-toggle="tab" href="#all-messages">Messages</a></li>
-				<li><a data-toggle="tab" href="#all-homework">HomeWork</a></li>
-				<li><a data-toggle="tab" href="#all-staff">Staff</a></li>
-				<li><a data-toggle="tab" href="#all-classes-analytics">Classes</a></li>
-				<li><a data-toggle="tab" href="#all-dayplan">Day Plan</a></li>
+		
+	</ul>
+	<div class="clearfix"></div>
+
+	<div class="tab-content admin-home-content admin-index-main" style="max-width:600px;margin:0 auto;margin-top:40px;">
+		<div class="tab-pane active" id="all-messages">
+			<div class="classRoute" style="margin-bottom:0;">
+				<ul class="nav nav-tabs text-center" role="tablist" id="tablist" style="background:#98c2d2;">		
+					<li class="active" style="width:33.33%;"><a data-toggle="tab" href="#all-inbox-messages">Inbox
+						<% if(!@unread_conversation_ids_array.blank?) %>
+							<% if(@unread_conversation_ids_array.length > 0) %>
+								<span class="dot-unread unread-conversation-no" style="display: inline-block;"> <%= @unread_conversation_ids_array.length %> </span> 
+							<% else %>
+								<span class="dot-unread unread-conversation-no" style="display: none;">0</span>
+							<% end %>
+							<span class="unread-conversation-ids" style="display: none;"><%= @unread_conversation_ids_array.join(", ") %></span>	
+						<% else %>
+							<span class="dot-unread unread-conversation-no" style="display: none;">0</span>
+							<span class="unread-conversation-ids" style="display: none;">""</span>	
+						<% end %> 
+					</a></li>
+					<li style="width:33.33%;"><a data-toggle="tab" href="#all-sent-messages">Sent
+					</a></li>
+					<li style="width:33.33%;"><a data-toggle="tab" href="#all-group-messages">Groups
+					</a></li>
+				</ul>	
+			</div>
+			<div class="tab-content admin-home-content">
+				<div class="tab-pane active all-small-conversations" id="all-inbox-messages">
+					<% if(!@inbox_conversations.blank?) %>
+						<% @inbox_conversations.each do |conversation| %>
+							
+								<%= render partial: "conversations/conversation_small", locals: {conversation: conversation, user: current_user} %>
+											
+						<% end %>
+						<%= paginate @inbox_conversations, window: 1, params: {anchor: "all-inbox-messages"} %>
+					<% else %>
+						<h1 class="nothing-posted"> You dont have any message in inbox that needs your response ! </h1>
+					<% end %>
+				</div>
+				<div class="tab-pane" id="all-sent-messages">
+					<% if(!@sent_conversations.blank?) %>
+						<% @sent_conversations.each do |conversation| %>
+							<%= render partial: "conversations/conversation_small", locals: {conversation: conversation, user: current_user} %>
+						<% end %>
+						
+						<%= paginate @sent_conversations, window: 1, params: {anchor: "all-sent-messages"} %>
+					<% else %>	
+						<h1 class="nothing-posted"> You dont have any sent message that others need to respond to ! </h1>
+					<% end %>
+				</div>
+
+				<div class="tab-pane" id="all-group-messages">
+					<% if(!@group_conversations.blank?) %>
+						<% @group_conversations.each do |conversation| %>
+							<%= render partial: "conversations/conversation_small", locals: {conversation: conversation, user: current_user} %>
+						<% end %>
+						
+						<%= paginate @group_conversations, window: 1, params: {anchor: "all-sent-messages"} %>
+					<% else %>	
+						<h1 class="nothing-posted"> You dont have any Group message ! </h1>
+					<% end %>
+				</div>
 				
+			</div>	
+		</div>
+
+		<div class="tab-pane" id="all-homework">
+			<% if(!@homework_messages.blank?) %>
+				<% @homework_messages.each do |message| %>
+					<%= render partial: "messages/message", locals: {conversation: message.conversation, message: message} %>
+				<% end %>
+				
+				<%= paginate @homework_messages, window: 1, params: {anchor: "all-homework"} %>
+			<% else %>
+				<h1 class="nothing-posted"> No HomeWork posted yet ! </h1>
+			<% end %>
+
+		</div>
+		
+		<div class="tab-pane" id="all-staff">
+			<ul class="list-unstyled teachers-list index-conversation-modal">
+				
+					<li>
+						<h6 class="teachers-list-heading">Authorities<i class="material-icons arrow-up-icon pull-right">&#xE316;</i></h6>
+						<div class="container-width classRoute" style="display: block;">
+							<ul class="nav nav-tabs" role="tablist" id="tablist">
+								<li class="active"><a data-toggle="tab" href="#all-admins">Admins</a></li>												
+								<li><a data-toggle="tab" href="#all-principals">Principal</a></li>
+								
+							</ul>
+							<div class="tab-content" style="">
+								<div class="tab-pane" id="all-principals">
+									<ul class="list-unstyled list-inline">
+										<% if(!@principals.blank?) %>
+											<% @principals.each do |principal| %>
+												<li>
+													<%= render partial: "conversations/contact", locals: {contact: principal} %>
+													<span class="checkbox-style-block checkbox-style-block-<%= principal.id %>">
+														
+													</span>		
+																
+												</li>
+											<% end %>
+										<% else %>
+											<h1 class="nothing-posted" style="margin-top:0;box-shadow:none;"> No Principals added yet ! </h1>		
+										<% end %>														
+									</ul>
+								</div>
+								<div class="tab-pane active" id="all-admins">
+									<ul class="list-unstyled list-inline">
+										<% if(!@admins.blank?) %>
+											<% @admins.each do |admin| %>							
+												<li>
+													<%= render partial: "conversations/contact", locals: {contact: admin} %>
+													<span class="checkbox-style-block checkbox-style-block-<%= admin.id %>"></span>
+													
+												</li>
+											
+											<% end %>
+										<% else %>
+											<h1 class="nothing-posted" style="margin-top:0;box-shadow:none;"> No Admins in this Class </h1>		
+										<% end %>														
+									</ul>
+								</div>	
+
+							</div>
+						</div>
+					</li>
+
+					<li>
+						<h6 class="teachers-list-heading">Teachers<i class="material-icons arrow-up-icon pull-right">&#xE316;</i></h6>
+						
+						<ul class="list-unstyled list-inline">
+							<% if(!@teachers.blank?) %>
+								<% @teachers.each do |teacher| %>
+									
+									<li>
+										<%= render partial: "conversations/contact", locals: {contact: teacher} %>
+										<span class="checkbox-style-block checkbox-style-block-<%= teacher.id %>"></span>													
+									</li>
+								
+								<% end %>
+							<% else %>
+								<h1 class="nothing-posted" style="margin-top:0;box-shadow:none;"> No Teachers added yet ! </h1>		
+							<% end %>														
+						</ul>
+					</li>
+
+			</ul>
+		</div>
+		<div class="tab-pane" id="all-classes-analytics">
+			<ul class="list-unstyled list-inline text-center">
+				<% if(!@grades.blank?) %>
+					<% @grades.each do |grade| %>
+						<% grade_section_models = grade.grades_sections.where(institute_id: @institute.id) %>
+						<% grades_sections_members_models = grade.grades_sections_members_models.where(institute_id: @institute.id) %>
+						<% teachers_count =  grades_sections_members_models.where(member_role: "Teacher").map(&:member).uniq.count%>
+						<% students_count =  grades_sections_members_models.where(member_role: "Student").map(&:member).uniq.count%>
+						<% parents_count =  grades_sections_members_models.where(member_role: "Parent").map(&:member).uniq.count%>
+
+						<li>
+							<div class="ch-item">	
+								<div class="ch-info">
+									<h3><%= teachers_count %> Teachers</h3>
+									
+									<p><%= students_count %> Students<br><%= parents_count %> Parents<a href="<%= institute_grade_path(@institute, grade) %>"><%= grade.grade_name %></a></p>
+								</div>
+								<div class="ch-thumb">
+									<span>Class <%= grade.grade_name %></span>
+									<span><%= grade_section_models.count %> Sections</span>
+								</div>
+							</div>
+							<button class="btn btn-info btn-custom-info"><%= link_to institute_grade_path(@institute, grade) do %>Go To Class <%= grade.grade_name %><% end %></button>
+						</li>
+						
+					<% end %>
+				<% else %>
+					<h1 class="nothing-posted" style="margin-top:0;box-shadow:none;"> No Classes added yet ! </h1>			
+				<% end %>
 				
 			</ul>
-			<div class="clearfix"></div>
-
-			<div class="tab-content admin-home-content admin-index-main" style="max-width:600px;margin:0 auto;margin-top:40px;">
-				<div class="tab-pane active" id="all-messages">
-					<div class="classRoute" style="margin-bottom:0;">
-						<ul class="nav nav-tabs text-center" role="tablist" id="tablist" style="background:#98c2d2;">		
-							<li class="active" style="width:33.33%;"><a data-toggle="tab" href="#all-inbox-messages">Inbox
-								<% if(!@unread_conversation_ids_array.blank?) %>
-									<% if(@unread_conversation_ids_array.length > 0) %>
-										<span class="dot-unread unread-conversation-no" style="display: inline-block;"> <%= @unread_conversation_ids_array.length %> </span> 
-									<% else %>
-										<span class="dot-unread unread-conversation-no" style="display: none;">0</span>
-									<% end %>
-									<span class="unread-conversation-ids" style="display: none;"><%= @unread_conversation_ids_array.join(", ") %></span>	
-								<% else %>
-									<span class="dot-unread unread-conversation-no" style="display: none;">0</span>
-									<span class="unread-conversation-ids" style="display: none;">""</span>	
-								<% end %> 
-							</a></li>
-							<li style="width:33.33%;"><a data-toggle="tab" href="#all-sent-messages">Sent
-							</a></li>
-							<li style="width:33.33%;"><a data-toggle="tab" href="#all-group-messages">Groups
-							</a></li>
-						</ul>	
-					</div>
-					<div class="tab-content admin-home-content">
-						<div class="tab-pane active all-small-conversations" id="all-inbox-messages">
-							<% if(!@inbox_conversations.blank?) %>
-								<% @inbox_conversations.each do |conversation| %>
-									
-										<%= render partial: "conversations/conversation_small", locals: {conversation: conversation, user: current_user} %>
-													
-								<% end %>
-								<%= paginate @inbox_conversations, window: 1, params: {anchor: "all-inbox-messages"} %>
-							<% else %>
-								<h1 class="nothing-posted"> You dont have any message in inbox that needs your response ! </h1>
-							<% end %>
-						</div>
-						<div class="tab-pane" id="all-sent-messages">
-							<% if(!@sent_conversations.blank?) %>
-								<% @sent_conversations.each do |conversation| %>
-									<%= render partial: "conversations/conversation_small", locals: {conversation: conversation, user: current_user} %>
-								<% end %>
-								
-								<%= paginate @sent_conversations, window: 1, params: {anchor: "all-sent-messages"} %>
-							<% else %>	
-								<h1 class="nothing-posted"> You dont have any sent message that others need to respond to ! </h1>
-							<% end %>
-						</div>
-
-						<div class="tab-pane" id="all-group-messages">
-							<% if(!@group_conversations.blank?) %>
-								<% @group_conversations.each do |conversation| %>
-									<%= render partial: "conversations/conversation_small", locals: {conversation: conversation, user: current_user} %>
-								<% end %>
-								
-								<%= paginate @group_conversations, window: 1, params: {anchor: "all-sent-messages"} %>
-							<% else %>	
-								<h1 class="nothing-posted"> You dont have any Group message ! </h1>
-							<% end %>
-						</div>
-						
-					</div>	
-				</div>
-
-				<div class="tab-pane" id="all-homework">
-					<% if(!@homework_messages.blank?) %>
-						<% @homework_messages.each do |message| %>
-							<%= render partial: "messages/message", locals: {conversation: message.conversation, message: message} %>
-						<% end %>
-						
-						<%= paginate @homework_messages, window: 1, params: {anchor: "all-homework"} %>
-					<% else %>
-						<h1 class="nothing-posted"> No HomeWork posted yet ! </h1>
-					<% end %>
-
-				</div>
-				
-				<div class="tab-pane" id="all-staff">
-					<ul class="list-unstyled teachers-list index-conversation-modal">
-						
-							<li>
-								<h6 class="teachers-list-heading">Authorities<i class="material-icons arrow-up-icon pull-right">&#xE316;</i></h6>
-								<div class="container-width classRoute" style="display: block;">
-									<ul class="nav nav-tabs" role="tablist" id="tablist">
-										<li class="active"><a data-toggle="tab" href="#all-admins">Admins</a></li>												
-										<li><a data-toggle="tab" href="#all-principals">Principal</a></li>
-										
-									</ul>
-									<div class="tab-content" style="">
-										<div class="tab-pane" id="all-principals">
-											<ul class="list-unstyled list-inline">
-												<% if(!@principals.blank?) %>
-													<% @principals.each do |principal| %>
-														<li>
-															<%= render partial: "conversations/contact", locals: {contact: principal} %>
-															<span class="checkbox-style-block checkbox-style-block-<%= principal.id %>">
-																
-															</span>		
-																		
-														</li>
-													<% end %>
-												<% else %>
-													<h1 class="nothing-posted" style="margin-top:0;box-shadow:none;"> No Principals added yet ! </h1>		
-												<% end %>														
-											</ul>
-										</div>
-										<div class="tab-pane active" id="all-admins">
-											<ul class="list-unstyled list-inline">
-												<% if(!@admins.blank?) %>
-													<% @admins.each do |admin| %>							
-														<li>
-															<%= render partial: "conversations/contact", locals: {contact: admin} %>
-															<span class="checkbox-style-block checkbox-style-block-<%= admin.id %>"></span>
-															
-														</li>
-													
-													<% end %>
-												<% else %>
-													<h1 class="nothing-posted" style="margin-top:0;box-shadow:none;"> No Admins in this Class </h1>		
-												<% end %>														
-											</ul>
-										</div>	
-
-									</div>
-								</div>
-							</li>
-
-							<li>
-								<h6 class="teachers-list-heading">Teachers<i class="material-icons arrow-up-icon pull-right">&#xE316;</i></h6>
-								
-								<ul class="list-unstyled list-inline">
-									<% if(!@teachers.blank?) %>
-										<% @teachers.each do |teacher| %>
-											
-											<li>
-												<%= render partial: "conversations/contact", locals: {contact: teacher} %>
-												<span class="checkbox-style-block checkbox-style-block-<%= teacher.id %>"></span>													
-											</li>
-										
-										<% end %>
-									<% else %>
-										<h1 class="nothing-posted" style="margin-top:0;box-shadow:none;"> No Teachers added yet ! </h1>		
-									<% end %>														
-								</ul>
-							</li>
-
-					</ul>
-				</div>
-				<div class="tab-pane" id="all-classes-analytics">
-					<ul class="list-unstyled list-inline text-center">
-						<% if(!@grades.blank?) %>
-							<% @grades.each do |grade| %>
-								<% grade_section_models = grade.grades_sections.where(institute_id: @institute.id) %>
-								<% grades_sections_members_models = grade.grades_sections_members_models.where(institute_id: @institute.id) %>
-								<% teachers_count =  grades_sections_members_models.where(member_role: "Teacher").map(&:member).uniq.count%>
-								<% students_count =  grades_sections_members_models.where(member_role: "Student").map(&:member).uniq.count%>
-								<% parents_count =  grades_sections_members_models.where(member_role: "Parent").map(&:member).uniq.count%>
-
-								<li>
-									<div class="ch-item">	
-										<div class="ch-info">
-											<h3><%= teachers_count %> Teachers</h3>
-											
-											<p><%= students_count %> Students<br><%= parents_count %> Parents<a href="<%= institute_grade_path(@institute, grade) %>"><%= grade.grade_name %></a></p>
-										</div>
-										<div class="ch-thumb">
-											<span>Class <%= grade.grade_name %></span>
-											<span><%= grade_section_models.count %> Sections</span>
-										</div>
-									</div>
-									<button class="btn btn-info btn-custom-info"><%= link_to institute_grade_path(@institute, grade) do %>Go To Class <%= grade.grade_name %><% end %></button>
-								</li>
-								
-							<% end %>
-						<% else %>
-							<h1 class="nothing-posted" style="margin-top:0;box-shadow:none;"> No Classes added yet ! </h1>			
-						<% end %>
-						
-					</ul>
-				</div>
-				
-				<div class="tab-pane" id="all-dayplan">
-					<div class="container-width classRoute">
-						<% if(!@all_section_member_models.blank?) %>
-							<ul class="list-unstyled teachers-list index-conversation-modal" style ="max-height: none">
-								<% @all_section_member_models.each do |section_member_model| %>
-								
-									<% grade = section_member_model.grade %>
-									<% section = section_member_model.section %>
-									
-									<% if(!grade.blank? and !section.blank?) %>
-										<li>
-											<h6 class="teachers-list-heading">Class <%= grade.grade_name %><%= section.section_name %><i class="material-icons arrow-up-icon pull-right">&#xE316;</i></h6>
-											<div class="container-width classRoute">
-												<div class="calendar class-calendar" data-grade-id="<%= grade.id %>" data-section-id="<%= section.id %>" style="margin-top:0;box-shadow: 1px 2px 2px #5d5d5d;">
+		</div>
+		
+		<div class="tab-pane" id="all-dayplan">
+			<div class="container-width classRoute">
+				<ul class="nav nav-tabs text-center" role="tablist" id="tablist" style="background:#98c2d2;">		
+				<li class="active" style="width:100%;">
+					<a data-toggle="tab" href="#class-plan">
+						Class Plan
+					</a>
+				</li>
+			</ul>
+			<div class="tab-content admin-home-content">
+				<div class="tab-pane active" id="class-plan">
+					<% if(!@all_section_member_models.blank?) %>
+						<ul class="list-unstyled teachers-list index-conversation-modal" style ="max-height: none">
+							<% @all_section_member_models.each do |section_member_model| %>
 							
-												</div>
+								<% grade = section_member_model.grade %>
+								<% section = section_member_model.section %>
+								
+								<% if(!grade.blank? and !section.blank?) %>
+									<li>
+										<h6 class="teachers-list-heading" style="background:#b0b0b0;">Class <%= grade.grade_name %><%= section.section_name %><i class="material-icons arrow-up-icon pull-right">&#xE316;</i></h6>
+										<div class="container-width classRoute">
+											<div class="calendar class-calendar" data-grade-id="<%= grade.id %>" data-section-id="<%= section.id %>">
+						
+											</div>
 
-											</div>	
-										</li>
-									<% else %>	
+										</div>	
+									</li>
+								<% else %>	
 
-									<% end %>			
+								<% end %>			
 
-								<% end %>
-							</ul>
-						<% else %>
-							<h1 class="nothing-posted" style="margin-top:0;box-shadow:none;"> No Classes added yet ! </h1>						
-						<% end %>
-					</div>
+							<% end %>
+						</ul>			
+					<% end %>
 				</div>
-				
 			</div>
+			</div>
+		</div>
+		
+	</div>
 
 </div>					
 						
@@ -375,64 +384,6 @@
 	</div>
 </div>
 
-
-<script type="text/javascript">
-	$(".classRoute").parents("div.wrapper").find(".navbar-default").css("box-shadow", "none");
-	$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-		var target = $(this).attr('href');
-	
-		if(target == "#all-dayplan"){
-			initClassDayPlanCalendar();
-		}
-		
-	});
-
-	var calendarObjects = [];
-	var teacherCalendarObjects = [];		
-	function initClassDayPlanCalendar(){
-
-		$.each($('.class-calendar'), function(index, calendarElement){
-
-		  var gradeId = $(calendarElement).attr("data-grade-id");
-		  var sectionId = $(calendarElement).attr("data-section-id");
-		  var dayClickFlag = false;
-		  calendarObjects[index] = $(calendarElement).fullCalendar({
-			  header: {
-			    left: 'prev,next today',
-			    center: 'title',
-			    right: 'agendaWeek,agendaDay'
-			  },
-			  defaultView: "agendaDay",
-			  firstDay: 1,
-			  minTime: '08:00:00',
-        	  maxTime: '18:00:00',
-			  slotDuration: "00:30:00",
-			  scrollTime: "08:00:00",
-			  ignoreTimezone: true,
-			  displayEventTime : false,
-			  eventSources: [
-			    { 
-			      googleCalendarApiKey: 'AIzaSyBygb2VxPHEs8rV8j7dgreRvpowydmGrow',
-			      url: 'https://www.google.com/calendar/feeds/indian__en%40holiday.calendar.google.com/public/basic',
-
-				  color: '#ea5b31',   // an option!
-		  		  textColor: '#fff' // an option!
-
-
-			    },
-			    {
-			        url: '/institutes/<%= @institute.id %>/timetable_slots?grade_id='+gradeId + '&section_id='+sectionId,
-			        color: '#4646a7',   // an option!
-	    		    textColor: '#fff' // an option!
-			    }
-
-			  ]
-			});
-		});
-
-	}		
-
-</script>
 <script type="text/javascript">
     $(".classRoute").parents("div.wrapper").find(".navbar-default").css("box-shadow", "none");	
 	$(".modal-label").on("click", function(e){
@@ -457,7 +408,6 @@
     });
 	
 	var calendarObjects = [];
-	initClassDayPlanCalendar();
 	function initClassDayPlanCalendar(){
 
 		$.each($('.class-calendar'), function(index, calendarElement){
@@ -480,15 +430,6 @@
 			  ignoreTimezone: true,
 			  displayEventTime : false,
 			  eventSources: [
-			    { 
-			      googleCalendarApiKey: 'AIzaSyBygb2VxPHEs8rV8j7dgreRvpowydmGrow',
-			      url: 'https://www.google.com/calendar/feeds/indian__en%40holiday.calendar.google.com/public/basic',
-
-				  color: '#ea5b31',   // an option!
-		  		  textColor: '#fff' // an option!
-
-
-			    },
 			    {
 			        url: '/institutes/<%= @institute.id %>/timetable_slots?grade_id='+gradeId + '&section_id='+sectionId,
 			        color: '#4646a7',   // an option!

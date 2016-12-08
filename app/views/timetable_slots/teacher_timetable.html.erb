@@ -2,15 +2,34 @@
 	<a class="mybtn btn btn-link btn-xs pull-left" href="/"><i class="material-icons">&#xE317;</i>Day Plan</a>
 <% end %>
 
+<div class="container-width classRoute timetable-index-page"  style="max-width:600px;margin:0 auto;margin-top: 70px;">
+	<ul class="nav nav-tabs text-center" role="tablist" id="tablist" style="background:#98c2d2;">	
+		<li class="active" style="width:100%;">
+			<a data-toggle="tab" href="#teacher-plan">
+				Teacher Plan
+			</a>
+		</li>
+	</ul>
+	<div class="tab-content admin-home-content" style="margin-bottom:70px;">
+		<div class="tab-pane active" id="teacher-plan">
+		
+			<ul class="list-unstyled teachers-list index-conversation-modal" style ="max-height: none">
+				
+				<li>
+					<h6 class="teachers-list-heading" style="background:#b0b0b0;"><%= current_user.first_name %> <%= current_user.last_name %> (<%= current_user.details %>)<i class="material-icons arrow-up-icon pull-right">&#xE316;</i></h6>
+					<div class="container-width classRoute">
+						<div class="calendar teacher-calendar" data-teacher-id="<%= current_user.id %>">
+	
+						</div>
 
-<h6 class="teachers-list-heading"><%= current_user.first_name %> <%= current_user.last_name %> (<%= current_user.details %>)<i class="material-icons arrow-up-icon pull-right">&#xE316;</i></h6>
-<div class="container-width classRoute">
-	<div class="teacher-calendar" data-teacher-id="<%= current_user.id %>">
-
+					</div>	
+				</li>
+							
+			</ul>			
+			
+		</div>		
 	</div>
-
 </div>	
-
 <script>
 	
 	var teacherCalendarObjects = [];		

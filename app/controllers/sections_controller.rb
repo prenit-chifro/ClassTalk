@@ -29,45 +29,75 @@ class SectionsController < ApplicationController
 		if(!params[:step].blank? and params[:step].to_i == 1)
 			if(!params[:section_ids].blank?)
 			  @grade_section_models = []
-	          params[:section_ids].each do |section_id, section_extras|
+	          params[:section_ids].each do |section_id|
 	            
 	          	section = Section.find_by(id: section_id)
               	grade_section_model = @institute.institutes_grades_sections_models.create(grade_id: @grade.id, section_id: section.id, creator_id: current_user.id) if !@grade.blank? and !section.blank?
               	@grade_section_models << grade_section_model
-              	@section_conversation = current_user.created_conversations.create(conversation_name: "Class #{@grade.grade_name}#{section.section_name}".truncate(20), institute_id: @institute.id, grade_id: @grade.id, section_id: section.id, message_categories: "HomeWork", is_custom_group: false) if !@grade.blank? and !section.blank?
-
-	            @teachers = @institute.get_members_with_given_roles(["Teacher"])
-	            @subjects = Subject.all
-	            
+              	section_conversation = current_user.created_conversations.create(conversation_name: "Class #{@grade.grade_name}#{section.section_name}".truncate(20), institute_id: @institute.id, grade_id: @grade.id, section_id: section.id, message_categories: "HomeWork", is_custom_group: false) if !@grade.blank? and !section.blank?
 	          end
-	        
+
+	          if(!params[:section_ids_for_class_teacher].blank?)
+	          	params[:section_ids_for_class_teacher].each do |section_id, section_extras|
+	          	  section = Section.find_by(id: section_id)	
+	          	  section_conversation = Conversation.find_by(institute_id: @institute.id, grade_id: @grade.id, section_id: section.id, subject_id: nil, is_custom_group: false) 
+	          	  if(!section_extras[:classteacher_id].blank?)	
+	          	  	classteacher = User.find_by(id: section_extras[:classteacher_id])
+        			section.add_member_for_institute_and_grade(@institute, @grade, current_user, classteacher, "Teacher")
+                  	section.set_classteacher_for_institute_and_grade(@institute, @grade, classteacher) if !classteacher.blank?
+                  	section_conversation = Conversation.find_by(institute_id: @institute.id, grade_id: @grade.id, section_id: section.id, subject_id: nil, is_custom_group: false) 
+	                section_conversation.add_participant(classteacher.id, current_user.id, true) if !section_conversation.blank?
+
+	          	  end
+	          	end	
+	          end
+
+			  @teachers = @institute.get_members_with_given_roles(["Teacher"])
+          	  @subjects = Subject.all
+              render "add_new_section_step_1.js"   	    	        	  
 	        end 
-	        render "add_new_section_step_1.js"   
+	        
 		end
 		if(!params[:step].blank? and params[:step].to_i == 2)
-			if(!params[:section_ids].blank?)
-              params[:section_ids].each do |section_id, section_extras|
+			if(!params[:section_ids_for_subjects].blank?)
+              params[:section_ids_for_subjects].each do |section_id, section_extras|
                 section = Section.find_by(id: section_id)
-                @section_conversation = Conversation.find_by(is_custom_group: false, institute_id: @institute.id, grade_id: @grade.id, section_id: section.id, subject_id: nil)
+                section_conversation = Conversation.find_by(is_custom_group: false, institute_id: @institute.id, grade_id: @grade.id, section_id: section.id, subject_id: nil)
                 if(!section_extras[:subject_ids].blank?)
               		section_extras[:subject_ids].each do |subject_id, subject_extras|
 	                    subject = Subject.find_by(id: subject_id)
 	                    @institute.institutes_sections_subjects_models.create(institute_id: @institute.id, grade_id: @grade.id, section_id: section.id, subject_id: subject.id, creator_id: current_user.id) if !@grade.blank? and !section.blank? and !subject.blank?
-	                    @subject_conversation = current_user.created_conversations.create(conversation_name: "#{subject.subject_name}, #{grade.grade_name}#{section.section_name}".truncate(20), institute_id: @institute.id, grade_id: @grade.id, section_id: section.id, subject_id: subject.id, message_categories: "HomeWork", is_custom_group: false) if !@grade.blank? and !section.blank? and !subject.blank?
-	                    if(!subject_extras[:subject_teacher_id].blank?)
-	                    	subject_teacher = User.find_by(id: subject_extras[:subject_teacher_id])
-	                    	section.add_member_for_institute_and_grade(@institute, @grade, current_user, subject_teacher, "Teacher")
-	                    	section.set_subject_teacher_for_institute_and_grade_and_subject(@institute, @grade, subject, subject_teacher) if !subject_teacher.blank?
-	                    	@subject_conversation.add_participant(subject_teacher.id, current_user.id, true) if !subject_teacher.blank?  
-	                    	@section_conversation.add_participant(subject_teacher.id, current_user.id, true) if !@section_conversation.blank? and !subject_teacher.blank?
-	                    end
+	                    subject_conversation = current_user.created_conversations.create(conversation_name: "#{subject.subject_name}, #{@grade.grade_name}#{section.section_name}".truncate(20), institute_id: @institute.id, grade_id: @grade.id, section_id: section.id, subject_id: subject.id, message_categories: "HomeWork", is_custom_group: false) if !@grade.blank? and !section.blank? and !subject.blank?
 	                    
 	             	end
 	            end      
               end
-             	
+             
+              if(!params[:section_ids_for_subject_teacher].blank?)
+              	  params[:section_ids_for_subject_teacher].each do |section_id, section_extras|
+	                section = Section.find_by(id: section_id)
+	                section_conversation = Conversation.find_by(is_custom_group: false, institute_id: @institute.id, grade_id: @grade.id, section_id: section.id, subject_id: nil)
+	                if(!section_extras[:subject_ids_for_subject_teacher].blank?)
+	              		section_extras[:subject_ids_for_subject_teacher].each do |subject_id, subject_extras|
+		                    subject = Subject.find_by(id: subject_id)
+		                    subject_conversation = Conversation.find_by(is_custom_group: false, institute_id: @institute.id, grade_id: @grade.id, section_id: section.id, subject_id: subject.id) if !subject.blank?
+		                    if(!subject_extras[:subject_teacher_id].blank?)
+		                    	subject_teacher = User.find_by(id: subject_extras[:subject_teacher_id])
+		                    	if(!subject_teacher.blank?)	
+		                    		section.add_member_for_institute_and_grade(@institute, @grade, current_user, subject_teacher, "Teacher")
+	                    			section.set_subject_teacher_for_institute_and_grade_and_subject(@institute, @grade, subject, subject_teacher) if !subject.blank?
+	                    			subject_conversation.add_participant(subject_teacher.id, current_user.id, true) if !subject_conversation.blank? and !subject_teacher.blank?  
+	                    			section_conversation.add_participant(subject_teacher.id, current_user.id, true) if !section_conversation.blank? and !subject_teacher.blank?
+		                    	end
+		                    end
+		                    
+		             	end
+		            end      
+	              end
+              end
+                        
             end
-            render "add_new_section.js"
+            redirect_to institute_grade_path(@institute, @grade), format: :js
 		end
 	end
 

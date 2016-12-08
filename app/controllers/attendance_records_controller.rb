@@ -21,7 +21,7 @@ class AttendanceRecordsController < ApplicationController
 
 		if(current_user.role.include?("Institute Admin") or current_user.role.include?("Principal"))
 
-			@all_section_member_models = current_user.members_sections
+			@all_section_member_models = @institute.institutes_sections_members_models
 			if(!@all_section_member_models.blank?)
 				if(params[:grade_id].blank?)
 					params[:grade_id] = @all_section_member_models.first.grade_id
@@ -63,7 +63,7 @@ class AttendanceRecordsController < ApplicationController
 			render "admin_attendance_page"
 		end
 
-		if(current_user.role == "Teacher")
+		if(current_user.role.include?("Teacher"))
 			@assigned_classteacher_grades_sections_model = current_user.assigned_classteacher_grades_sections_models.first
 			if(!@assigned_classteacher_grades_sections_model.blank?)
 				@attendance_records = current_user.created_attendance_records.where("date >= ? AND date <= ?", params[:start_date], params[:end_date])
@@ -98,7 +98,7 @@ class AttendanceRecordsController < ApplicationController
 					
 					params[:start_date] = Date.yesterday
 					
-					@attendance_records = @institute.attendance_records.where("date >= ? AND date <= ?", params[:start_date], params[:end_date])
+					@attendance_records = @institute.attendance_records.where("date >= ? AND date <= ? AND grade_id = ? AND section_id = ?", params[:start_date], params[:end_date], @member_section_model.grade_id, @member_section_model.section_id)
 				end
 				@grade = @member_section_model.grade
 				@section = @member_section_model.section
@@ -107,7 +107,7 @@ class AttendanceRecordsController < ApplicationController
 				@total_days = @attendance_records.count
 				@total_present_days = 0
 				@attendance_records.each do |record|
-					@total_present_days = @total_present_days + 1 if record.present_student_ids.split(", ").include?(@student.id)
+					@total_present_days = @total_present_days + 1 if record.present_student_ids.split(", ").include?(@student.id.to_s)
 				end
 				@total_absent_days = @total_days - @total_present_days
 
@@ -135,7 +135,7 @@ class AttendanceRecordsController < ApplicationController
 					@total_days = @attendance_records.count
 					@total_present_days = 0
 					@attendance_records.each do |record|
-						@total_present_days = @total_present_days + 1 if record.present_student_ids.split(", ").include?(@student.id)
+						@total_present_days = @total_present_days + 1 if record.present_student_ids.split(", ").include?(@student.id.to_s)
 					end
 					@total_absent_days = @total_days - @total_present_days
 

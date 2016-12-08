@@ -31,7 +31,7 @@
 								<input type="checkbox" name="subject-selector" class="all-sections" id="all-sections"/>
 								<div class="division-upper-sections">	
 									<% @sections.each do |section| %>
-										<%= check_box_tag "grades[#{grade.id}][section_ids][]", section.id, false, {"data-role" => "none", class: "grade-section-names-input"} %>
+										<%= check_box_tag "grade_ids_for_section[#{grade.id}][section_ids][]", section.id, false, {"data-role" => "none", class: "grade-section-names-input"} %>
 										<span><%= section.section_name %></span>
 									<% end %>
 									

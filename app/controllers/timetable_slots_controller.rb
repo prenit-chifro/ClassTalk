@@ -40,7 +40,7 @@ class TimetableSlotsController < ApplicationController
 
     def index
         
-        if(current_user.role == "Institute Admin")
+        if(current_user.role.include?("Principal") or current_user.role.include?("Institute Admin"))
             respond_to do |format|
                 format.json do
 
@@ -69,7 +69,7 @@ class TimetableSlotsController < ApplicationController
             
         end
 
-        if(current_user.role == "Teacher")
+        if(current_user.role.include?("Teacher"))
             respond_to do |format|
                 format.json do
                     @teacher_timetable_slots = @institute.timetable_slots.where(teacher_id: current_user.id)
@@ -77,6 +77,7 @@ class TimetableSlotsController < ApplicationController
                 end
 
                 format.html do
+                    @teacher_timetable_slots = @institute.timetable_slots.where(teacher_id: current_user.id)
                     render :teacher_timetable   
                 end
             end

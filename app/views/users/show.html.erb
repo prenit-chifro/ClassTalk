@@ -25,26 +25,33 @@
 	                        			<p>Teaches <%= @teaching_sections_subjects_models.map{|ss| ss.subject.subject_name}.uniq.join(", ") %> in Class <%= @teaching_sections_subjects_models.map{|ss| ss.grade.grade_name + ss.section.section_name}.uniq.join(", ") %></p>
 	                        		<% end %>
 	                        	<% end %>
-	                        	
-								<h4>Personal Information</h4>
-								<p>Email Id: <span class="pull-right"> <%= @user.email %> </span></p>
-								<p>Mobile no: <span class="pull-right"> <%= @user.mobile_no %> </span></p>
-								<% if(@user.role == "Student" and !@user.father.blank?) %>
-									<h4> Father </h4>
-									<p><%= render partial: "conversations/contact", locals: {contact: @user.father} %></p>
-								<% end %>
-								<% if(@user.role == "Student" and !@user.mother.blank?) %>
-									<h4> Mother </h4>
-									<p><%= render partial: "conversations/contact", locals: {contact: @user.mother} %></p>
-								<% end %>
-
-								<% if(@user.role == "Parent" and !@user.child_ids.blank?) %>
-									<h4> Children </h4>
-									<% @user.children.each do |child| %>
-										<p><%= render partial: "conversations/contact", locals: {contact: child} %></p>
-									<% end %>
+	                        	<% if(user_signed_in? and (@user.id == current_user.id or current_user.role.include?("Principal") or current_user.role.include?("Institute Admin"))) %>
 									
+									<h4>Personal Information</h4>
+									<p>Email Id: <span class="pull-right"> <%= @user.email %> </span></p>
+									<p>Mobile no: <span class="pull-right"> <%= @user.mobile_no %> </span></p>
 								<% end %>
+								
+								<% if(user_signed_in? and (@user.id == current_user.id or current_user.role.include?("Principal") or current_user.role.include?("Institute Admin") or current_user.role.include?("Teacher"))) %>
+									
+									<% if(@user.role == "Student" and !@user.father.blank?) %>
+										<h4> Father </h4>
+										<p><%= render partial: "conversations/contact", locals: {contact: @user.father} %></p>
+									<% end %>
+									<% if(@user.role == "Student" and !@user.mother.blank?) %>
+										<h4> Mother </h4>
+										<p><%= render partial: "conversations/contact", locals: {contact: @user.mother} %></p>
+									<% end %>
+
+									<% if(@user.role == "Parent" and !@user.child_ids.blank?) %>
+										<h4> Children </h4>
+										<% @user.children.each do |child| %>
+											<p><%= render partial: "conversations/contact", locals: {contact: child} %></p>
+										<% end %>
+										
+									<% end %>
+								<% end %>
+								
 							</div>	
 							<% if(@user.id == current_user.id) %>					
 								<p>
@@ -70,7 +77,7 @@
 							<% end %>	
 							
                         </div>
-                        <% if(user_signed_in? and @user.id == current_user.id) %>
+                        <% if(user_signed_in? and (@user.id == current_user.id or current_user.role.include?("Principal") or current_user.role.include?("Institute Admin"))) %>
 							<div class="log-out">
 								<%= link_to edit_user_path(current_user) do %>
 									<button type="button" class="btn btn-danger">Edit Profile</button>

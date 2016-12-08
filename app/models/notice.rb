@@ -15,7 +15,11 @@ class Notice < ApplicationRecord
 	end
 
 	def can_user_edit_notice user
-		user.id == self.creator_id ? true : false
+		if(user.role.include?("Principal") or user.role.include?("Institute Admin"))
+			return true
+		else
+			return false	
+		end
 	end
 
 end

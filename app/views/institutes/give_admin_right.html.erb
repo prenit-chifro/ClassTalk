@@ -44,12 +44,20 @@
 			
 		<% end %>
 	<% else %>
-		<h1> No Staff to give Admin Rights to !</h1>
+		<h1  class="nothing-posted"> No Staff to give Admin Rights to !</h1>
 	<% end %>
 </div>
 <script type="text/javascript">
-	$('#startDatetimepicker, #endDatetimepicker').datetimepicker({
-		defaultDate: new Date(),
+	
+	$('#startDatetimepicker').datetimepicker({
+		defaultDate: Date.today,
+        format: 'DD/MM/YYYY'
+   	});
+
+   	var today = new Date(); tomorrow = today.setDate(today.getDate() + 1);
+
+   	$('#endDatetimepicker').datetimepicker({
+		defaultDate: tomorrow,
         format: 'DD/MM/YYYY'
    	});
 </script>

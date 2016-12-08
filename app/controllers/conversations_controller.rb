@@ -99,7 +99,7 @@ class ConversationsController < ApplicationController
 			@homework_conversations = @conversations.where("message_categories LIKE ?", "HomeWork%")
 			homework_messages_array = []
 
-			if(current_user.role == "Teacher")
+			if(current_user.role.include?("Teacher"))
 				if(!@homework_conversations.blank?)
 					@homework_conversations.each do |conversation|					
 					    conversation_homework_messages = conversation.messages.where(category: "HomeWork", creator_id: current_user.id).order(created_at: :desc)
@@ -155,7 +155,7 @@ class ConversationsController < ApplicationController
 
 		end
 
-		if(current_user.role == "Teacher")
+		if(current_user.role.include?("Teacher"))
 			@all_section_member_models = current_user.members_sections
 			@grades = @all_section_member_models.map(&:grade).uniq
 			@assigned_classteacher_grades_sections_model = current_user.assigned_classteacher_grades_sections_models.first
@@ -353,8 +353,9 @@ class ConversationsController < ApplicationController
 			@conversation_participant_model = @conversation.get_conversation_participant_model_for_participant(current_user)
 			
 			if(params[:page] and params[:page].to_i >= 2)
-				@Messages_category_messages = @conversation.messages.where("created_at >= ?", @conversation_participant_model.created_at).order(created_at: :desc).page(params[:page]).per(10)
+				
 				@Media_category_messages = @conversation.messages.order(created_at: :desc).includes(:attachments).where.not(attachments: { attachable_id: nil }).page(params[:page]).per(10)
+				@Messages_category_messages = @conversation.messages.where("created_at >= ?", @conversation_participant_model.created_at).where.not(id: @Media_category_messages.map(&:id)).order(created_at: :desc).page(params[:page]).per(10)
 
 				set_seen_status_to_recieved_messages(@Messages_category_messages)
 				set_seen_status_to_recieved_messages(@Media_category_messages)
@@ -369,8 +370,8 @@ class ConversationsController < ApplicationController
 				end
 			else 
 				
-				@Messages_category_messages = @conversation.messages.where("created_at >= ?", @conversation_participant_model.created_at).order(created_at: :desc).page(1).per(10)
 				@Media_category_messages = @conversation.messages.order(created_at: :desc).includes(:attachments).where.not(attachments: { attachable_id: nil }).page(1).per(10)
+				@Messages_category_messages = @conversation.messages.where("created_at >= ?", @conversation_participant_model.created_at).where.not(id: @Media_category_messages.map(&:id)).order(created_at: :desc).page(1).per(10)
 
 				set_seen_status_to_recieved_messages(@Messages_category_messages)
 				set_seen_status_to_recieved_messages(@Media_category_messages)

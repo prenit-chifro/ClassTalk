@@ -95,6 +95,13 @@
 							<% end %>
 						</div>
 						<div class="tab-pane" id="all-group-messages">	
+							<%= link_to new_group_conversations_path do %>		
+								<span class="add-member pull-right">
+									<span>New Group</span><i class="material-icons">&#xE7FE;</i>
+								</span>
+							<% end %>
+							<div class="clearfix mar-btm"> </div>
+							
 							<% if(!@group_conversations.blank?) %>
 								<% @group_conversations.each do |conversation| %>
 									

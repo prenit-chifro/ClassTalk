@@ -3,12 +3,15 @@
   Grades
 <% end %>
 <div class="container-width" style="max-width: 600px; margin: 0 auto; margin-top:60px; margin-bottom:70px;">
-	<%= link_to new_institute_grade_path(@institute) do %>
-		<div class="pull-right add-member">
-			<span>Add Class</span><i class="material-icons">&#xE7FE;</i>
-		</div>
+	<% if(current_user.role.include?("Principal") or current_user.role.include?("Institute Admin")) %>
+		<%= link_to new_institute_grade_path(@institute) do %>
+			<div class="pull-right add-member">
+				<span>Add Class</span><i class="material-icons">&#xE7FE;</i>
+			</div>
+		<% end %>
+		<div class="clearfix mar-btm"></div>
+		
 	<% end %>
-	<div class="clearfix mar-btm"></div>
 	<ul class="list-unstyled list-inline text-center">
 		<% if(!@grades.blank?) %>
 			<% @grades.each do |grade| %>
