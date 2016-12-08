@@ -177,5 +177,10 @@
         $(this).css("backgroundColor",randomColors[randomNum]);
         randomColors.slice(randomNum, 1);
     });
+    
+	$(document).one("turbolinks:load", function(){
+		$(".classRoute").parents("div.wrapper").find(".navbar-default").css("box-shadow", "none");
+		
+	});
 
 </script>

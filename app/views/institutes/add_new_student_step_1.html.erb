@@ -65,7 +65,7 @@
 		<div class="form-group">
 			<%= number_field_tag :roll_no, nil, placeholder: "Admission No", class:"form-control", required: true %>
 		</div>
-		<label for="transport-checkbox">
+		<label for="transport-checkbox" style="display: block;">
 			<div class="nothing-posted" style="font-size:12px;margin-bottom:10px;">
 				<span style="vertical-align:middle;">Is using School Transport</span> <%= check_box_tag :is_using_transport, true, false, style:"vertical-align:middle", id: "transport-checkbox" %> 
 			</div>

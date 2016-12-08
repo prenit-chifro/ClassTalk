@@ -5,7 +5,7 @@
 <% if(@grades.blank?) %>
 	<h1 class="nothing-posted">No Classes added yet</h1>
 <% else %>
-	<div class="new-class-step-1-form-div" style="max-width: 700px; margin: 0 auto;">
+	<div class="new-class-step-1-form-div" style="max-width: 700px; margin: 0 auto; margin-bottom: 70px;">
 		<%= form_tag institute_grades_path(@institute), method: :post, multipart: true, remote: true, id: "new-class-form" do %>
 			<%= hidden_field_tag :step, 1 %>
 				
@@ -43,7 +43,7 @@
 				<% end %>
 			</div>	
 			<div class="clearfix"></div>
-			<div class="text-center col-md-6 col-md-offset-3">
+			<div class="text-center col-md-6 col-md-offset-3" style="margin-bottom: 70px;">
 				<div class="form-group form-button-register">
 					<%= button_tag(type:"submit", class: "form-control btn btn-login", data: {disable_with: "Please Wait..."}) do %>
 						Next

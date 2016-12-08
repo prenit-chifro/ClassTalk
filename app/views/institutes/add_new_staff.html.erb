@@ -44,7 +44,7 @@
 			<% end %>
 			<%= select_tag :role, options_for_select([["Select Role", ""], ["Principal", "Principal"], ["Institute Admin","Institute Admin"], ["Teacher", "Teacher"]], default_option), class: "form-control", required: true %>
 		</div>
-		<label for="transport-checkbox">
+		<label for="transport-checkbox" style="display: block;">
 			<div class="nothing-posted" style="font-size:12px;margin-bottom:10px;">
 				<span style="vertical-align:middle;">Is using School Transport</span> <%= check_box_tag :is_using_transport, true, false, style:"vertical-align:middle", id: "transport-checkbox" %> 
 			</div>

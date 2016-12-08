@@ -830,7 +830,7 @@ h6.teachers-list-heading + div.classRoute{
 	left:0;
 	right:0;
 	background-color: #2ad;
-	z-index:4;
+	z-index:1041;
 }
 .footer-list{
 	margin:0;
@@ -2094,7 +2094,12 @@ div.calendar div.fc-agendaWeek-view tbody.fc-body div.fc-bg > table >tbody>tr>td
 		display:block;
 		float:none;
 	}
-	
+	.truncate{
+		width:100px;
+		text-overflow:ellipsis;
+		white-space:nowrap;
+		overflow:hidden;
+	}
 }
 @media only screen and (max-width:350px){
 	.main-navbar-brand a i{
@@ -2140,6 +2145,11 @@ div.calendar div.fc-agendaWeek-view tbody.fc-body div.fc-bg > table >tbody>tr>td
 	}
 }
 @media (max-width:767px){
+	.active-navigation a{
+		background:#71c3c3;
+		color: #fff !important;
+		border-bottom:0;
+	}
 	ul.right-menu-toggle{
 		right:60px;
 	}
