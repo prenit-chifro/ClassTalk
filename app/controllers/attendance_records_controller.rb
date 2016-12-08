@@ -50,6 +50,7 @@ class AttendanceRecordsController < ApplicationController
 				
 				@section_students =  @section.get_members_with_given_roles_for_institute_and_grade_with_role(@institute, @grade, "Student")
 				@section_attendance_records = @all_attendance_records.where(grade_id: @grade.id, section_id: @section.id)
+				@todays_attendance_record = @section_attendance_records.find_by(date: Date.today)
 				
 				@total_section_students = @section_students.count * @section_attendance_records.count
 				@total_section_present_students = 0
@@ -61,6 +62,7 @@ class AttendanceRecordsController < ApplicationController
 				
 			end
 			render "admin_attendance_page"
+			return
 		end
 
 		if(current_user.role.include?("Teacher"))
@@ -184,6 +186,22 @@ class AttendanceRecordsController < ApplicationController
 
 	def destroy
 
+	end
+
+	def section_attendance_record_form
+		if(!params[:grade_id].blank? and !params[:section_id].blank?)
+			@grade = Grade.find_by(id: params[:grade_id])
+			@section = Section.find_by(id: params[:section_id])
+			@class_students =  @section.get_members_with_given_roles_for_institute_and_grade_with_role(@institute, @grade, "Student")
+			if(params[:date].blank?)
+				@date = Date.today	
+			else
+				@date = Date.parse(params[:date]) 	
+			end
+			
+			@attendance_record = @institute.attendance_records.find_by(date: @date, grade_id: @grade.id, section_id: @section.id) 
+			render format: :js, layout: false if request.xhr?
+		end
 	end
 
 end

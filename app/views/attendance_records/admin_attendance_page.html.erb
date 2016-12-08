@@ -87,7 +87,7 @@
 			    	<th>Student</th>
 			    	<% if(!@section_attendance_records.blank?) %>
 			    		<% (@section_attendance_records.first.date..@section_attendance_records.last.date).to_a.each do |date| %>
-			    			<th><%= date.strftime("%b %d") %></th>	
+			    			<th><a class="attendance-record-date" data-grade-id="<%= @grade.id  if !@grade.blank? %>" data-section-id="<%= @section.id if !@section.blank? %>" data-date="<%= date %>"><%= date.strftime("%b %d") %></a></th>	
 			    		<% end %>
 			    	<% end %>
 		    		
@@ -121,6 +121,30 @@
 	<p class="no-attendance-records">Sorry ! No records found !</p>
 
 <% end %>
+
+<div class="modal fade" id="attendance-modal" role="dialog">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">						
+			<div class="modal-header">
+				<div class="">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<form onsubmit="return false;" class="search-form">
+						<div class="form-group has-feedback">
+							<i class="material-icons search-attendance-icon">&#xE8B6;</i> 
+							<input type="text" class="form-control search-attendance-input" name="search" id="search">
+						</div>
+					</form>
+					<h4 class="modal-title">
+						
+					</h4>
+				</div>	
+			</div>
+			<div class="modal-body">
+				
+			</div>
+		</div>
+	</div>
+</div>
 
 <script type="text/javascript">
 	
@@ -220,4 +244,20 @@
 
 		Turbolinks.visit('/institutes/<%= @institute.id %>/attendance_records?start_date=' + start_date + '&end_date=' + end_date + '&grade_id=' + grade_id + '&section_id=' + section_id);
 	}
+
+	$(".attendance-record-date").click(function(){
+		var date = $(this).attr("data-date");
+		var gradeId = $(this).attr("data-grade-id");
+		var sectionId = $(this).attr("data-section-id");
+		$.ajax({
+  			url: '<%= section_attendance_record_form_institute_attendance_records_path(@institute) %>.js?grade_id='+gradeId + '&section_id='+sectionId + '&date=' + date,
+      		method: "GET",
+        	complete: function(data){
+        		if(data.status == "200"){
+        			eval(data.responseText);
+        		}
+        	}	
+  		});
+	});
+	
 </script>
