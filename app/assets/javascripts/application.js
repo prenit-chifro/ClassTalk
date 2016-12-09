@@ -266,7 +266,7 @@ $(document).on("turbolinks:load", function(){
 		var linkMedia = $(this).attr("data-href");
 		var markupArryForMedia=[
 			'<p style="max-width: 300px; margin: 0 auto;">',
-				'<iframe style="width: 100%;" height= "200" src="' linkMedia  '"></iframe>',
+				'<iframe style="width: 100%;" height= "200" src="' +  linkMedia + '"></iframe>',
 			'</p>' 
 		];
 		$(this).html(markupArryForMedia.join());
