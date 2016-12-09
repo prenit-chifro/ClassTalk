@@ -30,55 +30,7 @@
 				<%= hidden_field_tag :institute_latitude, nil, id: "institute_latitude-field" %>
 				<%= hidden_field_tag :institute_longitude, nil, id: "institute_longitude-field" %>
 				<br>
-				<div class="grades-div text-left" style="display: none;">
-					Choose Grades and Subjects your Institute offer
-					<% Grade.all.each do |grade| %>					
-						<div class="main-grade">
-		
-							<ul class="detectul">
-								<li class="listitems"> 
-									<div class="checkbox">
-										<label for="grades-division-<%= grade.id %>" class="grades-division">
-											<%= check_box_tag "grade_ids[]", grade.id, false, { class: "checkbox grade-names-input", id: "grades-division-#{grade.id}"} %>
-											<span>Class <%= grade.grade_name %></span>
-											<span><i class="material-icons circle-arrow-down-icon" style="top:9px;right:6px;font-size:27px;color: #fff;">&#xE313;</i></span>
-										</label>
-									</div>
-								</li>
-							</ul>	
-							<div class="division-criterias" style="display:none;">
-								<div class="division-section">
-									<span class="text-muted division-criteria-style division-criteria-subject-style">All Sections: </span>
-									<input type="checkbox" name="subject-selector" class="all-sections" id="all-sections"/>
-									<div class="division-upper-sections">	
-										<% Section.all.each do |section| %>
-											<%= check_box_tag "grades[#{grade.id}][section_ids][]", section.id, false, {"data-role" => "none", class: "grade-section-names-input"} %>
-											<span><%= section.section_name %></span>
-										<% end %>
-										
-									</div>
-									
-								</div>
-								
-								<div class="division-subjects">	
-									<span class="text-muted division-criteria-style division-criteria-subject-style">All subjects: </span>
-									<input type="checkbox" name="subject-selector" class="all-subjects" id="all-subjects"/>
-									
-									<div class="division-upper-subjects">	
-										<% Subject.all.each do |subject| %>		
-											<label for="grade-subject-names-input-<%= subject.subject_name %>-<%= grade.id %>" class="labelForSubjects">
-												<div class="division-inner-subjects">											
-													<%= check_box_tag "grades[#{grade.id}][subject_ids][]", subject.id, false, {"data-role" => "none", class: "grade-subject-names-input grade-subject-names-input-#{subject.subject_name}", id: "grade-subject-names-input-#{subject.subject_name}-#{grade.id}"} %>
-													<span><%= subject.subject_name %></span>
-												</div>		
-											</label>
-										<% end %>
-									</div>								
-								</div>	
-							</div>	
-						</div>					
-					<% end %>
-				</div>
+				
 				<div class="form-group">
 					<%= text_field_tag :institute_contact_info, nil, placeholder: "Email or Mobile no of Institute Contact Person", id: "school_contact_info-input",class: "form-control", style: "display: none" %>
 				</div>
@@ -97,48 +49,27 @@
 <script>
 	$(document).one("ready turbolinks:load", initMap);
 
-	<% if(["Principal", "Institute Admin"].include?(@user.role)) %>
-		$(".grades-div").show();
-	<% end %>
-	
 	<% if(["Teacher", "Student", "Parent"].include?(@user.role)) %>
 		$("#school_contact_info-input").show();
 		$("#school_contact_info-input").attr("required", true);
 	<% end %>
 
-	$(document).on('change','.grade-names-input',function(){
-		if($(this).is(':checked')) {
-			$(this).parents(".main-grade").find(".division-criterias").slideDown();
-			$(this).parents("ul.detectul").find(".circle-arrow-down-icon").addClass("arrow-circle-up");
-		} else {
-			$(this).parents(".main-grade").find(".division-criterias").slideUp();
-			$(this).parents("ul.detectul").find(".circle-arrow-down-icon").removeClass("arrow-circle-up");
-		}
-	});
-	$(".all-subjects").change(function (e) {
-		$(this).parents(".main-grade").find(".division-upper-subjects input:checkbox").prop('checked', $(this).prop("checked"));
-		e.preventDefault();
-	});
-	$(".all-sections").change(function(e){
-		$(this).parents(".main-grade").find(".division-upper-sections input:checkbox").prop('checked', $(this).prop("checked"));
-	});
-
 	$("#role-input").change(function(){
 		if($(this).val() == ""){
-			$('.grades-div').hide();
+			
 			$("#school_contact_info-input").hide();
 			$("#school_contact_info-input").attr("required", false);
 			
 			
 		}
 		if($(this).val() == "Institute Admin" || $(this).val() == "Principal"){
-			$('.grades-div').show();
+			
 			$("#school_contact_info-input").hide();
 			$("#school_contact_info-input").attr("required", false);
 		}
 
 		if($(this).val() == "Teacher" || $(this).val() == "Student" || $(this).val() == "Parent"){
-			$('.grades-div').hide();
+			
 			$("#school_contact_info-input").show();
 			$("#school_contact_info-input").attr("required", true);
 		}

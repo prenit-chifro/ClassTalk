@@ -22,28 +22,40 @@
 	<div class="tab-content" style="max-width: 600px; margin: 0 auto; margin-bottom: 70px">
 		<div class="tab-pane active" id="all-admins" style="max-height: 100%;">
 			<% if(current_user.role.include?("Principal") or current_user.role.include?("Institute Admin")) %>
-				<%= link_to give_admin_right_institute_path(@institute) do %>
-					<div class="pull-right add-member">
-						<span>Give Admin Rights</span><i class="material-icons">&#xE7FE;</i>
-					</div>
-				<% end %>
+				<div class="max-width-button">
+					<%= link_to give_admin_right_institute_path(@institute) do %>
+						<div class="pull-right add-member">
+							<span>Give Admin Rights</span><i class="material-icons">&#xE7FE;</i>
+						</div>
+					<% end %>
+					<%= link_to add_new_staff_institute_path(@institute, role: "Institute Admin") do %>
+						<div class="pull-right add-member">
+							<span>Add Admin</span><i class="material-icons">&#xE7FE;</i>
+						</div>
+					<% end %>
+				</div>	
+
 				<%= link_to revoke_admin_right_institute_path(@institute) do %>
-					<div class="pull-right add-member">
+					<div class="pull-right add-member add-revoke-rights">
 						<span>Revoke Admin Rights</span><i class="material-icons">&#xE7FE;</i>
 					</div>
 				<% end %>
-				
-				<%= link_to add_new_staff_institute_path(@institute, role: "Institute Admin") do %>
-					<div class="pull-right add-member">
-						<span>Add Admin</span><i class="material-icons">&#xE7FE;</i>
+				<form onsubmit="return false;" class="search-form">
+					<div class="pull-left form-group has-feedback" style="margin-top: 8px;">
+						<i class="material-icons search-attendance-icon">&#xE8B6;</i> 
+						<input type="text" class="form-control search-conversation-admin-page" name="search" id="search" autocomplete="off">
 					</div>
-				<% end %>
+				</form>
+				
 			<% end %>
 			<div class="clearfix mar-btm"></div>
+			
 			<% if(!@admins.blank?) %>
-				<% @admins.each do |admin| %>
-					<%= render partial: "conversations/contact", locals: {contact: admin}	 %>	
-				<% end %>
+				<div class="admin-manage-page">
+					<% @admins.each do |admin| %>
+						<%= render partial: "conversations/contact", locals: {contact: admin}	 %>	
+					<% end %>
+				</div>	
 			<% else %>	
 				<h1 class="nothing-posted"> No Admins added yet ! </h1>		
 			<% end %>
@@ -68,6 +80,12 @@
 
 		<div class="tab-pane" id="all-teachers" style="max-height: 100%;">
 			<% if(current_user.role.include?("Principal") or current_user.role.include?("Institute Admin")) %>
+				<form onsubmit="return false;" class="search-form">
+					<div class="pull-left form-group has-feedback" style="margin-top: 8px;">
+						<i class="material-icons search-attendance-icon">&#xE8B6;</i> 
+						<input type="text" class="form-control search-conversation-teacher-page" name="search" id="search" autocomplete="off">
+					</div>
+				</form>
 				<%= link_to add_new_staff_institute_path(@institute, role: "Teacher") do %>
 					<div class="pull-right add-member">
 						<span>Add Teacher</span><i class="material-icons">&#xE7FE;</i>
@@ -76,9 +94,11 @@
 			<% end %>
 			<div class="clearfix mar-btm"></div>
 			<% if(!@teachers.blank?) %>
-				<% @teachers.each do |contact| %>
-					<%= render partial: "conversations/contact", locals: {contact: contact}	 %>	
-				<% end %>
+				<div class="teacher-manage-page">
+					<% @teachers.each do |contact| %>
+						<%= render partial: "conversations/contact", locals: {contact: contact}	 %>	
+					<% end %>
+				</div>	
 			<% else %>	
 				<h1 class="nothing-posted"> No Teachers added yet ! </h1>			
 			<% end %>
@@ -87,6 +107,12 @@
 		<% if(current_user.role.include?("Principal") or current_user.role.include?("Institute Admin") or current_user.role.include?("Teacher")) %>
 			<div class="tab-pane" id="all-students" style="max-height: 100%;">
 				<% if(current_user.role.include?("Principal") or current_user.role.include?("Institute Admin")) %>
+					<form onsubmit="return false;" class="search-form">
+						<div class="pull-left form-group has-feedback" style="margin-top: 8px;">
+							<i class="material-icons search-attendance-icon">&#xE8B6;</i> 
+							<input type="text" class="form-control search-conversation-student-page" name="search" id="search" autocomplete="off">
+						</div>
+					</form>
 					<%= link_to add_new_student_institute_path(@institute) do %>
 						<div class="pull-right add-member">
 							<span>Add Student</span><i class="material-icons">&#xE7FE;</i>
@@ -95,9 +121,11 @@
 				<% end %>
 				<div class="clearfix mar-btm"></div>
 				<% if(!@students.blank?) %>
-					<% @students.each do |contact| %>
-						<%= render partial: "conversations/contact", locals: {contact: contact} %>		
-					<% end %>
+					<div class="student-manage-page">
+						<% @students.each do |contact| %>
+							<%= render partial: "conversations/contact", locals: {contact: contact} %>		
+						<% end %>
+					</div>	
 				<% else %>	
 					<h1 class="nothing-posted"> No Students added yet ! </h1>				
 				<% end %>		
@@ -106,6 +134,12 @@
 
 			<div class="tab-pane" id="all-parents" style="max-height: 100%;">
 				<% if(current_user.role.include?("Principal") or current_user.role.include?("Institute Admin")) %>
+					<form onsubmit="return false;" class="search-form">
+						<div class="pull-left form-group has-feedback" style="margin-top: 8px;">
+							<i class="material-icons search-attendance-icon">&#xE8B6;</i> 
+							<input type="text" class="form-control search-conversation-parent-page" name="search" id="search" autocomplete="off">
+						</div>
+					</form>
 					<%= link_to add_new_parent_institute_path(@institute) do %>
 						<div class="pull-right add-member">
 							<span>Add Parent</span><i class="material-icons">&#xE7FE;</i>
@@ -114,9 +148,11 @@
 				<% end %>
 				<div class="clearfix mar-btm"></div>
 				<% if(!@parents.blank?) %>
-					<% @parents.each do |contact| %>
-						<%= render partial: "conversations/contact", locals: {contact: contact} %>		
-					<% end %>
+					<div class="parent-manage-page">
+						<% @parents.each do |contact| %>
+							<%= render partial: "conversations/contact", locals: {contact: contact} %>		
+						<% end %>
+					</div>	
 				<% else %>	
 					<h1 class="nothing-posted"> No Parents added yet ! </h1>				
 				<% end %>
@@ -177,5 +213,69 @@
         $(this).css("backgroundColor",randomColors[randomNum]);
         randomColors.slice(randomNum, 1);
     });
-
+    
+	$(document).one("turbolinks:load", function(){
+		$(".classRoute").parents("div.wrapper").find(".navbar-default").css("box-shadow", "none");
+		
+	});
+	$('.search-conversation-admin-page').on("keyup keydown", function() {
+		
+	    var value = $(this).val();
+	    if(value){
+	    	$(".admin-manage-page").hide().filter(function () {
+				if($(".media-heading", this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0 || $(".role-small", this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0){					
+					return true;
+				}else{
+					return false;
+				}			    
+			}).show();
+	    }else{
+	    	$(".admin-manage-page").show();
+	    }    
+	});
+	$('.search-conversation-teacher-page').on("keyup keydown", function() {
+		
+	    var value = $(this).val();
+	    if(value){
+	    	$(".teacher-manage-page").hide().filter(function () {
+				if($(".media-heading", this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0 || $(".role-small", this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0 ) {					
+					return true;
+				}else{
+					return false;
+				}			    
+			}).show();
+	    }else{
+	    	$(".teacher-manage-page").show();
+	    }    
+	});
+	$('.search-conversation-student-page').on("keyup keydown", function() {
+		
+	    var value = $(this).val();
+	    if(value){
+	    	$(".student-manage-page").hide().filter(function () {
+				if($(".media-heading", this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0 || $(".role-small", this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0 ){					
+					return true;
+				}else{
+					return false;
+				}			    
+			}).show();
+	    }else{
+	    	$(".student-manage-page").show();
+	    }    
+	});
+	$('.search-conversation-parent-page').on("keyup keydown", function() {
+		
+	    var value = $(this).val();
+	    if(value){
+	    	$(".parent-manage-page").hide().filter(function () {
+				if($(".media-heading", this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0 || $(".role-small", this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0 ){					
+					return true;
+				}else{
+					return false;
+				}			    
+			}).show();
+	    }else{
+	    	$(".parent-manage-page").show();
+	    }    
+	});
 </script>

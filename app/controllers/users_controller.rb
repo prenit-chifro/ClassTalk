@@ -54,7 +54,12 @@ class UsersController < ApplicationController
       @user.email = params[:email] if !params[:email].blank?
       @user.isd_code = params[:isd_code] if !params[:isd_code].blank?
       @user.mobile_no = params[:mobile_no] if !params[:mobile_no].blank?
-      
+      @user.staff_id = params[:staff_id] if !params[:staff_id].blank?
+      @user.roll_no = params[:roll_no] if !params[:roll_no].blank?
+      @user.address = params[:address] if !params[:address].blank?
+      @user.pincode = params[:pincode] if !params[:pincode].blank?
+      @user.date_of_birth = Date.parse(params[:date_of_birth]) if !params[:date_of_birth].blank?
+      @user.is_using_transport = params[:is_using_transport]
       if(!params[:father_id].blank?)
 
           @father = User.find_by(id: params[:father_id])

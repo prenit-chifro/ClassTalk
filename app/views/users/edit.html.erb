@@ -26,77 +26,133 @@
 				<div class="form-group">
 					<%= text_field_tag :last_name, @user.last_name, placeholder: "Last Name", "autocomplete"=>"off", class:"form-control", required: true %>
 				</div>
-				<div class="form-group phone-number-group">
-					<%= number_field_tag :isd_code, 91, placeholder: "ISD code", id: "new-member-isd-code",class:"form-control isd-control", "autocomplete"=>"off" %>
-					<%= number_field_tag :mobile_no, @user.mobile_no, placeholder: "Contact Number", id: "new-member-contact-no",class:"form-control", class:"form-control", "autocomplete"=>"off" %>
-				</div>
-				<div class="clearfix mar-btm"></div>
+
 				<div class="form-group">
-					<%= email_field_tag :email, @user.email, placeholder: "Email", class:"form-control", "autocomplete"=>"off" %>
-				</div>
-				<div class="form-group">
-					<%= select_tag :gender, options_for_select([["Gender", ""], ["Male", "male"], ["Female", "female"]],["Gender", @user.gender]), class:"form-control"  %>
+					<%= select_tag :gender, options_for_select([["Gender", ""], ["Male", "male"], ["Female", "female"]],[@user.gender.blank? ? "Gender" : @user.gender.capitalize, @user.gender.blank? ? "" : @user.gender]), class:"form-control"  %>
 				</div>
 
-				<% if(current_user.role == "Parent") %>
-					<% if(!@section_member_models.blank?) %>
-						<% @section_member_models.each do |section_member_model| %>
-							<% grade = section_member_model.grade %>
-							<% section = section_member_model.section %>
-							<%  students = section.get_members_with_given_roles_for_institute_and_grade_with_role(@institute, grade, ["Student"]) %>
-							<% options = [["Select your Child in Class #{grade.grade_name}#{section.section_name}", ""]] %>
-							<% default_option = ["Select your Child in Class #{grade.grade_name}#{section.section_name}", ""] %>
-							<% students.each do |student| %>
-								<% options << [student.first_name + " " + student.last_name, student.id] %>
-								<% if(!@children.blank? and @children.include?(student)) %>
-									<% default_option = [student.first_name + " " + student.last_name, student.id] %>
+				<% if(current_user.role.include?("Principal") or current_user.role.include?("Institute Admin")) %>
+					<div class="form-group phone-number-group">
+						<%= number_field_tag :isd_code, 91, placeholder: "ISD code", id: "new-member-isd-code",class:"form-control isd-control", "autocomplete"=>"off" %>
+						<%= number_field_tag :mobile_no, @user.mobile_no, placeholder: "Contact Number", id: "new-member-contact-no",class:"form-control", "autocomplete"=>"off" %>
+					</div>
+					<div class="clearfix mar-btm"></div>
+					<div class="form-group">
+						<%= email_field_tag :email, @user.email, placeholder: "Email", class:"form-control", "autocomplete"=>"off" %>
+					</div>
+
+					<% if(@user.role == "Parent") %>
+						<div class="form-group">
+							<%= text_field_tag :address, @user.address, placeholder: "Address", class:"form-control", "autocomplete"=>"off" %>
+						</div>
+						<div class="form-group">
+							<%= number_field_tag :pincode, @user.address, placeholder: "Pin Code", class:"form-control", "autocomplete"=>"off" %>
+						</div>
+						<label for="transport-checkbox">
+							<div class="nothing-posted" style="font-size:12px;margin-bottom:10px;">
+								<span style="vertical-align:middle;">Is using School Transport</span> <%= check_box_tag :is_using_transport, true, @user.is_using_transport,style:"vertical-align:middle", id: "transport-checkbox" %> 
+							</div>
+						</label>
+						
+						<% if(!@section_member_models.blank?) %>
+							<% @section_member_models.each do |section_member_model| %>
+								<% grade = section_member_model.grade %>
+								<% section = section_member_model.section %>
+								<%  students = section.get_members_with_given_roles_for_institute_and_grade_with_role(@institute, grade, ["Student"]) %>
+								<% options = [["Select Child in Class #{grade.grade_name}#{section.section_name}", ""]] %>
+								<% default_option = ["Select Child in Class #{grade.grade_name}#{section.section_name}", ""] %>
+								<% students.each do |student| %>
+									<% options << [student.first_name + " " + student.last_name, student.id] %>
+									<% if(!@children.blank? and @children.include?(student)) %>
+										<% default_option = [student.first_name + " " + student.last_name, student.id] %>
+									<% end %>
 								<% end %>
+								<label><%= "Select Child in Class #{grade.grade_name}#{section.section_name}" %> </label>
+								<%= select_tag "child_ids[]", options_for_select(options, default_option), class: "form-control" %>
 							<% end %>
-							<label><%= "Select your Child in Class #{grade.grade_name}#{section.section_name}" %> </label>
-							<%= select_tag "child_ids[]", options_for_select(options, default_option), class: "form-control" %>
+							
 						<% end %>
+					<% end %>
+
+					<% if(@user.role == "Student") %>
+						<div class="form-group">
+							<%= text_field_tag :roll_no, @user.roll_no, placeholder: "Admission Number", class:"form-control", "autocomplete"=>"off" %>
+						</div>
+						<div class="form-group">
+							<%= date_field_tag :date_of_birth, @user.date_of_birth, placeholder: "Date of Birth", class:"form-control", "autocomplete"=>"off" %>
+						</div>
+						<div class="form-group">
+							<%= text_field_tag :address, @user.address, placeholder: "Address", class:"form-control", "autocomplete"=>"off" %>
+						</div>
+						<div class="form-group">
+							<%= number_field_tag :pincode, @user.address, placeholder: "Pin Code", class:"form-control", "autocomplete"=>"off" %>
+						</div>
+						<label for="transport-checkbox">
+							<div class="nothing-posted" style="font-size:12px;margin-bottom:10px;">
+								<span style="vertical-align:middle;">Is using School Transport</span> <%= check_box_tag :is_using_transport, true, @user.is_using_transport,style:"vertical-align:middle", id: "transport-checkbox" %> 
+							</div>
+						</label>
+						
+						<% if(!@male_parents.blank?) %>
+							<% options = [["Select Father", ""]] %>
+							<% @male_parents.each do |parent| %>
+								<% options << [parent.first_name + " " + parent.last_name, parent.id] %>
+							<% end %>
+							<% if(!@father.blank?) %>
+								<% default_option = [@father.first_name + " " + @father.last_name, @father.id] %>
+							<% else %>
+								<% default_option = ["Select Father", ""] %>
+							<% end %>
+							<label> Select Father </label>
+							<%= select_tag :father_id, options_for_select(options, default_option), class: "form-control" %>
+						<% end %>
+						<% if(!@female_parents.blank?) %>
+							<% options = [["Select Mother", ""]] %>
+							<% @female_parents.each do |parent| %>
+								<% options << [parent.first_name + " " + parent.last_name, parent.id] %>
+							<% end %>
+							<% if(!@mother.blank?) %>
+								<% default_option = [@mother.first_name + " " + @mother.last_name, @mother.id] %>
+							<% else %>
+								<% default_option = ["Select Mother", ""] %>
+							<% end %>
+							<label> Select Father </label>
+							<%= select_tag :mother_id, options_for_select(options, default_option), class: "form-control" %>
+						<% end %>
+					<% end %>
+					<% if(!@user.role.include?("Student") and !@user.role.include?("Parent")) %>
+						<div class="form-group">
+							<%= text_field_tag :staff_id, @user.staff_id, placeholder: "Staff ID", class:"form-control", "autocomplete"=>"off" %>
+						</div>
+						<div class="form-group">
+							<%= text_field_tag :address, @user.address, placeholder: "Address", class:"form-control", "autocomplete"=>"off" %>
+						</div>
+						<div class="form-group">
+							<%= number_field_tag :pincode, @user.pincode, placeholder: "Pin Code", class:"form-control", "autocomplete"=>"off" %>
+						</div>
+						<label for="transport-checkbox">
+							<div class="nothing-posted" style="font-size:12px;margin-bottom:10px;">
+								<span style="vertical-align:middle;">Is using School Transport</span> <%= check_box_tag :is_using_transport, true, @user.is_using_transport,style:"vertical-align:middle", id: "transport-checkbox" %> 
+							</div>
+						</label>
 						
 					<% end %>
 				<% end %>
-
-				<% if(current_user.role == "Student") %>
-					<% if(!@male_parents.blank?) %>
-						<% options = [["Select your Father", ""]] %>
-						<% @male_parents.each do |parent| %>
-							<% options << [parent.first_name + " " + parent.last_name, parent.id] %>
-						<% end %>
-						<% if(!@father.blank?) %>
-							<% default_option = [@father.first_name + " " + @father.last_name, @father.id] %>
-						<% else %>
-							<% default_option = ["Select your Father", ""] %>
-						<% end %>
-						<label> Select your Father </label>
-						<%= select_tag :father_id, options_for_select(options, default_option), class: "form-control" %>
-					<% end %>
-					<% if(!@female_parents.blank?) %>
-						<% options = [["Select your Mother", ""]] %>
-						<% @female_parents.each do |parent| %>
-							<% options << [parent.first_name + " " + parent.last_name, parent.id] %>
-						<% end %>
-						<% if(!@mother.blank?) %>
-							<% default_option = [@mother.first_name + " " + @mother.last_name, @mother.id] %>
-						<% else %>
-							<% default_option = ["Select your Mother", ""] %>
-						<% end %>
-						<label> Select your Father </label>
-						<%= select_tag :mother_id, options_for_select(options, default_option), class: "form-control" %>
-					<% end %>
-				<% end %>
+				
 				<div class="clearfix mar-btm"></div>
 				<div class="row">
-					<div class="col-sm-6">
-						<button type="submit" class="btn btn-success pull-left">Save</button>
+					<div class="log-out">
+						<button type="submit" class="btn btn-success" data-disable-with="Saving ...">Save</button>
 					</div>
-					<div class="col-sm-6">	
-						<%= link_to edit_user_registration_path do %>
-							<button class="btn btn-danger change-password-btn pull-right"> Change Password </button>
-						<% end %>
-					</div>
+					<% if(@user.id == current_user.id) %>
+						<br>
+						<div class="log-out">	
+							<%= link_to edit_user_registration_path do %>
+								<button class="btn btn-danger change-password-btn pull-right"> Change Password </button>
+							<% end %>
+						</div>
+					<% end %>
+					
 				</div>
 			</div>	
 		</div>	

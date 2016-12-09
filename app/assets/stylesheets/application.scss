@@ -11,6 +11,15 @@ body{
 	overflow-y:scroll;
 	overflow-x:hidden;
 }
+.inner-many-type-media{
+	max-width: 200px;
+    margin: 0 auto;
+    text-align: center;
+    background: #39a57c;
+    color: #fff;
+    border-radius: 3px;
+	padding: 10px;
+}
 .dot-unread-position{
 	position: absolute;
 	top: 10px;
@@ -807,6 +816,7 @@ ul.index-conversation-modal div.negation-classRoute > ul{
 div.messages-media{
 	box-shadow:1px 1px 7px #b1a9a9;
 	margin: 10px;
+	padding-bottom:6px;
 }
 div.media-content{
 	padding: 10px;
@@ -830,7 +840,7 @@ h6.teachers-list-heading + div.classRoute{
 	left:0;
 	right:0;
 	background-color: #2ad;
-	z-index:4;
+	z-index:1041;
 }
 .footer-list{
 	margin:0;
@@ -2094,7 +2104,12 @@ div.calendar div.fc-agendaWeek-view tbody.fc-body div.fc-bg > table >tbody>tr>td
 		display:block;
 		float:none;
 	}
-	
+	.truncate{
+		width:100px;
+		text-overflow:ellipsis;
+		white-space:nowrap;
+		overflow:hidden;
+	}
 }
 @media only screen and (max-width:350px){
 	.main-navbar-brand a i{
@@ -2140,6 +2155,11 @@ div.calendar div.fc-agendaWeek-view tbody.fc-body div.fc-bg > table >tbody>tr>td
 	}
 }
 @media (max-width:767px){
+	.active-navigation a{
+		background:#71c3c3;
+		color: #fff !important;
+		border-bottom:0;
+	}
 	ul.right-menu-toggle{
 		right:60px;
 	}
@@ -2258,5 +2278,35 @@ div.calendar div.fc-agendaWeek-view tbody.fc-body div.fc-bg > table >tbody>tr>td
 		white-space: nowrap;
 		overflow-x: scroll;
 		overflow-y:hidden;
+	}
+}
+
+@media only screen and (max-width: 500px){
+	.max-width-button{
+		max-width:500px;
+		margin: 0 auto;
+		text-align: center;
+	}
+	.max-width-button div {
+		float: none !important;
+		display: inline-block;
+		width: 49%;
+		font-size: 12px;
+		padding-left: 4px;
+		padding-right: 4px;
+	}
+	.max-width-button div > i{
+		margin-left: 4px;
+	}
+	.max-width-button + a > div{
+	    max-width: 500px;
+		margin: 0 auto;
+		float: none !important;
+		margin-top: 8px;
+		text-align: center;
+	}
+	.max-width-button + a > div.add-revoke-rights{
+		width:89%; 
+		float:right !important;
 	}
 }

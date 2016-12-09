@@ -212,7 +212,7 @@ class InstitutesController < ApplicationController
                 @student.mobile_no = params[:mobile_no] if !params[:mobile_no].blank?
                 @student.email = params[:email] if !params[:email].blank?
                 @student.gender = params[:gender] if !params[:gender].blank?
-                @student.date_of_birth = params[:date_of_birth] if !params[:date_of_birth].blank?
+                @student.date_of_birth = Date.parse(params[:date_of_birth]) if !params[:date_of_birth].blank?
                 @student.address = params[:address] if !params[:address].blank?
                 @student.pincode = params[:pincode] if !params[:pincode].blank?
                 @student.role_no = params[:role_no] if !params[:role_no].blank?
@@ -376,7 +376,7 @@ class InstitutesController < ApplicationController
                 
             end
             
-            render "add_new_student.js"
+            redirect_to root_path, format: :js
         end        
     end
   end
@@ -400,7 +400,7 @@ class InstitutesController < ApplicationController
             end
             if(@parent.blank?)
                 password = Random.new.rand(1000..9999).to_s
-                @parent = User.new(role: "Student")
+                @parent = User.new(role: "Parent")
                 @parent.password = password
                 @parent.first_name = params[:first_name] if !params[:first_name].blank?
                 @parent.last_name = params[:last_name] if !params[:last_name].blank?
@@ -419,7 +419,7 @@ class InstitutesController < ApplicationController
                 send_user_account_password_through_sms(@parent, password) if !@parent.mobile_no.blank?
           
             end
-            @institute.add_member(@parent.id, current_user.id, "Student") 
+            @institute.add_member(@parent.id, current_user.id, "Parent") 
             @institute_conversation = Conversation.find_by(institute_id: @institute.id, grade_id: nil, section_id: nil, subject_id: nil, is_custom_group: false)
             @institute_conversation.add_participant(@parent.id, current_user.id) if !@institute_conversation.blank?  
 
@@ -427,7 +427,7 @@ class InstitutesController < ApplicationController
                 @grade = Grade.find_by(id: params[:grade_id])
                 @section = Section.find_by(id: params[:section_id])
 
-                @section.add_member_for_institute_and_grade(@institute, @grade, current_user, @parent, "Student") if !@section.blank?
+                @section.add_member_for_institute_and_grade(@institute, @grade, current_user, @parent, "Parent") if !@section.blank?
                 
                 section_conversation = Conversation.find_by(institute_id: @institute.id, grade_id: @grade.id, section_id: @section.id, subject_id: nil, is_custom_group: false)
                 
@@ -462,7 +462,7 @@ class InstitutesController < ApplicationController
                     end
                     if(@child.blank?)
                         password = Random.new.rand(1000..9999).to_s
-                        @child = User.new(role: "Parent")
+                        @child = User.new(role: "Student")
                         @child.password = password
                         @child.first_name = params[:child_first_name] if !params[:child_first_name].blank?
                         @child.last_name = params[:child_last_name] if !params[:child_last_name].blank?
@@ -500,7 +500,7 @@ class InstitutesController < ApplicationController
                 end
             end
 
-            @institute.add_member(@child.id, current_user.id, "Parent") if !@child.blank? 
+            @institute.add_member(@child.id, current_user.id, "Student") if !@child.blank? 
 
             @institute_conversation = Conversation.find_by(institute_id: @institute.id, grade_id: nil, section_id: nil, subject_id: nil, is_custom_group: false)
             @institute_conversation.add_participant(@child.id, current_user.id) if !@institute_conversation.blank? and !@child.blank?
@@ -509,7 +509,7 @@ class InstitutesController < ApplicationController
                 @grade = Grade.find_by(id: params[:grade_id])
                 @section = Section.find_by(id: params[:section_id])
 
-                @section.add_member_for_institute_and_grade(@institute, @grade, current_user, @child, "Parent") if !@section.blank? and !@child.blank?
+                @section.add_member_for_institute_and_grade(@institute, @grade, current_user, @child, "Student") if !@section.blank? and !@child.blank?
                                 
                 section_conversation = Conversation.find_by(institute_id: @institute.id, grade_id: @grade.id, section_id: @section.id, subject_id: nil, is_custom_group: false)
                 
@@ -523,7 +523,7 @@ class InstitutesController < ApplicationController
                 
             end
             
-            render "add_new_parent.js"
+            redirect_to root_path, format: :js
         end        
     end
   end
@@ -544,7 +544,7 @@ class InstitutesController < ApplicationController
             end
             if(@staff.blank?)
                 password = Random.new.rand(1000..9999).to_s
-                @staff = User.new(role: "Student")
+                @staff = User.new(role: params[:role])
                 @staff.password = password
                 @staff.first_name = params[:first_name] if !params[:first_name].blank?
                 @staff.last_name = params[:last_name] if !params[:last_name].blank?
@@ -601,7 +601,7 @@ class InstitutesController < ApplicationController
                   section.add_member_for_institute_and_grade(@institute, grade, current_user, @staff, "Teacher") if !section.blank?
                   grade_extras[:subject_names].each do |subject_name|
                     subject = section.get_subjects_for_institute_and_grade(@institute, grade).find_by(subject_name: subject_name) if !section.blank?
-                    section.set_subject_teacher_for_institute_and_grade_and_subject(@institute, grade, subject, @staff) if !section.blank?
+                    section.set_subject_teacher_for_institute_and_grade_and_subject(@institute, grade, subject, @staff) if !section.blank? and !subject.blank?
 
                     subject_conversation = Conversation.find_by(institute_id: @institute.id, grade_id: grade.id, section_id: section.id, subject_id: subject.id, is_custom_group: false) if !section.blank? and !subject.blank?
                     subject_conversation.add_participant(@staff.id, current_user.id) if !subject_conversation.blank? and !section.blank?
@@ -614,7 +614,7 @@ class InstitutesController < ApplicationController
               end
             end
             
-            render "add_new_staff.js"
+            redirect_to root_path, format: :js
         end
     end
   end

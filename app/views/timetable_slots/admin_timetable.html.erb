@@ -53,7 +53,16 @@
 						<% end %>			
 
 					<% end %>
-				</ul>			
+				</ul>	
+			<% else %>
+				<div class="clearfix mar-btm"></div>
+				<%= link_to new_institute_grade_path(@institute) do %>
+					<div class="pull-right add-member">
+						<span>Add Class</span><i class="material-icons">&#xE7FE;</i>
+					</div>
+				<% end %>
+				<div class="clearfix mar-btm"></div>
+				<h1 class="nothing-posted">No Classes added yet !</h1>			
 			<% end %>
 		</div>
 		<div class="tab-pane" id="teacher-plan">
@@ -72,7 +81,16 @@
 						</li>
 					
 					<% end %>
-				</ul>			
+				</ul>
+			<% else %>
+				<div class="clearfix mar-btm"></div>
+				<%= link_to add_new_staff_institute_path(@institute, role: "Teacher") do %>
+					<div class="pull-right add-member">
+						<span>Add Teacher</span><i class="material-icons">&#xE7FE;</i>
+					</div>
+				<% end %>
+				<div class="clearfix mar-btm"></div>
+				<h1 class="nothing-posted">No Teachers added yet !</h1>							
 			<% end %>
 		</div>		
 	</div>

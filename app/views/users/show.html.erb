@@ -11,6 +11,8 @@
             <div class="user-info-block">
                 <div class="user-heading">
                     <span class="help-block"><%= @user.details %></span>
+                    <span><%= @user.gender.capitalize if !@user.gender.blank? %></span>
+
                 </div>
 				<div class="user-body" style="margin-bottom: 70px;">
                     <div class="">
@@ -28,26 +30,46 @@
 	                        	<% if(user_signed_in? and (@user.id == current_user.id or current_user.role.include?("Principal") or current_user.role.include?("Institute Admin"))) %>
 									
 									<h4>Personal Information</h4>
-									<p>Email Id: <span class="pull-right"> <%= @user.email %> </span></p>
-									<p>Mobile no: <span class="pull-right"> <%= @user.mobile_no %> </span></p>
+									<p>Email Id : <span class="pull-right"> <%= @user.email %> </span></p>
+									<p>Mobile no : <span class="pull-right"> <%= @user.mobile_no %> </span></p>
 								<% end %>
 								
 								<% if(user_signed_in? and (@user.id == current_user.id or current_user.role.include?("Principal") or current_user.role.include?("Institute Admin") or current_user.role.include?("Teacher"))) %>
 									
-									<% if(@user.role == "Student" and !@user.father.blank?) %>
-										<h4> Father </h4>
-										<p><%= render partial: "conversations/contact", locals: {contact: @user.father} %></p>
-									<% end %>
-									<% if(@user.role == "Student" and !@user.mother.blank?) %>
-										<h4> Mother </h4>
-										<p><%= render partial: "conversations/contact", locals: {contact: @user.mother} %></p>
-									<% end %>
-
-									<% if(@user.role == "Parent" and !@user.child_ids.blank?) %>
-										<h4> Children </h4>
-										<% @user.children.each do |child| %>
-											<p><%= render partial: "conversations/contact", locals: {contact: child} %></p>
+									<% if(@user.role == "Student") %>
+										<p>Admission Number : <span class="pull-right"> <%= @user.roll_no %> </span> </p>
+										<p>Date of Birth : <span class="pull-right"> <%= @user.date_of_birth.strftime('%v') if !@user.date_of_birth.blank? %> </span> </p>
+										<p>Address : <span class="pull-right"> <%= @user.address %> </span> </p>
+										<p>Pin Code : <span class="pull-right"> <%= @user.pincode %> </span> </p>
+										<p>Using School Transport ? : <span class="pull-right"> <%= @user.is_using_transport ? "Yes" : "No" %> </span> </p>
+										<% if(!@user.father.blank?) %>
+											<h4> Father </h4>
+											<p><%= render partial: "conversations/contact", locals: {contact: @user.father} %></p>
 										<% end %>
+										<% if(!@user.mother.blank?) %>
+											<h4> Mother </h4>
+											<p><%= render partial: "conversations/contact", locals: {contact: @user.mother} %></p>
+										<% end %>
+									<% end %>
+									
+									<% if(@user.role == "Parent") %>
+										<p>Address : <span class="pull-right"> <%= @user.address %> </span> </p>
+										<p>Pin Code : <span class="pull-right"> <%= @user.pincode %> </span> </p>
+										<p>Using School Transport ? : <span class="pull-right"> <%= @user.is_using_transport ? "Yes" : "No" %> </span> </p>
+										<% if(!@user.child_ids.blank?) %>
+											<h4> Children </h4>
+											<% @user.children.each do |child| %>
+												<p><%= render partial: "conversations/contact", locals: {contact: child} %></p>
+											<% end %>
+										<% end %>
+										
+										
+									<% end %>
+									<% if(!@user.role.include?("Student") and !@user.role.include?("Parent")) %>
+										<p>Staff ID : <span class="pull-right"> <%= @user.staff_id %> </span> </p>
+										<p>Address : <span class="pull-right"> <%= @user.address %> </span> </p>
+										<p>Pin Code : <span class="pull-right"> <%= @user.pincode %> </span> </p>
+										<p>Using School Transport ? : <span class="pull-right"> <%= @user.is_using_transport ? "Yes" : "No" %> </span> </p>
 										
 									<% end %>
 								<% end %>
@@ -79,11 +101,21 @@
                         </div>
                         <% if(user_signed_in? and (@user.id == current_user.id or current_user.role.include?("Principal") or current_user.role.include?("Institute Admin"))) %>
 							<div class="log-out">
-								<%= link_to edit_user_path(current_user) do %>
+								<%= link_to edit_user_path(@user) do %>
 									<button type="button" class="btn btn-danger">Edit Profile</button>
 								<% end %>
 								
 							</div>
+							<% if(@user.id == current_user.id) %>
+								<br>
+								<div class="log-out">
+
+									<%= link_to edit_user_registration_path do %>
+										<button class="btn btn-danger change-password-btn pull-right"> Change Password </button>
+									<% end %>
+								</div>
+							<% end %>
+							
 						<% end %>
 						
                     </div>
