@@ -2270,3 +2270,29 @@ div.calendar div.fc-agendaWeek-view tbody.fc-body div.fc-bg > table >tbody>tr>td
 		overflow-y:hidden;
 	}
 }
+
+@media only screen and (max-width: 500px){
+	.max-width-button{
+		max-width:500px;
+		margin: 0 auto;
+		text-align: center;
+	}
+	.max-width-button div {
+		float: none !important;
+		display: inline-block;
+		width: 49%;
+		font-size: 12px;
+		padding-left: 4px;
+		padding-right: 4px;
+	}
+	.max-width-button div > i{
+		margin-left: 4px;
+	}
+	.max-width-button + a > div{
+	    max-width: 500px;
+		margin: 0 auto;
+		float: none !important;
+		margin-top: 8px;
+		text-align: center;
+	}
+}
