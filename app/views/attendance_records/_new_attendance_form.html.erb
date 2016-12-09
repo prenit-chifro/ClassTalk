@@ -18,7 +18,7 @@
 							
 							<p>
 								<small class="student-name-in-attendance"><%= student.first_name %> <%= student.last_name %></small>
-								<small class="student-roll-number">Roll Number: <%=  student.roll_no %></small> 
+								<small class="student-roll-number"> <%= ", #{student.roll_no}" if !student.roll_no.blank? %></small> 
 							</p>
 							<span class="checkbox-style-block checkbox-style-block-<%= student.id %>"></span>
 						</label>
