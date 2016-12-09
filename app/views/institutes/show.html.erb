@@ -223,7 +223,7 @@
 	    var value = $(this).val();
 	    if(value){
 	    	$(".admin-manage-page").hide().filter(function () {
-				if($(".media-heading", this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0){					
+				if($(".media-heading", this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0 || $(".role-small", this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0){					
 					return true;
 				}else{
 					return false;
@@ -238,7 +238,7 @@
 	    var value = $(this).val();
 	    if(value){
 	    	$(".teacher-manage-page").hide().filter(function () {
-				if($(".media-heading", this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0){					
+				if($(".media-heading", this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0 || $(".role-small", this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0 ) {					
 					return true;
 				}else{
 					return false;
@@ -253,7 +253,7 @@
 	    var value = $(this).val();
 	    if(value){
 	    	$(".student-manage-page").hide().filter(function () {
-				if($(".media-heading", this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0){					
+				if($(".media-heading", this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0 || $(".role-small", this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0 ){					
 					return true;
 				}else{
 					return false;
@@ -268,7 +268,7 @@
 	    var value = $(this).val();
 	    if(value){
 	    	$(".parent-manage-page").hide().filter(function () {
-				if($(".media-heading", this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0){					
+				if($(".media-heading", this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0 || $(".role-small", this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0 ){					
 					return true;
 				}else{
 					return false;

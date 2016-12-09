@@ -424,7 +424,7 @@ $(document).on("turbolinks:load", function(){
 	    var value = $(this).val();
 	    if(value){
 	    	$(".student-in-attendance").hide().filter(function () {
-				if($(".student-name-in-attendance", this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0){					
+				if($(".student-name-in-attendance", this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0 || $(".student-roll-number", this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0  ){					
 					return true;
 				}else{
 					return false;
@@ -439,7 +439,7 @@ $(document).on("turbolinks:load", function(){
 	    var value = $(this).val();
 	    if(value){
 	    	$("ul.index-conversation-modal li").hide().filter(function () {
-			    if($(".media-heading", this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0){
+			    if($(".media-heading", this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0 || $(".role-small", this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0 ){
 					return true;
 				} else{
 					return false;
@@ -452,22 +452,30 @@ $(document).on("turbolinks:load", function(){
 	$('.search-conversation-new-page').on("keyup keydown", function() {
 	    var value = $(this).val();
 	    if(value){
-	    	$("ul.index-conversation-modal-inner li").show().filter(function () {
-			    return $(".media-heading", this).text().toLowerCase().indexOf(value.toLowerCase()) < 0;
-			}).hide();
+	    	$("ul.index-conversation-modal li").hide().filter(function () {
+			    if($(".media-heading", this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0 || $(".role-small", this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0 ){
+					return true;
+				} else{
+					return false;
+				}
+			}).show();
 	    }else{
-	    	$("ul.index-conversation-modal-inner li").show();
-	    }    
+	    	$("ul.index-conversation-modal li").show();
+	    } 
 	});
 	$('.search-conversation-new-group-page').on("keyup keydown", function() {
 	    var value = $(this).val();
-	    if(value){
-	    	$("ul.index-conversation-modal-group li").show().filter(function () {
-			    return $(".media-heading", this).text().toLowerCase().indexOf(value.toLowerCase()) < 0;
-			}).hide();
+	   if(value){
+	    	$("ul.index-conversation-modal li").hide().filter(function () {
+			    if($(".media-heading", this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0 || $(".role-small", this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0 ){
+					return true;
+				} else{
+					return false;
+				}
+			}).show();
 	    }else{
-	    	$("ul.index-conversation-modal-group li").show();
-	    }    
+	    	$("ul.index-conversation-modal li").show();
+	    } 
 	});
 	$(".open-contact-on-click-element").click(function(){
 		if(!$(this).parents(".radio").html()){
