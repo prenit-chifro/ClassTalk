@@ -11,6 +11,15 @@ body{
 	overflow-y:scroll;
 	overflow-x:hidden;
 }
+.inner-many-type-media{
+	max-width: 200px;
+    margin: 0 auto;
+    text-align: center;
+    background: #39a57c;
+    color: #fff;
+    border-radius: 3px;
+	padding: 10px;
+}
 .dot-unread-position{
 	position: absolute;
 	top: 10px;
@@ -807,6 +816,7 @@ ul.index-conversation-modal div.negation-classRoute > ul{
 div.messages-media{
 	box-shadow:1px 1px 7px #b1a9a9;
 	margin: 10px;
+	padding-bottom:6px;
 }
 div.media-content{
 	padding: 10px;
@@ -2294,5 +2304,9 @@ div.calendar div.fc-agendaWeek-view tbody.fc-body div.fc-bg > table >tbody>tr>td
 		float: none !important;
 		margin-top: 8px;
 		text-align: center;
+	}
+	.max-width-button + a > div.add-revoke-rights{
+		width:89%; 
+		float:right !important;
 	}
 }

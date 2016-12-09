@@ -261,7 +261,17 @@ $(document).on("turbolinks:load", function(){
 		radioButton.prop('checked', true);
 		
 	});
-		
+	$(".many-type-media").on("click", function(){
+		$(this).html("");
+		var linkMedia = $(this).attr("data-href");
+		var markupArryForMedia=[
+			'<p style="max-width: 300px; margin: 0 auto;">',
+				'<iframe style="width: 100%;" height= "200" src="', linkMedia , '"></iframe>',
+			'</p>' 
+		];
+		$(this).html(markupArryForMedia.join());
+	});
+	
 	if (isMobile.any()){			
 		$(".swipe-area, .swipe-area-show").swipe({
 			swipeStatus:function(event, phase, direction, distance, duration, fingers){
@@ -413,19 +423,28 @@ $(document).on("turbolinks:load", function(){
 		
 	    var value = $(this).val();
 	    if(value){
-	    	$(".student-in-attendance").show().filter(function () {
-			    return $(".student-name-in-attendance", this).text().toLowerCase().indexOf(value.toLowerCase()) < 0;
-			}).hide();
+	    	$(".student-in-attendance").hide().filter(function () {
+				if($(".student-name-in-attendance", this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0){					
+					return true;
+				}else{
+					return false;
+				}			    
+			}).show();
 	    }else{
 	    	$(".student-in-attendance").show();
 	    }    
 	});
+	
 	$('.search-conversation-new-group').on("keyup keydown", function() {
 	    var value = $(this).val();
 	    if(value){
-	    	$("ul.index-conversation-modal li").show().filter(function () {
-			    return $(".media-heading", this).text().toLowerCase().indexOf(value.toLowerCase()) < 0;
-			}).hide();
+	    	$("ul.index-conversation-modal li").hide().filter(function () {
+			    if($(".media-heading", this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0){
+					return true;
+				} else{
+					return false;
+				}
+			}).show();
 	    }else{
 	    	$("ul.index-conversation-modal li").show();
 	    }    

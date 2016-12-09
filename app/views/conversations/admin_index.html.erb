@@ -229,16 +229,18 @@
 				</div>
 				<div class="tab-pane" id="all-staff">
 					<ul class="list-unstyled teachers-list index-conversation-modal">
-						<%= link_to add_new_staff_institute_path(@institute, role: "Institute Admin") do %>
-							<div class="pull-right add-member">
-								<span>Add Admin</span><i class="material-icons">&#xE7FE;</i>
-							</div>
-						<% end %>
-						<%= link_to add_new_staff_institute_path(@institute, role: "Teacher") do %>
-							<div class="pull-right add-member">
-								<span>Add Teacher</span><i class="material-icons">&#xE7FE;</i>
-							</div>
-						<% end %>
+						<div class="max-width-button">
+							<%= link_to add_new_staff_institute_path(@institute, role: "Institute Admin") do %>
+								<div class="pull-right add-member">
+									<span>Add Admin</span><i class="material-icons">&#xE7FE;</i>
+								</div>
+							<% end %>
+							<%= link_to add_new_staff_institute_path(@institute, role: "Teacher") do %>
+								<div class="pull-right add-member">
+									<span>Add Teacher</span><i class="material-icons">&#xE7FE;</i>
+								</div>
+							<% end %>
+						</div>	
 						<%= link_to add_new_staff_institute_path(@institute, role: "Principal") do %>
 							<div class="pull-right add-member">
 								<span>Add Principal</span><i class="material-icons">&#xE7FE;</i>
@@ -476,6 +478,7 @@
 							<input type="text" class="form-control search-conversation-new-group" name="search" id="search">
 						</div>
 					</form>
+					
 					<h4 class="modal-title">
 						Send Message
 						<%= link_to new_group_conversations_path do %>		
@@ -485,6 +488,7 @@
 						<% end %>
 					</h4>
 					<span class="checkbox-counter text-muted">Select</span> <span class=" text-muted" style="font-size:11px;">Participants</span>
+					
 				</div>
 				<%= form_tag conversations_path, method: :post, remote: true, id: "new-conversation-form" do %>
 
@@ -542,7 +546,7 @@
 											</ul>
 											<div class="tab-content" style="">
 												<div class="tab-pane" id="all-principals-modal">
-													<ul class="list-unstyled list-inline  index-conversation-modal">
+													<ul class="list-unstyled list-inline index-conversation-modal">
 														<% if(!@principals.blank?) %>
 															<% @principals.each do |principal| %>
 															
