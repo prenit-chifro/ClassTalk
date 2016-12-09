@@ -1,0 +1,16 @@
+$("#attendance-modal").find(".modal-title").html('Class <%= @grade.grade_name %><%= @section.section_name %> Attendance <span><%= get_month_date_year(@date) %></span>');
+$("#attendance-modal").find(".modal-body").html('<%= j render partial: "attendance_records/new_attendance_form", locals: {institute: @institute, grade: @grade, section: @section, class_students: @class_students, attendance_record: @attendance_record} %>');
+$("#attendance-modal").modal('show');
+
+$(".attendance-body ul li label").click(function(e){
+	var elementCheckbox = $(this).find("input");
+	if(elementCheckbox.is(':checked')){
+		elementCheckbox.prop('checked', false);
+		$('.present-student-count-span').html(parseInt($('.present-student-count-span').html())-1);
+		$('.absent-student-count-span').html(parseInt($('.absent-student-count-span').html())+1);
+	}else{
+		elementCheckbox.prop('checked', true);
+		$('.present-student-count-span').html(parseInt($('.present-student-count-span').html())+1);
+		$('.absent-student-count-span').html(parseInt($('.absent-student-count-span').html())-1);
+	}		
+});

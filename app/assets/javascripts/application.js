@@ -568,7 +568,7 @@ App.fetchEventForm = function(date, view){
 	$.ajax({
 	    url: "/events/new",
 		success: function(data, textStatus) {
-	    	alert("success");
+	    	
 	    }
 	});
 }
@@ -786,7 +786,7 @@ function notifyIosDeviceToken(deviceToken){
 				data.setRequestHeader('X-CSRF-Token', csfrToken);
 			},
 			success: function(data) {
-				alert("successfully sent ios device token to backend");
+				
 			}
 		});
 	}

@@ -43,7 +43,11 @@ Rails.application.routes.draw do
 
       resources :notices
 
-      resources :attendance_records
+      resources :attendance_records do
+        collection do
+          get "section_attendance_record_form"
+        end
+      end
 
       resources :grades do
         collection do

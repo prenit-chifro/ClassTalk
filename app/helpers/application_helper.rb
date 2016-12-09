@@ -39,6 +39,11 @@ module ApplicationHelper
 			
 			android_device_ids = participants_android_devices.map{|d| d.gcm_registration_id}
 			send_gcm_notification(notification, android_device_ids)
+
+			ios_devices = p.ios_devices.where(is_ios_device_user_signed_in: true)
+			if(!ios_devices.blank?)
+				send_ios_notification(notification, ios_devices.map(&:ios_device_token))
+			end
 			
 			web_notification = {title: notification.title, body: notification.message, icon: notification.image_url, target_url: notification.target_url}
 			publish_web_notification(p, web_notification)
