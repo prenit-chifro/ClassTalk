@@ -63,13 +63,13 @@ class User < ApplicationRecord
 	has_many :teaching_timetable_slots, class_name: :TimetableSlot, foreign_key: :teacher_id, inverse_of: :teacher
 
 	def details
-		if(self.role == "Principal")
+		if(self.role.include?("Principal"))
 			return "Principal"
 		end
-		if(self.role == "Institute Admin")
+		if(self.role.include?("Institute Admin"))
 			return "Institute Admin"
 		end
-		if(self.role == "Teacher")
+		if(self.role.include?("Teacher"))
 			return "#{self.teaching_sections_subjects_models.first.subject.subject_name if !self.teaching_sections_subjects_models.blank?} Teacher"
 		end
 		if(self.role == "Student")

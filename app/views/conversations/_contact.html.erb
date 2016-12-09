@@ -7,7 +7,7 @@
 		</div>
 		<div class="media-body media-middle">
 			<h5 class="media-heading student-name-in-message"><%= contact.first_name %> <%= contact.last_name %></h5>
-			<small><%= contact.details %></small>
+			<small><%= contact.details %> <%= ", #{contact.roll_no}" if !contact.roll_no.blank? %>  <%= ", #{contact.staff_id}" if !contact.staff_id.blank? %></small>
 			<div class="pull-right">
 				<span>
 					<%= link_to user_path(contact) do %>
