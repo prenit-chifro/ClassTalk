@@ -261,7 +261,7 @@ $(document).on("turbolinks:load", function(){
 		radioButton.prop('checked', true);
 		
 	});
-	$(".many-type-media").on("click", function(){
+	$(".download-attachment-button").on("click", function(){
 		$(this).html("");
 		var linkMedia = $(this).attr("data-href");
 		var markupArryForMedia=[
@@ -269,7 +269,7 @@ $(document).on("turbolinks:load", function(){
 				'<iframe style="width: 100%;" height= "200" src="' +  linkMedia + '"></iframe>',
 			'</p>' 
 		];
-		$(this).html(markupArryForMedia.join());
+		$(this).html(markupArryForMedia.join(''));
 	});
 	
 	if (isMobile.any()){			
