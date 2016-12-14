@@ -48,6 +48,7 @@
 
 			<div class="tab-content admin-home-content admin-index-main" style="max-width:600px;margin:0 auto;margin-top:40px;">
 				<div class="tab-pane active" id="all-messages">
+					
 					<div class="classRoute" style="margin-bottom:0;">
 						<ul class="nav nav-tabs text-center" role="tablist" id="tablist" style="background:#98c2d2;">		
 							<li class="active" style="width:33.33%;"><a data-toggle="tab" href="#all-inbox-messages">Inbox
@@ -130,6 +131,12 @@
 				</div>
 				<div class="tab-pane" id="all-students">
 					<ul class="list-unstyled teachers-list index-conversation-modal">
+						<form onsubmit="return false;" class="search-form">
+							<div class="pull-left form-group has-feedback" style="margin-top: 8px;">
+								<i class="material-icons search-attendance-icon">&#xE8B6;</i> 
+								<input type="text" class="form-control search-conversation-students-page" name="search" id="search" autocomplete="off">
+							</div>
+						</form>
 						<%= link_to add_new_student_institute_path(@institute) do %>
 							<div class="pull-right add-member">
 								<span>Add Student</span><i class="material-icons">&#xE7FE;</i>
@@ -144,9 +151,10 @@
 									<% students = section.get_members_with_given_roles_for_institute_and_grade_with_role(@institute, grade, ["Student"]) %>
 									<li>
 										<h6 class="teachers-list-heading">Class <%= grade.grade_name + section.section_name %><i class="material-icons arrow-up-icon pull-right">&#xE316;</i></h6>
-										<div class="container-width classRoute">
+										<div class="container-width classRoute" style="display:block;">
 											<ul class="list-unstyled list-inline">
 												<% if(!students.blank?) %>
+													<div class="students-manage-page">
 													<% students.each do |student| %>
 														<% if(student.id != current_user.id) %>
 															<li>
@@ -157,6 +165,7 @@
 															</li>
 														<% end %>	
 													<% end %>
+													</div>
 												<% else %>
 													<%= link_to add_new_student_institute_path(@institute, grade_id: grade.id, section_id: section.id) do %>
 														<div class="pull-right add-member">
@@ -179,6 +188,12 @@
 				</div>
 				<div class="tab-pane" id="all-parents">
 					<ul class="list-unstyled teachers-list index-conversation-modal">
+						<form onsubmit="return false;" class="search-form">
+							<div class="pull-left form-group has-feedback" style="margin-top: 8px;">
+								<i class="material-icons search-attendance-icon">&#xE8B6;</i> 
+								<input type="text" class="form-control search-conversation-parents-page" name="search" id="search" autocomplete="off">
+							</div>
+						</form>
 						<%= link_to add_new_parent_institute_path(@institute) do %>
 							<div class="pull-right add-member">
 								<span>Add Parent</span><i class="material-icons">&#xE7FE;</i>
@@ -194,9 +209,10 @@
 
 									<li>
 										<h6 class="teachers-list-heading">Class <%= grade.grade_name + section.section_name %><i class="material-icons arrow-up-icon pull-right">&#xE316;</i></h6>
-										<div class="container-width classRoute">
+										<div class="container-width classRoute" style="display:block;">
 											<ul class="list-unstyled list-inline">
 												<% if(!parents.blank?) %>
+													<div class="parents-manage-page">
 													<% parents.each do |parent| %>
 														<% if(parent.id != current_user.id) %>
 															<li>
@@ -207,6 +223,7 @@
 															</li>
 														<% end %>	
 													<% end %>
+													</div>
 												<% else %>
 													<%= link_to add_new_parent_institute_path(@institute, grade_id: grade.id, section_id: section.id) do %>
 														<div class="pull-right add-member">
@@ -229,6 +246,12 @@
 				</div>
 				<div class="tab-pane" id="all-staff">
 					<ul class="list-unstyled teachers-list index-conversation-modal">
+						<form onsubmit="return false;" class="search-form">
+							<div class="pull-left form-group has-feedback" style="margin-top: 8px;">
+								<i class="material-icons search-attendance-icon">&#xE8B6;</i> 
+								<input type="text" class="form-control search-conversation-staff-page" name="search" id="search" autocomplete="off">
+							</div>
+						</form>
 						<div class="max-width-button">
 							<%= link_to add_new_staff_institute_path(@institute, role: "Institute Admin") do %>
 								<div class="pull-right add-member">
@@ -260,15 +283,18 @@
 										<div class="tab-pane" id="all-principals">
 											<ul class="list-unstyled list-inline">
 												<% if(!@principals.blank?) %>
+													<div class="staff-manage-page">
 													<% @principals.each do |principal| %>
 														<li>
+															
 															<%= render partial: "conversations/contact", locals: {contact: principal} %>
 															<span class="checkbox-style-block checkbox-style-block-<%= principal.id %>">
 																
 															</span>		
-																		
+															
 														</li>
 													<% end %>
+													</div>
 												<% else %>
 													<%= link_to add_new_staff_institute_path(@institute, role: "Principal") do %>
 														<div class="pull-right add-member">
@@ -284,6 +310,7 @@
 										<div class="tab-pane active" id="all-admins">
 											<ul class="list-unstyled list-inline">
 												<% if(!@admins.blank?) %>
+													<div class="staff-manage-page">
 													<% @admins.each do |admin| %>																
 														<li>
 															<%= render partial: "conversations/contact", locals: {contact: admin} %>
@@ -292,6 +319,7 @@
 														</li>
 													
 													<% end %>
+													</div>
 												<% else %>
 													<%= link_to add_new_staff_institute_path(@institute, role: "Institute Admin") do %>
 														<div class="pull-right add-member">
@@ -310,9 +338,10 @@
 
 							<li>
 								<h6 class="teachers-list-heading">Teachers<i class="material-icons arrow-up-icon pull-right">&#xE316;</i></h6>
-								<div class="container-width classRoute">
+								<div class="container-width classRoute" style="display:block;">
 									<ul class="list-unstyled list-inline">
 										<% if(!@teachers.blank?) %>
+											<div class="staff-manage-page">
 											<% @teachers.each do |teacher| %>
 												<% if(teacher.id != current_user.id) %>
 													<li>
@@ -321,6 +350,7 @@
 													</li>
 												<% end %>	
 											<% end %>
+											</div>
 										<% else %>
 											<%= link_to add_new_staff_institute_path(@institute, role: "Teacher") do %>
 												<div class="pull-right add-member">
@@ -631,7 +661,7 @@
 
 											<li>
 												<h6 class="teachers-list-heading">Class <%= grade.grade_name + section.section_name %><i class="material-icons arrow-up-icon pull-right">&#xE316;</i></h6>
-												<div class="container-width classRoute">
+												<div class="container-width classRoute" style="display: block;">
 													<ul class="nav nav-tabs  index-conversation-modal" role="tablist" id="tablist">
 														<li class="active"><a data-toggle="tab" href="#all-students-modal-<%= grade_section_model.id %>">Students</a></li>					
 														<li><a data-toggle="tab" href="#all-parents-modal-<%= grade_section_model.id %>">Parents</a></li>
@@ -710,6 +740,51 @@
 </script>
 
 <script type="text/javascript">
+	$('.search-conversation-students-page').on("keyup keydown", function() {
+		
+	    var value = $(this).val();
+	    if(value){
+	    	$(".students-manage-page li").hide().filter(function () {
+				if($(".media-heading", this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0 || $(".role-small", this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0 ){					
+					return true;
+				}else{
+					return false;
+				}			    
+			}).show();
+	    }else{
+	    	$(".students-manage-page li").show();
+	    }    
+	});
+	$('.search-conversation-parents-page').on("keyup keydown", function() {
+		
+	    var value = $(this).val();
+	    if(value){
+	    	$(".parents-manage-page li").hide().filter(function () {
+				if($(".media-heading", this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0 || $(".role-small", this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0 ){					
+					return true;
+				}else{
+					return false;
+				}			    
+			}).show();
+	    }else{
+	    	$(".parents-manage-page li").show();
+	    }    
+	});
+	$('.search-conversation-staff-page').on("keyup keydown", function() {
+		
+	    var value = $(this).val();
+	    if(value){
+	    	$(".staff-manage-page li").hide().filter(function () {
+				if($(".media-heading", this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0 || $(".role-small", this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0 ){					
+					return true;
+				}else{
+					return false;
+				}			    
+			}).show();
+	    }else{
+	    	$(".staff-manage-page li").show();
+	    }    
+	});
 
 	$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
 		var target = $(this).attr('href');

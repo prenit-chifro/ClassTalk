@@ -112,7 +112,14 @@
 						<div class="tab-content" style="">
 							<div class="tab-pane" id="all-principals">
 								<ul class="list-unstyled list-inline">
+									<form onsubmit="return false;" class="search-form">
+										<div class="pull-left form-group has-feedback" style="margin-top: 8px;">
+											<i class="material-icons search-attendance-icon">&#xE8B6;</i> 
+											<input type="text" class="form-control search-staff-principal-page" name="search" id="search" autocomplete="off">
+										</div>
+									</form>
 									<% if(!@principals.blank?) %>
+										<div class="principal-manage-page">
 										<% @principals.each do |principal| %>
 											<li>
 												<%= render partial: "conversations/contact", locals: {contact: principal} %>
@@ -120,6 +127,7 @@
 												</span>																
 											</li>
 										<% end %>
+										</div>
 									<% else %>
 										<h1 class="nothing-posted" style="margin-top:0;box-shadow:none;"> No Principals added yet ! </h1>		
 									<% end %>														
@@ -127,13 +135,21 @@
 							</div>
 							<div class="tab-pane active" id="all-admins">
 								<ul class="list-unstyled list-inline">
+									<form onsubmit="return false;" class="search-form">
+										<div class="pull-left form-group has-feedback" style="margin-top: 8px;">
+											<i class="material-icons search-attendance-icon">&#xE8B6;</i> 
+											<input type="text" class="form-control search-staff-admin-page" name="search" id="search" autocomplete="off">
+										</div>
+									</form>
 									<% if(!@admins.blank?) %>
+										<div class="admin-manage-page">
 										<% @admins.each do |admin| %>							
 											<li>
 												<%= render partial: "conversations/contact", locals: {contact: admin} %>
 												<span class="checkbox-style-block checkbox-style-block-<%= admin.id %>"></span>													
 											</li>											
 										<% end %>
+										</div>
 									<% else %>
 										<h1 class="nothing-posted" style="margin-top:0;box-shadow:none;"> No Admins in this Class </h1>		
 									<% end %>														
@@ -148,13 +164,21 @@
 					<h6 class="teachers-list-heading">Teachers<i class="material-icons arrow-up-icon pull-right">&#xE316;</i></h6>
 					<div class="container-width classRoute">
 						<ul class="list-unstyled list-inline">
+							<form onsubmit="return false;" class="search-form">
+								<div class="pull-left form-group has-feedback" style="margin-top: 8px;">
+									<i class="material-icons search-attendance-icon">&#xE8B6;</i> 
+									<input type="text" class="form-control search-staff-teacher-page" name="search" id="search" autocomplete="off">
+								</div>
+							</form>
 							<% if(!@teachers.blank?) %>
+								<div class="teacher-manage-page">
 								<% @teachers.each do |teacher| %>									
 									<li>
 										<%= render partial: "conversations/contact", locals: {contact: teacher} %>
 										<span class="checkbox-style-block checkbox-style-block-<%= teacher.id %>"></span>													
 									</li>								
 								<% end %>
+								</div>
 							<% else %>
 								<h1 class="nothing-posted" style="margin-top:0;box-shadow:none;"> No Teachers added yet ! </h1>		
 							<% end %>														
@@ -314,7 +338,14 @@
 											<div class="tab-content" style="">
 												<div class="tab-pane" id="all-principals-modal">
 													<ul class="list-unstyled list-inline  index-conversation-modal">
+														<form onsubmit="return false;" class="search-form">
+															<div class="pull-left form-group has-feedback" style="margin-top: 8px;">
+																<i class="material-icons search-attendance-icon">&#xE8B6;</i> 
+																<input type="text" class="form-control search-staff-principal-page" name="search" id="search" autocomplete="off">
+															</div>
+														</form>
 														<% if(!@principals.blank?) %>
+															<div class="principal-manage-page">
 															<% @principals.each do |principal| %>
 																<li>
 																	<label for="contact-new-group-<%= principal.id %>" class="modal-label">
@@ -324,6 +355,7 @@
 																	</label>																
 																</li>
 															<% end %>
+															</div>
 														<% else %>
 															<h1 class="nothing-posted" style="margin-top:0;box-shadow:none;"> No Principals added yet ! </h1>			
 														<% end %>														
@@ -331,7 +363,14 @@
 												</div>
 												<div class="tab-pane" id="all-admins-modal">
 													<ul class="list-unstyled list-inline  index-conversation-modal">
+														<form onsubmit="return false;" class="search-form">
+															<div class="pull-left form-group has-feedback" style="margin-top: 8px;">
+																<i class="material-icons search-attendance-icon">&#xE8B6;</i> 
+																<input type="text" class="form-control search-staff-admin-page" name="search" id="search" autocomplete="off">
+															</div>
+														</form>
 														<% if(!@admins.blank?) %>
+															<div class="admin-manage-page">
 															<% @admins.each do |admin| %>				
 																<li>
 																	<label for="contact-new-group-<%= admin.id %>" class="modal-label">
@@ -342,6 +381,7 @@
 																</li>
 															
 															<% end %>
+															</div>
 														<% else %>
 															<h1 class="nothing-posted" style="margin-top:0;box-shadow:none;"> No Admins added yet ! </h1>			
 														<% end %>														
@@ -349,7 +389,14 @@
 												</div>												
 												<div class="tab-pane active" id="all-teachers-modal">
 													<ul class="list-unstyled list-inline  index-conversation-modal">
+														<form onsubmit="return false;" class="search-form">
+															<div class="pull-left form-group has-feedback" style="margin-top: 8px;">
+																<i class="material-icons search-attendance-icon">&#xE8B6;</i> 
+																<input type="text" class="form-control search-staff-teacher-page" name="search" id="search" autocomplete="off">
+															</div>
+														</form>
 														<% if(!@teachers.blank?) %>
+															<div class="teacher-manage-page">
 															<% @teachers.each do |teacher| %>
 																<li>
 																	<label for="contact-new-group-<%= teacher.id %>" class="modal-label">
@@ -360,6 +407,7 @@
 																</li>
 															
 															<% end %>
+															</div>
 														<% else %>
 															<h1 class="nothing-posted" style="margin-top:0;box-shadow:none;"> No Teachers added yet ! </h1>			
 														<% end %>														
@@ -382,6 +430,51 @@
 </div>
 
 <script type="text/javascript">
+	$('.search-staff-pricipal-page').on("keyup keydown", function() {
+		
+	    var value = $(this).val();
+	    if(value){
+	    	$(".principal-manage-page li").hide().filter(function () {
+				if($(".media-heading", this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0 || $(".role-small", this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0 ){					
+					return true;
+				}else{
+					return false;
+				}			    
+			}).show();
+	    }else{
+	    	$(".principal-manage-page li").show();
+	    }    
+	});
+	$('.search-staff-teacher-page').on("keyup keydown", function() {
+		
+	    var value = $(this).val();
+	    if(value){
+	    	$(".teacher-manage-page li").hide().filter(function () {
+				if($(".media-heading", this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0 || $(".role-small", this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0 ){					
+					return true;
+				}else{
+					return false;
+				}			    
+			}).show();
+	    }else{
+	    	$(".teacher-manage-page li").show();
+	    }    
+	});
+	$('.search-staff-admin-page').on("keyup keydown", function() {
+		
+	    var value = $(this).val();
+	    if(value){
+	    	$(".admin-manage-page li").hide().filter(function () {
+				if($(".media-heading", this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0 || $(".role-small", this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0 ){					
+					return true;
+				}else{
+					return false;
+				}			    
+			}).show();
+	    }else{
+	    	$(".admin-manage-page li").show();
+	    }    
+	});
     $(".classRoute").parents("div.wrapper").find(".navbar-default").css("box-shadow", "none");	
 	$(".modal-label").on("click", function(e){
 		updateCheckboxCounter();

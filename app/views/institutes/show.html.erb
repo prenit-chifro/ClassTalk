@@ -222,7 +222,7 @@
 		
 	    var value = $(this).val();
 	    if(value){
-	    	$(".admin-manage-page").hide().filter(function () {
+	    	$(".admin-manage-page li").hide().filter(function () {
 				if($(".media-heading", this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0 || $(".role-small", this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0){					
 					return true;
 				}else{
@@ -230,14 +230,14 @@
 				}			    
 			}).show();
 	    }else{
-	    	$(".admin-manage-page").show();
+	    	$(".admin-manage-page li").show();
 	    }    
 	});
 	$('.search-conversation-teacher-page').on("keyup keydown", function() {
 		
 	    var value = $(this).val();
 	    if(value){
-	    	$(".teacher-manage-page").hide().filter(function () {
+	    	$(".teacher-manage-page li").hide().filter(function () {
 				if($(".media-heading", this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0 || $(".role-small", this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0 ) {					
 					return true;
 				}else{
@@ -245,14 +245,14 @@
 				}			    
 			}).show();
 	    }else{
-	    	$(".teacher-manage-page").show();
+	    	$(".teacher-manage-page li").show();
 	    }    
 	});
 	$('.search-conversation-student-page').on("keyup keydown", function() {
 		
 	    var value = $(this).val();
 	    if(value){
-	    	$(".student-manage-page").hide().filter(function () {
+	    	$(".student-manage-page li").hide().filter(function () {
 				if($(".media-heading", this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0 || $(".role-small", this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0 ){					
 					return true;
 				}else{
@@ -260,14 +260,14 @@
 				}			    
 			}).show();
 	    }else{
-	    	$(".student-manage-page").show();
+	    	$(".student-manage-page li").show();
 	    }    
 	});
 	$('.search-conversation-parent-page').on("keyup keydown", function() {
 		
 	    var value = $(this).val();
 	    if(value){
-	    	$(".parent-manage-page").hide().filter(function () {
+	    	$(".parent-manage-page li").hide().filter(function () {
 				if($(".media-heading", this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0 || $(".role-small", this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0 ){					
 					return true;
 				}else{
@@ -275,7 +275,7 @@
 				}			    
 			}).show();
 	    }else{
-	    	$(".parent-manage-page").show();
+	    	$(".parent-manage-page li").show();
 	    }    
 	});
 </script>

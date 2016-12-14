@@ -24,7 +24,7 @@
 		</ul>
 	</div>
 </nav>	
-<div class="container-width conversation-new-container new-group-member-container" style="margin-top:120px;margin-bottom:60px;">
+<div class="container-width conversation-new-container new-group-member-container" style="max-width:600px; margin: 0 auto;margin-top:120px;margin-bottom:60px;">
 	<%= form_tag conversations_path(conversation_id: params[:conversation_id]), method: :post, remote: true, id: "new-conversation-form" do %>
 		<div class="">
 			<ul class="list-inline list-conversation-group-search " style="margin:10px;">
@@ -62,6 +62,7 @@
 									<div class="tab-pane active" id="all-teachers">
 										<ul class="list-unstyled list-inline index-conversation-modal-inner">
 											<% if(!@teachers.blank?) %>
+												<div class="staff-teacher-page">
 												<% @teachers.each do |teacher| %>
 													
 													<li>
@@ -73,12 +74,14 @@
 													</li>
 												
 												<% end %>
+												</div>
 											<% end %>														
 										</ul>
 									</div>												
 									<div class="tab-pane" id="all-admins">
 										<ul class="list-unstyled list-inline index-conversation-modal-inner">
 											<% if(!@admins.blank?) %>
+												<div class="staff-admin-page">
 												<% @admins.each do |admin| %>																			
 													<li>
 														<label for="contact-new-group-<%= admin.id %>" class="modal-label">
@@ -89,12 +92,14 @@
 													</li>
 												
 												<% end %>
+												</div>
 											<% end %>														
 										</ul>
 									</div>	
 									<div class="tab-pane" id="all-principals">
 										<ul class="list-unstyled list-inline index-conversation-modal-inner">
 											<% if(!@principals.blank?) %>
+												<div class="staff-principal-page">
 												<% @principals.each do |principal| %>
 													<li>
 														<label for="contact-new-group-<%= principal.id %>" class="modal-label">
@@ -104,6 +109,7 @@
 														</label>																
 													</li>
 												<% end %>
+												</div>
 											<% end %>														
 										</ul>
 									</div>											
@@ -121,7 +127,7 @@
 
 								<li>
 									<h6 class="teachers-list-heading">Class <%= grade.grade_name + section.section_name %><i class="material-icons arrow-up-icon pull-right">&#xE316;</i></h6>
-									<div class="container-width classRoute " style="display: none;">
+									<div class="container-width classRoute " style="display: block;">
 										<ul class="nav nav-tabs" role="tablist" id="tablist">
 											<li class="active"><a data-toggle="tab" href="#all-parents-<%= grade_section_model.id %>">Parents</a></li>
 											<li><a data-toggle="tab" href="#all-students-<%= grade_section_model.id %>">Students</a></li>														
@@ -130,6 +136,7 @@
 											<div class="tab-pane active" id="all-parents-<%= grade_section_model.id %>">
 												<ul class="list-unstyled list-inline index-conversation-modal-inner">
 													<% if(!parents.blank?) %>
+														<div class="staff-parent-page">
 														<% parents.each do |parent| %>
 															<% if(parent.id != current_user.id) %>
 																<li>
@@ -141,12 +148,14 @@
 																</li>
 															<% end %>	
 														<% end %>
+														</div>
 													<% end %>																
 												</ul>
 											</div>
 											<div class="tab-pane" id="all-students-<%= grade_section_model.id %>">
 												<ul class="list-unstyled list-inline index-conversation-modal-inner">
 													<% if(!students.blank?) %>
+														<div class="staff-student-page">
 														<% students.each do |student| %>
 															<% if(student.id != current_user.id) %>
 																<li>
@@ -158,6 +167,7 @@
 																</li>
 															<% end %>	
 														<% end %>
+														</div>
 													<% end %>															
 												</ul>
 											</div>												
@@ -180,6 +190,7 @@
 									<div class="tab-pane active" id="all-admins">
 										<ul class="list-unstyled list-inline index-conversation-modal-inner">
 											<% if(!@admins.blank?) %>
+												<div class="staff-admin-page">
 												<% @admins.each do |admin| %>
 													<% if(admin.id != current_user.id) %>
 														<li>
@@ -191,12 +202,14 @@
 														</li>
 													<% end %>	
 												<% end %>
+												</div>
 											<% end %>														
 										</ul>
 									</div>
 									<div class="tab-pane" id="all-teachers">
 										<ul class="list-unstyled list-inline index-conversation-modal-inner">
 											<% if(!@teachers.blank?) %>
+												<div class="staff-teacher-page">
 												<% @teachers.each do |teacher| %>
 													<% if(teacher.id != current_user.id) %>
 														<li>
@@ -208,6 +221,7 @@
 														</li>
 													<% end %>	
 												<% end %>
+												</div>
 											<% end %>														
 										</ul>
 									</div>
@@ -223,7 +237,7 @@
 
 								<li>
 									<h6 class="teachers-list-heading">Class <%= grade.grade_name + section.section_name %><i class="material-icons arrow-up-icon pull-right">&#xE316;</i></h6>
-									<div class="container-width classRoute" style="display: none;">
+									<div class="container-width classRoute" style="display: block;">
 										<ul class="nav nav-tabs" role="tablist" id="tablist">
 											<li class="active"><a data-toggle="tab" href="#all-parents-<%= section_subject_model.id %>">Parents</a></li>
 											<li><a data-toggle="tab" href="#all-students-<%= section_subject_model.id %>">Students</a></li>														
@@ -232,6 +246,7 @@
 											<div class="tab-pane active" id="all-parents-<%= section_subject_model.id %>">
 												<ul class="list-unstyled list-inline index-conversation-modal-inner">
 													<% if(!parents.blank?) %>
+														<div class="staff-parent-page">
 														<% parents.each do |parent| %>
 															<% if(parent.id != current_user.id) %>
 																<li>
@@ -243,12 +258,14 @@
 																</li>
 															<% end %>	
 														<% end %>
+														</div>
 													<% end %>
 												</ul>
 											</div>
 											<div class="tab-pane" id="all-students-<%= section_subject_model.id %>">
 												<ul class="list-unstyled list-inline index-conversation-modal-inner">
 													<% if(!students.blank?) %>
+														<div class="staff-student-page">
 														<% students.each do |student| %>
 															<% if(student.id != current_user.id) %>
 																<li>
@@ -260,6 +277,7 @@
 																</li>
 															<% end %>	
 														<% end %>
+														</div>
 													<% end %>																
 												</ul>
 											</div>														
@@ -293,6 +311,7 @@
 	$(".modal-label").on("click", function(e){
 		updateCheckboxCounter();
 	});
+	
 	function updateCheckboxCounter(){
 		var len = $("input[name='participant_ids[]']:checked").length;	
 		if(len>0){
@@ -301,5 +320,82 @@
 			$(".checkbox-counter").text('Select');
 		}	
 	}
+	$('.search-conversation-new-page').on("keyup keydown", function() {
+		
+	    var value = $(this).val();
+	    if(value){
+	    	$(".staff-admin-page li").hide().filter(function () {
+				if($(".media-heading", this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0 || $(".role-small", this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0 ){					
+					return true;
+				}else{
+					return false;
+				}			    
+			}).show();
+	    }else{
+	    	$(".staff-admin-page li").show();
+	    }    
+	});
+	$('.search-conversation-new-page').on("keyup keydown", function() {
+		
+	    var value = $(this).val();
+	    if(value){
+	    	$(".staff-parent-page li").hide().filter(function () {
+				if($(".media-heading", this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0 || $(".role-small", this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0 ){					
+					return true;
+				}else{
+					return false;
+				}			    
+			}).show();
+	    }else{
+	    	$(".staff-parent-page li").show();
+	    }    
+	});
+	$('.search-conversation-new-page').on("keyup keydown", function() {
+		
+	    var value = $(this).val();
+	    if(value){
+	    	$(".staff-principal-page").hide().filter(function () {
+				if($(".media-heading", this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0 || $(".role-small", this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0 ){					
+					return true;
+				}else{
+					return false;
+				}			    
+			}).show();
+	    }else{
+	    	$(".staff-principal-page").show();
+	    }    
+	});
+	
+	$('.search-conversation-new-page').on("keyup keydown", function() {
+		
+	    var value = $(this).val();
+	    if(value){
+	    	$(".staff-student-page li").hide().filter(function () {
+				if($(".media-heading", this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0 || $(".role-small", this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0 ){					
+					return true;
+				}else{
+					return false;
+				}			    
+			}).show();
+	    }else{
+	    	$(".staff-student-page li").show();
+	    }    
+	});
+	
+	$('.search-conversation-new-page').on("keyup keydown", function() {
+		
+	    var value = $(this).val();
+	    if(value){
+	    	$(".staff-teacher-page li").hide().filter(function () {
+				if($(".media-heading", this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0 || $(".role-small", this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0 ){					
+					return true;
+				}else{
+					return false;
+				}			    
+			}).show();
+	    }else{
+	    	$(".staff-teacher-page li").show();
+	    }    
+	});
 
 </script>
