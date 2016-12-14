@@ -87,7 +87,14 @@
 
 				</div>
 				<div class="tab-pane" id="all-students">
-					<ul class="list-unstyled teachers-list index-conversation-modal">
+					<form onsubmit="return false;" class="search-form">
+						<div class="pull-left form-group has-feedback" style="margin-top: 8px;">
+							<i class="material-icons search-attendance-icon">&#xE8B6;</i> 
+							<input type="text" class="form-control search-staff-page" name="search" id="search" autocomplete="off">
+						</div>
+					</form>
+					<div class="clearfix mar-btm"></div>
+					<ul class="list-unstyled teachers-list index-conversation-modal" style="margin-top: 70px;">
 							
 							<% if(!@all_section_member_models.blank?) %>
 								<% @all_section_member_models.each do |section_member_model|%>
@@ -106,14 +113,9 @@
 											<div class="tab-content" style="">
 												<div class="tab-pane" id="all-parents-<%= section_member_model.id %>">
 													<ul class="list-unstyled list-inline">
-														<form onsubmit="return false;" class="search-form">
-															<div class="pull-left form-group has-feedback" style="margin-top: 8px;">
-																<i class="material-icons search-attendance-icon">&#xE8B6;</i> 
-																<input type="text" class="form-control search-parents-staff-page" name="search" id="search" autocomplete="off">
-															</div>
-														</form>
+														
 														<% if(!parents.blank?) %>
-															<div class="parents-manage-page">
+															<div class="manage-page">
 															<% parents.each do |parent| %>																
 																<li>																	
 																	<%= render partial: "conversations/contact", locals: {contact: parent} %>
@@ -128,14 +130,9 @@
 												</div>
 												<div class="tab-pane active" id="all-students-<%= section_member_model.id %>">
 													<ul class="list-unstyled list-inline">
-														<form onsubmit="return false;" class="search-form">
-															<div class="pull-left form-group has-feedback" style="margin-top: 8px;">
-																<i class="material-icons search-attendance-icon">&#xE8B6;</i> 
-																<input type="text" class="form-control search-students-staff-page" name="search" id="search" autocomplete="off">
-															</div>
-														</form>
+														
 														<% if(!students.blank?) %>
-															<div class="student-manage-page">
+															<div class="manage-page">
 															<% students.each do |student| %>
 																
 																<li>
@@ -164,7 +161,14 @@
 					</ul>
 				</div>
 				<div class="tab-pane" id="all-staff">
-					<ul class="list-unstyled teachers-list index-conversation-modal">
+					<form onsubmit="return false;" class="search-form">
+						<div class="pull-left form-group has-feedback" style="margin-top: 8px;">
+							<i class="material-icons search-attendance-icon">&#xE8B6;</i> 
+							<input type="text" class="form-control search-staff-page" name="search" id="search" autocomplete="off">
+						</div>
+					</form>
+					<div class="clearfix mar-btm"></div>
+					<ul class="list-unstyled teachers-list index-conversation-modal" style="margin-top: 70px;">
 						
 						<li>
 							<h6 class="teachers-list-heading">Authorities<i class="material-icons arrow-up-icon pull-right">&#xE316;</i></h6>
@@ -176,14 +180,9 @@
 								<div class="tab-content" style="">
 									<div class="tab-pane" id="all-principals">
 										<ul class="list-unstyled list-inline">
-											<form onsubmit="return false;" class="search-form">
-												<div class="pull-left form-group has-feedback" style="margin-top: 8px;">
-													<i class="material-icons search-attendance-icon">&#xE8B6;</i> 
-													<input type="text" class="form-control search-principal-staff-page" name="search" id="search" autocomplete="off">
-												</div>
-											</form>
+											
 											<% if(!@principals.blank?) %>
-												<div class="principal-manage-page">
+												<div class="manage-page">
 												<% @principals.each do |principal| %>
 													<li>
 														<%= render partial: "conversations/contact", locals: {contact: principal} %>
@@ -201,12 +200,6 @@
 									</div>
 									<div class="tab-pane active" id="all-admins">
 										<ul class="list-unstyled list-inline">
-											<form onsubmit="return false;" class="search-form">
-												<div class="pull-left form-group has-feedback" style="margin-top: 8px;">
-													<i class="material-icons search-attendance-icon">&#xE8B6;</i> 
-													<input type="text" class="form-control search-admin-staff-page" name="search" id="search" autocomplete="off">
-												</div>
-											</form>
 											<% if(!@admins.blank?) %>
 												<div class="admin-manage-page">
 												<% @admins.each do |admin| %>							
@@ -232,6 +225,7 @@
 					</ul>
 				</div>
 				<div class="tab-pane" id="all-classes-analytics">
+
 					<ul class="list-unstyled list-inline text-center">
 						<% if(!@grades.blank?) %>
 							<% @grades.each do |grade| %>
@@ -504,11 +498,11 @@
 <% end %>
 
 <script type="text/javascript">
-	$('.search-conversation-students-page').on("keyup keydown", function() {
+	$('.search-staff-page').on("keyup keydown", function() {
 		
 	    var value = $(this).val();
 	    if(value){
-	    	$(".students-manage-page li").hide().filter(function () {
+	    	$(".manage-page li").hide().filter(function () {
 				if($(".media-heading", this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0 || $(".role-small", this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0 ){					
 					return true;
 				}else{
@@ -516,37 +510,7 @@
 				}			    
 			}).show();
 	    }else{
-	    	$(".students-manage-page li").show();
-	    }    
-	});
-	$('.search-conversation-parents-page').on("keyup keydown", function() {
-		
-	    var value = $(this).val();
-	    if(value){
-	    	$(".parents-manage-page li").hide().filter(function () {
-				if($(".media-heading", this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0 || $(".role-small", this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0 ){					
-					return true;
-				}else{
-					return false;
-				}			    
-			}).show();
-	    }else{
-	    	$(".parents-manage-page li").show();
-	    }    
-	});
-	$('.search-conversation-staff-page').on("keyup keydown", function() {
-		
-	    var value = $(this).val();
-	    if(value){
-	    	$(".staff-manage-page li").hide().filter(function () {
-				if($(".media-heading", this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0 || $(".role-small", this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0 ){					
-					return true;
-				}else{
-					return false;
-				}			    
-			}).show();
-	    }else{
-	    	$(".staff-manage-page li").show();
+	    	$(".manage-page li").show();
 	    }    
 	});
 	$(".classRoute").parents("div.wrapper").find(".navbar-default").css("box-shadow", "none");

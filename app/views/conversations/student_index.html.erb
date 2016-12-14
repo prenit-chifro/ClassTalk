@@ -99,7 +99,13 @@
 		</div>
 		
 		<div class="tab-pane" id="all-staff">
-			<ul class="list-unstyled teachers-list index-conversation-modal">
+			<form onsubmit="return false;" class="search-form">
+				<div class="pull-left form-group has-feedback" style="margin-top: 8px;">
+					<i class="material-icons search-attendance-icon">&#xE8B6;</i> 
+					<input type="text" class="form-control search-staff-page" name="search" id="search" autocomplete="off">
+				</div>
+			</form>
+			<ul class="list-unstyled teachers-list index-conversation-modal" style="margin-top: 70px;">
 				
 				<li>
 					<h6 class="teachers-list-heading">Authorities<i class="material-icons arrow-up-icon pull-right">&#xE316;</i></h6>
@@ -112,14 +118,9 @@
 						<div class="tab-content" style="">
 							<div class="tab-pane" id="all-principals">
 								<ul class="list-unstyled list-inline">
-									<form onsubmit="return false;" class="search-form">
-										<div class="pull-left form-group has-feedback" style="margin-top: 8px;">
-											<i class="material-icons search-attendance-icon">&#xE8B6;</i> 
-											<input type="text" class="form-control search-staff-principal-page" name="search" id="search" autocomplete="off">
-										</div>
-									</form>
+									
 									<% if(!@principals.blank?) %>
-										<div class="principal-manage-page">
+										<div class="manage-page">
 										<% @principals.each do |principal| %>
 											<li>
 												<%= render partial: "conversations/contact", locals: {contact: principal} %>
@@ -134,15 +135,9 @@
 								</ul>
 							</div>
 							<div class="tab-pane active" id="all-admins">
-								<ul class="list-unstyled list-inline">
-									<form onsubmit="return false;" class="search-form">
-										<div class="pull-left form-group has-feedback" style="margin-top: 8px;">
-											<i class="material-icons search-attendance-icon">&#xE8B6;</i> 
-											<input type="text" class="form-control search-staff-admin-page" name="search" id="search" autocomplete="off">
-										</div>
-									</form>
+								
 									<% if(!@admins.blank?) %>
-										<div class="admin-manage-page">
+										<div class="manage-page">
 										<% @admins.each do |admin| %>							
 											<li>
 												<%= render partial: "conversations/contact", locals: {contact: admin} %>
@@ -164,12 +159,7 @@
 					<h6 class="teachers-list-heading">Teachers<i class="material-icons arrow-up-icon pull-right">&#xE316;</i></h6>
 					<div class="container-width classRoute">
 						<ul class="list-unstyled list-inline">
-							<form onsubmit="return false;" class="search-form">
-								<div class="pull-left form-group has-feedback" style="margin-top: 8px;">
-									<i class="material-icons search-attendance-icon">&#xE8B6;</i> 
-									<input type="text" class="form-control search-staff-teacher-page" name="search" id="search" autocomplete="off">
-								</div>
-							</form>
+							
 							<% if(!@teachers.blank?) %>
 								<div class="teacher-manage-page">
 								<% @teachers.each do |teacher| %>									
@@ -430,11 +420,11 @@
 </div>
 
 <script type="text/javascript">
-	$('.search-staff-pricipal-page').on("keyup keydown", function() {
+	$('.search-staff-page').on("keyup keydown", function() {
 		
 	    var value = $(this).val();
 	    if(value){
-	    	$(".principal-manage-page li").hide().filter(function () {
+	    	$(".manage-page li").hide().filter(function () {
 				if($(".media-heading", this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0 || $(".role-small", this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0 ){					
 					return true;
 				}else{
@@ -442,37 +432,7 @@
 				}			    
 			}).show();
 	    }else{
-	    	$(".principal-manage-page li").show();
-	    }    
-	});
-	$('.search-staff-teacher-page').on("keyup keydown", function() {
-		
-	    var value = $(this).val();
-	    if(value){
-	    	$(".teacher-manage-page li").hide().filter(function () {
-				if($(".media-heading", this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0 || $(".role-small", this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0 ){					
-					return true;
-				}else{
-					return false;
-				}			    
-			}).show();
-	    }else{
-	    	$(".teacher-manage-page li").show();
-	    }    
-	});
-	$('.search-staff-admin-page').on("keyup keydown", function() {
-		
-	    var value = $(this).val();
-	    if(value){
-	    	$(".admin-manage-page li").hide().filter(function () {
-				if($(".media-heading", this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0 || $(".role-small", this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0 ){					
-					return true;
-				}else{
-					return false;
-				}			    
-			}).show();
-	    }else{
-	    	$(".admin-manage-page li").show();
+	    	$(".manage-page li").show();
 	    }    
 	});
     $(".classRoute").parents("div.wrapper").find(".navbar-default").css("box-shadow", "none");	
