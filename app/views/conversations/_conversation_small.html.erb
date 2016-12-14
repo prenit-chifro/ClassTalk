@@ -70,13 +70,13 @@
 			<% attachment = conversation.last_message.attachments.last %>
 				<div class="many-type-media" style="max-width: 300px; margin: 0 auto;" data-href="https://docs.google.com/gview?url=https://classtalk.in<%= attachment.media.url %>&embedded=true&chrome=true">
 					<% if(attachment.is_image_type?) %>
-						<p class="inner-many-type-media">Image</p>
+						<p class="inner-many-type-media">Image <i class="material-icons" style="color: #fff; vertical-align: middle;">&#xE884;</i></p>
 					<% end %>
 					<% if(attachment.is_document_type?) %>
-						<p class="inner-many-type-media">Document</p>
+						<p class="inner-many-type-media">Document <i class="material-icons" style="color: #fff; vertical-align: middle;">&#xE884;</i></p>
 					<% end %>
 					<% if(attachment.is_video_type?) %>
-						<p class="inner-many-type-media">Video</p>
+						<p class="inner-many-type-media">Video <i class="material-icons" style="color: #fff; vertical-align: middle;">&#xE884;</i></p>
 					<% end %>
 				</div>
 		<% end %>
