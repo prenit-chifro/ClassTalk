@@ -13,7 +13,11 @@
 	</ul>
 	<div class="tab-content" style=" max-width:600px; margin: 0 auto; ">
 		<div class="tab-pane active" id="all-classteachers" style="max-height:100%; margin-bottom:70px;">
-			
+			<%= link_to conversation_path(@section_conversation) do %>
+				<div class="pull-left add-member">
+					<span>Class Messages</span><i class="material-icons">&#xE0C9;</i>
+				</div>
+			<% end %>
 			<% if(!@classteacher.blank?) %>
 				<% if(current_user.role.include?("Principal") or current_user.role.include?("Institute Admin")) %>
 					<a>
@@ -42,6 +46,11 @@
 
 		<% if(current_user.role.include?("Principal") or current_user.role.include?("Institute Admin") or current_user.role.include?("Teacher")) %>
 			<div class="tab-pane" id="all-students" style="max-height:100%;margin-bottom:70px;">
+				<%= link_to conversation_path(@section_conversation) do %>
+					<div class="pull-left add-member">
+						<span>Class Messages</span><i class="material-icons">&#xE0C9;</i>
+					</div>
+				<% end %>
 				<% if(!current_user.role.include?("Teacher")) %>
 					<%= link_to add_new_student_institute_path(@institute, grade_id: @grade.id, section_id: @section.id) do %>
 						<div class="pull-right add-member">
@@ -61,6 +70,11 @@
 				
 			</div>
 			<div class="tab-pane" id="all-parents" style="max-height:100%;margin-bottom:70px;">
+				<%= link_to conversation_path(@section_conversation) do %>
+					<div class="pull-left add-member">
+						<span>Class Messages</span><i class="material-icons">&#xE0C9;</i>
+					</div>
+				<% end %>
 				<% if(!current_user.role.include?("Student") and !current_user.role.include?("Parent")) %>
 										
 					<% if(!current_user.role.include?("Teacher")) %>
@@ -85,6 +99,12 @@
 		<% end %>
 
 		<div class="tab-pane" id="all-subjects" style="max-height:100%;margin-bottom:70px;">
+			<%= link_to conversation_path(@section_conversation) do %>
+				<div class="pull-left add-member">
+					<span>Class Messages</span><i class="material-icons">&#xE0C9;</i>
+				</div>
+			<% end %>
+			
 			<% if(current_user.role.include?("Principal") or current_user.role.include?("Institute Admin")) %>
 										
 				<%= link_to new_institute_grade_section_subject_path(@institute, @grade, @section) do %>
@@ -92,9 +112,9 @@
 						<span>Add Subject</span><i class="material-icons">&#xE7FE;</i>
 					</div>
 				<% end %>
-				<div class="clearfix"></div>
+				
 			<% end %>
-			
+			<div class="clearfix mar-btm"></div>
 			<ul class="list-unstyled list-inline text-center">
 				<% if(!@section_subject_models.blank?) %>
 					<% @section_subject_models.each do |section_subject_model| %>

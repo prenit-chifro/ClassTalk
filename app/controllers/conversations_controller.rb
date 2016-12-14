@@ -25,7 +25,7 @@ class ConversationsController < ApplicationController
 			@sent_conversations = current_user.participating_conversations.where(creator_id: current_user.id).order(updated_at: :desc)
 		 	sent_conversations_array = []
 		 	@sent_conversations.each do |conversation|
-				if(!conversation.messages.last.blank? and conversation.messages.last.creator_id == current_user.id and conversation.is_group == false)
+				if((!conversation.messages.last.blank? and conversation.messages.last.creator_id == current_user.id and conversation.is_group == false) or (conversation.last_message_id.blank? and conversation.creator_id == current_user.id and conversation.is_group == false)) 
 					sent_conversations_array << conversation
 				end
 			end
@@ -82,7 +82,7 @@ class ConversationsController < ApplicationController
 		
 			sent_conversations_array = []
 		 	@conversations.each do |conversation|
-				if(conversation.is_group != true and !conversation.messages.last.blank? and conversation.messages.last.creator_id == current_user.id)
+				if((conversation.is_group != true and !conversation.messages.last.blank? and conversation.messages.last.creator_id == current_user.id) or (conversation.last_message_id.blank? and conversation.creator_id == current_user.id and conversation.is_group == false))
 					sent_conversations_array << conversation
 				end
 			end
@@ -297,8 +297,9 @@ class ConversationsController < ApplicationController
 			if(!params[:conversation_name].blank?)
 				@conversation = current_user.created_conversations.create(conversation_name: params[:conversation_name], is_open_group: params[:is_open_group])
 				@conversation.banner_image.update(media: params[:banner_image]) if !params[:banner_image].blank?
-				if(params[:is_open_group] == false and !params[:admin_ids].blank?)
+				if(params[:is_open_group] == "false" and !params[:admin_ids].blank?)
 					group_admins = User.where(id: params[:admin_ids])
+					
 					group_admins.each do |group_admin|
 						@conversation.add_participant(group_admin.id, current_user.id, true)
 					end
