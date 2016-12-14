@@ -52,13 +52,28 @@ class Conversation < ApplicationRecord
 
 	def can_user_send_message user
 		if(self.check_if_participant(user.id))
-			if("Principal, Institute Admin, Teacher".include?(user.role))
+			if(user.role.include?("Principal") or user.role.include?("Institute Admin"))
 				return true
 			else
 				if(self.is_custom_group)
-					return !self.requestor_ids.include?(user.id.to_s)
+					if(self.is_open_group)
+						return true
+					else
+						conversation_participant_model = self.get_conversation_participant_model_for_participant(user)
+						if(!conversation_participant_model.blank?)	
+							return conversation_participant_model.is_admin 
+						else
+							return false
+						end
+					end
+					
 				else
-					return false
+					if(user.role.include?("Teacher"))
+						return true
+					else	
+						return false
+					end
+					
 				end
 			end	
 		else
@@ -158,24 +173,16 @@ class Conversation < ApplicationRecord
 	def other_participants user
 		if(self.is_custom_group == false)
 			if(user.role == "Parent" or user.role == "Student")
-				return self.participants.where(role: ["Teacher", "Institute Admin", "Principal"]).where.not(id: user.id)
+				return self.participants.where.not(role: ["Student", "Parent"], id: user.id)
 			else
 				return self.participants.where.not(id: user.id)
 			end
 		else
-			if(!self.institute_id.blank?)
-				institute = self.institute	
-				if(!self.grade_id.blank? and !self.section_id.blank?)
-					grade = self.grade; section = self.section; 
-					section.get_other_members_for_institute_grade_and_user(institute, grade, user)
-				else
-					institute.get_other_members_for_user(user)
-				end
-				
+			if(user.role == "Parent" or user.role == "Student")
+				return self.participants.where.not(role: ["Student", "Parent"], id: user.id)
 			else
 				return self.participants.where.not(id: user.id)
-			end
-			 
+			end 
 		end
 		
 	end
@@ -197,13 +204,13 @@ class Conversation < ApplicationRecord
 		if(self.conversation_name.blank?)
 			if(self.participants.length == 2)
 				return self.conversation_name if !self.conversation_name.blank?
-				self.other_participants(user).first.first_name.capitalize if !self.other_participants(user).first.first_name.blank?
+				self.other_participants(user).first.first_name.capitalize if !self.other_participants(user).first.blank?
 			else
 				name = "You"
-				self.other_participants(user).first(3).each do |participant|
+				self.other_participants(user).first(1).each do |participant|
 					name = name + ", #{participant.first_name}"
 				end
-				other_length = (self.other_participants(user).length) -4 
+				other_length = (self.other_participants(user).length) - 2
 				name = name + " and #{other_length} other" if other_length > 1
 				name
 			end

@@ -12,7 +12,11 @@
 	</ul>
 	<div class="tab-content">
 		<div class="tab-pane active" id="all-subjectteachers">
-			
+			<%= link_to conversation_path(@subject_conversation) do %>
+				<div class="pull-left add-member">
+					<span>Subject Messages</span><i class="material-icons">&#xE0C9;</i>
+				</div>
+			<% end %>
 			<% if(!@subjectteacher.blank?) %>
 				<% if(!current_user.role.include?("Student") and !current_user.role.include?("Parent")) %>
 					<a>
@@ -42,6 +46,11 @@
 
 		<% if(["Principal", "Institute Admin", "Teacher"].include?(current_user.role)) %>
 			<div class="tab-pane" id="all-students">
+				<%= link_to conversation_path(@subject_conversation) do %>
+					<div class="pull-left add-member">
+						<span>Subject Messages</span><i class="material-icons">&#xE0C9;</i>
+					</div>
+				<% end %>
 				<% if(!current_user.role.include?("Student") and !current_user.role.include?("Parent")) %>
 					
 					<%= link_to add_new_student_institute_path(@institute, grade_id: @grade.id, section_id: @section.id) do %>
@@ -63,6 +72,11 @@
 			</div>
 
 			<div class="tab-pane" id="all-parents">
+				<%= link_to conversation_path(@subject_conversation) do %>
+					<div class="pull-left add-member">
+						<span>Subject Messages</span><i class="material-icons">&#xE0C9;</i>
+					</div>
+				<% end %>
 				<% if(!current_user.role.include?("Student") and !current_user.role.include?("Parent")) %>
 					
 					<%= link_to add_new_parent_institute_path(@institute, grade_id: @grade.id, section_id: @section.id) do %>
