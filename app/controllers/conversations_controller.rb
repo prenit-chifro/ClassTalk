@@ -97,7 +97,7 @@ class ConversationsController < ApplicationController
 			@group_conversations = @group_conversations.page(params[:page]).per(10)
 			@homework_messages = Message.where(id: homework_messages_array.map(&:id)).page(params[:page]).per(10)
 		else
-			@inbox_conversations = inbox_conversations.page(1).per(10)
+			@inbox_conversations = @inbox_conversations.page(1).per(10)
 			@sent_conversations = @sent_conversations.page(1).per(10)
 			@group_conversations = @group_conversations.page(1).per(10)
 			@homework_messages = Message.where(id: homework_messages_array.map(&:id)).page(1).per(10)
