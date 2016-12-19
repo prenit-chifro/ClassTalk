@@ -10,123 +10,58 @@ class ConversationsController < ApplicationController
 	end
 
 	def index
-		if(params[:page] and params[:page].to_i >= 2)
-			@conversations = current_user.participating_conversations.order(updated_at: :desc)
+		@conversations = current_user.participating_conversations.order(updated_at: :desc)
 			
-			inbox_conversations_array = []
-			@conversations.each do |conversation|
-				if(conversation.is_group != true and !conversation.messages.last.blank? and conversation.messages.last.creator_id != current_user.id)	
-					inbox_conversations_array << conversation
-				end
+		inbox_conversations_array = []
+		@conversations.each do |conversation|
+			if(conversation.is_group != true and !conversation.messages.last.blank? and conversation.messages.last.creator_id != current_user.id)	
+				inbox_conversations_array << conversation
 			end
-
-			@inbox_conversations = Conversation.where(id: inbox_conversations_array.map(&:id)).order(updated_at: :desc).page(params[:page]).per(10)
-			
-			@sent_conversations = current_user.participating_conversations.where(creator_id: current_user.id).order(updated_at: :desc)
-		 	sent_conversations_array = []
-		 	@sent_conversations.each do |conversation|
-				if((!conversation.messages.last.blank? and conversation.messages.last.creator_id == current_user.id and conversation.is_group == false) or (conversation.last_message_id.blank? and conversation.creator_id == current_user.id and conversation.is_group == false)) 
-					sent_conversations_array << conversation
-				end
-			end
-			@sent_conversations = Conversation.where(id: sent_conversations_array.map(&:id)).order(updated_at: :desc).page(params[:page]).per(10)
-
-			group_conversations_array = []
-			@conversations.each do |conversation|
-				if(conversation.is_group == true)
-					group_conversations_array << conversation
-				end	
-			end
-			@group_conversations = Conversation.where(id: group_conversations_array.map(&:id)).order(updated_at: :desc).page(params[:page]).per(10)
-
-			@homework_conversations = @conversations.where("message_categories LIKE ?", "HomeWork%")
-			homework_messages_array = []
-
-			if(current_user.role == "Teacher")
-				if(!@homework_conversations.blank?)
-					@homework_conversations.each do |conversation|					
-					    conversation_homework_messages = conversation.messages.where(category: "HomeWork", creator_id: current_user.id).order(created_at: :desc)
-						if(!conversation_homework_messages.blank?)
-							conversation_homework_messages.each do |message|
-								homework_messages_array << message
-							end	
-						end
-					end
-		    	end
-		    else
-		    	if(!@homework_conversations.blank?)
-					@homework_conversations.each do |conversation|					
-					    conversation_homework_messages = conversation.messages.where(category: "HomeWork").order(created_at: :desc)
-						if(!conversation_homework_messages.blank?)
-							conversation_homework_messages.each do |message|
-								homework_messages_array << message
-							end	
-						end
-					end
-		    	end	
-			end
-
-			@homework_messages = Message.where(id: homework_messages_array.map(&:id)).page(params[:page]).per(10)
-
-		else
-			@conversations = current_user.participating_conversations.order(updated_at: :desc)
-			
-			inbox_conversations_array = []
-			@conversations.each do |conversation|
-				if(conversation.is_group != true and !conversation.messages.last.blank? and conversation.messages.last.creator_id != current_user.id)	
-					inbox_conversations_array << conversation
-				end
-			end
-
-			@inbox_conversations = Conversation.where(id: inbox_conversations_array.map(&:id)).order(updated_at: :desc).page(1).per(10)
-		
-			sent_conversations_array = []
-		 	@conversations.each do |conversation|
-				if((conversation.is_group != true and !conversation.messages.last.blank? and conversation.messages.last.creator_id == current_user.id) or (conversation.last_message_id.blank? and conversation.creator_id == current_user.id and conversation.is_group == false))
-					sent_conversations_array << conversation
-				end
-			end
-			@sent_conversations = Conversation.where(id: sent_conversations_array.map(&:id)).order(updated_at: :desc).page(1).per(10)
-
-			group_conversations_array = []
-			@conversations.each do |conversation|
-				if(conversation.is_group == true)
-					group_conversations_array << conversation
-				end	
-			end
-			@group_conversations = Conversation.where(id: group_conversations_array.map(&:id)).order(updated_at: :desc).page(1).per(10)
-
-			@homework_conversations = @conversations.where("message_categories LIKE ?", "HomeWork%")
-			homework_messages_array = []
-
-			if(current_user.role.include?("Teacher"))
-				if(!@homework_conversations.blank?)
-					@homework_conversations.each do |conversation|					
-					    conversation_homework_messages = conversation.messages.where(category: "HomeWork", creator_id: current_user.id).order(created_at: :desc)
-						if(!conversation_homework_messages.blank?)
-							conversation_homework_messages.each do |message|
-								homework_messages_array << message
-							end	
-						end
-					end
-		    	end
-		    else
-		    	if(!@homework_conversations.blank?)
-					@homework_conversations.each do |conversation|					
-					    conversation_homework_messages = conversation.messages.where(category: "HomeWork").order(created_at: :desc)
-						if(!conversation_homework_messages.blank?)
-							conversation_homework_messages.each do |message|
-								homework_messages_array << message
-							end	
-						end
-					end
-		    	end
-	
-			end
-
-			@homework_messages = Message.where(id: homework_messages_array.map(&:id)).page(1).per(10)
 		end
+		@inbox_conversations = Conversation.where(id: inbox_conversations_array.map(&:id))
 
+		@sent_conversations = current_user.participating_conversations.where(creator_id: current_user.id).order(updated_at: :desc)
+	 	sent_conversations_array = []
+	 	@sent_conversations.each do |conversation|
+			if((!conversation.messages.last.blank? and conversation.messages.last.creator_id == current_user.id and conversation.is_group == false) or (conversation.last_message_id.blank? and conversation.creator_id == current_user.id and conversation.is_group == false)) 
+				sent_conversations_array << conversation
+			end
+		end
+		@sent_conversations = Conversation.where(id: sent_conversations_array.map(&:id)).order(updated_at: :desc).page(params[:page]).per(10)
+
+		group_conversations_array = []
+		@conversations.each do |conversation|
+			if(conversation.is_group == true)
+				group_conversations_array << conversation
+			end	
+		end
+		
+		@homework_conversations = @conversations.where("message_categories LIKE ?", "HomeWork%")
+		homework_messages_array = []
+
+		if(current_user.role.include?("Teacher"))
+			if(!@homework_conversations.blank?)
+				@homework_conversations.each do |conversation|					
+				    conversation_homework_messages = conversation.messages.where(category: "HomeWork", creator_id: current_user.id).order(created_at: :desc)
+					if(!conversation_homework_messages.blank?)
+						conversation_homework_messages.each do |message|
+							homework_messages_array << message
+						end	
+					end
+				end
+	    	end
+	    else
+	    	if(!@homework_conversations.blank?)
+				@homework_conversations.each do |conversation|					
+				    conversation_homework_messages = conversation.messages.where(category: "HomeWork").order(created_at: :desc)
+					if(!conversation_homework_messages.blank?)
+						conversation_homework_messages.each do |message|
+							homework_messages_array << message
+						end	
+					end
+				end
+	    	end	
+		end
 		@unread_conversation_ids_array = []
 		@inbox_conversations.each do |conversation|
 			conversation_participant_model = conversation.get_conversation_participant_model_for_participant(current_user)
@@ -151,6 +86,18 @@ class ConversationsController < ApplicationController
 				end
 			end
 		end
+
+		
+		if(params[:page] and params[:page].to_i >= 2)
+			@inbox_conversations = Conversation.where(id: inbox_conversations_array.map(&:id)).order(updated_at: :desc).page(params[:page]).per(10)
+			@group_conversations = Conversation.where(id: group_conversations_array.map(&:id)).order(updated_at: :desc).page(params[:page]).per(10)
+			@homework_messages = Message.where(id: homework_messages_array.map(&:id)).page(params[:page]).per(10)
+		else
+			@inbox_conversations = Conversation.where(id: inbox_conversations_array.map(&:id)).order(updated_at: :desc).page(1).per(10)
+			@group_conversations = Conversation.where(id: group_conversations_array.map(&:id)).order(updated_at: :desc).page(1).per(10)
+			@homework_messages = Message.where(id: homework_messages_array.map(&:id)).page(1).per(10)
+		end
+		
 		@principals = @institute.get_members_with_given_roles(["Principal"])
 		@admins = @institute.get_members_with_given_roles(["Institute Admin"])
 		@teachers = @institute.get_members_with_given_roles(["Teacher"])
