@@ -31,7 +31,22 @@
 								<% end %> 
 							</a></li>
 							<li style="width:33.33%;"><a data-toggle="tab" href="#all-sent-messages">Sent</a></li>
-							<li style="width:33.33%;"><a data-toggle="tab" href="#all-group-messages">Groups</a></li>
+							<li style="width:33.33%;">
+								<a data-toggle="tab" href="#all-group-messages">	
+									Groups
+									<% if(!@unread_group_conversation_ids_array.blank?) %>
+										<% if(@unread_group_conversation_ids_array.length > 0) %>
+											<span class="dot-unread unread-group-conversation-no" style="display: inline-block;"> <%= @unread_group_conversation_ids_array.length %> </span> 
+										<% else %>
+											<span class="dot-unread unread-group-conversation-no" style="display: none;">0</span>
+										<% end %>
+										<span class="unread-group-conversation-ids" style="display: none;"><%= @unread_conversation_ids_array.join(", ") %></span>	
+									<% else %>
+										<span class="dot-unread unread-group-conversation-no" style="display: none;">0</span>
+										<span class="unread-group-conversation-ids" style="display: none;">""</span>	
+									<% end %> 
+								</a>
+							</li>
 						</ul>	
 					</div>
 					<div class="tab-content admin-home-content">
