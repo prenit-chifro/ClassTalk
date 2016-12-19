@@ -18,7 +18,6 @@ class ConversationsController < ApplicationController
 				inbox_conversations_array << conversation
 			end
 		end
-		@inbox_conversations = Conversation.where(id: inbox_conversations_array.map(&:id))
 
 		@sent_conversations = current_user.participating_conversations.where(creator_id: current_user.id).order(updated_at: :desc)
 	 	sent_conversations_array = []
@@ -27,7 +26,6 @@ class ConversationsController < ApplicationController
 				sent_conversations_array << conversation
 			end
 		end
-		@sent_conversations = Conversation.where(id: sent_conversations_array.map(&:id)).order(updated_at: :desc).page(params[:page]).per(10)
 
 		group_conversations_array = []
 		@conversations.each do |conversation|
@@ -62,6 +60,11 @@ class ConversationsController < ApplicationController
 				end
 	    	end	
 		end
+
+		@inbox_conversations = Conversation.where(id: inbox_conversations_array.map(&:id)).order(updated_at: :desc)
+		@sent_conversations = Conversation.where(id: sent_conversations_array.map(&:id)).order(updated_at: :desc)
+		@group_conversations = Conversation.where(id: group_conversations_array.map(&:id)).order(updated_at: :desc)
+
 		@unread_conversation_ids_array = []
 		@inbox_conversations.each do |conversation|
 			conversation_participant_model = conversation.get_conversation_participant_model_for_participant(current_user)
@@ -89,12 +92,14 @@ class ConversationsController < ApplicationController
 
 		
 		if(params[:page] and params[:page].to_i >= 2)
-			@inbox_conversations = Conversation.where(id: inbox_conversations_array.map(&:id)).order(updated_at: :desc).page(params[:page]).per(10)
-			@group_conversations = Conversation.where(id: group_conversations_array.map(&:id)).order(updated_at: :desc).page(params[:page]).per(10)
+			@inbox_conversations = inbox_conversations.page(params[:page]).per(10)
+			@sent_conversations = @sent_conversations.page(params[:page]).per(10)
+			@group_conversations = @group_conversations.page(params[:page]).per(10)
 			@homework_messages = Message.where(id: homework_messages_array.map(&:id)).page(params[:page]).per(10)
 		else
-			@inbox_conversations = Conversation.where(id: inbox_conversations_array.map(&:id)).order(updated_at: :desc).page(1).per(10)
-			@group_conversations = Conversation.where(id: group_conversations_array.map(&:id)).order(updated_at: :desc).page(1).per(10)
+			@inbox_conversations = inbox_conversations.page(1).per(10)
+			@sent_conversations = @sent_conversations.page(1).per(10)
+			@group_conversations = @group_conversations.page(1).per(10)
 			@homework_messages = Message.where(id: homework_messages_array.map(&:id)).page(1).per(10)
 		end
 		
