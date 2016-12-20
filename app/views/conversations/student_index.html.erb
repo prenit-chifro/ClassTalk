@@ -135,7 +135,7 @@
 								</ul>
 							</div>
 							<div class="tab-pane active" id="all-admins">
-								
+								<ul class="list-unstyled list-inline">
 									<% if(!@admins.blank?) %>
 										<div class="manage-page">
 										<% @admins.each do |admin| %>							
@@ -152,7 +152,8 @@
 							</div>	
 
 						</div>
-					</div>
+					</div>	
+					
 				</li>
 
 				<li>
@@ -213,45 +214,45 @@
 		<div class="tab-pane" id="all-dayplan">
 			<div class="container-width classRoute">
 				<ul class="nav nav-tabs text-center" role="tablist" id="tablist" style="background:#98c2d2;">		
-				<li class="active" style="width:100%;">
-					<a data-toggle="tab" href="#class-plan">
-						Class Plan
-					</a>
-				</li>
-			</ul>
-			<div class="tab-content admin-home-content">
-				<div class="tab-pane active" id="class-plan">
-					<% if(!@all_section_member_models.blank?) %>
-						<ul class="list-unstyled teachers-list index-conversation-modal" style ="max-height: none">
-							<% @all_section_member_models.each do |section_member_model| %>
-							
-								<% grade = section_member_model.grade %>
-								<% section = section_member_model.section %>
+					<li class="active" style="width:100%;">
+						<a data-toggle="tab" href="#class-plan">
+							Class Plan
+						</a>
+					</li>
+				</ul>
+				<div class="tab-content admin-home-content">
+					<div class="tab-pane active" id="class-plan">
+						<% if(!@all_section_member_models.blank?) %>
+							<ul class="list-unstyled teachers-list index-conversation-modal" style ="max-height: none">
+								<% @all_section_member_models.each do |section_member_model| %>
 								
-								<% if(!grade.blank? and !section.blank?) %>
-									<li>
-										<h6 class="teachers-list-heading" style="background:#b0b0b0;">Class <%= grade.grade_name %><%= section.section_name %><i class="material-icons arrow-up-icon pull-right">&#xE316;</i></h6>
-										<div class="container-width classRoute">
-											<div class="calendar class-calendar" data-grade-id="<%= grade.id %>" data-section-id="<%= section.id %>">
-											</div>
-										</div>	
-									</li>
-								<% else %>	
+									<% grade = section_member_model.grade %>
+									<% section = section_member_model.section %>
+									
+									<% if(!grade.blank? and !section.blank?) %>
+										<li>
+											<h6 class="teachers-list-heading" style="background:#b0b0b0;">Class <%= grade.grade_name %><%= section.section_name %><i class="material-icons arrow-up-icon pull-right">&#xE316;</i></h6>
+											<div class="container-width classRoute">
+												<div class="calendar class-calendar" data-grade-id="<%= grade.id %>" data-section-id="<%= section.id %>">
+												</div>
+											</div>	
+										</li>
+									<% else %>	
 
-								<% end %>			
+									<% end %>			
 
-							<% end %>
-						</ul>			
-					<% end %>
+								<% end %>
+							</ul>			
+						<% end %>
+					</div>
 				</div>
-			</div>
 			</div>
 		</div>
 		
 	</div>
 
-</div>					
-						
+			
+</div>						
 <div class="container">
 	<span class="personal-message-icon" data-toggle="modal" data-target="#customMessageModal">
 		<i class="material-icons">&#xE0C9;</i>
