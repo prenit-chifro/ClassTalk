@@ -116,13 +116,13 @@ a:hover,a:focus{
 }
 .main-navbar-brand{
     font-size: 20px;
-    color: #fff !important;
+    color: #1e4472 !important;
     font-weight: bolder;
 	padding:0;
 	line-height: 2.5;
 }
 .main-navbar-brand:hover,.main-navbar-brand:focus{
-	color: #fff !important;
+	color: #1e4472 !important;
 }
 .main-navbar-brand a{
 	font-size: 20px;
@@ -133,8 +133,8 @@ a:hover,a:focus{
 	margin-top: -6px;
     margin-left: -10px;
 	padding-right: 3px;
-    padding-top: 15px;
-    padding-bottom: 15px;
+    padding-top: 13px;
+    padding-bottom: 13px;
     padding-left: 10px;
 }
 p.no-attendance-records{
@@ -150,8 +150,9 @@ p.no-attendance-records{
 
 .main-navbar-brand a i{
 	vertical-align: middle;
-    color: #145269;
+    color: #fff;
     margin-right: 4px;
+	font-size:28px;
 }
 .mar-btm{
 	margin-bottom:10px;
@@ -2127,8 +2128,11 @@ div.calendar div.fc-agendaWeek-view tbody.fc-body div.fc-bg > table >tbody>tr>td
 }
 @media only screen and (max-width:350px){
 	.main-navbar-brand a i{
-	    font-size: 15px;
+	    font-size: 19px;
 		margin-right: 2px;
+	}
+	.main-navbar-brand a{
+		padding-top:15px;
 	}
 	ul.pagination li a{
 		font-size:10px !important;
