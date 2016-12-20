@@ -143,10 +143,9 @@
 				</div>
 				<div class="tab-pane" id="all-students">
 					<ul class="list-unstyled teachers-list index-conversation-modal">
-						<form onsubmit="return false;" class="search-form">
+						<form onsubmit="return false;" class="search-form-main">
 							<div class="pull-left form-group has-feedback" style="margin-top: 8px;">
-								<i class="material-icons search-attendance-icon">&#xE8B6;</i> 
-								<input type="text" class="form-control search-conversation-students-page" name="search" id="search" autocomplete="off">
+								<input type="text" class="form-control search-conversation-students-page" name="search" placeholder="Search..." id="search1" autocomplete="off">
 							</div>
 						</form>
 						<%= link_to add_new_student_institute_path(@institute) do %>
@@ -200,10 +199,9 @@
 				</div>
 				<div class="tab-pane" id="all-parents">
 					<ul class="list-unstyled teachers-list index-conversation-modal">
-						<form onsubmit="return false;" class="search-form">
+						<form onsubmit="return false;" class="search-form-main">
 							<div class="pull-left form-group has-feedback" style="margin-top: 8px;">
-								<i class="material-icons search-attendance-icon">&#xE8B6;</i> 
-								<input type="text" class="form-control search-conversation-parents-page" name="search" id="search" autocomplete="off">
+								<input type="text" class="form-control search-conversation-parents-page" name="search" id="search1" placeholder="Search..." autocomplete="off">
 							</div>
 						</form>
 						<%= link_to add_new_parent_institute_path(@institute) do %>
@@ -258,10 +256,9 @@
 				</div>
 				<div class="tab-pane" id="all-staff">
 					<ul class="list-unstyled teachers-list index-conversation-modal">
-						<form onsubmit="return false;" class="search-form">
-							<div class="pull-left form-group has-feedback" style="margin-top: 8px;">
-								<i class="material-icons search-attendance-icon">&#xE8B6;</i> 
-								<input type="text" class="form-control search-conversation-staff-page" name="search" id="search" autocomplete="off">
+						<form onsubmit="return false;" class="search-form-main">
+							<div class="pull-left form-group has-feedback" style="width:100%; margin-top: 8px;">
+								<input type="text" class="form-control search-conversation-staff-page" name="search" placeholder="Search..." id="search1" autocomplete="off">
 							</div>
 						</form>
 						<div class="max-width-button">
