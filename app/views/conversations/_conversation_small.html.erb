@@ -12,7 +12,7 @@
 <% else %>
 	<% read_unread_class = "messages-read-media" %>
 <% end %>
-<%= link_to conversation_path(conversation) + "#{'#' + conversation.last_message.category.split(' ').join('_') if !conversation.last_message_id.blank? and !conversation.last_message.category.blank?}" do %>			
+<%= link_to conversation_path(conversation) + "#{'#all-' + conversation.last_message.category.split(' ').join('_') if !conversation.last_message_id.blank? and !conversation.last_message.category.blank?}" do %>			
 <div class="messages-media <%= read_unread_class %> conversation-small" data-conversation-id="<%= conversation.id %>">
 	<div class="media main-media">
 		<div class="media-left pull-right">

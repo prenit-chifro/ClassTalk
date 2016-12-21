@@ -7,9 +7,7 @@
 			<ul class="nav nav-tabs admin-new-tabs" role="tablist" id="tablist" style="position:fixed;z-index:5;left:0;right:0;">		
 				<li class="active"><a data-toggle="tab" href="#all-messages">Messages</a></li>
 				<li><a data-toggle="tab" href="#all-homework">HomeWork</a></li>
-				<li><a data-toggle="tab" href="#all-students">Students</a></li>
-				<li><a data-toggle="tab" href="#all-staff">Staff</a></li>
-				<li><a data-toggle="tab" href="#all-classes-analytics">Classes</a></li>
+				<li><a data-toggle="tab" href="#all-classes">Classes</a></li>
 				<li><a data-toggle="tab" href="#all-dayplan">Day Plan</a></li>			
 			</ul>
 			<div class="clearfix"></div>
@@ -98,7 +96,7 @@
 					<% end %>
 
 				</div>
-				<div class="tab-pane" id="all-students">
+				<div class="tab-pane" id="all-classes">
 					<form onsubmit="return false;" class="search-form">
 						<div class="pull-left form-group has-feedback" style="margin-top: 8px;">
 							<i class="material-icons search-attendance-icon">&#xE8B6;</i> 
@@ -170,103 +168,6 @@
 							<% end %>
 						
 
-					</ul>
-				</div>
-				<div class="tab-pane" id="all-staff">
-					<form onsubmit="return false;" class="search-form">
-						<div class="pull-left form-group has-feedback" style="margin-top: 8px;">
-							<i class="material-icons search-attendance-icon">&#xE8B6;</i> 
-							<input type="text" class="form-control search-staff-page" name="search" id="search" autocomplete="off">
-						</div>
-					</form>
-					<div class="clearfix mar-btm"></div>
-					<ul class="list-unstyled teachers-list index-conversation-modal" style="margin-top: 70px;">
-						
-						<li>
-							<h6 class="teachers-list-heading">Authorities<i class="material-icons arrow-up-icon pull-right">&#xE316;</i></h6>
-							<div class="container-width classRoute negation-classRoute" style="display: block;">
-								<ul class="nav nav-tabs" role="tablist" id="tablist">
-									<li class="active"><a data-toggle="tab" href="#all-admins">Admins</a></li>												
-									<li><a data-toggle="tab" href="#all-principals">Principal</a></li>									
-								</ul>
-								<div class="tab-content" style="">
-									<div class="tab-pane" id="all-principals">
-										<ul class="list-unstyled list-inline">
-											
-											<% if(!@principals.blank?) %>
-												<div class="manage-page">
-												<% @principals.each do |principal| %>
-													<li>
-														<%= render partial: "conversations/contact", locals: {contact: principal} %>
-														<span class="checkbox-style-block checkbox-style-block-<%= principal.id %>">
-															
-														</span>		
-																	
-													</li>
-												<% end %>
-												</div>
-											<% else %>
-												<h1 class="nothing-posted" style="margin-top:0;box-shadow:none;"> No Principals added yet ! </h1>		
-											<% end %>														
-										</ul>
-									</div>
-									<div class="tab-pane active" id="all-admins">
-										<ul class="list-unstyled list-inline">
-											<% if(!@admins.blank?) %>
-												<div class="admin-manage-page">
-												<% @admins.each do |admin| %>							
-													<li>
-														<%= render partial: "conversations/contact", locals: {contact: admin} %>
-														<span class="checkbox-style-block checkbox-style-block-<%= admin.id %>"></span>
-														
-													</li>
-												
-												<% end %>
-												</div>
-											<% else %>
-												<h1 class="nothing-posted" style="margin-top:0;box-shadow:none;"> No Admins added yet ! </h1>		
-											<% end %>														
-										</ul>
-									</div>	
-
-								</div>
-							</div>
-						</li>
-
-							
-					</ul>
-				</div>
-				<div class="tab-pane" id="all-classes-analytics">
-
-					<ul class="list-unstyled list-inline text-center">
-						<% if(!@grades.blank?) %>
-							<% @grades.each do |grade| %>
-								<% grade_section_models = grade.grades_sections.where(institute_id: @institute.id) %>
-								<% grades_sections_members_models = grade.grades_sections_members_models.where(institute_id: @institute.id) %>
-								<% teachers_count =  grades_sections_members_models.where(member_role: "Teacher").map(&:member).uniq.count%>
-								<% students_count =  grades_sections_members_models.where(member_role: "Student").map(&:member).uniq.count%>
-								<% parents_count =  grades_sections_members_models.where(member_role: "Parent").map(&:member).uniq.count%>
-
-								<li>
-									<div class="ch-item">	
-										<div class="ch-info">
-											<h3><%= teachers_count %> Teachers</h3>
-											
-											<p><%= students_count %> Students<br><%= parents_count %> Parents<a href="<%= institute_grade_path(@institute, grade) %>"><%= grade.grade_name %></a></p>
-										</div>
-										<div class="ch-thumb">
-											<span>Class <%= grade.grade_name %></span>
-											<span><%= grade_section_models.count %> Sections</span>
-										</div>
-									</div>
-									<button class="btn btn-info btn-custom-info"><%= link_to institute_grade_path(@institute, grade) do %>Go To Class <%= grade.grade_name %><% end %></button>
-								</li>
-								
-							<% end %>
-						<% else %>
-							<h1 class="nothing-posted" style="margin-top:0;box-shadow:none;"> No Classes added yet ! </h1>		
-						<% end %>
-						
 					</ul>
 				</div>
 				
