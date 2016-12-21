@@ -1,5 +1,5 @@
 <div class="well well-sm">
-	<div class="media jumbotron-media">
+	<div class="media jumbotron-media" style="width: 49%; display: inline-block; border-right: 1px solid #fff; vertical-align: middle;">
 		<div class="media-left media-middle">
 			
 			<img src="<%= contact.profile_picture.media.url(:thumb) %>" class="img-rounded img-xs">
@@ -12,4 +12,32 @@
 			
 		</div>				
 	</div>
+	<% if(contact.role == "Student") %>
+		<div class="media jumbotron-media" style="width: 49%; display: inline-block; vertical-align: middle;">
+			<% if(!contact.father_id.blank?) %>
+				<% father = contact.father %>
+				<div class="media-body media-middle">
+					<h5 class="media-heading student-name-in-message"><%= father.first_name %> <%= father.last_name %></h5>
+
+					<small class="role-small">Father</small>
+					
+				</div>	
+					
+			<% end %>
+			<br>
+			<% if(!contact.mother_id.blank?) %>
+				<% mother = contact.mother %>
+				<div class="media-body media-middle">
+					<h5 class="media-heading student-name-in-message"><%= mother.first_name %> <%= mother.last_name %></h5>
+
+					<small class="role-small">Mother</small>
+					
+				</div>	
+					
+			<% end %>
+			
+			
+		</div>
+	<% end %>
+	
 </div>
