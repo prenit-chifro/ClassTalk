@@ -193,6 +193,13 @@ $(document).on("turbolinks:load", function(){
 		e.preventDefault();
 		e.stopPropagation();
 	});	
+	$(".teachers-list-heading-inner").click(function(e){
+		$(this).find(".arrow-up-icon").toggleClass("arrow-down-icon");
+		$(this).parents("li.find-teacher-list").find("div.classRoute").slideToggle();
+		e.preventDefault();
+		e.stopPropagation();
+	});	
+	
 	$('.next-page-link').click(function(event){
 		clickedElement = $(this);
 		App.navigateToLink(clickedElement);			
