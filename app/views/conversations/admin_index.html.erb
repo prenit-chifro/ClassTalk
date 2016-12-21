@@ -340,17 +340,16 @@
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal">&times;</button>
 					
-					<form onsubmit="return false;" class="search-form">
+					<form onsubmit="return false;" class="search-form-main pull-left">
 						<div class="form-group has-feedback">
-							<i class="material-icons search-attendance-icon">&#xE8B6;</i> 
-							<input type="text" class="form-control search-conversation-new-group" name="search" id="search">
+							<input type="text" class="form-control search-conversation-new-group" name="search" placeholder="search..." id="search1">
 						</div>
 					</form>
 					
 					<h4 class="modal-title">
-						
+
 						<%= link_to new_group_conversations_path do %>		
-							<span class="add-member">
+							<span class="add-member pull-right" style="margin-right: 17px; margin-top: -6px;">
 								<span>New Group</span><i class="material-icons">&#xE7FE;</i>
 							</span>
 						<% end %>
@@ -408,23 +407,20 @@
 										<div class="container-width classRoute" style="display: block;">
 											<ul class="nav nav-tabs" role="tablist" id="tablist">
 												<li class="active"><a data-toggle="tab" href="#all-students-modal-tab">Students</a></li>									
-												<li><a data-toggle="tab" href="#all-staff-modal">Staff</a></li>
-															
+												<li><a data-toggle="tab" href="#all-staff-modal">Staff</a></li>															
 											</ul>
 											<div class="tab-content" style="">
 												<div class="tab-pane" id="all-staff-modal">
-													<ul class="list-unstyled list-inline index-conversation-modal">
+													<ul class="list-unstyled index-conversation-modal">
 														<% if(!@teachers.blank?) %>
-															<% @teachers.each do |teacher| %>
-															
+															<% @teachers.each do |teacher| %>															
 																<li>
 																	<label for="contact-new-group-<%= teacher.id %>" class="modal-label">
 																		<%= check_box_tag "participant_ids[]", teacher.id, false,class:"contact-new-group-page", id:"contact-new-group-#{teacher.id}" %>
 																		<%= render partial: "conversations/contact", locals: {contact: teacher} %>
 																		<span class="checkbox-style-block checkbox-style-block-<%= teacher.id %>"></span>																	
 																	</label>									
-																</li>
-															
+																</li>															
 															<% end %>
 														<% else %>
 															<%= link_to add_new_staff_institute_path(@institute, role: "Teacher") do %>
@@ -459,17 +455,21 @@
 													</ul>
 												</div>
 												<div class="tab-pane active" id="all-students-modal-tab">
-													<ul class="list-unstyled list-inline  index-conversation-modal">
+													<ul class="list-unstyled index-conversation-modal">
 														<% if(!@institutes_grades_sections_models.blank?) %>
 															<% @institutes_grades_sections_models.each do |grade_section_model|%>
 																<% grade = grade_section_model.grade %>
 																<% section = grade_section_model.section %>
 																<% students = section.get_members_with_given_roles_for_institute_and_grade_with_role(@institute, grade, ["Student"]) %>
-																<li>
-																	<h6 class="teachers-list-heading">Class <%= grade.grade_name + section.section_name %><i class="material-icons arrow-up-icon pull-right">&#xE316;</i></h6>
-																	<div class="container-width classRoute" style="display: block;">
+																<li  class="find-teacher-list" style="margin-bottom:10px;position:relative;">
+																	<input type="checkbox" class="all-students" id="select-all-class-students-<%= grade.grade_name + section.section_name %>" style="position:absolute; top: 5px;left:71px;">
+																	<h6 class="teachers-list-heading-inner" style="background: #d1cece;margin: 0;padding: 10px; color: #dd223d;">
+																		Class <%= grade.grade_name + section.section_name %>																		
+																		<i class="material-icons arrow-up-icon pull-right" style="margin-top:-5px;">&#xE316;</i>
+																	</h6>
+																	<div class="container-width classRoute" style="display: block; box-shadow:rgb(175, 172, 172) 1px 1px 10px;margin-bottom:10px;">
 																		
-																		<ul class="list-unstyled list-inline  index-conversation-modal">
+																		<ul class="list-unstyled index-conversation-modal" style="box-shadow: none;    max-height: 200px !important;">
 																			<% if(!students.blank?) %>
 																				<% students.each do |student| %>
 																					<% if(student.id != current_user.id) %>
@@ -517,6 +517,11 @@
 
 
 <script>
+	$(".all-students").change(function (e) {
+		$(this).parents("li.find-teacher-list").find("input.contact-new-group-page:checkbox").prop('checked', $(this).prop("checked"));
+		updateCheckboxCounter();
+		e.preventDefault();
+	});
 	$(".classRoute").parents("div.wrapper").find(".navbar-default").css("box-shadow", "none");
 </script>
 
