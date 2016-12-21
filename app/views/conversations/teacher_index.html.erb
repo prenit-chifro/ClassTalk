@@ -185,10 +185,9 @@
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal">&times;</button>
 					
-					<form onsubmit="return false;" class="search-form">
+					<form onsubmit="return false;" class="search-form-main pull-left">
 						<div class="form-group has-feedback">
-							<i class="material-icons search-attendance-icon">&#xE8B6;</i> 
-							<input type="text" class="form-control search-conversation-new-group" name="search" id="search">
+							<input type="text" class="form-control search-conversation-new-group" name="search" placeholder="search..." id="search1">
 						</div>
 					</form>
 					
@@ -248,7 +247,7 @@
 										</ul>
 										<div class="tab-content" style="">
 											<div class="tab-pane" id="all-staff-modal">
-												<ul class="list-unstyled list-inline  index-conversation-modal">
+												<ul class="list-unstyled index-conversation-modal">
 													<% if(!@admins.blank?) %>
 														<% @admins.each do |admin| %>																
 															<% if(admin.id != current_user.id) %>
@@ -265,17 +264,21 @@
 												</ul>
 											</div>
 											<div class="tab-pane active" id="all-students-modal">
-												<ul class="list-unstyled list-inline  index-conversation-modal">
+												<ul class="list-unstyled index-conversation-modal">
 													<% if(!@all_section_member_models.blank?) %>
 														<% @all_section_member_models.each do |section_member_model|%>
 															<% grade = section_member_model.grade %>
 															<% section = section_member_model.section %>
 															<% students = section.get_members_with_given_roles_for_institute_and_grade_with_role(@institute, grade, ["Student"]) %>
-															<li>
-																<h6 class="teachers-list-heading">Class <%= grade.grade_name + section.section_name %><i class="material-icons arrow-up-icon pull-right">&#xE316;</i></h6>
-																<div class="container-width classRoute" style="display: block;">
+															<li class="find-teacher-list" style="margin-bottom:10px;position:relative;">
+																<input type="checkbox" class="all-students" id="select-all-class-students-<%= grade.grade_name + section.section_name %>" style="position:absolute; top: 5px;left:71px;">
+																<h6 class="teachers-list-heading-inner" style="background: #d1cece;margin: 0;padding: 10px; color: #dd223d;">
+																	Class <%= grade.grade_name + section.section_name %>
+																	<i class="material-icons arrow-up-icon pull-right" style="margin-top:-5px;">&#xE316;</i>
+																</h6>
+																<div class="container-width classRoute" style="display: block; box-shadow:rgb(175, 172, 172) 1px 1px 10px;margin-bottom:10px;">
 																	
-																	<ul class="list-unstyled list-inline  index-conversation-modal">
+																	<ul class="list-unstyled index-conversation-modal" style="box-shadow: none;max-height: 200px !important;">
 																		<% if(!students.blank?) %>
 																			<% students.each do |student| %>
 																				<% if(student.id != current_user.id) %>
@@ -345,6 +348,11 @@
 <% end %>
 
 <script type="text/javascript">
+	$(".all-students").change(function (e) {
+		$(this).parents("li.find-teacher-list").find("input.contact-new-group-page:checkbox").prop('checked', $(this).prop("checked"));
+		updateCheckboxCounter();
+		e.preventDefault();
+	});
 	$('.search-staff-page').on("keyup keydown", function() {
 		
 	    var value = $(this).val();
