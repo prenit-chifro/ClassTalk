@@ -48,22 +48,25 @@
 		<table class="table">
 			<thead>
 			  	<tr>
-			  		<th>Date</th>
+			  		<th>Absent Days</th>
 			    	<th><%= @student.first_name %> <%= @student.last_name %></th>
 			  	</tr>
 			</thead>
 			<tbody>
 			  	<% if(!@attendance_records.blank?) %>
 			  		<% (@attendance_records.first.date..@attendance_records.last.date).to_a.each do |date| %>
-			  			<tr>
-				    		<% date_attendance_record = @attendance_records.find_by(date: date) %>
-				    		<th> <%= date.strftime("%b %d") %> </th>	
-				    		<% if(!date_attendance_record.blank? and date_attendance_record.present_student_ids.split(", ").include?(@student.id.to_s)) %>
-				    			<th class="info">Present</th>		
-				    		<% else %>
-				    			<th class="warning">Absent</th>		
-				    		<% end %>
-						</tr>
+			  			
+			    		<% date_attendance_record = @attendance_records.find_by(date: date) %>
+			    		
+			    		<% if(!date_attendance_record.blank? and !date_attendance_record.present_student_ids.split(", ").include?(@student.id.to_s)) %>
+			    			<tr>
+			    				<th> <%= date.strftime("%b %d") %> </th>
+			    				<th class="warning">Absent</th>			
+			    			</tr>
+			    		
+			    		
+			    		<% end %>
+					
 			  		<% end %>
 			  		
 			  	<% end %>

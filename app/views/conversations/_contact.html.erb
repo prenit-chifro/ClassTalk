@@ -9,21 +9,6 @@
 			<h5 class="media-heading student-name-in-message"><%= contact.first_name %> <%= contact.last_name %></h5>
 
 			<small class="role-small"><%= contact.details %> <%= ", #{contact.roll_no}" if !contact.roll_no.blank? %>  <%= ", #{contact.staff_id}" if !contact.staff_id.blank? %></small>
-			<div class="pull-right">
-				<span>
-					<%= link_to user_path(contact) do %>
-						<i class="material-icons" style="color: #ea5b31;">face</i>
-					<% end %>	
-				</span>
-				<% if(current_user.id != contact.id) %>
-					<span>
-						<%= link_to conversations_path(participant_ids: [contact.id], conversation_id:"#{params[:conversation_id]}"), method: :post do %>
-							<i class="material-icons" style="color: #ea5b31;">&#xE0C9;</i>
-						<% end %>	
-					</span>
-				<% end %>
-				
-			</div>
 			
 		</div>				
 	</div>
