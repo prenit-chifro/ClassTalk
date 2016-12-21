@@ -116,11 +116,13 @@ a:hover,a:focus{
 }
 .main-navbar-brand{
     font-size: 20px;
-    color: #fff !important;
+    color: #1e4472 !important;
     font-weight: bolder;
+	padding:0;
+	line-height: 2.5;
 }
 .main-navbar-brand:hover,.main-navbar-brand:focus{
-	color: #757575 !important;
+	color: #1e4472 !important;
 }
 .main-navbar-brand a{
 	font-size: 20px;
@@ -130,6 +132,10 @@ a:hover,a:focus{
     display: block;	
 	margin-top: -6px;
     margin-left: -10px;
+	padding-right: 3px;
+    padding-top: 13px;
+    padding-bottom: 13px;
+    padding-left: 10px;
 }
 p.no-attendance-records{
     background: #2ad;
@@ -146,6 +152,7 @@ p.no-attendance-records{
 	vertical-align: middle;
     color: #fff;
     margin-right: 4px;
+	font-size:28px;
 }
 .mar-btm{
 	margin-bottom:10px;
@@ -2059,6 +2066,11 @@ div.calendar div.fc-agendaWeek-view tbody.fc-body div.fc-bg > table >tbody>tr>td
     -webkit-box-shadow: 0 0 1px rgba(255,255,255,.5);
 }
 
+@media (max-width:420px){
+	.search-form-main div.form-group{
+		float: none !important;
+	}
+}
 @media (min-width:768px){
 	.left-self-image >li:nth-child(1){
 		display:none;
@@ -2116,8 +2128,11 @@ div.calendar div.fc-agendaWeek-view tbody.fc-body div.fc-bg > table >tbody>tr>td
 }
 @media only screen and (max-width:350px){
 	.main-navbar-brand a i{
-	    font-size: 15px;
+	    font-size: 19px;
 		margin-right: 2px;
+	}
+	.main-navbar-brand a{
+		padding-top:15px;
 	}
 	ul.pagination li a{
 		font-size:10px !important;
@@ -2139,6 +2154,7 @@ div.calendar div.fc-agendaWeek-view tbody.fc-body div.fc-bg > table >tbody>tr>td
 	.main-navbar-brand{
 		padding-left: 3px;
 		padding-right: 3px;
+		line-height: 3.5;
 	}
 	.main-navbar-brand,.main-navbar-brand a{
 		font-size:14px;
@@ -2307,9 +2323,5 @@ div.calendar div.fc-agendaWeek-view tbody.fc-body div.fc-bg > table >tbody>tr>td
 		float: none !important;
 		margin-top: 8px;
 		text-align: center;
-	}
-	.max-width-button + a > div.add-revoke-rights{
-		width:89%; 
-		float:right !important;
 	}
 }

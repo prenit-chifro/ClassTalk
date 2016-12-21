@@ -1,5 +1,6 @@
 <% content_for :heading do %>
-	<a class="mybtn btn btn-link btn-xs pull-left" href="/"><i class="material-icons">&#xE317;</i><%= @conversation.get_conversation_name_to_show_to_user(current_user).truncate(15) if !@conversation.get_conversation_name_to_show_to_user(current_user).blank?%></a>
+	<a class="mybtn btn btn-link btn-xs pull-left" href="/"><i class="material-icons">&#xE88A;</i></a>
+	<%= @conversation.get_conversation_name_to_show_to_user(current_user).truncate(15) if !@conversation.get_conversation_name_to_show_to_user(current_user).blank?%>
 <% end %>
 
 <% if(true) %>
