@@ -23,7 +23,7 @@
 					<% @pending_users.each do |user| %>
 						
 							<div class="well well-sm">
-								<label for="contact-new-group-<%= user.id %>" class="modal-label"  style="width: 60%; display: inline-block; border-right: 1px solid #fff; vertical-align: middle;">
+								<label for="contact-new-group-<%= user.id %>" class="modal-label"  style="vertical-align: middle;">
 									<%= check_box_tag "acted_user_ids[]", user.id, false,class:"contact-new-group-page", id:"contact-new-group-#{user.id}"  %>
 									<div class="media jumbotron-media">
 										<div class="media-left media-middle">

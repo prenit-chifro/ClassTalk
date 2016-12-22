@@ -53,7 +53,7 @@
 										<% @teachers.each do |teacher| %>															
 											<li>
 												<div class="well well-sm">
-													<label for="contact-new-group-<%= teacher.id %>" class="modal-label" style="width: 60%; display: inline-block; border-right: 1px solid #fff; vertical-align: middle;">
+													<label for="contact-new-group-<%= teacher.id %>" class="modal-label" style="vertical-align: middle;">
 														<%= check_box_tag "admin_ids[]", teacher.id, false,class:"contact-new-group-page", id:"contact-new-group-#{teacher.id}" %>
 												
 														<div class="media jumbotron-media">

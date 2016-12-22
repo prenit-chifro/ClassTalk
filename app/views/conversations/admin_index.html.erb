@@ -421,7 +421,7 @@
 															<% @teachers.each do |teacher| %>															
 																<li class="all-staff-list">
 																	<div class="well well-sm">
-																		<label for="contact-new-group-<%= teacher.id %>" class="modal-label" style="width: 60%; display: inline-block; border-right: 1px solid #fff; vertical-align: middle;">
+																		<label for="contact-new-group-<%= teacher.id %>" class="modal-label" style=" vertical-align: middle;">
 																			<%= check_box_tag "participant_ids[]", teacher.id, false,class:"all-staff-members-inner-checkbox", id:"contact-new-group-#{teacher.id}" %>
 																	
 																			<div class="media jumbotron-media">
@@ -457,7 +457,7 @@
 															<% @admins.each do |admin| %>				
 																<li class="all-staff-list">
 																	<div class="well well-sm">
-																		<label for="contact-new-group-<%= admin.id %>" class="modal-label" style="width: 60%; display: inline-block; border-right: 1px solid #fff; vertical-align: middle;">
+																		<label for="contact-new-group-<%= admin.id %>" class="modal-label" style=" vertical-align: middle;">
 																			<%= check_box_tag "participant_ids[]", admin.id, false,class:"all-staff-members-inner-checkbox", id:"contact-new-group-#{admin.id}" %>
 																	
 																			<div class="media jumbotron-media">
