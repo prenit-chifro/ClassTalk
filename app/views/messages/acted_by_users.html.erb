@@ -1,32 +1,57 @@
 <div class="container-width classRoute" style="margin-bottom:85px;">	
 	<ul class="nav nav-tabs text-center" role="tablist" id="tablist">		
-		<li class="active" style="width:50%;"><a data-toggle="tab" href="#all-submitted-users">Submitted by</a></li>
-		<li style="width:50%;"><a data-toggle="tab" href="#all-pending-users">Pending Users</a></li>
+		<li style="width:50%;"><a data-toggle="tab" href="#all-submitted-users">Submitted by</a></li>
+		<li class="active" style="width:50%;"><a data-toggle="tab" href="#all-pending-users">Pending Users</a></li>
 	</ul>
 	<div class="tab-content admin-home-content">
-		<div class="tab-pane active all-small-conversations" id="all-submitted-users">
+		<div class="tab-pane all-small-conversations" id="all-submitted-users">
 			<% if(!@acted_users.blank?) %>
 				<% @acted_users.each do |user| %>
 					<%= render partial: "conversations/contact", locals: {contact: user} %>
 				<% end %>
+			<% else %>
+				<h1 class="nothing-posted">	No Submission yet ! </h1>
 			<% end %>
 
 		</div>
-		<div class="tab-pane all-small-conversations" id="all-pending-users">						
+		<div class="tab-pane active all-small-conversations" id="all-pending-users">						
 			<% if(!@pending_users.blank?) %>
 				<%= form_tag set_acted_user_ids_conversation_message_path(@conversation, @message), method: :post, remote: true do %>
 					
 					<button type="submit" class="btn btn-success mar-btm" style="width: 100%;"> Mark Submission </button>
 
 					<% @pending_users.each do |user| %>
-						<label for="contact-new-group-<%= user.id %>" class="modal-label">
-							<%= check_box_tag "acted_user_ids[]", user.id, false,class:"contact-new-group-page", id:"contact-new-group-#{user.id}" %>
-							<%= render partial: "conversations/contact", locals: {contact: user} %>
-							<span class="checkbox-style-block checkbox-style-block-<%= user.id %>"></span>																	
+						
+							<div class="well well-sm">
+								<label for="contact-new-group-<%= user.id %>" class="modal-label"  style="width: 60%; display: inline-block; border-right: 1px solid #fff; vertical-align: middle;">
+									<%= check_box_tag "acted_user_ids[]", user.id, false,class:"contact-new-group-page", id:"contact-new-group-#{user.id}"  %>
+									<div class="media jumbotron-media">
+										<div class="media-left media-middle">
+											
+											<img src="<%= user.profile_picture.media.url(:thumb) %>" class="img-rounded img-xs">
+											
+										</div>
+										<div class="media-body media-middle">
+											<h5 class="media-heading student-name-in-message"><%= user.first_name %> <%= user.last_name %></h5>
+
+											<small class="role-small"><%= user.details %></small>
+											
+										</div>				
+									</div>
+									<span class="uncheckbox-style-block uncheckbox-style-block-<%= user.id %>"></span>		
+									<span class="checkbox-style-block checkbox-style-block-<%= user.id %>"></span>
+								</label>
+
+								
+								
+								
+							</div>
+							
 						</label>							
 					<% end %>
 				<% end %>
-
+			<% else %>
+				<h1 class="nothing-posted"> No Pending Users </h1>	
 			<% end %>
 		</div>
 	</div>	

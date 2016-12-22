@@ -28,8 +28,7 @@ class InstitutesController < ApplicationController
           @principals = @institute.get_members_with_given_roles(["Principal"])
           @admins = @institute.get_members_with_given_roles(["Institute Admin"])
           @teachers = @institute.get_members_with_given_roles(["Teacher"])
-          @students = @institute.get_members_with_given_roles(["Student"])
-          @parents = @institute.get_members_with_given_roles(["Parent"])
+          @institutes_grades_sections_models = @institute.institutes_grades_sections_models
           if(current_user.role.include?("Principal") or current_user.role.include?("Institute Admin"))
               @grades = @institute.grades
           else

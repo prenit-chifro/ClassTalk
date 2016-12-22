@@ -64,20 +64,22 @@ class MessagesController < ApplicationController
 		if(!@message.blank? and !@conversation.message_categories.blank? and @conversation.message_categories.include?(@message.category))
 			student_participant_ids_array = @conversation.participants.where.not(id: @message.creator_id).where(role: "Student").map{|p| p.id.to_s}
 			@message.acted_user_ids = "" if @message.acted_user_ids.blank?
-			acted_user_ids_array = @message.acted_user_ids.split(", ").map{|id| id.to_i}.uniq
+			acted_user_ids_array = @message.acted_user_ids.split(", ").map{|id| id.to_s}.uniq
 			if(!acted_user_ids.blank?)
 				acted_user_ids.each do |acted_user_id|
 					if(acted_user_ids_array.blank? or !acted_user_ids_array.include?(acted_user_id))
 						acted_user_ids_array << acted_user_id
 						@message.acted_user_ids = acted_user_ids_array.join(", ")
 						
-						if(student_participant_ids_array.sort == acted_user_ids_array.sort)
-							@message.is_acted_by_all_participants = true
-						end
-						@message.save
+						
+						
 					end
 							
 				end
+				if(student_participant_ids_array.sort == acted_user_ids_array.sort)
+					@message.is_acted_by_all_participants = true
+				end
+				@message.save
 			end
 			
 			

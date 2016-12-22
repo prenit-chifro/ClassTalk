@@ -1,5 +1,5 @@
 <% content_for :heading do %>
-	<a class="mybtn btn btn-link btn-xs pull-left" href="/"><i class="material-icons">&#xE88A;</i></a>
+	<a class="mybtn btn btn-link btn-xs pull-left" href="<%= institute_grade_path(@institute, @grade) %>"><i class="material-icons">&#xE317;</i></a>
 	Class <%= @grade.grade_name %> <%= @section.section_name %>
 <% end %>
 
@@ -9,7 +9,6 @@
 		<li><a data-toggle="tab" href="#all-subjects">Subjects</a></li>
 		<% if(current_user.role.include?("Principal") or current_user.role.include?("Institute Admin") or current_user.role.include?("Teacher")) %>
 			<li><a data-toggle="tab" href="#all-students">Students</a></li>	
-			<li><a data-toggle="tab" href="#all-parents">Parents</a></li>
 		<% end %>
 	</ul>
 	<div class="tab-content" style=" max-width:600px; margin: 0 auto; ">
@@ -70,33 +69,7 @@
 
 				
 			</div>
-			<div class="tab-pane" id="all-parents" style="max-height:100%;margin-bottom:70px;">
-				<%= link_to conversation_path(@section_conversation) do %>
-					<div class="pull-left add-member">
-						<span>Class Messages</span><i class="material-icons">&#xE0C9;</i>
-					</div>
-				<% end %>
-				<% if(!current_user.role.include?("Student") and !current_user.role.include?("Parent")) %>
-										
-					<% if(!current_user.role.include?("Teacher")) %>
-						<%= link_to add_new_parent_institute_path(@institute, grade_id: @grade.id, section_id: @section.id) do %>
-							<div class="pull-right add-member">
-								<span>Add Parent</span><i class="material-icons">&#xE7FE;</i>
-							</div>
-						<% end %>
-						
-					<% end %>
-					<div class="clearfix"></div>
-				<% end %>
-				<div class="clearfix mar-btm"></div>
-				<% if(!@parents.blank?) %>
-					<% @parents.each do |contact| %>
-						<%= render partial: "conversations/contact", locals: {contact: contact} %>		
-					<% end %>
-				<% else %>
-					<h1 class="nothing-posted" style="margin-top:0;box-shadow:none;"> No Parents added in this class yet !</h1>		
-				<% end %>
-			</div>
+			
 		<% end %>
 
 		<div class="tab-pane" id="all-subjects" style="max-height:100%;margin-bottom:70px;">

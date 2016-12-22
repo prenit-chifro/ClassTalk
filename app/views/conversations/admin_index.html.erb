@@ -155,9 +155,9 @@
 													<% students.each do |student| %>
 														<% if(student.id != current_user.id) %>
 															<li>
-																<%= link_to user_path(student) do %>
-																	<%= render partial: "conversations/contact", locals: {contact: student} %>
-																<% end %>
+																
+																<%= render partial: "conversations/contact", locals: {contact: student} %>
+
 																		
 															</li>
 														<% end %>	
@@ -209,10 +209,10 @@
 										<div class="staff-manage-page">
 										<% @teachers.each do |teacher| %>
 											<li>
-												<%= link_to user_path(teacher) do %>
+												
 													<%= render partial: "conversations/contact", locals: {contact: teacher} %>
 												
-												<% end %>
+												
 												
 											</li>
 										<% end %>
@@ -224,10 +224,10 @@
 										<div class="staff-manage-page">
 										<% @admins.each do |admin| %>																
 											<li>
-												<%= link_to user_path(admin) do %>
+												
 													<%= render partial: "conversations/contact", locals: {contact: admin} %>
 												
-												<% end %>
+												
 												
 											</li>
 										

@@ -67,24 +67,24 @@ class User < ApplicationRecord
 			return "Principal"
 		end
 		if(self.role.include?("Institute Admin"))
-			return "Institute Admin"
+			return "Institute Admin#{', ' + self.staff_id if !self.staff_id.blank?}"
 		end
 		if(self.role.include?("Teacher"))
-			return "#{self.teaching_sections_subjects_models.first.subject.subject_name if !self.teaching_sections_subjects_models.blank?} Teacher"
+			return "#{self.teaching_sections_subjects_models.first.subject.subject_name if !self.teaching_sections_subjects_models.blank?} Teacher#{', ' + self.staff_id if !self.staff_id.blank?}"
 		end
 		if(self.role == "Student")
 			section_member_model = self.members_sections.first if !self.members_sections.blank?
 			grade = section_member_model.grade
 			section = section_member_model.section
 
-			return "Student #{'in Class ' + grade.grade_name if !grade.blank?}#{section.section_name if !section.blank?}"
+			return "#{'Class ' + grade.grade_name if !grade.blank?}#{section.section_name if !section.blank?}#{', ' + self.roll_no if !self.roll_no.blank?}"
 		end
 		if(self.role == "Parent")
 			section_member_model = self.members_sections.first if !self.members_sections.blank?
 			grade = section_member_model.grade
 			section = section_member_model.section
-
-			return "Parent #{'in Class ' + grade.grade_name if !grade.blank?}#{section.section_name if !section.blank?}"
+			children = self.children
+			return "Parent#{' of ' + children.first.first_name if !children.blank?} #{'in ' + grade.grade_name if !grade.blank?}#{section.section_name if !section.blank?}"
 		end
 	end
 
