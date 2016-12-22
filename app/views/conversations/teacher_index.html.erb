@@ -263,12 +263,19 @@
 											<div class="tab-pane active" id="all-students-modal">
 												<ul class="list-unstyled index-conversation-modal">
 													<% if(!@all_section_member_models.blank?) %>
+														<label for="all-select-students-bottom" class="pull-left" style="background:#c24343; color:#fff; padding:5px;font-weight: normal;">
+															<input type="checkbox" class="all-select-students-bottom" id="all-select-students-bottom" style="vertical-align: middle; margin-top:-2px;"> 
+															All Students
+														</label>
+														<label for="all-select-parents-bottom" class="pull-right" style="background:#c24343; color:#fff; padding:5px;font-weight: normal;">
+															<input type="checkbox" class="all-select-parents-bottom" id="all-select-parents-bottom" style="vertical-align: middle; margin-top:-2px;"> 
+															All Parents
+														</label>
 														<% @all_section_member_models.each do |section_member_model|%>
 															<% grade = section_member_model.grade %>
 															<% section = section_member_model.section %>
 															<% students = section.get_members_with_given_roles_for_institute_and_grade_with_role(@institute, grade, ["Student"]) %>
-															<li class="find-teacher-list" style="margin-bottom:10px;position:relative;">
-																<input type="checkbox" class="all-students" id="select-all-class-students-<%= grade.grade_name + section.section_name %>" style="position:absolute; top: 5px;left:71px;">
+															<li class="find-teacher-list" style="margin-bottom:10px;position:relative;">																
 																<h6 class="teachers-list-heading-inner" style="background: #d1cece;margin: 0;padding: 10px; color: #dd223d;">
 																	Class <%= grade.grade_name + section.section_name %>
 																	<i class="material-icons arrow-up-icon pull-right" style="margin-top:-5px;">&#xE316;</i>

@@ -494,9 +494,13 @@
 												<div class="tab-pane active" id="all-students-modal-tab">
 													<ul class="list-unstyled index-conversation-modal">
 														<% if(!@institutes_grades_sections_models.blank?) %>
-															<label for="all-select-students-parents" class="pull-right" style="background:#c24343; color:#fff; padding:5px;font-weight: normal;">
-																<input type="checkbox" class="all-select-students-parents" id="all-select-students-parents" style="vertical-align: middle; margin-top:-2px;"> 
-																Select All
+															<label for="all-select-students-bottom" class="pull-left" style="background:#c24343; color:#fff; padding:5px;font-weight: normal;">
+																<input type="checkbox" class="all-select-students-bottom" id="all-select-students-bottom" style="vertical-align: middle; margin-top:-2px;"> 
+																All Students
+															</label>
+															<label for="all-select-parents-bottom" class="pull-right" style="background:#c24343; color:#fff; padding:5px;font-weight: normal;">
+																<input type="checkbox" class="all-select-parents-bottom" id="all-select-parents-bottom" style="vertical-align: middle; margin-top:-2px;"> 
+																All Parents
 															</label>
 															<div class="clearfix"></div>
 															<% @institutes_grades_sections_models.each do |grade_section_model|%>
@@ -506,8 +510,14 @@
 																<li class="find-teacher-list" style="margin-bottom:10px;position:relative;">
 																	
 																	<div style="color:#f00;padding-left:10px; padding-top: 9px; font-size:10px;position: absolute; left: 26px;">
-																		<input type="checkbox" class="all-students all-upper-checkbox" style="vertical-align: middle; margin-top:-2px;" id="select-all-class-students-<%= grade.grade_name + section.section_name %>"> All Students
-																		<input type="checkbox" class="all-parents all-upper-checkbox" style="vertical-align: middle; margin-top:-2px;margin-left: 7px;" id="select-all-class-parents-<%= grade.grade_name + section.section_name %>"> All Parents
+																		<label for="select-all-class-students-<%= grade.grade_name + section.section_name %>">
+																			<input type="checkbox" class="all-students all-upper-checkbox-students" style="vertical-align: middle; margin-top:-2px;" id="select-all-class-students-<%= grade.grade_name + section.section_name %>"> 
+																			All Students
+																		</label>
+																		<label for="select-all-class-parents-<%= grade.grade_name + section.section_name %>">
+																			<input type="checkbox" class="all-parents all-upper-checkbox-parents" style="vertical-align: middle; margin-top:-2px;margin-left: 7px;" id="select-all-class-parents-<%= grade.grade_name + section.section_name %>"> 
+																			All Parents
+																		</label>
 																	</div>
 																	<h6 class="teachers-list-heading-inner" style="background: #d1cece;margin: 0;padding: 10px; cursor:pointer;color: #dd223d;">
 																		<%= grade.grade_name + section.section_name %>																		
@@ -620,15 +630,35 @@
 
 
 <script type="text/javascript">
-	$(".all-select-students-parents").change(function(e){
+	$(".all-select-students-bottom").change(function(e){
 		$(this).parents("#all-students-modal-tab").find("li.find-teacher-list").find("input.all-students:checkbox").prop('checked', $(this).prop("checked"));
-		$(this).parents("#all-students-modal-tab").find("li.find-teacher-list").find("input.all-parents:checkbox").prop('checked', $(this).prop("checked"));
 		$(this).parents("#all-students-modal-tab").find("li.find-teacher-list").find("input.contact-new-group-page:checkbox").prop('checked', $(this).prop("checked"));
+		updateCheckboxCounter();
+		e.preventDefault();
+	});
+	
+	$(".all-select-parents-bottom").change(function(e){
+		$(this).parents("#all-students-modal-tab").find("li.find-teacher-list").find("input.all-parents:checkbox").prop('checked', $(this).prop("checked"));
 		$(this).parents("#all-students-modal-tab").find("li.find-teacher-list").find("input.contact-new-group-page-parent:checkbox").prop('checked', $(this).prop("checked"));
 		updateCheckboxCounter();
 		e.preventDefault();
 	});
-		
+	
+	$(".all-upper-checkbox-students").change(function(e){
+		if($(".all-upper-checkbox-students").length ==  $(".all-upper-checkbox-students:checked").length){
+			$(".all-select-students-bottom").prop('checked', $(this).prop("checked"));
+		}else{
+			$(".all-select-students-bottom").prop('checked', false);
+		}
+	});
+	$(".all-upper-checkbox-parents").change(function(e){
+		if($(".all-upper-checkbox-parents").length ==  $(".all-upper-checkbox-parents:checked").length){
+			$(".all-select-parents-bottom").prop('checked', $(this).prop("checked"));
+		}else{
+			$(".all-select-parents-bottom").prop('checked', false);
+		}
+	});
+	
 	$(".all-select-staff-members").change(function(e){
 		$(this).parents("#all-staff-modal").find("li.all-staff-list").find(".all-staff-members-inner-checkbox").prop('checked', $(this).prop("checked"));
 		updateCheckboxCounter();
@@ -664,28 +694,23 @@
 	$(".all-inner-checkbox").change(function(e){
 		if($(".all-inner-checkbox").length == $(".all-inner-checkbox:checked").length){
 			$(".all-inner-checkbox").parents("li.find-teacher-list").find(".all-students").prop('checked', $(this).prop("checked"));
+			$(".all-select-students-bottom").prop('checked', $(this).prop("checked"));
 		}else{
 			$(".all-inner-checkbox").parents("li.find-teacher-list").find(".all-students").prop('checked' , false);
-			$(".all-select-students-parents").prop('checked', false);
+			$(".all-select-students-bottom").prop('checked', false);
 		}				
 	});
 	
 	$("all-inner-checkbox-parent").change(function(e){
 		if($("input.contact-new-group-page-parent").length == $("input.contact-new-group-page-parent:checked").length){
 			$("input.contact-new-group-page-parent").parents("li.find-teacher-list").find(".all-parents").prop('checked', $(this).prop("checked"));
+			$(".all-select-parents-bottom").prop('checked', $(this).prop("checked"));
 		}else{
 			$("input.contact-new-group-page-parent").parents("li.find-teacher-list").find(".all-parents").prop('checked', false);
-			$(".all-select-students-parents").prop('checked', false);
+			$(".all-select-parents-bottom").prop('checked', false);			
 		}
 	});
-	
-	$(".all-upper-checkbox").change(function(e){
-		if($(".all-upper-checkbox").length == $(".all-upper-checkbox:checked").length){
-			$(".all-select-students-parents").prop('checked', $(this).prop("checked"));
-		}else{
-			$(".all-select-students-parents").prop('checked', false);
-		}
-	});
+
 	$(".classRoute").parents("div.wrapper").find(".navbar-default").css("box-shadow", "none");
 
 	$('.search-conversation-students-page').on("keyup keydown", function() {
