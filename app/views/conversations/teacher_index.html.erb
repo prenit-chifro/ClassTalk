@@ -121,9 +121,9 @@
 													<% students.each do |student| %>
 														
 														<li>
-															<%= link_to user_path(student) do %>
+															
 																<%= render partial: "conversations/contact", locals: {contact: student} %>
-															<% end %>
+															
 																																
 														</li>
 													

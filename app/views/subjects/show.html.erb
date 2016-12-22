@@ -1,5 +1,5 @@
 <% content_for :heading do %>
-	<a class="mybtn btn btn-link btn-xs pull-left" href="/"><i class="material-icons">&#xE88A;</i></a>
+	<a class="mybtn btn btn-link btn-xs pull-left" href="<%= institute_grade_section_path(@institute, @grade, @section) %>"><i class="material-icons">&#xE317;</i></a>
 	<%= @subject.subject_name %>, <%= @grade.grade_name %> <%= @section.section_name %>
 <% end %>
 
@@ -8,7 +8,6 @@
 		<li class="active"><a data-toggle="tab" href="#all-subjectteachers">Subject Teacher</a></li>
 		<% if(["Principal", "Institute Admin", "Teacher"].include?(current_user.role)) %>
 			<li><a data-toggle="tab" href="#all-students">Students</a></li>	
-			<li><a data-toggle="tab" href="#all-parents">Parents</a></li>
 		<% end %>
 	</ul>
 	<div class="tab-content" style=" max-width:600px; margin: 0 auto; ">
@@ -70,30 +69,6 @@
 				<% end %>		
 
 				
-			</div>
-
-			<div class="tab-pane" id="all-parents">
-				<%= link_to conversation_path(@subject_conversation) do %>
-					<div class="pull-left add-member">
-						<span>Subject Messages</span><i class="material-icons">&#xE0C9;</i>
-					</div>
-				<% end %>
-				<% if(!current_user.role.include?("Student") and !current_user.role.include?("Parent")) %>
-					
-					<%= link_to add_new_parent_institute_path(@institute, grade_id: @grade.id, section_id: @section.id) do %>
-						<div class="pull-right add-member">
-							<span>Add Parent</span><i class="material-icons">&#xE7FE;</i>
-						</div>
-					<% end %>
-				<% end %>
-				<div class="clearfix mar-btm"></div>
-				<% if(!@parents.blank?) %>
-					<% @parents.each do |contact| %>
-						<%= render partial: "conversations/contact", locals: {contact: contact} %>		
-					<% end %>
-				<% else %>
-					<h1 class="nothing-posted" style="margin-top:0;box-shadow:none;"> No Parents added to this Class yet !</h1>			
-				<% end %>
 			</div>
 		<% end %>	
 	</div>

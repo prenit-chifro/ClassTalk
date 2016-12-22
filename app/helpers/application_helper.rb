@@ -24,7 +24,7 @@ module ApplicationHelper
 				elsif(attachment.is_video_type?)	
 					notification.message = "#{message.message_creator.first_name}: " + "New Video"
 					notification.big_image_url = "https://classtalk.in#{attachment.media.url(:thumb)}"
-				elsif(attachment.is_document_type)
+				elsif(attachment.is_document_type?)
 					notification.message = "#{message.message_creator.first_name}: " + "New Document"
 				end
 

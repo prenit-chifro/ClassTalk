@@ -16,7 +16,6 @@
 		<li><a data-toggle="tab" href="#all-teachers">Teachers</a></li>
 		<% if(current_user.role.include?("Principal") or current_user.role.include?("Institute Admin") or current_user.role.include?("Teacher")) %>
 			<li><a data-toggle="tab" href="#all-students">Students</a></li>	
-			<li><a data-toggle="tab" href="#all-parents">Parents</a></li>
 		<% end %>
 		<li><a data-toggle="tab" href="#all-classes">Classes</a></li>
 	</ul>
@@ -118,41 +117,50 @@
 					<% end %>
 				<% end %>
 				<div class="clearfix mar-btm"></div>
-				<% if(!@students.blank?) %>
-					<div class="student-manage-page">
-						<% @students.each do |contact| %>
-							<%= render partial: "conversations/contact", locals: {contact: contact} %>		
+				<ul class="list-unstyled index-conversation-modal">
+					<% if(!@institutes_grades_sections_models.blank?) %>
+						<% @institutes_grades_sections_models.each do |grade_section_model|%>
+							<% grade = grade_section_model.grade %>
+							<% section = grade_section_model.section %>
+							<% students = section.get_members_with_given_roles_for_institute_and_grade_with_role(@institute, grade, ["Student"]) %>
+							<li  class="find-teacher-list" style="margin-bottom:10px;position:relative;">
+								
+								<h6 class="teachers-list-heading-inner" style="background: #d1cece;margin: 0;padding: 10px; color: #dd223d;">
+									Class <%= grade.grade_name + section.section_name %>																		
+									<i class="material-icons arrow-up-icon pull-right" style="margin-top:-5px;">&#xE316;</i>
+								</h6>
+								<div class="container-width classRoute" style="display: block; box-shadow:rgb(175, 172, 172) 1px 1px 10px;margin-bottom:10px;">
+									
+									<ul class="list-unstyled index-conversation-modal" style="box-shadow: none;    max-height: 200px !important;">
+										<% if(!students.blank?) %>
+											<% students.each do |student| %>
+												<% if(student.id != current_user.id) %>
+													<li>
+															
+														<%= render partial: "conversations/contact", locals: {contact: student} %>
+															
+													</li>
+												<% end %>	
+											<% end %>
+										<% else %>
+											<% if(current_user.role.include?("Principal") or current_user.role.include?("Institute Admin")) %>
+												<%= link_to add_new_student_institute_path(@institute, role: "Teacher") do %>
+													<div class="pull-right add-member">
+														<span>Add Student</span><i class="material-icons">&#xE7FE;</i>
+													</div>
+												<% end %>
+												<div class="clearfix"></div>
+												<h1 class="nothing-posted"> No Students added yet ! </h1>	
+											<% end %>
+											
+										<% end %>															
+									</ul>
+								</div>
+							</li>
 						<% end %>
-					</div>	
-				<% else %>	
-					<h1 class="nothing-posted"> No Students added yet ! </h1>				
-				<% end %>		
+					<% end %>				
+				</ul>
 
-			</div>
-
-			<div class="tab-pane" id="all-parents" style="max-height: 100%;">
-				<% if(current_user.role.include?("Principal") or current_user.role.include?("Institute Admin")) %>
-					<form onsubmit="return false;" class="search-form-main">
-						<div class="pull-left form-group has-feedback" style="margin-top: 8px;">
-							<input type="text" class="form-control search-conversation-parent-page" name="search" placeholder="Search..." id="search1" autocomplete="off">
-						</div>
-					</form>
-					<%= link_to add_new_parent_institute_path(@institute) do %>
-						<div class="pull-right add-member">
-							<span>Add Parent</span><i class="material-icons">&#xE7FE;</i>
-						</div>
-					<% end %>
-				<% end %>
-				<div class="clearfix mar-btm"></div>
-				<% if(!@parents.blank?) %>
-					<div class="parent-manage-page">
-						<% @parents.each do |contact| %>
-							<%= render partial: "conversations/contact", locals: {contact: contact} %>		
-						<% end %>
-					</div>	
-				<% else %>	
-					<h1 class="nothing-posted"> No Parents added yet ! </h1>				
-				<% end %>
 			</div>
 			
 		<% end %>
