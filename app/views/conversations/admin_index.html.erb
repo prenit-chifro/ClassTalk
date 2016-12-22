@@ -415,11 +415,27 @@
 														<% if(!@teachers.blank?) %>
 															<% @teachers.each do |teacher| %>															
 																<li>
-																	<label for="contact-new-group-<%= teacher.id %>" class="modal-label">
-																		<%= check_box_tag "participant_ids[]", teacher.id, false,class:"contact-new-group-page", id:"contact-new-group-#{teacher.id}" %>
-																		<%= render partial: "conversations/contact", locals: {contact: teacher} %>
-																		<span class="checkbox-style-block checkbox-style-block-<%= teacher.id %>"></span>																	
-																	</label>									
+																	<div class="well well-sm">
+																		<label for="contact-new-group-<%= teacher.id %>" class="modal-label" style="width: 60%; display: inline-block; border-right: 1px solid #fff; vertical-align: middle;">
+																			<%= check_box_tag "participant_ids[]", teacher.id, false,class:"contact-new-group-page", id:"contact-new-group-#{teacher.id}" %>
+																	
+																			<div class="media jumbotron-media">
+																				<div class="media-left media-middle">
+																					
+																					<img src="<%= teacher.profile_picture.media.url(:thumb) %>" class="img-rounded img-xs">
+																					
+																				</div>
+																				<div class="media-body media-middle">
+																					<h5 class="media-heading student-name-in-message"><%= teacher.first_name %> <%= teacher.last_name %></h5>
+
+																					<small class="role-small"><%= teacher.details %> <%= ", #{teacher.staff_id}" if !teacher.staff_id.blank? %></small>
+																					
+																				</div>				
+																			</div>
+																			<span class="uncheckbox-style-block uncheckbox-style-block-<%= teacher.id %>"></span>		
+																			<span class="checkbox-style-block checkbox-style-block-<%= teacher.id %>"></span>
+																		</label>
+																	</div>	
 																</li>															
 															<% end %>
 														<% else %>
@@ -435,11 +451,27 @@
 														<% if(!@admins.blank?) %>
 															<% @admins.each do |admin| %>				
 																<li>
-																	<label for="contact-new-group-<%= admin.id %>" class="modal-label">
-																		<%= check_box_tag "participant_ids[]", admin.id, false,class:"contact-new-group-page", id:"contact-new-group-#{admin.id}" %>
-																		<%= render partial: "conversations/contact", locals: {contact: admin} %>
-																		<span class="checkbox-style-block checkbox-style-block-<%= admin.id %>"></span>
-																	</label>	
+																	<div class="well well-sm">
+																		<label for="contact-new-group-<%= admin.id %>" class="modal-label" style="width: 60%; display: inline-block; border-right: 1px solid #fff; vertical-align: middle;">
+																			<%= check_box_tag "participant_ids[]", admin.id, false,class:"contact-new-group-page", id:"contact-new-group-#{admin.id}" %>
+																	
+																			<div class="media jumbotron-media">
+																				<div class="media-left media-middle">
+																					
+																					<img src="<%= admin.profile_picture.media.url(:thumb) %>" class="img-rounded img-xs">
+																					
+																				</div>
+																				<div class="media-body media-middle">
+																					<h5 class="media-heading student-name-in-message"><%= admin.first_name %> <%= admin.last_name %></h5>
+
+																					<small class="role-small"><%= admin.details %> <%= ", #{admin.staff_id}" if !admin.staff_id.blank? %></small>
+																					
+																				</div>				
+																			</div>
+																			<span class="uncheckbox-style-block uncheckbox-style-block-<%= admin.id %>"></span>		
+																			<span class="checkbox-style-block checkbox-style-block-<%= admin.id %>"></span>
+																		</label>
+																	</div>	
 																</li>
 															
 															<% end %>
@@ -462,7 +494,10 @@
 																<% section = grade_section_model.section %>
 																<% students = section.get_members_with_given_roles_for_institute_and_grade_with_role(@institute, grade, ["Student"]) %>
 																<li  class="find-teacher-list" style="margin-bottom:10px;position:relative;">
-																	<input type="checkbox" class="all-students" id="select-all-class-students-<%= grade.grade_name + section.section_name %>" style="position:absolute; top: 5px;left:71px;">
+																	
+																	<input type="checkbox" class="all-students" id="select-all-class-students-<%= grade.grade_name + section.section_name %>"> All Students
+																	<input type="checkbox" class="all-parents" id="select-all-class-parents-<%= grade.grade_name + section.section_name %>"> All Parents
+																	
 																	<h6 class="teachers-list-heading-inner" style="background: #d1cece;margin: 0;padding: 10px; color: #dd223d;">
 																		Class <%= grade.grade_name + section.section_name %>																		
 																		<i class="material-icons arrow-up-icon pull-right" style="margin-top:-5px;">&#xE316;</i>
@@ -474,11 +509,67 @@
 																				<% students.each do |student| %>
 																					<% if(student.id != current_user.id) %>
 																						<li>
-																							<label for="contact-new-group-<%= student.id %>" class="modal-label">
-																								<%= check_box_tag "participant_ids[]", student.id, false,class:"contact-new-group-page", id:"contact-new-group-#{student.id}" %>
-																								<%= render partial: "conversations/contact", locals: {contact: student} %>
-																								<span class="checkbox-style-block checkbox-style-block-<%= student.id %>"></span>
-																							</label>											
+																								
+																								<div class="well well-sm">
+																									<label for="contact-new-group-<%= student.id %>" class="modal-label" style="width: 60%; display: inline-block; border-right: 1px solid #fff; vertical-align: middle;">
+																										<%= check_box_tag "participant_ids[]", student.id, false,class:"contact-new-group-page", id:"contact-new-group-#{student.id}" %>
+																								
+																										<div class="media jumbotron-media">
+																											<div class="media-left media-middle">
+																												
+																												<img src="<%= student.profile_picture.media.url(:thumb) %>" class="img-rounded img-xs">
+																												
+																											</div>
+																											<div class="media-body media-middle">
+																												<h5 class="media-heading student-name-in-message"><%= student.first_name %> <%= student.last_name %></h5>
+
+																												<small class="role-small"><%= student.details %> <%= ", #{student.roll_no}" if !student.roll_no.blank? %></small>
+																												
+																											</div>				
+																										</div>
+																										<span class="uncheckbox-style-block uncheckbox-style-block-<%= student.id %>"></span>		
+																										<span class="checkbox-style-block checkbox-style-block-<%= student.id %>"></span>
+																									</label>
+
+																									<div class="media jumbotron-media" style="width: 38%; display: inline-block; vertical-align: middle;">
+																										<% if(!student.father_id.blank?) %>
+																											<% father = student.father %>
+																											<label for="contact-new-group-<%= father.id %>" class="modal-label">
+																												<%= check_box_tag "participant_ids[]", father.id, false,class:"contact-new-group-page-parent", id:"contact-new-group-#{father.id}" %>
+																									
+																												<div class="media-body media-middle parent-media">
+																													<h5 class="media-heading student-name-in-message"><%= father.first_name %> <%= father.last_name %> ( Father )</h5>
+
+																								
+																													
+																												</div>	
+																												<span class="uncheckbox-style-block uncheckbox-style-block-<%= father.id %>" style="top:0; right:-4px;left: inherit;"></span>		
+																												<span class="checkbox-style-block checkbox-style-block-<%= father.id %>" style="top:0; right:-4px;left: inherit;"></span>	
+																											</label>	
+																										<% end %>
+																										<br>
+																										<% if(!student.mother_id.blank?) %>
+																											<% mother = student.mother %>
+																											<label for="contact-new-group-<%= mother.id %>" class="modal-label">
+																												<%= check_box_tag "participant_ids[]", mother.id, false,class:"contact-new-group-page-parent", id:"contact-new-group-#{mother.id}" %>
+																										
+																												<div class="media-body media-middle parent-media">
+																													<h5 class="media-heading student-name-in-message"><%= mother.first_name %> <%= mother.last_name %> ( Mother )</h5>
+
+																													
+																													
+																												</div>
+																												<span class="uncheckbox-style-block uncheckbox-style-block-<%= mother.id %>" style="top:0; right:-4px;left: inherit;"></span>		
+																												<span class="checkbox-style-block checkbox-style-block-<%= mother.id %>" style="top:0; right:-4px;left: inherit;"></span>		
+																											</label>	
+																										<% end %>
+																										
+																										
+																									</div>
+																									
+																									
+																								</div>
+																								
 																						</li>
 																					<% end %>	
 																				<% end %>
@@ -516,16 +607,20 @@
 </div>
 
 
-<script>
+
+<script type="text/javascript">
 	$(".all-students").change(function (e) {
 		$(this).parents("li.find-teacher-list").find("input.contact-new-group-page:checkbox").prop('checked', $(this).prop("checked"));
 		updateCheckboxCounter();
 		e.preventDefault();
 	});
+	$(".all-parents").change(function (e) {
+		$(this).parents("li.find-teacher-list").find("input.contact-new-group-page-parent:checkbox").prop('checked', $(this).prop("checked"));
+		updateCheckboxCounter();
+		e.preventDefault();
+	});
 	$(".classRoute").parents("div.wrapper").find(".navbar-default").css("box-shadow", "none");
-</script>
 
-<script type="text/javascript">
 	$('.search-conversation-students-page').on("keyup keydown", function() {
 		
 	    var value = $(this).val();

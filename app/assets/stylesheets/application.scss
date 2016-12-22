@@ -1371,36 +1371,38 @@ div.toggle-teachers-classes > ul>li label{
 .modal-label> input{
 	display:none;
 }
-.modal-label>.well>.media > div.media-left{
+.modal-label> .media > div.media-left{
 	position:relative;
 }
-.modal-label>.well>.media > div.media-left + div.media-body{
+.modal-label> .media > div.media-left + div.media-body, .modal-label > .parent-media{
 	color:#d9534f;
 	transition: all 1s;
 	-webkit-transition: all 1s;
 	-moz-transition: all 1s;
 }
-.modal-label>.well>.media > div.media-left img{
+.modal-label> .media > div.media-left img{
 	background:#d9534f;
     padding: 3px;
 	transition: all 1s;
 	-webkit-transition: all 1s;
 	-moz-transition: all 1s;
 }
-.checkbox-style-block{
+.checkbox-style-block,.uncheckbox-style-block{
     width: 17px;
     height: 17px;
     background: #009688;
     border-radius: 50%;
     position: absolute;
-    top: 9px;
-    left: 6px;
-	display:none;
+    top: 22px;
+    left: -3px;
     box-shadow: 1px 1px 6px #a0a0a0;
     border: 2px solid #fff;
 	transition: all 1s;
 	-webkit-transition: all 1s;
 	-moz-transition: all 1s;
+}
+.uncheckbox-style-block{
+	background: red;
 }
 .checkbox-style-block:before{
     content: "";
@@ -1417,13 +1419,22 @@ div.toggle-teachers-classes > ul>li label{
     top: 2px;
     left: 5px;
 }
-.modal-label>input[type="checkbox"]:checked + div.well >div.media> div.media-left img{
+.modal-label>input[type="checkbox"]:checked + div.media> div.media-left img{
 	background: #009688;
 }
-.modal-label> input[type="checkbox"]:checked + div.well + span.checkbox-style-block{
+.modal-label> input[type="checkbox"]:checked + div.media + span.uncheckbox-style-block+span.checkbox-style-block, 
+.modal-label> input[type="checkbox"]:checked + div.parent-media + span.uncheckbox-style-block+span.checkbox-style-block,
+.modal-label> input[type="checkbox"]:not(:checked) + div.media + span.uncheckbox-style-block, 
+.modal-label> input[type="checkbox"]:not(:checked) + div.parent-media + span.uncheckbox-style-block{
 	display:block;
 }
-.modal-label>input[type="checkbox"]:checked + div.well >div.media> div.media-left + div.media-body{
+.modal-label> input[type="checkbox"]:not(:checked) + div.media + span.uncheckbox-style-block+span.checkbox-style-block, 
+.modal-label> input[type="checkbox"]:not(:checked) + div.parent-media + span.uncheckbox-style-block+span.checkbox-style-block,
+.modal-label> input[type="checkbox"]:checked + div.media + span.uncheckbox-style-block, 
+.modal-label> input[type="checkbox"]:checked + div.parent-media + span.uncheckbox-style-block{
+	display:none;
+}
+.modal-label>input[type="checkbox"]:checked + div.media> div.media-left + div.media-body, .modal-label>input[type="checkbox"]:checked + div.parent-media{
 	color:#009688;
 }
 /*Attendance Modal*/
