@@ -17,7 +17,6 @@
 				<li><a data-toggle="tab" href="#all-teachers">Teachers</a></li>
 				<% if(["Principal", "Institute Admin", "Teacher"].include?(current_user.role)) %>
 					<li><a data-toggle="tab" href="#all-students">Students</a></li>	
-					<li><a data-toggle="tab" href="#all-parents">Parents</a></li>
 				<% end %>
 			<% end %>
 			
@@ -26,7 +25,6 @@
 				<li><a data-toggle="tab" href="#all-subjects">Subjects</a></li>
 				<% if(["Principal", "Institute Admin", "Teacher"].include?(current_user.role)) %>
 					<li><a data-toggle="tab" href="#all-students">Students</a></li>	
-					<li><a data-toggle="tab" href="#all-parents">Parents</a></li>
 				<% end %>
 			<% end %>
 			
@@ -34,7 +32,6 @@
 				<li class="active"><a data-toggle="tab" href="#all-subjectteachers">Subject Teacher</a></li>
 				<% if(["Principal", "Institute Admin", "Teacher"].include?(current_user.role)) %>
 					<li><a data-toggle="tab" href="#all-students">Students</a></li>	
-					<li><a data-toggle="tab" href="#all-parents">Parents</a></li>
 				<% end %>
 			<% end %>
 		</ul>
@@ -140,30 +137,6 @@
 							<% end %>		
 						</div>						
 					</div>
-
-					<div class="tab-pane" id="all-parents">
-						<% if(current_user.role.include?("Principal") or current_user.role.include?("Institute Admin")) %>
-							<%= link_to new_conversation_path(conversation_id: @conversation.id) do %>
-								<div class="pull-left add-member">
-									<span>Add Participient</span><i class="material-icons">&#xE7FE;</i>
-								</div>
-							<% end %>
-							
-							<%= link_to add_new_parent_institute_path(@institute) do %>
-								<div class="pull-right add-member">
-									<span>Add Parent</span><i class="material-icons">&#xE7FE;</i>
-								</div>
-							<% end %>
-						<% end %>
-						<div class="clearfix mar-btm"></div>
-						<div class="conversation-partial" style="max-width:600px;margin: 0 auto;">
-							<% if(!@parents.blank?) %>
-								<% @parents.each do |contact| %>
-									<%= render partial: "conversations/contact", locals: {contact: contact} %>		
-								<% end %>
-							<% end %>
-						</div>	
-					</div>
 				<% end %>
 
 			<% end %>
@@ -219,29 +192,6 @@
 								<% end %>
 							<% end %>		
 						</div>						
-					</div>
-					<div class="tab-pane" id="all-parents">
-						<% if(current_user.role.include?("Principal") or current_user.role.include?("Institute Admin") or (!classteacher.blank? and current_user.id == classteacher.id)) %>
-							<%= link_to new_conversation_path(conversation_id: @conversation.id) do %>
-								<div class="pull-left add-member">
-									<span>Add Participient</span><i class="material-icons">&#xE7FE;</i>
-								</div>
-							<% end %>
-							
-							<%= link_to add_new_parent_institute_path(@institute) do %>
-								<div class="pull-right add-member">
-									<span>Add Parent</span><i class="material-icons">&#xE7FE;</i>
-								</div>
-							<% end %>
-						<% end %>
-						<div class="clearfix mar-btm"></div>
-						<div class="conversation-partial" style="max-width:600px;margin: 0 auto;">
-							<% if(!@parents.blank?) %>
-								<% @parents.each do |contact| %>
-									<%= render partial: "conversations/contact", locals: {contact: contact} %>		
-								<% end %>
-							<% end %>
-						</div>	
 					</div>
 				<% end %>
 
@@ -327,31 +277,6 @@
 								<% end %>
 							<% end %>		
 						</div>				
-					</div>
-
-					<div class="tab-pane" id="all-parents">
-						<% if(current_user.role.include?("Principal") or current_user.role.include?("Institute Admin") or (!classteacher.blank? and current_user.id == classteacher.id)) %>
-							<%= link_to new_conversation_path(conversation_id: @conversation.id) do %>
-
-								<div class="pull-left add-member">
-									<span>Add Participient</span><i class="material-icons">&#xE7FE;</i>
-								</div>	
-							<% end %>
-							
-							<%= link_to add_new_parent_institute_path(@institute) do %>
-								<div class="pull-right add-member">
-									<span>Add Parent</span><i class="material-icons">&#xE7FE;</i>
-								</div>
-							<% end %>
-						<% end %>
-						<div class="clearfix mar-btm"></div>
-						<div class="conversation-partial" style="max-width:600px;margin: 0 auto;">
-							<% if(!@parents.blank?) %>
-								<% @parents.each do |contact| %>
-									<%= render partial: "conversations/contact", locals: {contact: contact} %>		
-								<% end %>
-							<% end %>
-						</div>	
 					</div>
 				<% end %>
 			<% end %>

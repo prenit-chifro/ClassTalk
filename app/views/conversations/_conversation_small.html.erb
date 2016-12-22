@@ -38,7 +38,8 @@
 
 			<h5 class="media-heading text-muted">
 				<% if(!conversation.last_message_id.blank?) %>
-					<%= conversation.last_message.message_creator.details %>
+					<%= conversation.last_message.message_creator.first_name %>
+					
 				<% else %>
 						
 				<% end %>	
@@ -52,7 +53,7 @@
 				</span>
 			</h5>
 			<% if(!conversation.last_message_id.blank?) %>
-				<span class="pull-left"><%= conversation.last_message.message_creator.first_name %></span>
+				<span class="pull-left"><%= conversation.last_message.message_creator.details %></span>
 			<% end %>
 			
 		</div>

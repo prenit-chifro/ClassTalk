@@ -6,8 +6,8 @@
 			</a>
 		</div>
 		<div class="media-body media-middle">
-			<h5 class="media-heading text-muted"><%= message.message_creator.details %><span class="pull-right"><%= get_am_pm_time(message.created_at) %></span></h5>
-			<span class="pull-left"><%= message.message_creator.first_name %></span>
+			<h5 class="media-heading text-muted"><%= message.message_creator.first_name %><span class="pull-right"><%= get_am_pm_time(message.created_at) %></span></h5>
+			<span class="pull-left"><%= message.message_creator.details %></span>
 			
 			<% if message.creator_id == current_user.id %>
 			
@@ -39,7 +39,7 @@
 				<% if(acted_user_ids_array.include?(current_user.id) or (!current_user.child_ids.blank? and acted_user_ids_array.include?(current_user.child_ids.split(", ")))) %>
 					<span class="checkmark pull-right" data-message-id=<%= message.id %> data-conversation-id=<%= conversation.id %>>Submitted</span>
 				<% else %>
-					<span class="checkmark pull-right" data-message-id=<%= message.id %> data-conversation-id=<%= conversation.id %>>Pending <%= acted_user_ids_array.length %></span>
+					<span class="checkmark pull-right" data-message-id=<%= message.id %> data-conversation-id=<%= conversation.id %>>Pending</span>
 				<% end %>
 			<% end %>
 		</div>
