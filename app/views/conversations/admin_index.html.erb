@@ -204,7 +204,7 @@
 									</div>
 								<% end %>
 								<div class="clearfix mar-btm"></div>
-								<ul class="list-unstyled list-inline">
+								<ul class="list-unstyled list-inline"  style="max-height:100%;box-shadow:none;">
 									<% if(!@teachers.blank?) %>
 										<div class="staff-manage-page">
 										<% @teachers.each do |teacher| %>
@@ -412,12 +412,17 @@
 											<div class="tab-content" style="">
 												<div class="tab-pane" id="all-staff-modal">
 													<ul class="list-unstyled index-conversation-modal">
+														<label for="all-select-staff-members" class="pull-right" style="background:#c24343; color:#fff; padding:5px;font-weight: normal;">
+															<input type="checkbox" class="all-select-staff-members" id="all-select-staff-members" style="vertical-align: middle; margin-top:-2px;"> 
+															Select All
+														</label>
+														<div class="clearfix"></div>
 														<% if(!@teachers.blank?) %>
 															<% @teachers.each do |teacher| %>															
-																<li>
+																<li class="all-staff-list">
 																	<div class="well well-sm">
 																		<label for="contact-new-group-<%= teacher.id %>" class="modal-label" style="width: 60%; display: inline-block; border-right: 1px solid #fff; vertical-align: middle;">
-																			<%= check_box_tag "participant_ids[]", teacher.id, false,class:"contact-new-group-page", id:"contact-new-group-#{teacher.id}" %>
+																			<%= check_box_tag "participant_ids[]", teacher.id, false,class:"all-staff-members-inner-checkbox", id:"contact-new-group-#{teacher.id}" %>
 																	
 																			<div class="media jumbotron-media">
 																				<div class="media-left media-middle">
@@ -450,10 +455,10 @@
 
 														<% if(!@admins.blank?) %>
 															<% @admins.each do |admin| %>				
-																<li>
+																<li class="all-staff-list">
 																	<div class="well well-sm">
 																		<label for="contact-new-group-<%= admin.id %>" class="modal-label" style="width: 60%; display: inline-block; border-right: 1px solid #fff; vertical-align: middle;">
-																			<%= check_box_tag "participant_ids[]", admin.id, false,class:"contact-new-group-page", id:"contact-new-group-#{admin.id}" %>
+																			<%= check_box_tag "participant_ids[]", admin.id, false,class:"all-staff-members-inner-checkbox", id:"contact-new-group-#{admin.id}" %>
 																	
 																			<div class="media jumbotron-media">
 																				<div class="media-left media-middle">
@@ -489,18 +494,24 @@
 												<div class="tab-pane active" id="all-students-modal-tab">
 													<ul class="list-unstyled index-conversation-modal">
 														<% if(!@institutes_grades_sections_models.blank?) %>
+															<label for="all-select-students-parents" class="pull-right" style="background:#c24343; color:#fff; padding:5px;font-weight: normal;">
+																<input type="checkbox" class="all-select-students-parents" id="all-select-students-parents" style="vertical-align: middle; margin-top:-2px;"> 
+																Select All
+															</label>
+															<div class="clearfix"></div>
 															<% @institutes_grades_sections_models.each do |grade_section_model|%>
 																<% grade = grade_section_model.grade %>
 																<% section = grade_section_model.section %>
 																<% students = section.get_members_with_given_roles_for_institute_and_grade_with_role(@institute, grade, ["Student"]) %>
-																<li  class="find-teacher-list" style="margin-bottom:10px;position:relative;">
+																<li class="find-teacher-list" style="margin-bottom:10px;position:relative;">
 																	
-																	<input type="checkbox" class="all-students" id="select-all-class-students-<%= grade.grade_name + section.section_name %>"> All Students
-																	<input type="checkbox" class="all-parents" id="select-all-class-parents-<%= grade.grade_name + section.section_name %>"> All Parents
-																	
-																	<h6 class="teachers-list-heading-inner" style="background: #d1cece;margin: 0;padding: 10px; color: #dd223d;">
-																		Class <%= grade.grade_name + section.section_name %>																		
-																		<i class="material-icons arrow-up-icon pull-right" style="margin-top:-5px;">&#xE316;</i>
+																	<div style="color:#f00;padding-left:10px; padding-top: 9px; font-size:10px;position: absolute; left: 26px;">
+																		<input type="checkbox" class="all-students all-upper-checkbox" style="vertical-align: middle; margin-top:-2px;" id="select-all-class-students-<%= grade.grade_name + section.section_name %>"> All Students
+																		<input type="checkbox" class="all-parents all-upper-checkbox" style="vertical-align: middle; margin-top:-2px;margin-left: 7px;" id="select-all-class-parents-<%= grade.grade_name + section.section_name %>"> All Parents
+																	</div>
+																	<h6 class="teachers-list-heading-inner" style="background: #d1cece;margin: 0;padding: 10px; cursor:pointer;color: #dd223d;">
+																		<%= grade.grade_name + section.section_name %>																		
+																		<i class="material-icons arrow-up-icon pull-right" style="margin-top:-5px;margin-right: -10px;">&#xE316;</i>
 																	</h6>
 																	<div class="container-width classRoute" style="display: block; box-shadow:rgb(175, 172, 172) 1px 1px 10px;margin-bottom:10px;">
 																		
@@ -512,7 +523,7 @@
 																								
 																								<div class="well well-sm">
 																									<label for="contact-new-group-<%= student.id %>" class="modal-label" style="width: 60%; display: inline-block; border-right: 1px solid #fff; vertical-align: middle;">
-																										<%= check_box_tag "participant_ids[]", student.id, false,class:"contact-new-group-page", id:"contact-new-group-#{student.id}" %>
+																										<%= check_box_tag "participant_ids[]", student.id, false,class:"contact-new-group-page all-inner-checkbox", id:"contact-new-group-#{student.id}" %>
 																								
 																										<div class="media jumbotron-media">
 																											<div class="media-left media-middle">
@@ -535,7 +546,7 @@
 																										<% if(!student.father_id.blank?) %>
 																											<% father = student.father %>
 																											<label for="contact-new-group-<%= father.id %>" class="modal-label">
-																												<%= check_box_tag "participant_ids[]", father.id, false,class:"contact-new-group-page-parent", id:"contact-new-group-#{father.id}" %>
+																												<%= check_box_tag "participant_ids[]", father.id, false,class:"contact-new-group-page-parent all-inner-checkbox-parent", id:"contact-new-group-#{father.id}" %>
 																									
 																												<div class="media-body media-middle parent-media">
 																													<h5 class="media-heading student-name-in-message"><%= father.first_name %> <%= father.last_name %> ( Father )</h5>
@@ -551,7 +562,7 @@
 																										<% if(!student.mother_id.blank?) %>
 																											<% mother = student.mother %>
 																											<label for="contact-new-group-<%= mother.id %>" class="modal-label">
-																												<%= check_box_tag "participant_ids[]", mother.id, false,class:"contact-new-group-page-parent", id:"contact-new-group-#{mother.id}" %>
+																												<%= check_box_tag "participant_ids[]", mother.id, false,class:"contact-new-group-page-parent all-inner-checkbox-parent", id:"contact-new-group-#{mother.id}" %>
 																										
 																												<div class="media-body media-middle parent-media">
 																													<h5 class="media-heading student-name-in-message"><%= mother.first_name %> <%= mother.last_name %> ( Mother )</h5>
@@ -609,15 +620,71 @@
 
 
 <script type="text/javascript">
-	$(".all-students").change(function (e) {
-		$(this).parents("li.find-teacher-list").find("input.contact-new-group-page:checkbox").prop('checked', $(this).prop("checked"));
+	$(".all-select-students-parents").change(function(e){
+		$(this).parents("#all-students-modal-tab").find("li.find-teacher-list").find("input.all-students:checkbox").prop('checked', $(this).prop("checked"));
+		$(this).parents("#all-students-modal-tab").find("li.find-teacher-list").find("input.all-parents:checkbox").prop('checked', $(this).prop("checked"));
+		$(this).parents("#all-students-modal-tab").find("li.find-teacher-list").find("input.contact-new-group-page:checkbox").prop('checked', $(this).prop("checked"));
+		$(this).parents("#all-students-modal-tab").find("li.find-teacher-list").find("input.contact-new-group-page-parent:checkbox").prop('checked', $(this).prop("checked"));
 		updateCheckboxCounter();
 		e.preventDefault();
 	});
-	$(".all-parents").change(function (e) {
-		$(this).parents("li.find-teacher-list").find("input.contact-new-group-page-parent:checkbox").prop('checked', $(this).prop("checked"));
+		
+	$(".all-select-staff-members").change(function(e){
+		$(this).parents("#all-staff-modal").find("li.all-staff-list").find(".all-staff-members-inner-checkbox").prop('checked', $(this).prop("checked"));
 		updateCheckboxCounter();
 		e.preventDefault();
+	});
+	
+	
+	$(".all-staff-members-inner-checkbox").change(function(e){
+		if($(".all-staff-members-inner-checkbox").length == $(".all-staff-members-inner-checkbox:checked").length){
+			$(".all-select-staff-members").prop('checked', $(this).prop("checked"));
+		}else{
+			$(".all-select-staff-members").prop('checked', false);
+		}
+	});
+	
+	function allStudents(){
+		$(".all-students").change(function (e) {
+			$(this).parents("li.find-teacher-list").find("input.contact-new-group-page:checkbox").prop('checked', $(this).prop("checked"));
+			updateCheckboxCounter();
+			e.preventDefault();
+		});
+	}
+	function allParents(){
+		$(".all-parents").change(function (e) {
+			$(this).parents("li.find-teacher-list").find("input.contact-new-group-page-parent:checkbox").prop('checked', $(this).prop("checked"));
+			updateCheckboxCounter();
+			e.preventDefault();
+		});
+	}
+	allStudents();
+	allParents();
+	
+	$(".all-inner-checkbox").change(function(e){
+		if($(".all-inner-checkbox").length == $(".all-inner-checkbox:checked").length){
+			$(".all-inner-checkbox").parents("li.find-teacher-list").find(".all-students").prop('checked', $(this).prop("checked"));
+		}else{
+			$(".all-inner-checkbox").parents("li.find-teacher-list").find(".all-students").prop('checked' , false);
+			$(".all-select-students-parents").prop('checked', false);
+		}				
+	});
+	
+	$("all-inner-checkbox-parent").change(function(e){
+		if($("input.contact-new-group-page-parent").length == $("input.contact-new-group-page-parent:checked").length){
+			$("input.contact-new-group-page-parent").parents("li.find-teacher-list").find(".all-parents").prop('checked', $(this).prop("checked"));
+		}else{
+			$("input.contact-new-group-page-parent").parents("li.find-teacher-list").find(".all-parents").prop('checked', false);
+			$(".all-select-students-parents").prop('checked', false);
+		}
+	});
+	
+	$(".all-upper-checkbox").change(function(e){
+		if($(".all-upper-checkbox").length == $(".all-upper-checkbox:checked").length){
+			$(".all-select-students-parents").prop('checked', $(this).prop("checked"));
+		}else{
+			$(".all-select-students-parents").prop('checked', false);
+		}
 	});
 	$(".classRoute").parents("div.wrapper").find(".navbar-default").css("box-shadow", "none");
 
