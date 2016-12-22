@@ -3,7 +3,7 @@
 	<%= @user.first_name %> <%= @user.last_name %>
 <% end %>
 
-<div class="container" style="margin-top:90px;">
+<div class="container" style="max-width:600px;margin:0 auto;margin-top:90px;">
 	<div class="row">
 		<div class="user-details">
             <div class="user-image">
@@ -40,9 +40,12 @@
 									<% if(@user.role == "Student") %>
 										<p>Admission Number : <span class="pull-right"> <%= @user.roll_no %> </span> </p>
 										<p>Date of Birth : <span class="pull-right"> <%= @user.date_of_birth.strftime('%v') if !@user.date_of_birth.blank? %> </span> </p>
-										<p>Address : <span class="pull-right"> <%= @user.address %> </span> </p>
-										<p>Pin Code : <span class="pull-right"> <%= @user.pincode %> </span> </p>
-										<p>Using School Transport ? : <span class="pull-right"> <%= @user.is_using_transport ? "Yes" : "No" %> </span> </p>
+										<% if(@user.id == current_user.id or current_user.role.include?("Principal") or current_user.role.include?("Institute Admin")) %>
+											<p>Address : <span class="pull-right"> <%= @user.address %> </span> </p>
+											<p>Pin Code : <span class="pull-right"> <%= @user.pincode %> </span> </p>
+											<p>Using School Transport ? : <span class="pull-right"> <%= @user.is_using_transport ? "Yes" : "No" %> </span> </p>
+										<% end %>
+										
 										<% if(!@user.father.blank?) %>
 											<h4> Father </h4>
 											<p><%= render partial: "conversations/contact", locals: {contact: @user.father} %></p>

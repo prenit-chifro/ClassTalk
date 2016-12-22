@@ -3,20 +3,26 @@
 	HomeWork
 <% end %>
 
-<div class="detect-div" style="margin-top: 50px;"></div>
-<% if(!@homework_messages.blank?) %>
-	<% @homework_messages.each do |message| %>
-		<%= render partial: "messages/message", locals: {conversation: message.conversation, message: message} %>
-	<% end %>
-	
-	<%= paginate @homework_messages, window: 1 %>
-<% else %>
-	<% if(current_user.role == "Teacher") %>
-		<h1 class="nothing-posted"> You have not posted any HomeWork ! </h1>
+<div class="detect-div" style="margin-top: 60px; "></div>
+<div style="max-width:600px;margin:0 auto;margin-top:50px;">
+	<% if(!@homework_messages.blank?) %>
+		<% @homework_messages.each do |message| %>
+			<div>
+				<%= message.conversation.get_conversation_name_to_show_to_user(current_user).truncate(15) if !message.conversation.get_conversation_name_to_show_to_user(current_user).blank?%>
+			</div>
+			<%= render partial: "messages/message", locals: {conversation: message.conversation, message: message} %>
+		<% end %>
+		
+		<%= paginate @homework_messages, window: 1 %>
 	<% else %>
-		<h1 class="nothing-posted"> No HomeWork Posted </h1>
+		<% if(current_user.role == "Teacher") %>
+			<h1 class="nothing-posted"> You have not posted any HomeWork ! </h1>
+		<% else %>
+			<h1 class="nothing-posted"> No HomeWork Posted </h1>
+		<% end %>
 	<% end %>
-<% end %>
+
+</div>
 
 <div id="seenStatusModal" class="modal fade" role="dialog">
 	<div class="modal-dialog">

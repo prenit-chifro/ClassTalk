@@ -87,6 +87,9 @@
 				<div class="tab-pane" id="all-homework">
 					<% if(!@homework_messages.blank?) %>
 						<% @homework_messages.each do |message| %>
+							<div>
+								<%= message.conversation.get_conversation_name_to_show_to_user(current_user).truncate(15) if !message.conversation.get_conversation_name_to_show_to_user(current_user).blank?%>
+							</div>
 							<%= render partial: "messages/message", locals: {conversation: message.conversation, message: message} %>
 						<% end %>
 						
@@ -97,14 +100,13 @@
 
 				</div>
 				<div class="tab-pane" id="all-classes">
-					<form onsubmit="return false;" class="search-form">
+					<form onsubmit="return false;" class="search-form-main">
 						<div class="pull-left form-group has-feedback" style="margin-top: 8px;">
-							<i class="material-icons search-attendance-icon">&#xE8B6;</i> 
-							<input type="text" class="form-control search-staff-page" name="search" id="search" autocomplete="off">
+							<input type="text" class="form-control search-conversation-students-page" name="search" placeholder="Search..." id="search1" autocomplete="off">
 						</div>
 					</form>
 					<div class="clearfix mar-btm"></div>
-					<ul class="list-unstyled teachers-list index-conversation-modal" style="margin-top: 70px;">
+					<ul class="list-unstyled teachers-list index-conversation-modal">
 							
 							<% if(!@all_section_member_models.blank?) %>
 								<% @all_section_member_models.each do |section_member_model|%>
@@ -351,13 +353,41 @@
 
 <% end %>
 
+<div id="seenStatusModal" class="modal fade" role="dialog">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4 class="modal-title">Seen by</h4>
+			</div>
+			<div class="modal-body">
+				
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="submissionStatusModal" class="modal fade" role="dialog">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4 class="modal-title">Submission Status</h4>
+			</div>
+			<div class="modal-body">
+				
+			</div>
+		</div>
+	</div>
+</div>
+
 <script type="text/javascript">
 	$(".all-students").change(function (e) {
 		$(this).parents("li.find-teacher-list").find("input.contact-new-group-page:checkbox").prop('checked', $(this).prop("checked"));
 		updateCheckboxCounter();
 		e.preventDefault();
 	});
-	$('.search-staff-page').on("keyup keydown", function() {
+	$('#search1').on("keyup keydown", function() {
 		
 	    var value = $(this).val();
 	    if(value){
@@ -444,6 +474,40 @@
 			  ]
 		  });
 		});
-  	}		
+  	}	
+
+  	$(".double-checkmark").on("click", function(){
+		var messageId = $(this).attr("data-message-id");
+		var conversationId = $(this).attr("data-conversation-id");
+		$.ajax({
+			url: "/conversations/"+ conversationId + "/messages/" + messageId + "/seen_by_users.js",  
+			type: "GET",
+			success: function(data) {
+				if(data.trim().length == 0) {
+					$("#seenStatusModal").find(".modal-body").html("No one has yet seen this message !");
+				} else {
+					$("#seenStatusModal").find(".modal-body").html(data);
+				}
+			}
+		});
+		$("#seenStatusModal").modal('show');
+		});
+
+		$(".checkmark").on("click", function(){
+		var messageId = $(this).attr("data-message-id");
+		var conversationId = $(this).attr("data-conversation-id");
+		$.ajax({
+			url: "/conversations/"+ conversationId + "/messages/" + messageId + "/acted_by_users.js",  
+			type: "GET",
+			success: function(data) {
+				if(data.trim().length == 0) {
+					$("#submissionStatusModal").find(".modal-body").html("No one has yet acted on this message !");
+				} else {
+					$("#submissionStatusModal").find(".modal-body").html(data);
+				}
+			}
+		});
+		$("#submissionStatusModal").modal('show');
+		});	
 
 </script>
