@@ -41,19 +41,20 @@
 						<input type="text" class="form-control search-conversation-new-group-page" name="search" placeholder="Search..." id="search-conversation-new-group" autocomplete="off">
 					</div>
 				</form>
+				<div class="clearfix"></div>
 				<ul class="list-inline list-conversation-group-search" style="margin:10px;">
 					
 					<div class="clearfix mar-btm"></div>
 					<ul class="list-unstyled teachers-list new-group-class">
 						<li>
-							<h6 class="teachers-list-heading"><span class="checkbox-counter" style="color:#fff;margin-left:0;line-height:4;">Select</span> <span style="font-size:11px;color:#fff;">Group Admins</span><i class="material-icons arrow-up-icon pull-right">&#xE316;</i></h6>
+							<h6 class="teachers-list-heading" style="padding: 2px;"><span class="checkbox-counter" style="color:#fff;margin-left:0;line-height:4;">Select</span> <span style="font-size:11px;color:#fff;">Group Admins</span><i class="material-icons arrow-up-icon pull-right" style="margin-top: 9px;">&#xE316;</i></h6>
 							<div class="container-width classRoute" style="display: block;">
 								<ul class="list-unstyled index-conversation-modal">
 									<% if(!@teachers.blank?) %>
 										<% @teachers.each do |teacher| %>															
 											<li>
 												<div class="well well-sm">
-													<label for="contact-new-group-<%= teacher.id %>" class="modal-label" style="vertical-align: middle;">
+													<div for="contact-new-group-<%= teacher.id %>" class="modal-label" style="vertical-align: middle;">
 														<%= check_box_tag "admin_ids[]", teacher.id, false,class:"contact-new-group-page", id:"contact-new-group-#{teacher.id}" %>
 												
 														<div class="media jumbotron-media">
@@ -71,7 +72,7 @@
 														</div>
 														<span class="uncheckbox-style-block uncheckbox-style-block-<%= teacher.id %>"></span>		
 														<span class="checkbox-style-block checkbox-style-block-<%= teacher.id %>"></span>
-													</label>
+													</div>
 												</div>	
 											</li>															
 										<% end %>
@@ -89,7 +90,7 @@
 										<% @admins.each do |admin| %>				
 											<li>
 												<div class="well well-sm">
-													<label for="contact-new-group-<%= admin.id %>" class="modal-label" style="width: 60%; display: inline-block; border-right: 1px solid #fff; vertical-align: middle;">
+													<div for="contact-new-group-<%= admin.id %>" class="modal-label" style="vertical-align: middle;">
 														<%= check_box_tag "admin_ids[]", admin.id, false,class:"contact-new-group-page", id:"contact-new-group-#{admin.id}" %>
 												
 														<div class="media jumbotron-media">
@@ -107,7 +108,7 @@
 														</div>
 														<span class="uncheckbox-style-block uncheckbox-style-block-<%= admin.id %>"></span>		
 														<span class="checkbox-style-block checkbox-style-block-<%= admin.id %>"></span>
-													</label>
+													</div>
 												</div>	
 											</li>
 										
@@ -137,10 +138,19 @@
 
 	<script>
 		$(".modal-label").on("click", function(e){
+			
+			if($(this).find(".contact-new-group-page").prop("checked") == true){
+				$(this).find(".contact-new-group-page").prop("checked", false);
+			}else{
+				$(this).find(".contact-new-group-page").prop("checked", true);
+			}
+			
 			updateCheckboxCounter();
+			
 		});
 		function updateCheckboxCounter(){
-			var len = $("input[name='admin_ids[]']:checked").length;	
+			var len = $("input.contact-new-group-page:checked").length;	
+			
 			if(len>0){
 				$(".checkbox-counter").text(len);
 			}else{

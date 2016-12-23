@@ -445,15 +445,22 @@ $(document).on("turbolinks:load", function(){
 	$('.search-conversation-new-group').on("keyup keydown", function() {
 	    var value = $(this).val();
 	    if(value){
-	    	$("ul.index-conversation-modal li").hide().filter(function () {
+	    	$("ul.search-index-conversation-modal li").hide().filter(function () {
 			    if($(".media-heading", this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0 || $(".role-small", this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0 ){
+					
+					if($(this).parents('.class-students-list-custom').css("display") == "none"){
+						$(this).parents('.class-students-list-custom').css("display", "block");
+					}
 					return true;
 				} else{
+					if($(this).parents('.class-students-list-custom').css("display") == "block"){
+						$(this).parents('.class-students-list-custom').css("display", "none");
+					}
 					return false;
 				}
 			}).show();
 	    }else{
-	    	$("ul.index-conversation-modal li").show();
+	    	$("ul.search-index-conversation-modal li").show();
 	    }    
 	});
 	$('.search-conversation-new-page').on("keyup keydown", function() {

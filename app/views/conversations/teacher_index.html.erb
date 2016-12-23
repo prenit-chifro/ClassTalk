@@ -87,10 +87,15 @@
 				<div class="tab-pane" id="all-homework">
 					<% if(!@homework_messages.blank?) %>
 						<% @homework_messages.each do |message| %>
-							<div>
-								<%= message.conversation.get_conversation_name_to_show_to_user(current_user).truncate(15) if !message.conversation.get_conversation_name_to_show_to_user(current_user).blank?%>
+							<div class="student-message-homework-temp" style="box-shadow: 1px 1px 7px #b1a9a9; margin: 10px;">
+								<%= link_to conversation_path(message.conversation) do %>
+									<div class="text-left" style="padding: 6px; color: #fff; background: #afabab; padding-left: 20px;" >
+										<%= message.conversation.get_conversation_name_to_show_to_user(current_user).truncate(15) if !message.conversation.get_conversation_name_to_show_to_user(current_user).blank?%>
+									</div>
+								<% end %>
+								
+								<%= render partial: "messages/message", locals: {conversation: message.conversation, message: message} %>
 							</div>
-							<%= render partial: "messages/message", locals: {conversation: message.conversation, message: message} %>
 						<% end %>
 						
 						<%= paginate @homework_messages, window: 1, params: {anchor: "all-homework"} %>
@@ -113,9 +118,9 @@
 									<% grade = section_member_model.grade %>
 									<% section = section_member_model.section %>
 									<% students = section.get_members_with_given_roles_for_institute_and_grade_with_role(@institute, grade, ["Student"]) %>
-									<li>
+									<li class="find-teacher-list">
 										<h6 class="teachers-list-heading">Class <%= grade.grade_name + section.section_name %><i class="material-icons arrow-up-icon pull-right">&#xE316;</i></h6>
-										<div class="container-width classRoute" style="display: block;">
+										<div class="container-width classRoute class-students-list-custom" style="display: none;">
 											<ul class="list-unstyled list-inline">
 												
 												<% if(!students.blank?) %>
@@ -246,20 +251,42 @@
 										</ul>
 										<div class="tab-content" style="">
 											<div class="tab-pane" id="all-staff-modal">
-												<ul class="list-unstyled index-conversation-modal">
+												<ul class="list-unstyled index-conversation-modal search-index-conversation-modal ">
+													<label for="all-select-staff-members" class="pull-right" style="background:#c24343; color:#fff; padding:5px;font-weight: normal;">
+														<input type="checkbox" class="all-select-staff-members" id="all-select-staff-members" style="vertical-align: middle; margin-top:-2px;"> 
+														Select All
+													</label>
+													<div class="clearfix"></div>
 													<% if(!@admins.blank?) %>
-														<% @admins.each do |admin| %>																
-															<% if(admin.id != current_user.id) %>
-																<li>
-																	<label for="contact-new-group-<%= admin.id %>" class="modal-label">
-																		<%= check_box_tag "participant_ids[]", admin.id, false,class:"contact-new-group-page", id:"contact-new-group-#{admin.id}" %>
-																		<%= render partial: "conversations/contact", locals: {contact: admin} %>
+														<% @admins.each do |admin| %>				
+															<li class="all-staff-list">
+																<div class="well well-sm">
+																	<label for="contact-new-group-<%= admin.id %>" class="modal-label" style=" vertical-align: middle;">
+																		<%= check_box_tag "participant_ids[]", admin.id, false,class:"all-staff-members-inner-checkbox", id:"contact-new-group-#{admin.id}" %>
+																
+																		<div class="media jumbotron-media">
+																			<div class="media-left media-middle">
+																				
+																				<img src="<%= admin.profile_picture.media.url(:thumb) %>" class="img-rounded img-xs">
+																				
+																			</div>
+																			<div class="media-body media-middle">
+																				<h5 class="media-heading student-name-in-message"><%= admin.first_name %> <%= admin.last_name %></h5>
+
+																				<small class="role-small"><%= admin.details %> <%= ", #{admin.staff_id}" if !admin.staff_id.blank? %></small>
+																				
+																			</div>				
+																		</div>
+																		<span class="uncheckbox-style-block uncheckbox-style-block-<%= admin.id %>"></span>		
 																		<span class="checkbox-style-block checkbox-style-block-<%= admin.id %>"></span>
-																	</label>	
-																</li>
-															<% end %>	
+																	</label>
+																</div>	
+															</li>
+														
 														<% end %>
-													<% end %>													
+													<% else %>	
+														<h1 class="nothing-posted"> No Admins added yet ! </h1>	
+													<% end %>														
 												</ul>
 											</div>
 											<div class="tab-pane active" id="all-students-modal">
@@ -273,32 +300,104 @@
 															<input type="checkbox" class="all-select-parents-bottom" id="all-select-parents-bottom" style="vertical-align: middle; margin-top:-2px;"> 
 															All Parents
 														</label>
+														<div class="clearfix"></div>
 														<% @all_section_member_models.each do |section_member_model|%>
 															<% grade = section_member_model.grade %>
 															<% section = section_member_model.section %>
 															<% students = section.get_members_with_given_roles_for_institute_and_grade_with_role(@institute, grade, ["Student"]) %>
-															<li class="find-teacher-list" style="margin-bottom:10px;position:relative;">																
-																<h6 class="teachers-list-heading-inner" style="background: #d1cece;margin: 0;padding: 10px; color: #dd223d;">
-																	Class <%= grade.grade_name + section.section_name %>
-																	<i class="material-icons arrow-up-icon pull-right" style="margin-top:-5px;">&#xE316;</i>
+															<li class="find-teacher-list" style="margin-bottom:10px;position:relative;">
+																
+																<div style="color:#f00;padding-left:10px; padding-top: 9px; font-size:10px;position: absolute; left: 26px;">
+																	<label for="select-all-class-students-<%= grade.grade_name + section.section_name %>">
+																		<input type="checkbox" class="all-students all-upper-checkbox-students" style="vertical-align: middle; margin-top:-2px;" id="select-all-class-students-<%= grade.grade_name + section.section_name %>"> 
+																		All Students
+																	</label>
+																	<label for="select-all-class-parents-<%= grade.grade_name + section.section_name %>">
+																		<input type="checkbox" class="all-parents all-upper-checkbox-parents" style="vertical-align: middle; margin-top:-2px;margin-left: 7px;" id="select-all-class-parents-<%= grade.grade_name + section.section_name %>"> 
+																		All Parents
+																	</label>
+																</div>
+																<h6 class="teachers-list-heading-inner" style="background: #d1cece;margin: 0;padding: 10px; cursor:pointer;color: #dd223d;">
+																	<%= grade.grade_name + section.section_name %>																		
+																	<i class="material-icons arrow-up-icon pull-right" style="margin-top:-5px;margin-right: -10px;">&#xE316;</i>
 																</h6>
-																<div class="container-width classRoute" style="display: block; box-shadow:rgb(175, 172, 172) 1px 1px 10px;margin-bottom:10px;">
+																<div class="container-width classRoute class-students-list-custom" style="display: none; box-shadow:rgb(175, 172, 172) 1px 1px 10px;margin-bottom:10px;">
 																	
-																	<ul class="list-unstyled index-conversation-modal" style="box-shadow: none;max-height: 200px !important;">
+																	<ul class="list-unstyled index-conversation-modal search-index-conversation-modal" style="box-shadow: none;    max-height: 200px !important;">
 																		<% if(!students.blank?) %>
 																			<% students.each do |student| %>
 																				<% if(student.id != current_user.id) %>
 																					<li>
-																						<label for="contact-new-group-<%= student.id %>" class="modal-label">
-																							<%= check_box_tag "participant_ids[]", student.id, false,class:"contact-new-group-page", id:"contact-new-group-#{student.id}" %>
-																							<%= render partial: "conversations/contact", locals: {contact: student} %>
-																							<span class="checkbox-style-block checkbox-style-block-<%= student.id %>"></span>
-																						</label>											
+																							
+																							<div class="well well-sm">
+																								<label for="contact-new-group-<%= student.id %>" class="modal-label" style="width: 60%; display: inline-block; border-right: 1px solid #fff; vertical-align: middle;">
+																									<%= check_box_tag "participant_ids[]", student.id, false,class:"contact-new-group-page all-inner-checkbox", id:"contact-new-group-#{student.id}" %>
+																							
+																									<div class="media jumbotron-media">
+																										<div class="media-left media-middle">
+																											
+																											<img src="<%= student.profile_picture.media.url(:thumb) %>" class="img-rounded img-xs">
+																											
+																										</div>
+																										<div class="media-body media-middle">
+																											<h5 class="media-heading student-name-in-message"><%= student.first_name %> <%= student.last_name %></h5>
+
+																											<small class="role-small"><%= student.details %></small>
+																											
+																										</div>				
+																									</div>
+																									<span class="uncheckbox-style-block uncheckbox-style-block-<%= student.id %>"></span>		
+																									<span class="checkbox-style-block checkbox-style-block-<%= student.id %>"></span>
+																								</label>
+
+																								<div class="media jumbotron-media" style="width: 38%; display: inline-block; vertical-align: middle;">
+																									<% if(!student.father_id.blank?) %>
+																										<% father = student.father %>
+																										<label for="contact-new-group-<%= father.id %>" class="modal-label">
+																											<%= check_box_tag "participant_ids[]", father.id, false,class:"contact-new-group-page-parent all-inner-checkbox-parent", id:"contact-new-group-#{father.id}" %>
+																								
+																											<div class="media-body media-middle parent-media">
+																												<h5 class="media-heading student-name-in-message"><%= father.first_name %> <%= father.last_name %> ( Father )</h5>
+
+																							
+																												
+																											</div>	
+																											<span class="uncheckbox-style-block uncheckbox-style-block-<%= father.id %>" style="top:0; right:-4px;left: inherit;"></span>		
+																											<span class="checkbox-style-block checkbox-style-block-<%= father.id %>" style="top:0; right:-4px;left: inherit;"></span>	
+																										</label>	
+																									<% end %>
+																									<br>
+																									<% if(!student.mother_id.blank?) %>
+																										<% mother = student.mother %>
+																										<label for="contact-new-group-<%= mother.id %>" class="modal-label">
+																											<%= check_box_tag "participant_ids[]", mother.id, false,class:"contact-new-group-page-parent all-inner-checkbox-parent", id:"contact-new-group-#{mother.id}" %>
+																									
+																											<div class="media-body media-middle parent-media">
+																												<h5 class="media-heading student-name-in-message"><%= mother.first_name %> <%= mother.last_name %> ( Mother )</h5>
+
+																												
+																												
+																											</div>
+																											<span class="uncheckbox-style-block uncheckbox-style-block-<%= mother.id %>" style="top:0; right:-4px;left: inherit;"></span>		
+																											<span class="checkbox-style-block checkbox-style-block-<%= mother.id %>" style="top:0; right:-4px;left: inherit;"></span>		
+																										</label>	
+																									<% end %>
+																									
+																									
+																								</div>
+																								
+																								
+																							</div>
+																							
 																					</li>
 																				<% end %>	
 																			<% end %>
 																		<% else %>
-																			
+																			<%= link_to add_new_student_institute_path(@institute, role: "Teacher") do %>
+																				<div class="pull-right add-member">
+																					<span>Add Student</span><i class="material-icons">&#xE7FE;</i>
+																				</div>
+																			<% end %>
 																			<div class="clearfix"></div>
 																			<h1 class="nothing-posted"> No Students added yet ! </h1>	
 																		<% end %>															
@@ -306,7 +405,8 @@
 																</div>
 															</li>
 														<% end %>
-													<% end %>								
+													<% end %>	
+													
 												</ul>
 											</div>												
 																						
@@ -382,19 +482,103 @@
 </div>
 
 <script type="text/javascript">
-	$(".all-students").change(function (e) {
-		$(this).parents("li.find-teacher-list").find("input.contact-new-group-page:checkbox").prop('checked', $(this).prop("checked"));
+	$(".all-select-students-bottom").change(function(e){
+		$(this).parents("#all-students-modal").find("li.find-teacher-list").find("input.all-students:checkbox").prop('checked', $(this).prop("checked"));
+		$(this).parents("#all-students-modal").find("li.find-teacher-list").find("input.contact-new-group-page:checkbox").prop('checked', $(this).prop("checked"));
 		updateCheckboxCounter();
 		e.preventDefault();
 	});
-	$('#search1').on("keyup keydown", function() {
+	
+	$(".all-select-parents-bottom").change(function(e){
+		$(this).parents("#all-students-modal").find("li.find-teacher-list").find("input.all-parents:checkbox").prop('checked', $(this).prop("checked"));
+		$(this).parents("#all-students-modal").find("li.find-teacher-list").find("input.contact-new-group-page-parent:checkbox").prop('checked', $(this).prop("checked"));
+		updateCheckboxCounter();
+		e.preventDefault();
+	});
+	
+	$(".all-upper-checkbox-students").change(function(e){
+		if($(".all-upper-checkbox-students").length ==  $(".all-upper-checkbox-students:checked").length){
+			$(".all-select-students-bottom").prop('checked', $(this).prop("checked"));
+		}else{
+			$(".all-select-students-bottom").prop('checked', false);
+		}
+	});
+	$(".all-upper-checkbox-parents").change(function(e){
+		if($(".all-upper-checkbox-parents").length ==  $(".all-upper-checkbox-parents:checked").length){
+			$(".all-select-parents-bottom").prop('checked', $(this).prop("checked"));
+		}else{
+			$(".all-select-parents-bottom").prop('checked', false);
+		}
+	});
+	
+	$(".all-select-staff-members").change(function(e){
+		$(this).parents("#all-staff-modal").find("li.all-staff-list").find(".all-staff-members-inner-checkbox").prop('checked', $(this).prop("checked"));
+		updateCheckboxCounter();
+		e.preventDefault();
+	});
+	
+	
+	$(".all-staff-members-inner-checkbox").change(function(e){
+		if($(".all-staff-members-inner-checkbox").length == $(".all-staff-members-inner-checkbox:checked").length){
+			$(".all-select-staff-members").prop('checked', $(this).prop("checked"));
+		}else{
+			$(".all-select-staff-members").prop('checked', false);
+		}
+	});
+	
+	function allStudents(){
+		$(".all-students").change(function (e) {
+			$(this).parents("li.find-teacher-list").find("input.contact-new-group-page:checkbox").prop('checked', $(this).prop("checked"));
+			updateCheckboxCounter();
+			e.preventDefault();
+		});
+	}
+	function allParents(){
+		$(".all-parents").change(function (e) {
+			$(this).parents("li.find-teacher-list").find("input.contact-new-group-page-parent:checkbox").prop('checked', $(this).prop("checked"));
+			updateCheckboxCounter();
+			e.preventDefault();
+		});
+	}
+	allStudents();
+	allParents();
+	
+	$(".all-inner-checkbox").change(function(e){
+		if($(".all-inner-checkbox").length == $(".all-inner-checkbox:checked").length){
+			$(".all-inner-checkbox").parents("li.find-teacher-list").find(".all-students").prop('checked', $(this).prop("checked"));
+			$(".all-select-students-bottom").prop('checked', $(this).prop("checked"));
+		}else{
+			$(".all-inner-checkbox").parents("li.find-teacher-list").find(".all-students").prop('checked' , false);
+			$(".all-select-students-bottom").prop('checked', false);
+		}				
+	});
+	
+	$("all-inner-checkbox-parent").change(function(e){
+		if($("input.contact-new-group-page-parent").length == $("input.contact-new-group-page-parent:checked").length){
+			$("input.contact-new-group-page-parent").parents("li.find-teacher-list").find(".all-parents").prop('checked', $(this).prop("checked"));
+			$(".all-select-parents-bottom").prop('checked', $(this).prop("checked"));
+		}else{
+			$("input.contact-new-group-page-parent").parents("li.find-teacher-list").find(".all-parents").prop('checked', false);
+			$(".all-select-parents-bottom").prop('checked', false);			
+		}
+	});
+
+	$('.search-conversation-students-page').on("keyup keydown", function() {
 		
 	    var value = $(this).val();
 	    if(value){
 	    	$(".manage-page li").hide().filter(function () {
 				if($(".media-heading", this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0 || $(".role-small", this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0 ){					
+					if($(this).parents('.class-students-list-custom').css("display") == "none"){
+						$(this).parents('.class-students-list-custom').css("display", "block");
+						
+					}
 					return true;
 				}else{
+					if($(this).parents('.class-students-list-custom').css("display") == "block"){
+						$(this).parents('.class-students-list-custom').css("display", "none");
+						
+					}
 					return false;
 				}			    
 			}).show();

@@ -123,15 +123,15 @@
 							<% grade = grade_section_model.grade %>
 							<% section = grade_section_model.section %>
 							<% students = section.get_members_with_given_roles_for_institute_and_grade_with_role(@institute, grade, ["Student"]) %>
-							<li  class="find-teacher-list" style="margin-bottom:10px;position:relative;">
+							<li class="find-teacher-list find-tab-teacher-list" style="margin-bottom:10px;position:relative;">
 								
 								<h6 class="teachers-list-heading-inner" style="background: #d1cece;margin: 0;padding: 10px; color: #dd223d;">
 									Class <%= grade.grade_name + section.section_name %>																		
 									<i class="material-icons arrow-up-icon pull-right" style="margin-top:-5px;">&#xE316;</i>
 								</h6>
-								<div class="container-width classRoute" style="display: block; box-shadow:rgb(175, 172, 172) 1px 1px 10px;margin-bottom:10px;">
+								<div class="container-width classRoute class-tab-students-list-custom" style="display: none; box-shadow:rgb(175, 172, 172) 1px 1px 10px;margin-bottom:10px;">
 									
-									<ul class="list-unstyled index-conversation-modal" style="box-shadow: none;    max-height: 200px !important;">
+									<ul class="list-unstyled index-conversation-modal student-manage-page" style="box-shadow: none;    max-height: 200px !important;">
 										<% if(!students.blank?) %>
 											<% students.each do |student| %>
 												<% if(student.id != current_user.id) %>
@@ -227,7 +227,7 @@
 		
 	    var value = $(this).val();
 	    if(value){
-	    	$(".admin-manage-page li").hide().filter(function () {
+	    	$(".admin-manage-page").hide().filter(function () {
 				if($(".media-heading", this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0 || $(".role-small", this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0){					
 					return true;
 				}else{
@@ -235,14 +235,14 @@
 				}			    
 			}).show();
 	    }else{
-	    	$(".admin-manage-page li").show();
+	    	$(".admin-manage-page").show();
 	    }    
 	});
 	$('.search-conversation-teacher-page').on("keyup keydown", function() {
 		
 	    var value = $(this).val();
 	    if(value){
-	    	$(".teacher-manage-page li").hide().filter(function () {
+	    	$(".teacher-manage-page").hide().filter(function () {
 				if($(".media-heading", this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0 || $(".role-small", this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0 ) {					
 					return true;
 				}else{
@@ -250,7 +250,7 @@
 				}			    
 			}).show();
 	    }else{
-	    	$(".teacher-manage-page li").show();
+	    	$(".teacher-manage-page").show();
 	    }    
 	});
 	$('.search-conversation-student-page').on("keyup keydown", function() {
@@ -258,9 +258,15 @@
 	    var value = $(this).val();
 	    if(value){
 	    	$(".student-manage-page li").hide().filter(function () {
-				if($(".media-heading", this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0 || $(".role-small", this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0 ){					
+				if($(".media-heading", this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0 || $(".role-small", this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0 ){	
+					if($(this).parents('.class-tab-students-list-custom').css("display") == "none"){
+						$(this).parents('.class-tab-students-list-custom').css("display", "block");
+					}				
 					return true;
 				}else{
+					if($(this).parents('.class-tab-students-list-custom').css("display") == "block"){
+						$(this).parents('.class-tab-students-list-custom').css("display", "none");
+					}
 					return false;
 				}			    
 			}).show();
@@ -268,19 +274,5 @@
 	    	$(".student-manage-page li").show();
 	    }    
 	});
-	$('.search-conversation-parent-page').on("keyup keydown", function() {
-		
-	    var value = $(this).val();
-	    if(value){
-	    	$(".parent-manage-page li").hide().filter(function () {
-				if($(".media-heading", this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0 || $(".role-small", this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0 ){					
-					return true;
-				}else{
-					return false;
-				}			    
-			}).show();
-	    }else{
-	    	$(".parent-manage-page li").show();
-	    }    
-	});
+	
 </script>

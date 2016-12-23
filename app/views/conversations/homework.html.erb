@@ -4,13 +4,18 @@
 <% end %>
 
 <div class="detect-div" style="margin-top: 60px; "></div>
-<div style="max-width:600px;margin:0 auto;margin-top:50px;">
+<div style="max-width:600px;margin:0 auto;margin-top:50px; margin-bottom: 70px;">
 	<% if(!@homework_messages.blank?) %>
 		<% @homework_messages.each do |message| %>
-			<div>
-				<%= message.conversation.get_conversation_name_to_show_to_user(current_user).truncate(15) if !message.conversation.get_conversation_name_to_show_to_user(current_user).blank?%>
+			<div class="student-message-homework-temp" style="box-shadow: 1px 1px 7px #b1a9a9; margin: 10px;">
+				<%= link_to conversation_path(message.conversation) do %>
+					<div class="text-left" style="padding: 6px; color: #fff; background: #afabab; padding-left: 20px;" >
+						<%= message.conversation.get_conversation_name_to_show_to_user(current_user).truncate(15) if !message.conversation.get_conversation_name_to_show_to_user(current_user).blank?%>
+					</div>
+				<% end %>
+				
+				<%= render partial: "messages/message", locals: {conversation: message.conversation, message: message} %>
 			</div>
-			<%= render partial: "messages/message", locals: {conversation: message.conversation, message: message} %>
 		<% end %>
 		
 		<%= paginate @homework_messages, window: 1 %>

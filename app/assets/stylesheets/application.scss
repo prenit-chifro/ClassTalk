@@ -93,6 +93,9 @@ a{
     left: 50%;
     margin-left: -50px;
 }
+div.student-message-homework-temp > div.messages-media{
+	box-shadow:none;
+}
 
 h6.teachers-list-heading + div.classRoute{
 	display:none;
