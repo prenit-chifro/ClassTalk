@@ -11,6 +11,10 @@ body{
 	overflow-y:scroll;
 	overflow-x:hidden;
 }
+ul.search-index-conversation-modal div.well-sm{
+	padding:0px;
+}
+
 .inner-many-type-media{
 	max-width: 200px;
     margin: 0 auto;
@@ -2337,5 +2341,29 @@ div.calendar div.fc-agendaWeek-view tbody.fc-body div.fc-bg > table >tbody>tr>td
 		float: none !important;
 		margin-top: 8px;
 		text-align: center;
+	}
+}
+@media (max-width:360px){
+	ul.search-index-conversation-modal div.well-sm > label,
+	ul.search-index-conversation-modal div.well-sm > div.media
+	{
+		width:47% !important;
+	}
+	ul.search-index-conversation-modal div.well-sm label {
+		margin-bottom:0;
+	}
+	ul.search-index-conversation-modal div.well-sm > label > div.media{
+		margin-top:0;
+	}
+	ul.search-index-conversation-modal div.well-sm > label > div.media > div.media-left > img{
+		display:none;
+	}
+	ul.search-index-conversation-modal div.well-sm > label > div.media>span.uncheckbox-style-block,
+	ul.search-index-conversation-modal div.well-sm > label > div.media>span.checkbox-style-block
+	{
+		top:11px;
+	}
+	ul.search-index-conversation-modal div.well-sm > div.media h5.media-heading{
+		font-size:11px;
 	}
 }
