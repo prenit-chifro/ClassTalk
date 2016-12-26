@@ -760,6 +760,7 @@ div.add-member, span.add-member{
     padding: 10px;
     font-size: 13px;
     box-shadow: 1px 1px 1px #afacac;
+	margin-bottom:9px;
 }
 div.add-member>i,span.add-member>i{
 	vertical-align: middle;
@@ -2084,7 +2085,7 @@ div.calendar div.fc-agendaWeek-view tbody.fc-body div.fc-bg > table >tbody>tr>td
     -webkit-box-shadow: 0 0 1px rgba(255,255,255,.5);
 }
 
-@media (max-width:420px){
+@media (max-width:515px){
 	.search-form-main div.form-group{
 		float: none !important;
 	}

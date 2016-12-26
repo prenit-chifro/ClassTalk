@@ -22,11 +22,7 @@
 	<div class="tab-content" style="max-width: 600px; margin: 0 auto; margin-bottom: 70px">
 		<div class="tab-pane active" id="all-admins" style="max-height: 100%;">
 			<% if(current_user.role.include?("Principal") or current_user.role.include?("Institute Admin")) %>
-				<form onsubmit="return false;" class="search-form-main">
-					<div class="pull-left form-group has-feedback" style="width:100%;margin-top: 8px;">
-						<input type="text" class="form-control search-conversation-admin-page" name="search" placeholder="Search..." id="search1" autocomplete="off">
-					</div>
-				</form>
+				
 				<div class="max-width-button">
 					<%= link_to give_admin_right_institute_path(@institute) do %>
 						<div class="pull-right add-member">
@@ -45,7 +41,11 @@
 						<span>Revoke Admin Rights</span><i class="material-icons">&#xE7FE;</i>
 					</div>
 				<% end %>
-				
+				<form onsubmit="return false;" class="search-form-main">
+					<div class="pull-left form-group has-feedback" style="width:100%;margin-top: 8px;">
+						<input type="text" class="form-control search-conversation-admin-page" name="search" placeholder="Search..." id="search1" autocomplete="off">
+					</div>
+				</form>
 			<% end %>
 			<div class="clearfix mar-btm"></div>
 			
@@ -79,16 +79,17 @@
 
 		<div class="tab-pane" id="all-teachers" style="max-height: 100%;">
 			<% if(current_user.role.include?("Principal") or current_user.role.include?("Institute Admin")) %>
-				<form onsubmit="return false;" class="search-form-main">
-					<div class="pull-left form-group has-feedback" style="margin-top: 8px;">
-						<input type="text" class="form-control search-conversation-teacher-page" name="search" placeholder="Search..." id="search1" autocomplete="off">
-					</div>
-				</form>
+				
 				<%= link_to add_new_staff_institute_path(@institute, role: "Teacher") do %>
 					<div class="pull-right add-member">
 						<span>Add Teacher</span><i class="material-icons">&#xE7FE;</i>
 					</div>
 				<% end %>
+				<form onsubmit="return false;" class="search-form-main">
+					<div class="pull-left form-group has-feedback" style="margin-top: 8px;">
+						<input type="text" class="form-control search-conversation-teacher-page" name="search" placeholder="Search..." id="search1" autocomplete="off">
+					</div>
+				</form>
 			<% end %>
 			<div class="clearfix mar-btm"></div>
 			<% if(!@teachers.blank?) %>
@@ -105,16 +106,17 @@
 		<% if(current_user.role.include?("Principal") or current_user.role.include?("Institute Admin") or current_user.role.include?("Teacher")) %>
 			<div class="tab-pane" id="all-students" style="max-height: 100%;">
 				<% if(current_user.role.include?("Principal") or current_user.role.include?("Institute Admin")) %>
-					<form onsubmit="return false;" class="search-form-main">
-						<div class="pull-left form-group has-feedback" style="margin-top: 8px;">
-							<input type="text" class="form-control search-conversation-student-page" name="search" placeholder="Search..." id="search1" autocomplete="off">
-						</div>
-					</form>
+					
 					<%= link_to add_new_student_institute_path(@institute) do %>
 						<div class="pull-right add-member">
 							<span>Add Student</span><i class="material-icons">&#xE7FE;</i>
 						</div>
 					<% end %>
+					<form onsubmit="return false;" class="search-form-main">
+						<div class="pull-left form-group has-feedback" style="margin-top: 8px;">
+							<input type="text" class="form-control search-conversation-student-page" name="search" placeholder="Search..." id="search1" autocomplete="off">
+						</div>
+					</form>
 				<% end %>
 				<div class="clearfix mar-btm"></div>
 				<ul class="list-unstyled index-conversation-modal">

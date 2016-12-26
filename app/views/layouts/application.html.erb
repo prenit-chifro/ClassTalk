@@ -63,9 +63,9 @@
 								</li>
 								
 								<% if(user_signed_in?) %>
-									<li class="log-out">
+									<li class="log-out" style="list-style: none;">
 										<%= link_to destroy_user_session_path, method: :delete do %>
-											<button type="button" class="btn btn-danger" style="padding:6px;margin-top:-21px;color: #2ad;background:none; border:none;">LogOut</button>
+											<button type="button" class="btn btn-danger" style="padding:0px;color: #2ad;background:none; border:none;">LogOut</button>
 										<% end %>
 									</li>
 								<% end %>
@@ -88,7 +88,7 @@
 								<% end %>
 								<li <%= active_class %>>
 									<a href="/institutes/<%= @institute.id %>">
-										<i class="material-icons menu-inner-icon">&#xE146;</i>Manage
+										<i class="material-icons">&#xE8B9;</i><span style="margin-left: 11px;">Manage</span>
 									</a>
 								</li>
 							<% end %>
@@ -143,6 +143,13 @@
 									
 								<% end %>							
 								
+							<% end %>
+							<% if(user_signed_in?) %>
+								<li class="log-out">
+									<%= link_to destroy_user_session_path, method: :delete do %>
+										<i class="material-icons">&#xE62A;</i><span style="margin-left:11px;">LogOut</span>
+									<% end %>
+								</li>
 							<% end %>
 							
 						</ul>

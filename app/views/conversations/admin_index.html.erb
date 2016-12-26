@@ -129,16 +129,17 @@
 
 				<div class="tab-pane" id="all-classes">
 					<ul class="list-unstyled teachers-list index-conversation-modal">
-						<form onsubmit="return false;" class="search-form-main">
-							<div class="pull-left form-group has-feedback" style="margin-top: 8px;">
-								<input type="text" class="form-control search-conversation-students-page" name="search" placeholder="Search..." id="search1" autocomplete="off">
-							</div>
-						</form>
+						
 						<%= link_to add_new_student_institute_path(@institute) do %>
 							<div class="pull-right add-member">
 								<span>Add Student</span><i class="material-icons">&#xE7FE;</i>
 							</div>
 						<% end %>
+						<form onsubmit="return false;" class="search-form-main">
+							<div class="pull-left form-group has-feedback" style="margin-top: 8px;">
+								<input type="text" class="form-control search-conversation-students-page" name="search" placeholder="Search..." id="search1" autocomplete="off">
+							</div>
+						</form>
 						<div class="clearfix mar-btm"></div>
 						<% if(current_user.role.include?("Principal") or current_user.role.include?("Institute Admin")) %>
 							<% if(!@institutes_grades_sections_models.blank?) %>
@@ -185,11 +186,7 @@
 				</div>
 				<div class="tab-pane" id="all-staff">
 					<ul class="list-unstyled teachers-list index-conversation-modal">
-						<form onsubmit="return false;" class="search-form-main">
-							<div class="pull-left form-group has-feedback" style="width:100%; margin-top: 8px;">
-								<input type="text" class="form-control search-conversation-staff-page" name="search" placeholder="Search..." id="search1" autocomplete="off">
-							</div>
-						</form>
+						
 						
 						<% if(current_user.role.include?("Principal") or current_user.role.include?("Institute Admin")) %>
 							<div class="container-width classRoute" style="display: block;">
@@ -203,6 +200,12 @@
 										<span>Add Admin</span><i class="material-icons">&#xE7FE;</i>
 									</div>
 								<% end %>
+								
+								<form onsubmit="return false;" class="search-form-main">
+									<div class="pull-left form-group has-feedback" style="margin-top: 8px;">
+										<input type="text" class="form-control search-conversation-staff-page" name="search" placeholder="Search..." id="search1" autocomplete="off">
+									</div>
+								</form>
 								<div class="clearfix mar-btm"></div>
 								<ul class="list-unstyled list-inline"  style="max-height:100%;box-shadow:none;">
 									<% if(!@teachers.blank?) %>
