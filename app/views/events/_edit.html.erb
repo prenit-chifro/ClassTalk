@@ -1,6 +1,5 @@
 <%= form_tag institute_event_path(@institute, event), method: :patch, remote: true do %>
 	<p style="color: #d69641; font-size: 20px;"><%= event.institute.institute_name + ": " if !event.institute_id.blank? %></p>
-	<p style="color: #619bce;">Classes: <%= event.grade_section_models.map{|model| "#{model.grade.grade_name}#{model.section.section_name}" }.join(",  ") if !event.grade_section_ids.blank? %></p>
 	<div class="form-group">
 		<%= text_field_tag :title, event.title, placeholder: :Title, class: "form-control" %>
 	</div>
@@ -20,11 +19,6 @@
 		<%= check_box_tag :is_all_day_event, "true", event.is_all_day_event ? true : false %>	
 	</div>	
 
-	<% if(!event.participant_ids.blank?) %>
-		<% event.participants.each do |participant|%>
-			<%= check_box_tag "participant_ids[]", true, true %> <%= render partial: "conversations/contact", locals: {contact: participant} %>
-		<% end %>
-	<% end %>
 	<div class="form-group form-button-register">
 		<%= button_tag(type:"submit", class: "form-control btn btn-login") do %>
 			Update

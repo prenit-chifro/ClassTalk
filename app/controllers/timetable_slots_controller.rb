@@ -1,5 +1,5 @@
 class TimetableSlotsController < ApplicationController
-    before_action :set_timezone
+    #before_action :set_timezone
     def set_timezone
         Time.zone = "New Delhi"
     end
