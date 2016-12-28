@@ -74,9 +74,7 @@ a{
 	left: 50%;
 	margin-left: -150px;
 }
-.active-navigation a, .active-navigation-footer a{
-	background: #6bbfdd;	
-}
+
 .active-navigation a{
 	border-bottom: 4px solid #fff;
 }
@@ -666,6 +664,10 @@ label.file-label > input[type=file]{
 	background: #6bbfdd !important;
 	border-bottom: 4px solid #fff;
 }
+#navbar li.active a, #navbar li.active a{
+	background: none !important;
+	color:#fff !important;
+}
 
 ul.submenu{
 	border-top: 1px solid rgb(228, 228, 228);
@@ -725,7 +727,7 @@ ul.submenu>li:last-child a{
 
 .wrapper >.navbar-default{
 	background-color: #2ad;
-    box-shadow: 1px 1px 6px #afacac;
+    box-shadow: 1px 1px 6px #afacac !important;
 	border:none;
 }
 
@@ -2084,7 +2086,9 @@ div.calendar div.fc-agendaWeek-view tbody.fc-body div.fc-bg > table >tbody>tr>td
     background-color: rgba(0,0,0,.2);
     -webkit-box-shadow: 0 0 1px rgba(255,255,255,.5);
 }
-
+#navbar li.active-navigation a, .active-navigation-footer a{
+	background: #6bbfdd !important;	
+}
 @media (max-width:515px){
 	.search-form-main div.form-group{
 		float: none !important;
@@ -2193,6 +2197,9 @@ div.calendar div.fc-agendaWeek-view tbody.fc-body div.fc-bg > table >tbody>tr>td
 	}
 }
 @media (max-width:767px){
+	.wrapper >.navbar-default{
+		box-shadow: none !important;
+	}
 	.active-navigation a{
 		background:#71c3c3;
 		color: #fff !important;
@@ -2370,7 +2377,21 @@ div.calendar div.fc-agendaWeek-view tbody.fc-body div.fc-bg > table >tbody>tr>td
 }
 
 @media (min-width: 768px){
-	.admin-new-tabs{
+	.home-new-tabs{
 		display:none;
+	}
+}
+
+@media only screen and (min-width: 768px) and (max-width: 880px){
+	#navbar li > a{
+		font-size: 12px;
+	}
+	.navbar-brand.right-menu{
+		width: 150px !important;
+		font-size: 13px;
+	}
+	.navbar-brand.truncate{
+		font-size: 16px;
+		line-height:3.5;
 	}
 }

@@ -88,14 +88,14 @@
 								<% end %>
 								<li <%= active_class %>>
 									<a href="/institutes/<%= @institute.id %>">
-										<i class="material-icons menu-inner-icon">&#xE8B9;</i><span style="margin-left: 11px;">Manage</span>
+										<i class="material-icons menu-inner-icon">&#xE8B9;</i><span>Manage</span>
 									</a>
 								</li>
 							<% end %>
 							
 							<% if(!(params[:controller] == "conversations" and params[:action]=="index")) %>
-
-								<li >
+								
+								<li>
 									
 									<a href="/#all-messages">
 										<i class="material-icons menu-inner-icon">&#xE156;</i>
@@ -135,8 +135,8 @@
 									
 								<% end %>							
 							<% else %>
-								<li>
-									
+								
+								<li>									
 									<a href="#all-messages" data-toggle="tab">
 										<i class="material-icons menu-inner-icon">&#xE156;</i>
 										<span>Messages</span>
@@ -153,7 +153,7 @@
 									<% if(!@institute.blank? and (current_user.role.include?("Principal") or current_user.role.include?("Institute Admin"))) %>
 										<li>
 											<a href="#all-staff" data-toggle="tab">
-												<i class="material-icons menu-inner-icon">&#xE8B9;</i><span style="margin-left: 11px;">Staff</span>
+												<i class="material-icons menu-inner-icon">&#xE8B9;</i><span>Staff</span>
 											</a>
 										</li>
 									<% end %>
@@ -180,7 +180,7 @@
 							<% if(user_signed_in?) %>
 								<li class="log-out">
 									<%= link_to destroy_user_session_path, method: :delete do %>
-										<i class="material-icons menu-inner-icon">&#xE62A;</i><span style="margin-left:11px;">LogOut</span>
+										<i class="material-icons menu-inner-icon">&#xE62A;</i><span>LogOut</span>
 									<% end %>
 								</li>
 							<% end %>

@@ -98,14 +98,25 @@ $(document).on("turbolinks:load", function(){
 	$(".ajax-loader").css("display", "none");
 	$('#navbar > ul.nav li a').click(function(e) {
 		var $this = $(this);
-		$this.parent().siblings().removeClass('active-navigation').end().addClass('active-navigation');
+		$this.parent().siblings().removeClass('active-navigation').end().addClass('active-navigation');		
+	});
+	$('#navbar li a[data-toggle="tab"]').on('click', function (e) {    		
+		var targetAchieve = $(this).attr('href');
+		window.location.replace(('' + window.location).split('#')[0] + targetAchieve);
 	});
 	$(function(){
-		var hash = window.location.hash;
-		hash && $('ul.nav a[href="' + hash + '"]').tab('show');
-
+		var hash = window.location.hash;		
+		
+		if(hash){
+			$('ul.nav a[href="' + hash + '"]').tab('show');		
+			$('#navbar ul.nav a[href="' + hash + '"]').parent().addClass('active-navigation');
+		}else{
+			$('ul.nav a[href="' + "#all-messages" + '"]').tab('show');		
+			$('#navbar ul.nav a[href="' + "#all-messages" + '"]').parent().addClass('active-navigation');
+		}
+		
 		$('.nav-tabs a').click(function (e) {
-			var hash = $(this).attr("href");
+			var hash = $(this).attr("href");			
 			window.location.replace(('' + window.location).split('#')[0] + hash);
 
 		});
