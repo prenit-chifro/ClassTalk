@@ -6,281 +6,85 @@
 <% if(true) %>
 	<div class="container-width classRoute tabs-container" style="margin-top:50px; margin-bottom: 0;">
 		<ul class="nav nav-tabs admin-new-tabs" role="tablist" id="tablist">
-			<%  if(@conversation.is_section_conversation or @conversation.is_subject_conversation) or @conversation.is_institute_conversation%>
+		
+			<li class="active"><a data-toggle="tab" href="#all-participants">Participants</a></li>
 			
-			<% else %>
-				<li class="active"><a data-toggle="tab" href="#all-participants">Participants</a></li>
-			<% end %>
-			<% if(@conversation.is_institute_conversation) %>
-				
-				<li class="active"><a data-toggle="tab" href="#all-contacts">Contacts</a></li>
-				<li><a data-toggle="tab" href="#all-teachers">Teachers</a></li>
-				<% if(["Principal", "Institute Admin", "Teacher"].include?(current_user.role)) %>
-					<li><a data-toggle="tab" href="#all-students">Students</a></li>	
-				<% end %>
-			<% end %>
-			
-			<% if(@conversation.is_section_conversation) %>
-				<li class="active"><a data-toggle="tab" href="#all-classteachers">Classteacher</a></li>
-				<li><a data-toggle="tab" href="#all-subjects">Subjects</a></li>
-				<% if(["Principal", "Institute Admin", "Teacher"].include?(current_user.role)) %>
-					<li><a data-toggle="tab" href="#all-students">Students</a></li>	
-				<% end %>
-			<% end %>
-			
-			<% if(@conversation.is_subject_conversation) %>
-				<li class="active"><a data-toggle="tab" href="#all-subjectteachers">Subject Teacher</a></li>
-				<% if(["Principal", "Institute Admin", "Teacher"].include?(current_user.role)) %>
-					<li><a data-toggle="tab" href="#all-students">Students</a></li>	
-				<% end %>
-			<% end %>
 		</ul>
 		
 		<div class="tab-content">
-			<%  if(@conversation.is_section_conversation or @conversation.is_subject_conversation or @conversation.is_institute_conversation)%>
-			
-			<% else %>
-				<div class="tab-pane active" id="all-contacts">
+			<div class="tab-pane active" id="all-participants">
+				<% if(!current_user.role.include?("Student") and !current_user.role.include?("Parent")) %>
+					<%= link_to new_conversation_path(conversation_id: @conversation.id) do %>
+						<div class="pull-left add-member">
+							<span>Add Participient</span><i class="material-icons">&#xE7FE;</i>
+						</div>
+					<% end %>
+				<% end %>
+				<div class="clearfix mar-btm"></div>
+				<div class="conversation-partial" style="max-width:600px;margin: 0 auto;">
+					<% if(!@conversation.other_participants(current_user).blank?) %>
+						<% other_participants = @conversation.other_participants(current_user) %>
+						<% students = User.where(id: other_participants.map(&:id), role: "Student") %>
+						<% staff = User.where(id: other_participants.map(&:id), role: ["Principal", "Institute Admin", "Teacher"]) %>
+					<% end %>
+
 					<% if(!current_user.role.include?("Student") and !current_user.role.include?("Parent")) %>
-						<%= link_to new_conversation_path(conversation_id: @conversation.id) do %>
-							<div class="pull-left add-member">
-								<span>Add Participient</span><i class="material-icons">&#xE7FE;</i>
-							</div>
-						<% end %>
-
-						<%= link_to add_new_member_institute_path(@institute) do %>
-							<div class="pull-right add-member">
-								<span>New Contact</span><i class="material-icons">&#xE7FE;</i>
-							</div>
-						<% end %>
-					<% end %>
-					<div class="clearfix mar-btm"></div>
-					<div class="conversation-partial" style="max-width:600px;margin: 0 auto;">
-						<% if(!@conversation.other_participants(current_user).blank?) %>
-							<% @conversation.other_participants(current_user).each do |contact| %>
-								<%= render partial: "conversations/contact", locals: {contact: contact}	 %>	
-							<% end %>
-						<% end %>
-					</div>	
-				</div>
-			<% end %>
-			<% if(@conversation.is_institute_conversation) %>
-				<div class="tab-pane active" id="all-contacts">
-					<% if(current_user.role.include?("Principal") or current_user.role.include?("Institute Admin")) %>
-						<%= link_to new_conversation_path(conversation_id: @conversation.id) do %>
-							<div class="pull-left add-member">
-								<span>Add Participient</span><i class="material-icons">&#xE7FE;</i>
-							</div>
-						<% end %>
-
-						<%= link_to add_new_staff_institute_path(@institute, role: "Institute Admin") do %>
-							<div class="pull-right add-member">
-								<span>Add Admin</span><i class="material-icons">&#xE7FE;</i>
-							</div>
-						<% end %>
-					<% end %>
-					<div class="clearfix mar-btm"></div>
-					<div class="conversation-partial" style="max-width:600px;margin: 0 auto;">
-						<% if(!@contacts.blank?) %>
-							<% @contacts.each do |contact| %>
-								<%= render partial: "conversations/contact", locals: {contact: contact}	 %>	
-							<% end %>
-						<% end %>
-					</div>	
-				</div>
-
-				<div class="tab-pane" id="all-teachers">
-					<% if(current_user.role.include?("Principal") or current_user.role.include?("Institute Admin")) %>
-						<%= link_to new_conversation_path(conversation_id: @conversation.id) do %>
-							<div class="pull-left add-member">
-								<span>Add Participient</span><i class="material-icons">&#xE7FE;</i>
-							</div>
-						<% end %>
-
-						<%= link_to add_new_staff_institute_path(@institute, role: "Teacher") do %>
-							<div class="pull-right add-member">
-								<span>Add Teacher</span><i class="material-icons">&#xE7FE;</i>
-							</div>
-						<% end %>
-					<% end %>
-					<div class="clearfix mar-btm"></div>
-					<div class="conversation-partial" style="max-width:600px;margin: 0 auto;">
-						<% if(!@teachers.blank?) %>
-							<% @teachers.each do |contact| %>
-								<%= render partial: "conversations/contact", locals: {contact: contact}	 %>	
-							<% end %>
-						<% end %>
-					</div>	
-				</div>
-
-				<% if(current_user.role.include?("Principal") or current_user.role.include?("Institute Admin") or current_user.role.include?("Teacher")) %>
-					<div class="tab-pane" id="all-students">
-						<% if(current_user.role.include?("Principal") or current_user.role.include?("Institute Admin")) %>
-							<%= link_to new_conversation_path(conversation_id: @conversation.id) do %>
-								<div class="pull-left add-member">
-									<span>Add Participient</span><i class="material-icons">&#xE7FE;</i>
-								</div>
-							<% end %>
-
-							<%= link_to add_new_student_institute_path(@institute) do %>
-								<div class="pull-right add-member">
-									<span>Add Student</span><i class="material-icons">&#xE7FE;</i>
-								</div>
-							<% end %>
-						<% end %>
-						<div class="clearfix mar-btm"></div>
-						<div class="conversation-partial" style="max-width:600px;margin: 0 auto;">
-							<% if(!@students.blank?) %>
-								<% @students.each do |contact| %>
-									<%= render partial: "conversations/contact", locals: {contact: contact} %>		
-								<% end %>
-							<% end %>		
-						</div>						
-					</div>
-				<% end %>
-
-			<% end %>
-
-			<% if(@conversation.is_section_conversation) %>
-				<% section = @conversation.section %>
-				<% grade = @conversation.grade %>
-				<% classteacher = section.get_classteacher_for_institute_and_grade(@institute, grade) if !section.blank? and !grade.blank? %>
-				
-				<div class="tab-pane active" id="all-classteachers">
-
-					<% if(current_user.role.include?("Principal") or current_user.role.include?("Institute Admin") or (!classteacher.blank? and current_user.id == classteacher.id)) %>
+						<% if(!students.blank? and !staff.blank?) %>
+							<ul class="nav nav-tabs text-center" role="tablist" id="tablist" style="background:#98c2d2;">
 						
-						<%= link_to new_conversation_path(conversation_id: @conversation.id) do %>
-							<div class="pull-left add-member">
-								<span>Add Participient</span><i class="material-icons">&#xE7FE;</i>
-							</div>
-						<% end %>
-
-						<%= link_to add_new_staff_institute_path(@institute, role: "Teacher") do %>
-							<div class="pull-right add-member">
-								<span>Add Teacher</span><i class="material-icons">&#xE7FE;</i>
-							</div>
-						<% end %>
-					<% end %>
-					<div class="clearfix mar-btm"></div>
-					<div class="conversation-partial" style="max-width:600px;margin: 0 auto;">
-						<%= render partial: "conversations/contact", locals: {contact: @classteacher} if !@classteacher.blank? %>		
-					</div>
-				</div>
-
-				<% if(current_user.role.include?("Principal") or current_user.role.include?("Institute Admin") or current_user.role.include?("Teacher")) %>
-					<div class="tab-pane" id="all-students">
-						
-						<% if(current_user.role.include?("Principal") or current_user.role.include?("Institute Admin") or (!classteacher.blank? and current_user.id == classteacher.id)) %>
-							
-							<%= link_to new_conversation_path(conversation_id: @conversation.id) do %>		<div class="pull-left add-member">
-									<span>Add Participient</span><i class="material-icons">&#xE7FE;</i>
+								<li class="active" style="width:50%;"><a data-toggle="tab" href="#all-students">Students</a></li>
+								<li style="width:50%;"><a data-toggle="tab" href="#all-staff">Staff</a></li>
+							</ul>	
+							<div class="tab-content admin-home-content">
+								<div class="tab-pane active all-small-conversations" id="all-students">
+									<% if(!students.blank?) %>	
+										<% students.each do |student| %>
+											<%= render partial: "conversations/contact", locals: {contact: student}	 %>	
+										<% end %>
+									<% else %>
+										<h1 class="nothing-posted">	No participating Students </h1>
+									<% end %>
 								</div>
-							<% end %>
-							
-							<%= link_to add_new_student_institute_path(@institute) do %>
-								<div class="pull-right add-member">
-									<span>Add Student</span><i class="material-icons">&#xE7FE;</i>
-								</div>
-							<% end %>
-						<% end %>
-						<div class="clearfix mar-btm"></div>
-						<div class="conversation-partial" style="max-width:600px;margin: 0 auto;">
-							<% if(!@students.blank?) %>
-								<% @students.each do |contact| %>
-									<%= render partial: "conversations/contact", locals: {contact: contact} %>		
-								<% end %>
-							<% end %>		
-						</div>						
-					</div>
-				<% end %>
 
-				<div class="tab-pane" id="all-subjects">
-					
-					
-					<ul class="list-unstyled list-inline text-center">
-						<% if(!@section_subject_models.blank?) %>
-							<% @section_subject_models.each do |section_subject_model| %>
-								<% subject = section_subject_model.subject %>
-																	
-								<% subject_teacher =  @section.get_subject_teacher_for_institute_and_grade_and_subject(@institute, @grade, subject) %>
-								<% students_count =  @section.sections_members.where(institute_id: @institute.id, member_role: "Student").count %>
-								<li>
-									<div class="ch-item">	
-										<div class="ch-info">
-											<h3><%= subject_teacher.first_name if !subject_teacher.blank?%> <%= subject_teacher.last_name  if !subject_teacher.blank? %></h3>
-											
-											<p><%= subject_teacher.first_name if !subject_teacher.blank?%> <%= subject_teacher.last_name  if !subject_teacher.blank? %><a href="<%= institute_grade_section_subject_path(@institute, @grade, @section, subject) %>" style="font-size:6px;"><%= subject.subject_name %></a></p>
-										</div>
-										<div class="ch-thumb">
-											<span style="font-size:14px;margin-left:-32px;"><%= subject.subject_name %></span>
-											<span><%= students_count %> Students</span>
-										</div>
-									</div>
-									<button class="btn btn-info btn-custom-info"><%= link_to institute_grade_section_subject_path(@institute, @grade, @section, subject) do %>Go To <%= subject.subject_name %><% end %></button>
-								</li>
+								<div class="tab-pane" id="all-staff">
+									<% if(!staff.blank?) %>	
+										<% staff.each do |staff_member| %>
+											<%= render partial: "conversations/contact", locals: {contact: staff_member}	 %>	
+										<% end %>
+									<% else %>
+										<h1 class="nothing-posted">	No participating Staff </h1>	
+									<% end %>
+								</div>
 								
+							</div>	
+						<% else %>
+							<% if(!students.blank?) %>	
+								<% students.each do |student| %>
+									<%= render partial: "conversations/contact", locals: {contact: student}	 %>	
+								<% end %>
+							
+							<% end %>
+							<% if(!staff.blank?) %>	
+								<% staff.each do |staff_member| %>
+									<%= render partial: "conversations/contact", locals: {contact: staff_member}	 %>	
+								<% end %>
+							
 							<% end %>
 						<% end %>
 						
-					</ul>
-				
-				</div>
-
-			<% end %>
-
-			<% if(@conversation.is_subject_conversation) %>
-				<% section = @conversation.section %>
-				<% grade = @conversation.grade %>
-				<% classteacher = section.get_classteacher_for_institute_and_grade(@institute, grade) if !section.blank? and !grade.blank? %>
-				
-				<div class="tab-pane active" id="all-subjectteachers">
-					<% if(current_user.role.include?("Principal") or current_user.role.include?("Institute Admin") or (!classteacher.blank? and current_user.id == classteacher.id)) %>	
-						<%= link_to new_conversation_path(conversation_id: @conversation.id) do %>
-							<div class="pull-left add-member">
-								<span>Add Participient</span><i class="material-icons">&#xE7FE;</i>
-							</div>	
-						<% end %>
-						
-						<%= link_to add_new_staff_institute_path(@institute, role: "Teacher") do %>
-							<div class="pull-right add-member">
-								<span>Add Teacher</span><i class="material-icons">&#xE7FE;</i>
-							</div>	
+					<% else %>
+						<% if(!staff.blank?) %>	
+							<% staff.each do |staff_member| %>
+								<%= render partial: "conversations/contact", locals: {contact: staff_member}	 %>	
+							<% end %>
+						<% else %>
+							<h1 class="nothing-posted">	No participating staff </h1>	
 						<% end %>
 					<% end %>
-					<div class="clearfix mar-btm"></div>
-					<div class="conversation-partial" style="max-width:600px;margin: 0 auto;">
-						<%= render partial: "conversations/contact", locals: {contact: @subjectteacher} if !@subjectteacher.blank?%>	
-					</div>
-				</div>
-
-				<% if(current_user.role.include?("Principal") or current_user.role.include?("Institute Admin") or current_user.role.include?("Teacher")) %>
-					<div class="tab-pane" id="all-students">
-						<% if(current_user.role.include?("Principal") or current_user.role.include?("Institute Admin") or (!classteacher.blank? and current_user.id == classteacher.id)) %>
-							<%= link_to new_conversation_path(conversation_id: @conversation.id) do %>
-								<div class="pull-left add-member">
-									<span>Add Participient</span><i class="material-icons">&#xE7FE;</i>
-								</div>	
-							<% end %>								
-							
-							<%= link_to add_new_student_institute_path(@institute) do %>
-								<div class="pull-right add-member">
-									<span>Add Student</span><i class="material-icons">&#xE7FE;</i>
-								</div>
-							<% end %>
-						<% end %>
-						<div class="clearfix mar-btm"></div>
-						<div class="conversation-partial" style="max-width:600px;margin: 0 auto;">
-							<% if(!@students.blank?) %>
-								<% @students.each do |contact| %>
-									<%= render partial: "conversations/contact", locals: {contact: contact}	 %>	
-								<% end %>
-							<% end %>		
-						</div>				
-					</div>
-				<% end %>
-			<% end %>
-
+					
+					
+				</div>	
+			</div>
 			
 		</div>
 	</div>

@@ -1,4 +1,4 @@
 <% if(!@subject_teacher.blank?) %>
-	$("#myModal").modal('hide');
-	$("#all-subjectteachers").html('<a><div class="pull-right add-member" onclick="getSubjectTeacherForm();"><span>Set Subject Teacher</span><i class="material-icons">&#xE7FE;</i></div></a><div class="clearfix mar-btm"></div>' +'<%= j render partial: "conversations/contact", locals: {contact: @subject_teacher} %>');
+	$("#setSubjectteacherModal").modal('hide');
+	$(".subject-teacher-partial[data-subject-id='<%= @subject.id %>']").html('<%= j render partial: "conversations/contact", locals: {contact: @subject_teacher} %>')
 <% end %>

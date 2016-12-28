@@ -12,7 +12,6 @@
 <div class="container-width classRoute tabs-container" style="margin-top:50px; margin-bottom: 0;">
 	<ul class="nav nav-tabs admin-new-tabs" role="tablist" id="tablist">
 		<li class="active"><a data-toggle="tab" href="#all-admins">Admins</a></li>
-		<li><a data-toggle="tab" href="#all-principals">Principals</a></li>
 		<li><a data-toggle="tab" href="#all-teachers">Teachers</a></li>
 		<% if(current_user.role.include?("Principal") or current_user.role.include?("Institute Admin") or current_user.role.include?("Teacher")) %>
 			<li><a data-toggle="tab" href="#all-students">Students</a></li>	
@@ -59,24 +58,7 @@
 				<h1 class="nothing-posted"> No Admins added yet ! </h1>		
 			<% end %>
 		</div>
-		<div class="tab-pane" id="all-principals" style="max-height: 100%;">
-			<% if(current_user.role.include?("Principal") or current_user.role.include?("Institute Admin")) %>
-				<%= link_to add_new_staff_institute_path(@institute, role: "Principal") do %>
-					<div class="pull-right add-member">
-						<span>Add Principal</span><i class="material-icons">&#xE7FE;</i>
-					</div>
-				<% end %>
-			<% end %>
-			<div class="clearfix mar-btm"></div>
-			<% if(!@principals.blank?) %>
-				<% @principals.each do |principal| %>
-					<%= render partial: "conversations/contact", locals: {contact: principal}	 %>	
-				<% end %>
-			<% else %>	
-				<h1 class="nothing-posted"> No Principals added yet ! </h1>			
-			<% end %>
-		</div>
-
+	
 		<div class="tab-pane" id="all-teachers" style="max-height: 100%;">
 			<% if(current_user.role.include?("Principal") or current_user.role.include?("Institute Admin")) %>
 				
@@ -177,30 +159,44 @@
 				<div class="clearfix mar-btm"></div>	
 			<% end %>
 			
-			<ul class="list-unstyled list-inline text-center">
+			<ul class="list-unstyled">
 				<% if(!@grades.blank?) %>
 					<% @grades.each do |grade| %>
-						<% grade_section_models = grade.grades_sections.where(institute_id: @institute.id) %>
-						<% grades_sections_members_models = grade.grades_sections_members_models.where(institute_id: @institute.id) %>
-						<% teachers_count =  grades_sections_members_models.where(member_role: "Teacher").map(&:member).uniq.count%>
-						<% students_count =  grades_sections_members_models.where(member_role: "Student").map(&:member).uniq.count%>
-						<% parents_count =  grades_sections_members_models.where(member_role: "Parent").map(&:member).uniq.count%>
+						<li class="find-teacher-list find-tab-teacher-list" style="margin-bottom:10px;position:relative;">
+								
+							<h6 class="teachers-list-heading-inner" style="background: #d1cece;margin: 0;padding: 10px; color: #dd223d;">
+								Class <%= grade.grade_name %>																		
+								<i class="material-icons arrow-up-icon pull-right" style="margin-top:-5px;">&#xE316;</i>
+							</h6>
 
-						<li>
-							<div class="ch-item">	
-								<div class="ch-info">
-									<h3><%= teachers_count %> Teachers</h3>
+							<div class="container-width classRoute class-tab-students-list-custom" style="display: none; box-shadow:rgb(175, 172, 172) 1px 1px 10px;margin-bottom:10px;">
+								
+								<ul class="list-unstyled index-conversation-modal student-manage-page" style="box-shadow: none;    max-height: 200px !important;">
+									<% sections = grade.grades_sections.where(institute_id: @institute.id).map(&:section) %>
+									<% if(current_user.role.include?("Principal") or current_user.role.include?("Institute Admin")) %>
+										<%= link_to new_institute_grade_section_path(@institute, grade) do %>
+											<div class="pull-right add-member">
+												<span>Add Section</span><i class="material-icons">&#xE7FE;</i>
+											</div>
+										<% end %>
+										<div class="clearfix mar-btm"></div>	
+									<% end %>
 									
-									<p><%= students_count %> Students<br><%= parents_count %> Parents<a href="<%= institute_grade_path(@institute, grade) %>"><%= grade.grade_name %></a></p>
-								</div>
-								<div class="ch-thumb">
-									<span>Class <%= grade.grade_name %></span>
-									<span><%= grade_section_models.count %> Sections</span>
-								</div>
+									<% if(!sections.blank?) %>
+										<% sections.each do |section| %>
+											<li>
+												<%= link_to "Section #{section.section_name}", institute_grade_section_path(@institute, grade, section) %>
+											</li>
+										<% end %>
+									<% else %>
+										
+										<div class="clearfix mar-btm"></div>	
+										<h1 class="nothing-posted"> No Section added yet ! </h1>					
+									<% end %>
+								</ul>	
 							</div>
-							<button class="btn btn-info btn-custom-info"><%= link_to institute_grade_path(@institute, grade) do %>Go To Class <%= grade.grade_name %><% end %></button>
-						</li>
-						
+						</li>		
+					
 					<% end %>
 
 				<% else %>
