@@ -4,7 +4,7 @@
 <% end %>
 <div style="margin-top: 50px;"></div>
 <% if(@grades.blank?) %>
-	<h1 class="nothing-posted">No Classes added yet</h1>
+	<h1 class="nothing-posted">All Available Classes are already added !</h1>
 <% else %>
 	<div class="new-class-step-1-form-div" style="max-width: 700px; margin: 0 auto; margin-bottom: 70px;">
 		<%= form_tag institute_grades_path(@institute), method: :post, multipart: true, remote: true, id: "new-class-form" do %>
@@ -13,9 +13,9 @@
 			<div class="grades-div text-left teachers-grades-div-circle">
 				
 				<% @grades.each do |grade| %>					
-					<div class="main-grade main-grade-circle">
+					<div class="main-grade">
 
-						<ul class="detectul detectCircle-ul">
+						<ul class="detectul">
 							<span class="add-class-checkbox"></span>
 							<li class="listitems"> 
 								<div class="checkbox">

@@ -27,7 +27,7 @@ class EventsController < ApplicationController
   end
 
   def edit
-    if(current_user.role == "Student" or current_user.role == "Parent")
+    if(!current_user.role.include?("Principal") and !current_user.role.include?("Institute Admin"))
       head :ok
       return 
     end

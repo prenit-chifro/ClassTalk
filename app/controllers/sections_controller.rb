@@ -97,7 +97,7 @@ class SectionsController < ApplicationController
               end
                         
             end
-            redirect_to institute_grade_path(@institute, @grade), format: :js
+            redirect_to institute_path(@institute) + "#all-classes", format: :js
 		end
 	end
 

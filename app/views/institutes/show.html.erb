@@ -67,8 +67,9 @@
 						<span>Add Teacher</span><i class="material-icons">&#xE7FE;</i>
 					</div>
 				<% end %>
+				<div class="clearfix"></div>
 				<form onsubmit="return false;" class="search-form-main">
-					<div class="pull-left form-group has-feedback" style="margin-top: 8px;">
+					<div class="pull-left form-group has-feedback" style="margin-top: 8px; width: 100%;">
 						<input type="text" class="form-control search-conversation-teacher-page" name="search" placeholder="Search..." id="search1" autocomplete="off">
 					</div>
 				</form>
@@ -94,8 +95,9 @@
 							<span>Add Student</span><i class="material-icons">&#xE7FE;</i>
 						</div>
 					<% end %>
+					<div class="clearfix"></div>
 					<form onsubmit="return false;" class="search-form-main">
-						<div class="pull-left form-group has-feedback" style="margin-top: 8px;">
+						<div class="pull-left form-group has-feedback" style="width: 100%;margin-top: 8px;">
 							<input type="text" class="form-control search-conversation-student-page" name="search" placeholder="Search..." id="search1" autocomplete="off">
 						</div>
 					</form>
@@ -169,9 +171,9 @@
 								<i class="material-icons arrow-up-icon pull-right" style="margin-top:-5px;">&#xE316;</i>
 							</h6>
 
-							<div class="container-width classRoute class-tab-students-list-custom" style="display: none; box-shadow:rgb(175, 172, 172) 1px 1px 10px;margin-bottom:10px;">
+							<div class="container-width classRoute class-tab-students-list-custom" style="display: none; box-shadow:rgb(175, 172, 172) 1px 1px 10px;margin-bottom:10px; padding: 4px;">
 								
-								<ul class="list-unstyled index-conversation-modal student-manage-page" style="box-shadow: none;    max-height: 200px !important;">
+								<ul class="list-unstyled index-conversation-modal student-manage-page" style="box-shadow: none;    max-height: 200px !important;overflow: scroll;">
 									<% sections = grade.grades_sections.where(institute_id: @institute.id).map(&:section) %>
 									<% if(current_user.role.include?("Principal") or current_user.role.include?("Institute Admin")) %>
 										<%= link_to new_institute_grade_section_path(@institute, grade) do %>
@@ -179,12 +181,12 @@
 												<span>Add Section</span><i class="material-icons">&#xE7FE;</i>
 											</div>
 										<% end %>
-										<div class="clearfix mar-btm"></div>	
+										<div class="clearfix"></div>	
 									<% end %>
 									
 									<% if(!sections.blank?) %>
 										<% sections.each do |section| %>
-											<li>
+											<li class="link-button">
 												<%= link_to "Section #{section.section_name}", institute_grade_section_path(@institute, grade, section) %>
 											</li>
 										<% end %>

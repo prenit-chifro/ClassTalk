@@ -11,10 +11,23 @@ body{
 	overflow-y:scroll;
 	overflow-x:hidden;
 }
+.alert{
+    position: fixed;
+    max-width: 300px;
+    margin: 0 auto;
+    left: 0;
+    right: 0;
+    top: 50%;
+    margin-top: -12px;
+	z-index:1000;
+}
+
 ul.search-index-conversation-modal div.well-sm{
 	padding:0px;
 }
-
+.wrapper >.navbar-default{
+	box-shadow: none !important;
+}
 .inner-many-type-media{
 	max-width: 200px;
     margin: 0 auto;
@@ -62,7 +75,6 @@ a{
 }
 .nothing-posted{
 	background: #8aa2ab;
-    font-family: cursive;
     color: #feffff;
     font-size: 17px;
     text-align: center;
@@ -727,7 +739,7 @@ ul.submenu>li:last-child a{
 
 .wrapper >.navbar-default{
 	background-color: #2ad;
-    box-shadow: 1px 1px 6px #afacac !important;
+    
 	border:none;
 }
 
@@ -1210,7 +1222,7 @@ form.search-form + h4.modal-title{
 #information{
 	margin: 10px;
 }
-#information> p{
+#information> p, .link-button> a{
 	background: #f1f1f1;
     padding: 10px;
 	margin:5px;
@@ -1218,6 +1230,9 @@ form.search-form + h4.modal-title{
 	color:#2ad;
 	cursor:pointer;
 	box-shadow: 1px 1px 3px #b1a9a9;
+}
+.link-button> a{
+	display:block;
 }
 #information >p a{
 	color:#2ad;
@@ -2197,9 +2212,7 @@ div.calendar div.fc-agendaWeek-view tbody.fc-body div.fc-bg > table >tbody>tr>td
 	}
 }
 @media (max-width:767px){
-	.wrapper >.navbar-default{
-		box-shadow: none !important;
-	}
+	
 	.active-navigation a{
 		background:#71c3c3;
 		color: #fff !important;

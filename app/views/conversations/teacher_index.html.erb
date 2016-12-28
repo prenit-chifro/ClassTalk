@@ -1,10 +1,13 @@
 <% content_for :heading do %>
+	<a class="mybtn btn btn-link btn-xs pull-left">
+		<i class="material-icons">&#xE88A;</i>			
+	</a>
 	Teacher DashBoard
 <% end %>
 	
 	<div class="container-width classRoute tabs-container conversation-big" style="margin-top:50px;">
 		
-			<ul class="nav nav-tabs admin-new-tabs" role="tablist" id="tablist" style="position:fixed;z-index:5;left:0;right:0;">		
+			<ul class="nav nav-tabs admin-new-tabs home-new-tabs" role="tablist" id="tablist" style="position:fixed;z-index:5;left:0;right:0;">		
 				<li class="active"><a data-toggle="tab" href="#all-messages">Messages</a></li>
 				<li><a data-toggle="tab" href="#all-homework">HomeWork</a></li>
 				<li><a data-toggle="tab" href="#all-classes">Classes</a></li>
@@ -154,7 +157,7 @@
 				<div class="tab-pane" id="all-dayplan">
 					<div class="container-width classRoute">
 						<ul class="nav nav-tabs text-center" role="tablist" id="tablist" style="background:#98c2d2;">		
-							<li style="width:50%;">
+							<li style="width:100%;" class="active">
 								<a data-toggle="tab" href="#teacher-plan">
 									Teacher Plan
 								</a>
@@ -241,10 +244,10 @@
 						</div>
 						<hr>
 						<div class="">
-							<ul class="list-unstyled teachers-list">
+							<ul class="list-unstyled teachers-list" style="overflow: hidden;">
 								<li>
 									<h6 class="teachers-list-heading"><span class="checkbox-counter-normal">Select</span> Participants<i class="material-icons arrow-up-icon pull-right">&#xE316;</i></h6>
-									<div class="container-width classRoute" style="display: block;">
+									<div class="container-width classRoute" style="display: block;overflow: scroll;max-height: 300px;">
 										<ul class="nav nav-tabs" role="tablist" id="tablist">
 											<li class="active"><a data-toggle="tab" href="#all-students-modal">Students</a></li>
 											<li><a data-toggle="tab" href="#all-staff-modal">Staff</a></li>														
@@ -305,7 +308,7 @@
 															<% grade = section_member_model.grade %>
 															<% section = section_member_model.section %>
 															<% students = section.get_members_with_given_roles_for_institute_and_grade_with_role(@institute, grade, ["Student"]) %>
-															<li class="find-teacher-list" style="margin-bottom:10px;position:relative;">
+															<li class="find-teacher-list" style="margin-bottom:15px;position:relative;">
 																
 																<div style="color:#f00;padding-left:10px; padding-top: 9px; font-size:10px;position: absolute; left: 26px;">
 																	<label for="select-all-class-students-<%= grade.grade_name + section.section_name %>">
@@ -393,12 +396,7 @@
 																				<% end %>	
 																			<% end %>
 																		<% else %>
-																			<%= link_to add_new_student_institute_path(@institute, role: "Teacher") do %>
-																				<div class="pull-right add-member">
-																					<span>Add Student</span><i class="material-icons">&#xE7FE;</i>
-																				</div>
-																			<% end %>
-																			<div class="clearfix"></div>
+																			
 																			<h1 class="nothing-posted"> No Students added yet ! </h1>	
 																		<% end %>															
 																	</ul>

@@ -3,16 +3,16 @@
   Add Subjects to Class <%= @grade.grade_name %>
 <% end %>
 <div style="margin-top: 45px;"></div>
-<div class="new-subject-step-1-form-div">
+<div class="new-subject-step-1-form-div" style="max-width: 600px; margin: 0 auto;">
 	<%= form_tag institute_grade_section_subjects_path(@institute, @grade, @section), method: :post, multipart: true, remote: true, id: "new-subject-form" do %>
 		<%= hidden_field_tag :step, 1 %>
 			
 		<div class="grades-div text-left teachers-grades-div-circle">
 			
 			<% @subjects.each do |subject| %>					
-				<div class="main-grade main-grade-circle">
+				<div class="main-grade">
 
-					<ul class="detectul detectCircle-ul">
+					<ul class="detectul">
 						<span class="add-class-checkbox"></span>
 						<li class="listitems"> 
 							<div class="checkbox">

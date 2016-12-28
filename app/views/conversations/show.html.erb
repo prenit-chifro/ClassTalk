@@ -21,7 +21,7 @@
 					<% end %>
 				<% end %>
 				<div class="clearfix mar-btm"></div>
-				<div class="conversation-partial" style="max-width:600px;margin: 0 auto;">
+				<div class="conversation-partial classRoute" style="max-width:600px;margin: 0 auto;">
 					<% if(!@conversation.other_participants(current_user).blank?) %>
 						<% other_participants = @conversation.other_participants(current_user) %>
 						<% students = User.where(id: other_participants.map(&:id), role: "Student") %>
@@ -32,8 +32,8 @@
 						<% if(!students.blank? and !staff.blank?) %>
 							<ul class="nav nav-tabs text-center" role="tablist" id="tablist" style="background:#98c2d2;">
 						
-								<li class="active" style="width:50%;"><a data-toggle="tab" href="#all-students">Students</a></li>
-								<li style="width:50%;"><a data-toggle="tab" href="#all-staff">Staff</a></li>
+								<li class="active" style="width:50%;"><a data-toggle="tab" href="#all-students"><%= students.length %> Students</a></li>
+								<li style="width:50%;"><a data-toggle="tab" href="#all-staff"><%= staff.length %> Staff</a></li>
 							</ul>	
 							<div class="tab-content admin-home-content">
 								<div class="tab-pane active all-small-conversations" id="all-students">
@@ -194,7 +194,7 @@
 </div>
 <% if(@conversation.can_user_send_message(current_user)) %>	
 	<span class="personal-message-icon">
-		<i class="material-icons" data-toggle="modal" data-target="#customMessageModal">&#xE0C9;</i>
+		<i class="material-icons" data-toggle="modal" data-target="#customMessageModal">&#xE15F;</i>
 	</span>
 
 	<div id="customMessageModal" class="modal fade" role="dialog">

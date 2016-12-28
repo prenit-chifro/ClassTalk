@@ -2,54 +2,59 @@
   <a class="mybtn btn btn-link btn-xs pull-left" href="/"><i class="material-icons">&#xE88A;</i></a>
   Add Class <%= @grade.grade_name %> Sections
 <% end %>
-<div style="margin-top: 45px;"></div>
+<div style="margin-top: 50px;"></div>
 <div class="new-section-step-1-form-div">
-	<%= form_tag institute_grade_sections_path(@institute, @grade), method: :post, multipart: true, remote: true, id: "new-section-form" do %>
-		<%= hidden_field_tag :step, 1 %>
-			
-		<div class="grades-div text-left teachers-grades-div-circle">
-			
-			<% @sections.each do |section| %>					
-				<div class="main-grade main-grade-circle">
+	<% if(!@sections.blank?) %>
+		<%= form_tag institute_grade_sections_path(@institute, @grade), method: :post, multipart: true, remote: true, id: "new-section-form" do %>
+			<%= hidden_field_tag :step, 1 %>
+				
+			<div class="grades-div text-left teachers-grades-div-circle">
+				
+				<% @sections.each do |section| %>					
+					<div class="main-grade">
 
-					<ul class="detectul detectCircle-ul">
-						<span class="add-class-checkbox"></span>
-						<li class="listitems"> 
-							<div class="checkbox">
-								<label for="grades-division-<%= section.id %>" class="grades-division">
-									<%= check_box_tag "section_ids[]", section.id, false, { class: "checkbox grade-names-input", id: "grades-division-#{section.id}"} %>
-									<span>Section <%= section.section_name %></span>									
-								</label>
-							</div>
-						</li>
-					</ul>	
-					<div class="division-criterias" style="display:none;">
-						<% if(!@teachers.blank?) %>
-				    		<h1 style="font-size: 15px;margin: 0;margin-bottom: 4px;"> Select ClassTeacher of Class <%= @grade.grade_name %><%= section.section_name %> </h1>		
-							<div class="form-group">
-								<% options = [["Select ClassTeacher", ""]] %>	
-								<% default_option = ["Select ClassTeacher", ""] %>
-								<% @teachers.each do |teacher| %>
-									<% options << [teacher.first_name + " " + teacher.last_name, teacher.id] %>
-								<% end %>
-								<%= select_tag "section_ids_for_class_teacher[#{section.id}][classteacher_id]", options_for_select(options, default_option), class: "form-control" %>
-							</div>
-						<% end %>
+						<ul class="detectul">
+							<span class="add-class-checkbox"></span>
+							<li class="listitems"> 
+								<div class="checkbox">
+									<label for="grades-division-<%= section.id %>" class="grades-division">
+										<%= check_box_tag "section_ids[]", section.id, false, { class: "checkbox grade-names-input", id: "grades-division-#{section.id}"} %>
+										<span>Section <%= section.section_name %></span>									
+									</label>
+								</div>
+							</li>
+						</ul>	
+						<div class="division-criterias" style="display:none;">
+							<% if(!@teachers.blank?) %>
+					    		<h1 style="font-size: 15px;margin: 0;margin-bottom: 4px;"> Select ClassTeacher of Class <%= @grade.grade_name %><%= section.section_name %> </h1>		
+								<div class="form-group">
+									<% options = [["Select ClassTeacher", ""]] %>	
+									<% default_option = ["Select ClassTeacher", ""] %>
+									<% @teachers.each do |teacher| %>
+										<% options << [teacher.first_name + " " + teacher.last_name, teacher.id] %>
+									<% end %>
+									<%= select_tag "section_ids_for_class_teacher[#{section.id}][classteacher_id]", options_for_select(options, default_option), class: "form-control" %>
+								</div>
+							<% end %>
 
-					</div>	
-				</div>					
-			<% end %>
-		</div>			
-		<div class="clearfix"></div>
-		<div class="text-center col-md-6 col-md-offset-3">
-			<div class="form-group form-button-register">
-				<%= button_tag(type:"submit", class: "form-control btn btn-login", data: {disable_with: "Please Wait..."}) do %>
-					Next
+						</div>	
+					</div>					
 				<% end %>
+			</div>			
+			<div class="clearfix"></div>
+			<div class="text-center col-md-6 col-md-offset-3">
+				<div class="form-group form-button-register">
+					<%= button_tag(type:"submit", class: "form-control btn btn-login", data: {disable_with: "Please Wait..."}) do %>
+						Next
+					<% end %>
+				</div>
 			</div>
-		</div>
 
+		<% end %>
+	<% else %>
+		<h1 class="nothing-posted"> All Sections are already added !</h1>
 	<% end %>
+	
 </div>
 <div style="margin-bottom: 100px;"></div>
 <script type="text/javascript">

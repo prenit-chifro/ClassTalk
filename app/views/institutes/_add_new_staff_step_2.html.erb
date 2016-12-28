@@ -6,7 +6,7 @@
 				<%= hidden_field_tag :step, 2 %>
 				<%= hidden_field_tag :staff_id, @staff.id %>
 
-				<h1 class="nothing-posted" style="margin-top:70px;"> Is <%= @staff.first_name %> <%= @staff.last_name %> ClassTeacher of any class ? If yes, then please select her class below </h1>
+				<h1 class="nothing-posted" style="margin-top:70px;"> Select <%= @staff.first_name %>'s' ClassTeacher Section </h1>
 				<div class="form-inline form-inline-select">
 					<div class="form-group">
 						<% if(!@grades.blank?) %>
@@ -14,7 +14,7 @@
 							<% @grades.each do |grade| %>
 								<% options << ["Class #{grade.grade_name}", grade.id] %>
 							<% end %>
-							<%= select_tag :classteacher_grade_id, options_for_select(options, ["Select Class", ""]), class:"form-control", required: true %>
+							<%= select_tag :classteacher_grade_id, options_for_select(options, ["Select Class", ""]), class:"form-control" %>
 						<% end %>
 					</div>	
 					<div class="form-group">
@@ -23,16 +23,16 @@
 							<% @sections.each do |section| %>
 								<% options << ["Section #{section.section_name}", section.id] %>
 							<% end %>
-							<%= select_tag :classteacher_section_id, options_for_select(options, ["Select Section", ""]), class:"form-control", required: true %>
+							<%= select_tag :classteacher_section_id, options_for_select(options, ["Select Section", ""]), class:"form-control" %>
 						<% end %>
 					</div>
 				</div>
-				<h1 class="nothing-posted"> Does <%= @staff.first_name %> <%= @staff.last_name %> teaches any subject? If yes, then please select his/her subjects and classes below </h1>
+				<h1 class="nothing-posted"> Select subjects and classes of <%= @staff.first_name %></h1>
 	
 				<div class="teachers-grades-div text-left teachers-grades-div-circle">
 					<% @grades.each do |grade| %>
-						<div class="main-grade main-grade-circle">
-							<ul class="detectul detectCircle-ul">
+						<div class="main-grade">
+							<ul class="detectul">
 								<span class="add-class-checkbox"></span>
 								<li class="listitems"> 
 									<div class="checkbox">

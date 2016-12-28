@@ -121,7 +121,7 @@ class GradesController < ApplicationController
               end 
             end
 
-            redirect_to institute_grades_path(@institute), format: :js
+            redirect_to institute_path(@institute) + "#all-classes", format: :js
 		end
 		
 	end

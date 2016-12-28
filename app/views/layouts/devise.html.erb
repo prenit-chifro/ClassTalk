@@ -46,7 +46,13 @@
 	</head>
 	<body>
 		<div class="wrapper">
-		    
+		    <% flash.each do |key, value| %>
+			  <div class="alert alert-success">
+			    <a href="#" data-dismiss="alert" class="close">×</a>
+			    <span class="flash-message"> <%= value %> </span>
+			  </div>
+			<% end %>
+
 			<%= yield %>
 		</div>
 	</body>

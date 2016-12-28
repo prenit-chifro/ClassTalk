@@ -26,30 +26,28 @@
 					<%= text_field_tag :conversation_name, nil, required: true, placeholder: "Group Name", class:"form-control" %>
 				</div>
 				<div class="nothing-posted" style="max-width: 400px; margin: 0 auto; margin-top: 10px;">
-					<span style="vertical-align: middle; margin-right: 4px;">Can all participants post messages in this group?</span><br>
-					Yes <%= radio_button_tag :is_open_group, true, true, class: "open-group-input" %>
-					No <%= radio_button_tag :is_open_group, false, false, class: "open-group-input" %>
+					<span style="vertical-align: middle; margin-right: 4px;">Who can post Messages</span><br>
+					Everyone <%= radio_button_tag :is_open_group, true, true, class: "open-group-input" %>
+					Group Admins <%= radio_button_tag :is_open_group, false, false, class: "open-group-input" %>
 				</div>
 
 			</div>
 
-			<div class="attendance-body" style="display: none; max-width: 400px; margin: 0 auto;">
-				<h1 class="nothing-posted" > Select Group Admins who can post messages in this group </h1>
+			<div class="attendance-body" style="display: none; max-width: 400px; margin: 0 auto;padding: 2px;">
 				
-				<form onsubmit="return false;" class="search-form search-conversation-new-group">
-					<div class="pull-right form-group has-feedback">
+					<div class="pull-right form-group has-feedback" style="width: 100%; margin-top: 10px;">
 						<input type="text" class="form-control search-conversation-new-group-page" name="search" placeholder="Search..." id="search-conversation-new-group" autocomplete="off">
 					</div>
-				</form>
+				
 				<div class="clearfix"></div>
 				<ul class="list-inline list-conversation-group-search" style="margin:10px;">
 					
 					<div class="clearfix mar-btm"></div>
-					<ul class="list-unstyled teachers-list new-group-class">
+					<ul class="list-unstyled teachers-list new-group-class" style="overflow: hidden; ">
 						<li>
 							<h6 class="teachers-list-heading" style="padding: 2px;"><span class="checkbox-counter" style="color:#fff;margin-left:0;line-height:4;">Select</span> <span style="font-size:11px;color:#fff;">Group Admins</span><i class="material-icons arrow-up-icon pull-right" style="margin-top: 9px;">&#xE316;</i></h6>
-							<div class="container-width classRoute" style="display: block;">
-								<ul class="list-unstyled index-conversation-modal">
+							<div class="container-width classRoute" style="display: block;overflow: scroll;max-height: 300px;">
+								<ul class="list-unstyled index-conversation-modal" style="margin-bottom: 30px;">
 									<% if(!@teachers.blank?) %>
 										<% @teachers.each do |teacher| %>															
 											<li>

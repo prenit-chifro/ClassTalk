@@ -1,9 +1,12 @@
 <% content_for :heading do %>
+	<a class="mybtn btn btn-link btn-xs pull-left">
+		<i class="material-icons">&#xE88A;</i>			
+	</a>
 	<%= current_user.first_name %> DashBoard
 <% end %>
 	
 <div class="container-width classRoute tabs-container conversation-big" style="margin-top:50px;">	
-	<ul class="nav nav-tabs admin-new-tabs" role="tablist" id="tablist" style="position:fixed;z-index:5;left:0;right:0;">		
+	<ul class="nav nav-tabs admin-new-tabs home-new-tabs" role="tablist" id="tablist" style="position:fixed;z-index:5;left:0;right:0;">		
 		<li class="active"><a data-toggle="tab" href="#all-messages">Messages</a></li>
 		<li><a data-toggle="tab" href="#all-homework">HomeWork</a></li>
 		<li><a data-toggle="tab" href="#all-dayplan">Day Plan</a></li>	

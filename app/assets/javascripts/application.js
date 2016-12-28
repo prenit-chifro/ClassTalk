@@ -95,6 +95,9 @@ $(document).ajaxComplete(function( event, xhr, requestOptions ) {
 });
 
 $(document).on("turbolinks:load", function(){
+	$(".alert").delay(4000).slideUp(200, function() {
+		$(this).alert('close');
+	});
 	$(".ajax-loader").css("display", "none");
 	$('#navbar > ul.nav li a').click(function(e) {
 		var $this = $(this);

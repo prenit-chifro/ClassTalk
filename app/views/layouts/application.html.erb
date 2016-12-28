@@ -81,7 +81,7 @@
 								</a>
 							</li>
 							<% if(!@institute.blank? and (current_user.role.include?("Principal") or current_user.role.include?("Institute Admin"))) %>
-								<% if(params[:controller] == "institutes" and params[:action] == "show" or (params[:controller] == "grades" or params[:controller] == "sections" or params[:controller] == "subjects")) %>
+								<% if(params[:controller] == "institutes" or params[:controller] == "grades" or params[:controller] == "sections" or params[:controller] == "subjects") %>
 									<% active_class="class=active-navigation" %>
 								<% else %>
 									<% active_class="" %>
@@ -98,25 +98,11 @@
 								<li>
 									
 									<a href="/#all-messages">
-										<i class="material-icons menu-inner-icon">&#xE156;</i>
+										<i class="material-icons menu-inner-icon">&#xE8CD;</i>
 										<span>Messages</span>
 									</a>
 								</li>	
 								<% if(!@institute.blank?) %>
-									<li >
-										<a href="/#all-classes">
-											<i class="material-icons menu-inner-icon">&#xE86E;</i>
-											<span>Classes</span>
-										</a>
-									</li>
-									<% if(!@institute.blank? and (current_user.role.include?("Principal") or current_user.role.include?("Institute Admin"))) %>
-										<li>
-											<a href="/#all-staff">
-												<i class="material-icons menu-inner-icon">&#xE8B9;</i><span style="margin-left: 11px;">Staff</span>
-											</a>
-										</li>
-									<% end %>
-							
 									<% if(current_user.role.include?("Student") or current_user.role.include?("Parent") or current_user.role.include?("Teacher")) %>
 										<li>
 											<a href="/#all-homework">
@@ -126,6 +112,21 @@
 										</li>
 									<% end %>
 									
+									<li >
+										<a href="/#all-classes">
+											<i class="material-icons menu-inner-icon">&#xE86E;</i>
+											<span>Classes</span>
+										</a>
+									</li>
+									<% if(!@institute.blank? and (current_user.role.include?("Principal") or current_user.role.include?("Institute Admin"))) %>
+										<li>
+											<a href="/#all-staff">
+												<i class="material-icons menu-inner-icon">&#xE8D3;</i>
+												<span style="margin-left: 11px;">Staff</span>
+											</a>
+										</li>
+									<% end %>
+							
 									<li>
 										<a href="/#all-dayplan">
 											<i class="material-icons menu-inner-icon">&#xE8A3;</i>
@@ -138,11 +139,19 @@
 								
 								<li>									
 									<a href="#all-messages" data-toggle="tab">
-										<i class="material-icons menu-inner-icon">&#xE156;</i>
+										<i class="material-icons menu-inner-icon">&#xE8CD;</i>
 										<span>Messages</span>
 									</a>
 								</li>	
 								<% if(!@institute.blank?) %>
+									<% if(current_user.role.include?("Student") or current_user.role.include?("Parent") or current_user.role.include?("Teacher")) %>
+										<li>
+											<a href="#all-homework" data-toggle="tab">
+												<i class="material-icons menu-inner-icon">&#xE146;</i>
+												<span>HomeWork</span>
+											</a>
+										</li>
+									<% end %>
 									<li>
 										<a href="#all-classes" data-toggle="tab">
 											<i class="material-icons menu-inner-icon">&#xE86E;</i>
@@ -153,20 +162,11 @@
 									<% if(!@institute.blank? and (current_user.role.include?("Principal") or current_user.role.include?("Institute Admin"))) %>
 										<li>
 											<a href="#all-staff" data-toggle="tab">
-												<i class="material-icons menu-inner-icon">&#xE8B9;</i><span>Staff</span>
+												<i class="material-icons menu-inner-icon">&#xE8D3;</i><span>Staff</span>
 											</a>
 										</li>
 									<% end %>
 							
-									<% if(current_user.role.include?("Student") or current_user.role.include?("Parent") or current_user.role.include?("Teacher")) %>
-										<li>
-											<a href="#all-homework" data-toggle="tab">
-												<i class="material-icons menu-inner-icon">&#xE146;</i>
-												<span>HomeWork</span>
-											</a>
-										</li>
-									<% end %>
-									
 									<li>
 										<a href="#all-dayplan" data-toggle="tab">
 											<i class="material-icons menu-inner-icon">&#xE8A3;</i>
@@ -189,6 +189,13 @@
 					</div>
 				</div>
 			</nav>
+			<% flash.each do |key, value| %>
+			  <div class="alert alert-success">
+			    <a href="#" data-dismiss="alert" class="close">×</a>
+			    <span class="flash-message"> <%= value %> </span>
+			  </div>
+			<% end %>
+
 			<%= yield %>
 			
 		</div>
