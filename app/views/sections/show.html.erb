@@ -1,12 +1,12 @@
 <% content_for :heading do %>
-	<a class="mybtn btn btn-link btn-xs pull-left" href="<%= institute_grade_path(@institute, @grade) %>"><i class="material-icons">&#xE317;</i></a>
+	<a class="mybtn btn btn-link btn-xs pull-left" href="<%= institute_path(@institute) %>"><i class="material-icons">&#xE317;</i></a>
 	Class <%= @grade.grade_name %> <%= @section.section_name %>
 <% end %>
 
 <div class="container-width classRoute tabs-container" style="margin-top:50px; margin-bottom: 0;">
 	<ul class="nav nav-tabs admin-new-tabs" role="tablist" id="tablist">
 		<li class="active"><a data-toggle="tab" href="#all-classteachers">ClassTeacher</a></li>
-		<li><a data-toggle="tab" href="#all-subjects">Subjects</a></li>
+		<li><a data-toggle="tab" href="#all-subjects">Subject Teachers</a></li>
 		<% if(current_user.role.include?("Principal") or current_user.role.include?("Institute Admin") or current_user.role.include?("Teacher")) %>
 			<li><a data-toggle="tab" href="#all-students">Students</a></li>	
 		<% end %>
@@ -21,7 +21,7 @@
 			<% if(!@classteacher.blank?) %>
 				<% if(current_user.role.include?("Principal") or current_user.role.include?("Institute Admin")) %>
 					<a>
-						<div class="pull-right add-member" onclick="getClassTeacherForm();">
+						<div class="pull-right add-member set-classteacher-button" >
 							<span>Set ClassTeacher</span><i class="material-icons">&#xE7FE;</i>
 						</div>
 					</a>					
@@ -89,28 +89,31 @@
 				
 			<% end %>
 			<div class="clearfix mar-btm"></div>
-			<ul class="list-unstyled list-inline text-center">
+			<ul class="list-unstyled">
 				<% if(!@section_subject_models.blank?) %>
 					<% @section_subject_models.each do |section_subject_model| %>
 						<% subject = section_subject_model.subject %>
 															
 						<% subject_teacher =  @section.get_subject_teacher_for_institute_and_grade_and_subject(@institute, @grade, subject) %>
-						<% students_count =  @section.sections_members.where(institute_id: @institute.id, member_role: "Student").count %>
-						<li>
-							<div class="ch-item">	
-								<div class="ch-info">
-									<h3><%= subject_teacher.first_name if !subject_teacher.blank?%> <%= subject_teacher.last_name  if !subject_teacher.blank? %></h3>
-									
-									<p><%= subject_teacher.first_name if !subject_teacher.blank?%> <%= subject_teacher.last_name  if !subject_teacher.blank? %><a href="<%= institute_grade_section_subject_path(@institute, @grade, @section, subject) %>" style="font-size:6px;"><%= subject.subject_name %></a></p>
-								</div>
-								<div class="ch-thumb">
-									<span style="font-size:14px;margin-left:-32px;"><%= subject.subject_name %></span>
-									<span><%= students_count %> Students</span>
-								</div>
-							</div>
-							<button class="btn btn-info btn-custom-info"><%= link_to institute_grade_section_subject_path(@institute, @grade, @section, subject) do %>Go To <%= subject.subject_name %><% end %></button>
-						</li>
 						
+						<li class="find-teacher-list find-tab-teacher-list" style="margin-bottom:10px;position:relative;">
+								
+							<h6 class="teachers-list-heading-inner" style="background: #d1cece;margin: 0;padding: 10px; color: #dd223d;">
+								<%= subject.subject_name %>, <%= @grade.grade_name + @section.section_name %> 																	
+								<i class="material-icons arrow-up-icon pull-right" style="margin-top:-5px;">&#xE316;</i>
+							</h6>
+							<div class="container-width classRoute class-tab-students-list-custom" style="display: none; box-shadow:rgb(175, 172, 172) 1px 1px 10px;margin-bottom:10px; padding: 4px;">
+								
+								<div class="pull-right add-member set-subjectteacher-button" data-subject-id="<%= subject.id %>" data-subject-name="<%= subject.subject_name %>">
+									<span>Set Subject Teacher</span><i class="material-icons">&#xE7FE;</i>
+								</div>
+								<div class="clearfix"></div>
+								<div class="subject-teacher-partial" data-subject-id="<%= subject.id %>">
+									<%= render partial: "conversations/contact", locals: {contact: subject_teacher} if !subject_teacher.blank? %>	
+								</div>
+								
+							</div>
+						</li>
 					<% end %>
 				<% else %>
 					<h1 class="nothing-posted" style="margin-top:0;box-shadow:none;"> No Subjects added in this class yet !</h1>		
@@ -121,7 +124,7 @@
 		</div>
 	</div>
 </div>
-<div id="myModal" class="modal fade modal-calender" role="dialog">
+<div id="setClassteacherModal" class="modal fade modal-calender" role="dialog">
   <div class="modal-dialog">
 	<div class="modal-content">
 	  <div class="modal-header">
@@ -134,6 +137,19 @@
 	</div>
   </div>
 </div>
+<div id="setSubjectteacherModal" class="modal fade modal-calender" role="dialog">
+  <div class="modal-dialog">
+	<div class="modal-content">
+	  <div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal">&times;</button>
+		<h4 class="modal-title"></h4>
+	  </div>
+	  <div class="modal-body">
+		
+	  </div>
+	</div>
+  </div>
+</div>		
 <script>
 	$(".classRoute").parents("div.wrapper").find(".navbar-default").css("box-shadow", "none");
 	var randomColors = ["#35a5a5",'#8cc4c4','#8b5861',"#d7b26f"];
@@ -143,18 +159,32 @@
         $(this).css("backgroundColor",randomColors[randomNum]);
         randomColors.slice(randomNum, 1);
     });
-
-    function getClassTeacherForm(){
-
-    	$.ajax({
+	$(".set-classteacher-button").click(function(){
+		$.ajax({
   			url: "<%= set_classteacher_institute_grade_section_path(@institute, @grade, @section) %>.js",
       		method: "GET",
         	complete: function(data){
         		if(data.status == "200"){
-        			$("#myModal").find(".modal-body").html(data.responseText);
-        			$("#myModal").modal('show');
+        			$("#setClassteacherModal").find(".modal-body").html(data.responseText);
+        			$("#setClassteacherModal").modal('show');
         		}
         	}	
     	});
-    };	
+	});
+	$(".set-subjectteacher-button").click(function(){
+		subjectId = $(this).attr("data-subject-id");
+		subjectName = $(this).attr("data-subject-name");
+		$.ajax({
+  			url: "/institutes/<%= @institute.id %>/grades/<%= @grade.id %>/sections/<%= @section.id %>/subjects/" + subjectId + "/set_subject_teacher.js",
+      		method: "GET",
+        	complete: function(data){
+        		if(data.status == "200"){
+        			$("#setSubjectteacherModal").find(".modal-title").html("Set or Update Subject Teacher of " + subjectName + ", <%= @grade.grade_name %><%= @section.section_name %>");
+        			$("#setSubjectteacherModal").find(".modal-body").html(data.responseText);
+        			$("#setSubjectteacherModal").modal('show');
+        		}
+        	}	
+    	});
+	});
+
 </script>			

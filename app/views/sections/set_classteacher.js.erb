@@ -1,4 +1,4 @@
 <% if(!@classteacher.blank?) %>
-	$("#myModal").modal('hide');
+	$("#setClassteacherModal").modal('hide');
 	$("#all-classteachers").html('<a><div class="pull-right add-member" onclick="getClassTeacherForm();"><span>Set ClassTeacher</span><i class="material-icons">&#xE7FE;</i></div></a><div class="clearfix mar-btm"></div>' + '<%= j render partial: "conversations/contact", locals: {contact: @classteacher} %>');
 <% end %>

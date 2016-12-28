@@ -81,7 +81,7 @@
 								</a>
 							</li>
 							<% if(!@institute.blank? and (current_user.role.include?("Principal") or current_user.role.include?("Institute Admin"))) %>
-								<% if(params[:controller] == "institutes" and params[:action] == "show") %>
+								<% if(params[:controller] == "institutes" and params[:action] == "show" or (params[:controller] == "grades" or params[:controller] == "sections" or params[:controller] == "subjects")) %>
 									<% active_class="class=active-navigation" %>
 								<% else %>
 									<% active_class="" %>

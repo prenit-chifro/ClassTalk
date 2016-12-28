@@ -130,11 +130,6 @@
 				<div class="tab-pane" id="all-classes">
 					<ul class="list-unstyled teachers-list index-conversation-modal">
 						
-						<%= link_to add_new_student_institute_path(@institute) do %>
-							<div class="pull-right add-member">
-								<span>Add Student</span><i class="material-icons">&#xE7FE;</i>
-							</div>
-						<% end %>
 						<form onsubmit="return false;" class="search-form-main">
 							<div class="pull-left form-group has-feedback" style="margin-top: 8px;">
 								<input type="text" class="form-control search-conversation-students-page" name="search" placeholder="Search..." id="search1" autocomplete="off">
@@ -165,12 +160,6 @@
 													<% end %>
 													</div>
 												<% else %>
-													<%= link_to add_new_student_institute_path(@institute, grade_id: grade.id, section_id: section.id) do %>
-														<div class="pull-right add-member">
-															<span>Add Student</span><i class="material-icons">&#xE7FE;</i>
-														</div>
-													<% end %>
-													<div class="clearfix mar-btm"></div>
 													<h1 class="nothing-posted" style="margin-top:0;box-shadow:none;"> No students in this Class </h1>	
 												<% end %>															
 											</ul>
@@ -190,17 +179,6 @@
 						
 						<% if(current_user.role.include?("Principal") or current_user.role.include?("Institute Admin")) %>
 							<div class="container-width classRoute" style="display: block;">
-								<%= link_to add_new_staff_institute_path(@institute, role: "Teacher") do %>
-									<div class="pull-right add-member">
-										<span>Add Teacher</span><i class="material-icons">&#xE7FE;</i>
-									</div>
-								<% end %>
-								<%= link_to add_new_staff_institute_path(@institute, role: "Institute Admin") do %>
-									<div class="pull-right add-member">
-										<span>Add Admin</span><i class="material-icons">&#xE7FE;</i>
-									</div>
-								<% end %>
-								
 								<form onsubmit="return false;" class="search-form-main">
 									<div class="pull-left form-group has-feedback" style="margin-top: 8px;">
 										<input type="text" class="form-control search-conversation-staff-page" name="search" placeholder="Search..." id="search1" autocomplete="off">
@@ -289,12 +267,6 @@
 										<% end %>
 									</ul>
 								<% else %>
-									<%= link_to new_institute_grade_path(@institute) do %>
-										<div class="pull-left add-member">
-											<span>Add Class</span><i class="material-icons">&#xE7FE;</i>
-										</div>
-									<% end %>
-									<div class="clearfix"></div>
 									<h1 class="nothing-posted"> No Classes Added Yet.  </h1>					
 								<% end %>
 							</div>
@@ -316,13 +288,7 @@
 										<% end %>
 									</ul>
 								<% else %>
-									<%= link_to add_new_staff_institute_path(@institute, role: "Teacher") do %>
-										<div class="pull-right add-member">
-											<span>Add Teacher</span><i class="material-icons">&#xE7FE;</i>
-										</div>
-									<% end %>
-									<div class="clearfix"></div>
-									<h1 class="nothing-posted"> No Teachers Added Yet.  </h1>					
+									<h1 class="nothing-posted"> No Teachers Added Yet.  </h1>			
 								<% end %>
 							</div>		
 						</div>
@@ -447,12 +413,6 @@
 																</li>															
 															<% end %>
 														<% else %>
-															<%= link_to add_new_staff_institute_path(@institute, role: "Teacher") do %>
-																<div class="pull-right add-member">
-																	<span>Add Teacher</span><i class="material-icons">&#xE7FE;</i>
-																</div>
-															<% end %>
-															<div class="clearfix"></div>
 															<h1 class="nothing-posted"> No Teachers added yet ! </h1>		
 														<% end %>									
 
@@ -484,12 +444,6 @@
 															
 															<% end %>
 														<% else %>	
-															<%= link_to add_new_staff_institute_path(@institute, role: "Institute Admin") do %>
-																<div class="pull-right add-member">
-																	<span>Add Admin</span><i class="material-icons">&#xE7FE;</i>
-																</div>
-															<% end %>
-															<div class="clearfix"></div>
 															<h1 class="nothing-posted"> No Admins added yet ! </h1>	
 														<% end %>														
 													</ul>
@@ -598,12 +552,6 @@
 																					<% end %>	
 																				<% end %>
 																			<% else %>
-																				<%= link_to add_new_student_institute_path(@institute, role: "Teacher") do %>
-																					<div class="pull-right add-member">
-																						<span>Add Student</span><i class="material-icons">&#xE7FE;</i>
-																					</div>
-																				<% end %>
-																				<div class="clearfix"></div>
 																				<h1 class="nothing-posted"> No Students added yet ! </h1>	
 																			<% end %>															
 																		</ul>
