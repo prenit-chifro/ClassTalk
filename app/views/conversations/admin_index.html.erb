@@ -24,17 +24,7 @@
 			<ul class="nav nav-tabs admin-new-tabs home-new-tabs" role="tablist" id="tablist" style="position:fixed;z-index:5;left:0;right:0;">		
 				<li class="active">
 					<a data-toggle="tab" href="#all-messages">
-						<% if(!@unread_conversation_ids_array.blank?) %>
-							<% if(@unread_conversation_ids_array.length > 0) %>
-								<span class="dot-unread unread-conversation-no dot-unread-position" style="display: inline-block;"> <%= @unread_conversation_ids_array.length %> </span> 
-							<% else %>
-								<span class="dot-unread unread-conversation-no dot-unread-position" style="display: none;">0</span>
-							<% end %>
-							<span class="unread-conversation-ids" style="display: none;"><%= @unread_conversation_ids_array.join(", ") %></span>	
-						<% else %>
-							<span class="dot-unread unread-conversation-no dot-unread-position" style="display: none;">0</span>
-							<span class="unread-conversation-ids" style="display: none;">""</span>	
-						<% end %> 
+						
 						Messages
 					</a>
 					
