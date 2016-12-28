@@ -45,7 +45,7 @@
 	</div>
 
 	<div class="table-responsive" style="max-width:600px;margin:0 auto;">
-		<table class="table">
+		<table class="table table-bordered">
 			<thead>
 			  	<tr>
 			  		<th>Absent Days</th>
@@ -60,8 +60,8 @@
 			    		
 			    		<% if(!date_attendance_record.blank? and !date_attendance_record.present_student_ids.split(", ").include?(@student.id.to_s)) %>
 			    			<tr>
-			    				<th> <%= date.strftime("%b %d") %> </th>
-			    				<th class="warning">Absent</th>			
+			    				<th style="background: #9c9999;"><a style="color: #fff; display: block;" class="text-center"> <%= date.strftime("%b %d") %> </th>
+			    				<th class="warning text-center">Absent</th>			
 			    			</tr>
 			    		
 			    		

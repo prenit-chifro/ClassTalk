@@ -88,7 +88,7 @@
 			    	<th>Absenties</th>
 			    	<% if(!@section_attendance_records.blank?) %>
 			    		<% (@section_attendance_records.first.date..@section_attendance_records.last.date).to_a.each do |date| %>
-			    			<th class="text-center" style="background: #9c9999;"><a style="color: #fff; display: block;" class="attendance-record-date" data-grade-id="<%= @grade.id  if !@grade.blank? %>" data-section-id="<%= @section.id if !@section.blank? %>" data-date="<%= date %>"><%= date.strftime("%b %d") %></a></th>	
+			    			<th style="background: #9c9999;"><a style="color: #fff; display: block;" class="attendance-record-date text-center" data-grade-id="<%= @grade.id  if !@grade.blank? %>" data-section-id="<%= @section.id if !@section.blank? %>" data-date="<%= date %>"><%= date.strftime("%b %d") %></a></th>	
 			    		<% end %>
 			    	<% end %>
 		    		
@@ -102,7 +102,7 @@
 				    		<% if(!date_attendance_record.blank? and !date_attendance_record.present_student_ids.split(", ").include?(student.id.to_s)) %>
 							  		<tr>
 			    						<td><%= student.first_name %> <%= student.last_name %></td>
-			    						<th class="warning">Absent</th>		
+			    						<th class="warning text-center">Absent</th>		
 			    					</tr>	
 				    		<% end %>
 			    			
