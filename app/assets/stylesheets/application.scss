@@ -2368,3 +2368,9 @@ div.calendar div.fc-agendaWeek-view tbody.fc-body div.fc-bg > table >tbody>tr>td
 		font-size:11px;
 	}
 }
+
+@media (min-width: 768px){
+	.admin-new-tabs{
+		display:none;
+	}
+}

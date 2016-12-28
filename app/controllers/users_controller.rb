@@ -119,6 +119,21 @@ class UsersController < ApplicationController
   end
 
   def destroy
+    if(!@user.blank?)
+        @user.destroy
+        hash_url = ""
+        if(@user.role.include?("Institute Admin") or @user.role.include?("Principal"))
+          hash_url = "#all-admins"
+        elsif(@user.role.include?("Teacher"))
+          hash_url = "#all-teachers"
+        else
+          hash_url = "#all-students"
+        end
+        redirect_to institute_path(@institute) + hash_url
+    else
+
+    end
+        
   end
 
   def complete_registration

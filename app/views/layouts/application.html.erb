@@ -88,66 +88,99 @@
 								<% end %>
 								<li <%= active_class %>>
 									<a href="/institutes/<%= @institute.id %>">
-										<i class="material-icons">&#xE8B9;</i><span style="margin-left: 11px;">Manage</span>
+										<i class="material-icons menu-inner-icon">&#xE8B9;</i><span style="margin-left: 11px;">Manage</span>
 									</a>
 								</li>
 							<% end %>
 							
 							<% if(!(params[:controller] == "conversations" and params[:action]=="index")) %>
-								<% if(params[:controller] == "conversations" and params[:action]=="index") %>
-									<% active_class="class=active-navigation" %>
-								<% else %>
-									<% active_class="" %>
-								<% end %>
-								<li <%= active_class %>>
+
+								<li >
 									
-									<a href="/conversations">
+									<a href="/#all-messages">
 										<i class="material-icons menu-inner-icon">&#xE156;</i>
 										<span>Messages</span>
 									</a>
 								</li>	
 								<% if(!@institute.blank?) %>
-									<% if(params[:controller] == "grades") %>
-										<% active_class="class=active-navigation" %>
-									<% else %>
-										<% active_class="" %>
-									<% end %>
-									<li <%= active_class %>>
-										<a href="<%= institute_grades_path(@institute) %>">
+									<li >
+										<a href="/#all-classes">
 											<i class="material-icons menu-inner-icon">&#xE86E;</i>
 											<span>Classes</span>
 										</a>
 									</li>
-									<% if(params[:controller] == "conversations" and params[:action]=="homework") %>
-										<% active_class="class=active-navigation" %>
-									<% else %>
-										<% active_class="" %>
+									<% if(!@institute.blank? and (current_user.role.include?("Principal") or current_user.role.include?("Institute Admin"))) %>
+										<li>
+											<a href="/#all-staff">
+												<i class="material-icons menu-inner-icon">&#xE8B9;</i><span style="margin-left: 11px;">Staff</span>
+											</a>
+										</li>
 									<% end %>
-									<li <%= active_class %>>
-										<a href="<%= homework_conversations_path %>">
-											<i class="material-icons menu-inner-icon">&#xE146;</i>
-											<span>HomeWork</span>
-										</a>
-									</li>
-									<% if(params[:controller] == "timetable_slots") %>
-										<% active_class="class=active-navigation" %>
-									<% else %>
-										<% active_class="" %>
+							
+									<% if(current_user.role.include?("Student") or current_user.role.include?("Parent") or current_user.role.include?("Teacher")) %>
+										<li>
+											<a href="/#all-homework">
+												<i class="material-icons menu-inner-icon">&#xE146;</i>
+												<span>HomeWork</span>
+											</a>
+										</li>
 									<% end %>
-									<li <%= active_class %>>
-										<a href="<%= institute_timetable_slots_path(@institute) %>">
+									
+									<li>
+										<a href="/#all-dayplan">
 											<i class="material-icons menu-inner-icon">&#xE8A3;</i>
 											<span>Day Plan</span>
 										</a>								
 									</li>
 									
 								<% end %>							
-								
-							<% end %>
+							<% else %>
+								<li>
+									
+									<a href="#all-messages" data-toggle="tab">
+										<i class="material-icons menu-inner-icon">&#xE156;</i>
+										<span>Messages</span>
+									</a>
+								</li>	
+								<% if(!@institute.blank?) %>
+									<li>
+										<a href="#all-classes" data-toggle="tab">
+											<i class="material-icons menu-inner-icon">&#xE86E;</i>
+											<span>Classes</span>
+										</a>
+									</li>
+
+									<% if(!@institute.blank? and (current_user.role.include?("Principal") or current_user.role.include?("Institute Admin"))) %>
+										<li>
+											<a href="#all-staff" data-toggle="tab">
+												<i class="material-icons menu-inner-icon">&#xE8B9;</i><span style="margin-left: 11px;">Staff</span>
+											</a>
+										</li>
+									<% end %>
+							
+									<% if(current_user.role.include?("Student") or current_user.role.include?("Parent") or current_user.role.include?("Teacher")) %>
+										<li>
+											<a href="#all-homework" data-toggle="tab">
+												<i class="material-icons menu-inner-icon">&#xE146;</i>
+												<span>HomeWork</span>
+											</a>
+										</li>
+									<% end %>
+									
+									<li>
+										<a href="#all-dayplan" data-toggle="tab">
+											<i class="material-icons menu-inner-icon">&#xE8A3;</i>
+											<span>Day Plan</span>
+										</a>								
+									</li>
+									
+								<% end %>
+							<% end %>	
+							
 							<% if(user_signed_in?) %>
 								<li class="log-out">
 									<%= link_to destroy_user_session_path, method: :delete do %>
-										<i class="material-icons">&#xE62A;</i><span style="margin-left:11px;">LogOut</span>
+										<i class="material-icons menu-inner-icon">&#xE62A;</i><span style="margin-left:11px;">LogOut</span>
 									<% end %>
 								</li>
 							<% end %>
