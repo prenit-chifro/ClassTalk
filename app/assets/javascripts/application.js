@@ -100,11 +100,14 @@ $(document).on("turbolinks:load", function(){
 	});
 	$(".ajax-loader").css("display", "none");
 	$('#navbar > ul.nav li a').click(function(e) {
+
 		var $this = $(this);
 		$this.parent().siblings().removeClass('active-navigation').end().addClass('active-navigation');		
 	});
 	$('#navbar li a[data-toggle="tab"]').on('click', function (e) {    		
 		var targetAchieve = $(this).attr('href');
+		$(".home-new-tabs li").removeClass('active');
+		$(".home-new-tabs li a[href='" + targetAchieve + "']").parent().addClass('active');
 		window.location.replace(('' + window.location).split('#')[0] + targetAchieve);
 	});
 	$(function(){
@@ -119,7 +122,10 @@ $(document).on("turbolinks:load", function(){
 		}
 		
 		$('.nav-tabs a').click(function (e) {
-			var hash = $(this).attr("href");			
+			var hash = $(this).attr("href");
+			$('#navbar ul.nav li').removeClass('active-navigation');
+			$('#navbar ul.nav li').removeClass('active');
+			$('#navbar ul.nav a[href="' + hash + '"]').parent().addClass('active-navigation');			
 			window.location.replace(('' + window.location).split('#')[0] + hash);
 
 		});
