@@ -22,20 +22,26 @@
 	<div class="container-width classRoute tabs-container conversation-big" style="margin-top:50px;">
 		
 			<ul class="nav nav-tabs admin-new-tabs home-new-tabs" role="tablist" id="tablist" style="position:fixed;z-index:5;left:0;right:0;">		
-				<li class="active"><a data-toggle="tab" href="#all-messages">Messages</a>
-					<% if(!@unread_conversation_ids_array.blank?) %>
-						<% if(@unread_conversation_ids_array.length > 0) %>
-							<span class="dot-unread unread-conversation-no dot-unread-position" style="display: inline-block;"> <%= @unread_conversation_ids_array.length %> </span> 
+				<li class="active">
+					<a data-toggle="tab" href="#all-messages">
+						<% if(!@unread_conversation_ids_array.blank?) %>
+							<% if(@unread_conversation_ids_array.length > 0) %>
+								<span class="dot-unread unread-conversation-no dot-unread-position" style="display: inline-block;"> <%= @unread_conversation_ids_array.length %> </span> 
+							<% else %>
+								<span class="dot-unread unread-conversation-no dot-unread-position" style="display: none;">0</span>
+							<% end %>
+							<span class="unread-conversation-ids" style="display: none;"><%= @unread_conversation_ids_array.join(", ") %></span>	
 						<% else %>
 							<span class="dot-unread unread-conversation-no dot-unread-position" style="display: none;">0</span>
-						<% end %>
-						<span class="unread-conversation-ids" style="display: none;"><%= @unread_conversation_ids_array.join(", ") %></span>	
-					<% else %>
-						<span class="dot-unread unread-conversation-no dot-unread-position" style="display: none;">0</span>
-						<span class="unread-conversation-ids" style="display: none;">""</span>	
-					<% end %> 
+							<span class="unread-conversation-ids" style="display: none;">""</span>	
+						<% end %> 
+						Messages
+					</a>
+					
 				</li>
-				
+				<% if(current_user.role.include?("Teacher")) %>
+					<li><a data-toggle="tab" href="#all-homeowrk">HomeWork</a></li>
+				<% end %>
 				<li><a data-toggle="tab" href="#all-classes">Classes</a></li>
 				
 				<li><a data-toggle="tab" href="#all-staff">Staff</a></li>
@@ -129,7 +135,29 @@
 						</div>		
 					</div>	
 				</div>
+				<% if(current_user.role.include?("Teacher")) %>
+					<div class="tab-pane" id="all-homework">
+						<% if(!@homework_messages.blank?) %>
+							<% @homework_messages.each do |message| %>
+								<div class="student-message-homework-temp" style="box-shadow: 1px 1px 7px #b1a9a9; margin: 10px;">
+									<%= link_to conversation_path(message.conversation) do %>
+										<div class="text-left" style="padding: 6px; color: #fff; background: #afabab; padding-left: 20px;" >
+											<%= message.conversation.get_conversation_name_to_show_to_user(current_user).truncate(15) if !message.conversation.get_conversation_name_to_show_to_user(current_user).blank?%>
+										</div>
+									<% end %>
+									
+									<%= render partial: "messages/message", locals: {conversation: message.conversation, message: message} %>
+								</div>
+							<% end %>
+							
+							<%= paginate @homework_messages, window: 1, params: {anchor: "all-homework"} %>
+						<% else %>
+							<h1 class="nothing-posted"> You have not posted any HomeWork ! </h1>
+						<% end %>
 
+					</div>
+				<% end %>
+				
 				<div class="tab-pane" id="all-classes">
 					<ul class="list-unstyled teachers-list index-conversation-modal">
 						
