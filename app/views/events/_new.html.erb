@@ -1,25 +1,8 @@
 <%= form_tag institute_events_path(@institute), remote: true do %>
-	<div class="form-group form-inline new-event-checkbox">
-		<%= select_tag :is_official, options_for_select([["Personal or Official", ""],["Personal", "false"],["Official", true]],["Personal or Official", ""]), class: "personal-or-institute-event-input form-control", required: true %>
-	</div>
-
-	<div class="institute-select-div" style="display: none">
-		<%= hidden_field_tag :institute_id, @institute.id %>
-		<input type="checkbox" name="all_sections" id="all-sections-checkbox" style="display: none">
-		
-			<div class="event-institute-grade-section-select-div" data-institute-id="<%= @institute.id %>" style="display: block">
-				
-						<% institute_grade_section_models = @institute.institutes_grades_sections_models %>
-						Select Classes:
-						<% institute_grade_section_models.each do |grade_section| %>
-							<%= check_box_tag "grade_section_ids[]", grade_section.id, false, class:"grade-section-checkbox-input", "data-institute-id" => @institute.id  %> Class <%= grade_section.grade.grade_name %> <%= grade_section.section.section_name %>
-						<% end %>
-				
-					
-			</div>
-		
-	</div>
-
+	
+	<%= hidden_field_tag :is_official, true %>
+	<%= hidden_field_tag :institute_id, @institute.id %>
+	
 	<div class="form-group">
 		<%= text_field_tag :title, nil, placeholder: :Title, class: "form-control" %>
 	</div>
@@ -29,7 +12,7 @@
 	<div class="form-group">
 		<label>Start Date-Time:</label>
 		<div class='input-group date' id='startNewDatetimePicker'>
-			<input type='text' class="form-control" />
+			<input type='text' class="form-control" name="start_time" />
 			<span class="input-group-addon">
 				<i class="fa fa-calendar" aria-hidden="true"></i>								
 			</span>
@@ -38,7 +21,7 @@
 	<div class="form-group">
 		<label>Finish Date-Time:</label>
 		<div class='input-group date' id='endNewDatetimePicker'>
-			<input type='text' class="form-control" />
+			<input type='text' class="form-control" name="end_time" />
 			<span class="input-group-addon">
 				<i class="fa fa-calendar" aria-hidden="true"></i>								
 			</span>

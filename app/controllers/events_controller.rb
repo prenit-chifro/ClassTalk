@@ -38,24 +38,14 @@ class EventsController < ApplicationController
         @event = current_user.created_events.new(title: params[:title], description: params[:description], start_time: Time.parse(params[:start_time]), end_time: Time.parse(params[:end_time]), is_official: params[:is_official], is_all_day_event: params[:is_all_day_event])
 
         @event.institute_id = params[:institute_id]
-        if(!params[:grade_section_ids].blank?)
-            params[:grade_section_ids].each do |grade_section_id|
+        @grade_section_models = @institute.institutes_grades_sections_models
+        if(!@grade_section_models.blank?)
+            @grade_section_models.each do |grade_section_model|
               
               if @event.grade_section_ids.blank?
-                @event.grade_section_ids = "#{grade_section_id}"
+                @event.grade_section_ids = "#{grade_section_model.id}"
               else
-                @event.grade_section_ids = @event.grade_section_ids + ", #{grade_section_id}"
-              end
-            end
-        end
-
-        if(!params[:participant_ids].blank?)
-            params[:participant_ids].each do |participant_id|
-              
-              if @event.participant_ids.blank?
-                @event.participant_ids = participant_id
-              else
-                @event.participant_ids = @event.participant_ids + ", #{participant_id}"
+                @event.grade_section_ids = @event.grade_section_ids + ", #{grade_section_model.id}"
               end
             end
         end
@@ -83,18 +73,6 @@ class EventsController < ApplicationController
               @event.grade_section_ids = "#{grade_section_id}"
             else
               @event.grade_section_ids = @event.grade_section_ids + ", #{grade_section_id}" if !@event.grade_section_ids.include?(grade_section_id)
-            end
-          end
-      end
-
-      if(!params[:participant_ids].blank?)
-          @event.participant_ids = ""
-          params[:participant_ids].each do |participant_id|
-            
-            if @event.participant_ids.blank?
-              @event.participant_ids = participant_id
-            else
-              @event.participant_ids = @event.participant_ids + ", #{participant_id}" if !@event.participant_ids.include?(participant_id)
             end
           end
       end

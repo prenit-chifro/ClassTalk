@@ -27,124 +27,169 @@
 </div>
 
 <script>
-	
-    var calendarObject = $('.main-calendar').fullCalendar({
-      header: {
-        left: 'prev,next today',
-        center: 'title',
-        right: 'month,agendaWeek,agendaDay'
-      },
-      defaultView: "month",
-      firstDay: 1,
-      slotDuration: "01:00:00",
-      scrollTime: "07:00:00",
-      eventSources: [
-      	{	
-      		googleCalendarApiKey: 'AIzaSyBygb2VxPHEs8rV8j7dgreRvpowydmGrow',
-  		   	url: 'https://www.google.com/calendar/feeds/indian__en%40holiday.calendar.google.com/public/basic',
+	 <% if(current_user.role.include?("Principal") or current_user.role.include?("Institute Admin")) %>
+      var calendarObject = $('.main-calendar').fullCalendar({
+        header: {
+          left: 'prev,next today',
+          center: 'title',
+          right: 'month,agendaWeek,agendaDay'
+        },
+        defaultView: "month",
+        firstDay: 1,
+        slotDuration: "01:00:00",
+        scrollTime: "07:00:00",
+        eventSources: [
+          { 
+            googleCalendarApiKey: 'AIzaSyBygb2VxPHEs8rV8j7dgreRvpowydmGrow',
+            url: 'https://www.google.com/calendar/feeds/indian__en%40holiday.calendar.google.com/public/basic',
 
-  		    color: '#ea5b31',   // an option!
-          textColor: '#fff' // an option!
-
-    		},
-    		{
-    		    url: '<%= institute_events_path(@institute) %>',
-    		    color: '#4646a7',   // an option!
+            color: '#ea5b31',   // an option!
             textColor: '#fff' // an option!
-    		}
 
-      ],
-      editable: true,
-      selectable: true,
-      selectHelper: true,
-      eventClick: function(event, jsEvent, view) {
-          
-      		if(event.edit_url){
-      			$.ajax({
-		        	url: event.edit_url,
-		        	complete: function(data){
-		        		if(data.status == "200"){
-		        			eval(data.responseText);
-		        		}
-		        	}
-		        });
-      		}   
-	        return false;
-      },
-
-      dayClick: function(date, jsEvent, view) {
-        this["dayClickedFlag"] = true;
-        $.ajax({
-        	url: "/institutes/<%= @institute.id %>/events/new.js?start_time= " + date.format() + '&end_time= ' + date.format(),
-        	complete: function(data){
-        		if(data.status == "200"){
-        			eval(data.responseText);
-        		}
-        	}
-        });
-      },
-      select: function(start, end) {
-        if(this.dayClickedFlag && !this.dayClickedFlag){
-          $.ajax({
-          url: "/institutes/<%= @institute.id %>/events/new.js?start_time=" + start.format() + '&end_time=' + end.format(),
-          complete: function(data){
-            if(data.status == "200"){
-              eval(data.responseText);
-            }
+          },
+          {
+              url: '<%= institute_events_path(@institute) %>',
+              color: '#4646a7',   // an option!
+              textColor: '#fff' // an option!
           }
-        });
-  
+
+        ],
+        editable: true,
+        selectable: true,
+        selectHelper: true,
+        eventClick: function(event, jsEvent, view) {
+            
+            if(event.edit_url){
+              $.ajax({
+                url: event.edit_url,
+                complete: function(data){
+                  if(data.status == "200"){
+                    eval(data.responseText);
+                  }
+                }
+              });
+            }   
+            return false;
+        },
+
+        dayClick: function(date, jsEvent, view) {
+          this["dayClickedFlag"] = true;
+          $.ajax({
+            url: "/institutes/<%= @institute.id %>/events/new.js?start_time= " + date.format() + '&end_time= ' + date.format(),
+            complete: function(data){
+              if(data.status == "200"){
+                eval(data.responseText);
+              }
+            }
+          });
+        },
+        select: function(start, end) {
+          if(this.dayClickedFlag && !this.dayClickedFlag){
+            $.ajax({
+            url: "/institutes/<%= @institute.id %>/events/new.js?start_time=" + start.format() + '&end_time=' + end.format(),
+            complete: function(data){
+              if(data.status == "200"){
+                eval(data.responseText);
+              }
+            }
+          });
+    
+          }
+          
+          
+          $(this).fullCalendar('unselect');
+        },
+        eventDrop: function(event,dayDelta,minuteDelta,allDay,revertFunc) {
+          
+          if(event.update_url){
+            if (confirm("update this event?")) {
+                if(event.end){
+                  endTime = event.end
+                }else{
+                  endTime = event.start  
+                }
+                
+                $.ajax({
+                url: event.update_url + "&start_time=" + event.start.format() + "&end_time=" + endTime.format() + "&is_all_day_event=" + allDay,
+                method: "PATCH",
+                complete: function(data){
+                  if(data.status == "200"){
+                    eval(data.responseText);
+                  }
+                } 
+              });
+            }
+            
+            
+          }else{
+
+          }
+        },
+        eventResize: function(event, delta, revertFunc) {
+            if(event.update_url){
+              if (confirm("update this event?")) {
+                    $.ajax({
+                    url: event.update_url + "&start_time=" + event.start.format() + "&end_time=" + event.end.format(),
+                    method: "PATCH",
+                    complete: function(data){
+                      if(data.status == "200"){
+                        eval(data.responseText);
+                      }
+                    } 
+                  });
+                }
+                
+              }else{
+                
+              } 
+                
+
+        }
+      });
+   <% else %>
+      var calendarObject = $('.main-calendar').fullCalendar({
+        header: {
+          left: 'prev,next today',
+          center: 'title',
+          right: 'month,agendaWeek,agendaDay'
+        },
+        defaultView: "month",
+        firstDay: 1,
+        slotDuration: "01:00:00",
+        scrollTime: "07:00:00",
+        eventSources: [
+          { 
+            googleCalendarApiKey: 'AIzaSyBygb2VxPHEs8rV8j7dgreRvpowydmGrow',
+            url: 'https://www.google.com/calendar/feeds/indian__en%40holiday.calendar.google.com/public/basic',
+
+            color: '#ea5b31',   // an option!
+            textColor: '#fff' // an option!
+
+          },
+          {
+              url: '<%= institute_events_path(@institute) %>',
+              color: '#4646a7',   // an option!
+              textColor: '#fff' // an option!
+          }
+
+        ],
+        editable: true,
+        eventClick: function(event, jsEvent, view) {
+            
+            if(event.edit_url){
+              $.ajax({
+                url: event.edit_url,
+                complete: function(data){
+                  if(data.status == "200"){
+                    eval(data.responseText);
+                  }
+                }
+              });
+            }   
+            return false;
         }
         
-        
-        $(this).fullCalendar('unselect');
-      },
-      eventDrop: function(event,dayDelta,minuteDelta,allDay,revertFunc) {
-        
-      	if(event.update_url){
-      		if (confirm("update this event?")) {
-              if(event.end){
-                endTime = event.end
-              }else{
-                endTime = event.start  
-              }
-              
-	          	$.ajax({
-	      			url: event.update_url + "&start_time=" + event.start.format() + "&end_time=" + endTime.format() + "&is_all_day_event=" + allDay,
-		      		method: "PATCH",
-		        	complete: function(data){
-		        		if(data.status == "200"){
-		        			eval(data.responseText);
-		        		}
-		        	}	
-	      		});
-	        }
-      		
-      		
-      	}else{
-
-      	}
-      },
-      eventResize: function(event, delta, revertFunc) {
-	    if(event.update_url){
-	    	if (confirm("update this event?")) {
-	          	$.ajax({
-	      			url: event.update_url + "&start_time=" + event.start.format() + "&end_time=" + event.end.format(),
-		      		method: "PATCH",
-		        	complete: function(data){
-		        		if(data.status == "200"){
-		        			eval(data.responseText);
-		        		}
-		        	}	
-	      		});
-	        }
-      		
-      	}else{
-      		
-      	} 
-	        
-
-	  }
-  	});
+      });
+   <% end %>
 
 </script>
