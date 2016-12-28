@@ -114,7 +114,8 @@ class ConversationsController < ApplicationController
 
             @teachers = @institute.get_members_with_given_roles(["Teacher"]) 
                 
-			render "admin_index"
+			render "admin_index" 
+			return
 
 		end
 
@@ -131,7 +132,7 @@ class ConversationsController < ApplicationController
 			end
 
 			render "teacher_index"
-
+			return
 		end
 
 		if(current_user.role == "Student" or current_user.role == "Parent")
@@ -139,7 +140,7 @@ class ConversationsController < ApplicationController
 			@grades = @all_section_member_models.map(&:grade).uniq
 			
 			render "student_index"
-
+			return
 		end
 	end
 	
