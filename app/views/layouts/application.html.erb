@@ -111,13 +111,15 @@
 											</a>
 										</li>
 									<% end %>
+									<% if(!current_user.role.include?("Student") and !current_user.role.include?("Parent")) %>
+										<li >
+											<a href="/#all-classes">
+												<i class="material-icons menu-inner-icon">&#xE86E;</i>
+												<span>Classes</span>
+											</a>
+										</li>
+									<% end %>
 									
-									<li >
-										<a href="/#all-classes">
-											<i class="material-icons menu-inner-icon">&#xE86E;</i>
-											<span>Classes</span>
-										</a>
-									</li>
 									<% if(!@institute.blank? and (current_user.role.include?("Principal") or current_user.role.include?("Institute Admin"))) %>
 										<li>
 											<a href="/#all-staff">
@@ -152,13 +154,16 @@
 											</a>
 										</li>
 									<% end %>
-									<li>
-										<a href="#all-classes" data-toggle="tab">
-											<i class="material-icons menu-inner-icon">&#xE86E;</i>
-											<span>Classes</span>
-										</a>
-									</li>
+									<% if(!current_user.role.include?("Student") and !current_user.role.include?("Parent")) %>
+										<li>
+											<a href="#all-classes" data-toggle="tab">
+												<i class="material-icons menu-inner-icon">&#xE86E;</i>
+												<span>Classes</span>
+											</a>
+										</li>
 
+									<% end %>
+									
 									<% if(!@institute.blank? and (current_user.role.include?("Principal") or current_user.role.include?("Institute Admin"))) %>
 										<li>
 											<a href="#all-staff" data-toggle="tab">
