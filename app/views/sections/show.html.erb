@@ -103,10 +103,13 @@
 								<i class="material-icons arrow-up-icon pull-right" style="margin-top:-5px;">&#xE316;</i>
 							</h6>
 							<div class="container-width classRoute class-tab-students-list-custom" style="display: none; box-shadow:rgb(175, 172, 172) 1px 1px 10px;margin-bottom:10px; padding: 4px;">
-								
-								<div class="pull-right add-member set-subjectteacher-button" data-subject-id="<%= subject.id %>" data-subject-name="<%= subject.subject_name %>">
-									<span>Set Subject Teacher</span><i class="material-icons">&#xE7FE;</i>
-								</div>
+								<a>
+									<div class="pull-right add-member set-subjectteacher-button" data-subject-id="<%= subject.id %>" data-subject-name="<%= subject.subject_name %>">
+									
+										<span>Set Subject Teacher</span><i class="material-icons">&#xE7FE;</i>
+
+									</div>
+								</a>
 								<div class="clearfix"></div>
 								<div class="subject-teacher-partial" data-subject-id="<%= subject.id %>">
 									<%= render partial: "conversations/contact", locals: {contact: subject_teacher} if !subject_teacher.blank? %>	
