@@ -2301,6 +2301,9 @@ div.calendar div.fc-agendaWeek-view tbody.fc-body div.fc-bg > table >tbody>tr>td
 		background-color: #fff !important;
 		color: #2ad !important;
 	}
+	#navbar li.active-navigation a span, .active-navigation-footer a span{
+		color:#fff !important;
+	}
 	#navbar li a:hover, #navbar li a:focus{
 		background:none !important;
 		color:#2ad !important;
