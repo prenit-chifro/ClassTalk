@@ -104,10 +104,10 @@
 								<h1 class="nothing-posted"> You dont have any sent message that others need to respond to ! </h1>	
 							<% end %>
 						</div>
-						<div class="tab-pane" id="all-group-messages">	
+						<div class="tab-pane all-group-small-conversations" id="all-group-messages">	
 							<%= link_to new_group_conversations_path do %>		
 								<span class="add-member pull-right">
-									<span>New Group</span><i class="material-icons">&#xE7FE;</i>
+									<span class="new-group-button">New Group</span><i class="material-icons">&#xE7FE;</i>
 								</span>
 							<% end %>
 							<div class="clearfix mar-btm"> </div>
@@ -125,29 +125,6 @@
 						</div>		
 					</div>	
 				</div>
-				<% if(current_user.role.include?("Teacher")) %>
-					<div class="tab-pane" id="all-homework">
-						<% if(!@homework_messages.blank?) %>
-							<% @homework_messages.each do |message| %>
-								<div class="student-message-homework-temp" style="box-shadow: 1px 1px 7px #b1a9a9; margin: 10px;">
-									<%= link_to conversation_path(message.conversation) do %>
-										<div class="text-left" style="padding: 6px; color: #fff; background: #afabab; padding-left: 20px;" >
-											<%= message.conversation.get_conversation_name_to_show_to_user(current_user).truncate(15) if !message.conversation.get_conversation_name_to_show_to_user(current_user).blank?%>
-										</div>
-									<% end %>
-									
-									<%= render partial: "messages/message", locals: {conversation: message.conversation, message: message} %>
-								</div>
-							<% end %>
-							
-							<%= paginate @homework_messages, window: 1, params: {anchor: "all-homework"} %>
-						<% else %>
-							<h1 class="nothing-posted"> You have not posted any HomeWork ! </h1>
-						<% end %>
-
-					</div>
-				<% end %>
-				
 				<div class="tab-pane" id="all-classes">
 					<ul class="list-unstyled teachers-list index-conversation-modal">
 						
@@ -220,7 +197,8 @@
 										<% end %>
 										</div>
 									<% else %>
-										<div class="nothing-posted"> No Principal added yet !</div>
+										<div class="nothing-posted"> No Teachers added yet !</div>
+										<div class="clearfix mar-btm"></div>
 									<% end %>												
 									<% if(!@admins.blank?) %>
 										<div class="staff-manage-page">

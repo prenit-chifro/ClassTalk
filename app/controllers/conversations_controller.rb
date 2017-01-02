@@ -19,9 +19,8 @@ class ConversationsController < ApplicationController
 			end
 		end
 
-		@sent_conversations = current_user.participating_conversations.where(creator_id: current_user.id).order(updated_at: :desc)
 	 	sent_conversations_array = []
-	 	@sent_conversations.each do |conversation|
+	 	@conversations.each do |conversation|
 			if((!conversation.messages.last.blank? and conversation.messages.last.creator_id == current_user.id and conversation.is_group == false) or (conversation.last_message_id.blank? and conversation.creator_id == current_user.id and conversation.is_group == false)) 
 				sent_conversations_array << conversation
 			end
@@ -33,7 +32,36 @@ class ConversationsController < ApplicationController
 				group_conversations_array << conversation
 			end	
 		end
+
+		@inbox_conversations = Conversation.where(id: inbox_conversations_array.map(&:id)).order(updated_at: :desc)
+		@sent_conversations = Conversation.where(id: sent_conversations_array.map(&:id)).order(updated_at: :desc)
+		@group_conversations = Conversation.where(id: group_conversations_array.map(&:id)).order(updated_at: :desc)
 		
+		@unread_conversation_ids_array = []
+		@inbox_conversations.each do |conversation|
+			conversation_participant_model = conversation.get_conversation_participant_model_for_participant(current_user)
+			unread_received_messages = conversation.messages.where("is_seen_by_all_participants != ? and created_at > ? and creator_id != ?", true, conversation_participant_model.created_at, current_user.id)
+			unread_received_messages.each do |message|
+				seen_user_ids_array = message.seen_user_ids.split(", ").map{|id| id.to_i}.uniq
+				if(!seen_user_ids_array.include?(current_user.id))
+					@unread_conversation_ids_array << conversation.id
+					break
+				end
+			end
+		end
+		@unread_group_conversation_ids_array = []
+		@group_conversations.each do |conversation|
+			conversation_participant_model = conversation.get_conversation_participant_model_for_participant(current_user)
+			unread_received_messages = conversation.messages.where("is_seen_by_all_participants != ? and created_at > ? and creator_id != ?", true, conversation_participant_model.created_at, current_user.id)
+			unread_received_messages.each do |message|
+				seen_user_ids_array = message.seen_user_ids.split(", ").map{|id| id.to_i}.uniq
+				if(!seen_user_ids_array.include?(current_user.id))
+					@unread_group_conversation_ids_array << conversation.id
+					break
+				end
+			end
+		end
+
 		@homework_conversations = @conversations.where("message_categories LIKE ?", "HomeWork%")
 		homework_messages_array = []
 
@@ -61,36 +89,6 @@ class ConversationsController < ApplicationController
 	    	end	
 		end
 
-		@inbox_conversations = Conversation.where(id: inbox_conversations_array.map(&:id)).order(updated_at: :desc)
-		@sent_conversations = Conversation.where(id: sent_conversations_array.map(&:id)).order(updated_at: :desc)
-		@group_conversations = Conversation.where(id: group_conversations_array.map(&:id)).order(updated_at: :desc)
-
-		@unread_conversation_ids_array = []
-		@inbox_conversations.each do |conversation|
-			conversation_participant_model = conversation.get_conversation_participant_model_for_participant(current_user)
-			unread_received_messages = conversation.messages.where("is_seen_by_all_participants != ? and created_at > ? and creator_id != ?", true, conversation_participant_model.created_at, current_user.id)
-			unread_received_messages.each do |message|
-				seen_user_ids_array = message.seen_user_ids.split(", ").map{|id| id.to_i}.uniq
-				if(!seen_user_ids_array.include?(current_user.id))
-					@unread_conversation_ids_array << conversation.id
-					break
-				end
-			end
-		end
-		@unread_group_conversation_ids_array = []
-		@group_conversations.each do |conversation|
-			conversation_participant_model = conversation.get_conversation_participant_model_for_participant(current_user)
-			unread_received_messages = conversation.messages.where("is_seen_by_all_participants != ? and created_at > ? and creator_id != ?", true, conversation_participant_model.created_at, current_user.id)
-			unread_received_messages.each do |message|
-				seen_user_ids_array = message.seen_user_ids.split(", ").map{|id| id.to_i}.uniq
-				if(!seen_user_ids_array.include?(current_user.id))
-					@unread_group_conversation_ids_array << conversation.id
-					break
-				end
-			end
-		end
-
-		
 		if(params[:page] and params[:page].to_i >= 2)
 			@inbox_conversations = @inbox_conversations.page(params[:page]).per(10)
 			@sent_conversations = @sent_conversations.page(params[:page]).per(10)
@@ -177,7 +175,7 @@ class ConversationsController < ApplicationController
 						end
 					end
 					if(@conversation.blank?)
-						@conversation = current_user.created_conversations.create
+						@conversation = current_user.created_conversations.create(is_open_group: true)
 						@participants.each do |participant|
 							@conversation.add_participant(participant.id, current_user.id)	
 						end	

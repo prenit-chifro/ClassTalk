@@ -375,7 +375,7 @@ class InstitutesController < ApplicationController
                 
             end
             
-            redirect_to root_path, format: :js
+            redirect_to institute_path(@institute) + "#all-students", format: :js
         end        
     end
   end

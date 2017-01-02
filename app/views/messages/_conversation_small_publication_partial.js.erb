@@ -5,7 +5,7 @@ if(conversationSmallDiv.length != 0){
 }
 <% if(conversation.is_group == false) %>
 	if($('.all-small-conversations').html()){
-		$('.all-small-conversations').prepend('<%= conversation_small_partial %>');	
+		$('.all-small-conversations').prepend('<%= conversation_small_partial %>');		
 		var unreadConversationIdsArray = $('.unread-conversation-ids').html().split(", ");
 		if(unreadConversationIdsArray.indexOf("<%= conversation.id %>") < 0){
 			conversationNoDiv = $('.unread-conversation-no');
@@ -13,12 +13,17 @@ if(conversationSmallDiv.length != 0){
 			conversationNo++;
 			conversationNoDiv.html(conversationNo);
 			$('.unread-conversation-ids').html($('.unread-conversation-ids').html() + ", <%= conversation.id %>");
-			conversationNoDiv.css("display", "block");
+			conversationNoDiv.css("display", "inline-block");
 		}	
 	}
 <% else %>
 	if($('.all-group-small-conversations').html()){
-		$('.all-group-small-conversations').prepend('<%= conversation_small_partial %>');	
+		if($('.all-group-small-conversations').find(".new-group-button").html()){
+			$('.all-group-small-conversations').find('.clearfix').after('<%= conversation_small_partial %>');	
+		}else{
+			$('.all-group-small-conversations').prepend('<%= conversation_small_partial %>');		
+		}
+		
 		var unreadConversationIdsArray = $('.unread-group-conversation-ids').html().split(", ");
 		if(unreadConversationIdsArray.indexOf("<%= conversation.id %>") < 0){
 			conversationNoDiv = $('.unread-group-conversation-no');
@@ -26,7 +31,7 @@ if(conversationSmallDiv.length != 0){
 			conversationNo++;
 			conversationNoDiv.html(conversationNo);
 			$('.unread-group-conversation-ids').html($('.unread-group-conversation-ids').html() + ", <%= conversation.id %>");
-			conversationNoDiv.css("display", "block");
+			conversationNoDiv.css("display", "inline-block");
 		}	
 	}
 <% end %>	
