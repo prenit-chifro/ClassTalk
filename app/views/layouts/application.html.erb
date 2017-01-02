@@ -94,8 +94,12 @@
 							<% end %>
 							
 							<% if(!(params[:controller] == "conversations" and params[:action]=="index")) %>
-								
-								<li>
+								<% if(params[:controller] == "conversations") %>
+										<% active_class="class=active-navigation" %>
+								<% else %>
+									<% active_class="" %>
+								<% end %>
+								<li <%= active_class %>>
 									
 									<a href="/#all-messages">
 										<i class="material-icons menu-inner-icon">&#xE8CD;</i>
@@ -138,7 +142,7 @@
 									
 								<% end %>							
 							<% else %>
-								
+
 								<li>									
 									<a href="#all-messages" data-toggle="tab">
 										<i class="material-icons menu-inner-icon">&#xE8CD;</i>

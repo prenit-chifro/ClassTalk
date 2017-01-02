@@ -135,12 +135,6 @@
 																		<% end %>	
 																	<% end %>
 																<% else %>
-																	<%= link_to add_new_student_institute_path(@institute, role: "Teacher") do %>
-																		<div class="pull-right add-member">
-																			<span>Add Student</span><i class="material-icons">&#xE7FE;</i>
-																		</div>
-																	<% end %>
-																	<div class="clearfix"></div>
 																	<h1 class="nothing-posted"> No Students added yet ! </h1>	
 																<% end %>															
 															</ul>
@@ -184,12 +178,6 @@
 													</li>															
 												<% end %>
 											<% else %>
-												<%= link_to add_new_staff_institute_path(@institute, role: "Teacher") do %>
-													<div class="pull-right add-member">
-														<span>Add Teacher</span><i class="material-icons">&#xE7FE;</i>
-													</div>
-												<% end %>
-												<div class="clearfix"></div>
 												<h1 class="nothing-posted"> No Teachers added yet ! </h1>		
 											<% end %>									
 
@@ -221,12 +209,6 @@
 												
 												<% end %>
 											<% else %>	
-												<%= link_to add_new_staff_institute_path(@institute, role: "Institute Admin") do %>
-													<div class="pull-right add-member">
-														<span>Add Admin</span><i class="material-icons">&#xE7FE;</i>
-													</div>
-												<% end %>
-												<div class="clearfix"></div>
 												<h1 class="nothing-posted"> No Admins added yet ! </h1>	
 											<% end %>														
 										</ul>

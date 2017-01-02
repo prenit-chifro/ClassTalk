@@ -121,13 +121,16 @@ $(document).on("turbolinks:load", function(){
 			$('#navbar ul.nav a[href="' + "#all-messages" + '"]').parent().addClass('active-navigation');
 		}
 		
+	
 		$('.nav-tabs a').click(function (e) {
 			var hash = $(this).attr("href");
-			$('#navbar ul.nav li').removeClass('active-navigation');
-			$('#navbar ul.nav li').removeClass('active');
-			$('#navbar ul.nav a[href="' + hash + '"]').parent().addClass('active-navigation');			
 			window.location.replace(('' + window.location).split('#')[0] + hash);
-
+			if (isMobile.any()){			
+				$('#navbar ul.nav li').removeClass('active-navigation');
+				$('#navbar ul.nav li').removeClass('active');
+				$('#navbar ul.nav a[href="' + hash + '"]').parent().addClass('active-navigation');			
+				
+			}
 		});
 
 		document.onmouseover = function() {
