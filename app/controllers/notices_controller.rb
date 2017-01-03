@@ -64,7 +64,7 @@ class NoticesController < ApplicationController
 
 		    @notice.save
 
-
+		    PublishNoticeWorker.perform_async(@notice.id)
 		    redirect_to institute_notices_path(@institute)
 		else
 
