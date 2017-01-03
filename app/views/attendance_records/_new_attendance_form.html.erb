@@ -4,7 +4,7 @@
 	<div class="modal-body attendance-body">
 		<ul class="list-inline student-in-attendance">
 			<% class_students.each do |student| %>
-				<li class="student-in-attendance">
+				<li class="student-in-attendance" style="display: table-cell;">
 					<div class="inner-list">
 						<label for="students" class="radio text-center">
 							<% if(attendance_record.blank?) %>
@@ -16,7 +16,7 @@
 							<% end %>
 							<img src="<%= student.profile_picture.media.url(:thumb) %>"" class="img-circle" >
 							
-							<p>
+							<p style="width:100px;">
 								<small class="student-name-in-attendance"><%= student.first_name %> <%= student.last_name %></small>
 								<small class="student-roll-number"> <%= ", #{student.roll_no}" if !student.roll_no.blank? %></small> 
 							</p>
