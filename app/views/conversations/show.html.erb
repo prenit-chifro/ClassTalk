@@ -308,12 +308,13 @@
 
 <script>
 	$(document).one("turbolinks:load", function(){
-		$(".classRoute").parents("div.wrapper").find(".navbar-default").css("box-shadow", "none");
+		
 		
 	});
 	
 
 	if(!App.isChannelSubscribed("ConversationsChannel", {conversation_id: <%= @conversation.id %>})){
+		alert("subscribe_to: " + "<%= @conversation.id %>");
 		App.subscribe_to("ConversationsChannel", {conversation_id: <%= @conversation.id %>});
 	}
 
