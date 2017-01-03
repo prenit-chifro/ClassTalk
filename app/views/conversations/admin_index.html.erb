@@ -362,7 +362,7 @@
 								<%= file_field_tag "attached_files[]",:id=>"conversation-chat-image", :class=>"custom-file-input", multiple: true %>	
 							</label>
 							
-							<button class="btn btn-info" type="submit" data-disable-with="Sending">Send</button>
+							<button class="btn btn-info send-message-button-index" type="submit">Send</button>
 						</div>
 						<hr>
 						<div class="">
@@ -1022,4 +1022,15 @@
 		}
 		
 	}
+
+	$("#new-conversation-form").submit( function(){
+		
+		if(($("#new-message-text-field").val().trim().length > 0 || $('.custom-file-input')[0].files.length > 0 ) && ($("input[name='participant_ids[]']:checked").length > 0) ){
+			$(".send-message-button-index").attr("disabled", true).html("Sending");
+			return true;		
+
+		}	
+
+		return false;
+	});
 </script>

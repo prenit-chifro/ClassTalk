@@ -2,9 +2,16 @@ $("#new-message-text-field").val("");
 $('.custom-file-input').val("");
 $("button.close").trigger("click");
 <% script_string = render partial: "messages/publish_message_partial", locals: {conversation: @conversation, message: @new_message} %>
-<% publish_to(conversation_path(@conversation), script_string) %>
+<% publish_to(user_path(current_user), script_string) %>
+
+<% conversation_small_partial = j render( partial: "conversations/conversation_small", locals: {conversation: @conversation, user: current_user}) %>
+<% script_string = render partial: "messages/conversation_small_publication_partial", locals: {conversation: @conversation, conversation_small_partial: conversation_small_partial} %>
+<% publish_to(user_path(current_user), script_string) %>
 
 <% @conversation.other_participants(current_user).each do |participant| %>
+	<% script_string = render partial: "messages/publish_message_partial", locals: {conversation: @conversation, message: @new_message} %>
+	<% publish_to(user_path(participant), script_string) %>
+
 	<% conversation_small_partial = j render( partial: "conversations/conversation_small", locals: {conversation: @conversation, user: participant}) %>
 	<% script_string = render partial: "messages/conversation_small_publication_partial", locals: {conversation: @conversation, conversation_small_partial: conversation_small_partial} %>
 	<% publish_to(user_path(participant), script_string) %>

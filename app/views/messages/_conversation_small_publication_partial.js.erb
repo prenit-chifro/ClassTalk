@@ -3,6 +3,7 @@ var conversationSmallDiv = $('.conversation-small[data-conversation-id=' + '<%= 
 if(conversationSmallDiv.length != 0){
 	conversationSmallDiv.remove();
 }
+
 <% if(conversation.is_group == false) %>
 	if($('.all-small-conversations').html()){
 		$('.all-small-conversations').prepend('<%= conversation_small_partial %>');		

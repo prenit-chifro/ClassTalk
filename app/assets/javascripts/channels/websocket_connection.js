@@ -30,16 +30,21 @@ App.subscribe_to = function(channel, params){
 }
 
 App.isChannelSubscribed = function(channel, params){
+	
 	params["channel"] = channel;
-	for(i=0; i< App.subscriptions.length-1;i++){
+	for(i=0; i< App.subscriptions.length;i++){
 		if(App.subscriptions[i]){
+			
 			for (var key in App.subscriptions[i].params) {
 			  if (params.hasOwnProperty(key) && params[key] == App.subscriptions[i].params[key]) {
+				
 				return true;
+
 			  }
 			}
 			
 		}
-		return false;
+		
 	}
+	return false;
 }

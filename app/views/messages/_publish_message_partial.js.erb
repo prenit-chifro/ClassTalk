@@ -31,7 +31,7 @@ if(conversationBigDiv.length != 0){
 		var submissionDiv = lastmessageDiv.find('.checkmark');
 		var currentUserId = $('meta[name=current-user-id]').attr("content");
 		var message_creator_id = "<%= message.creator_id %>";
-
+		
 		if(currentUserId == message_creator_id){
 			$(".double-checkmark").on("click", function(){
 				var messageId = $(this).attr("data-message-id");

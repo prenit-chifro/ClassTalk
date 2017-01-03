@@ -36,7 +36,7 @@
 								<li style="width:50%;"><a data-toggle="tab" href="#all-staff"><%= staff.length %> Staff</a></li>
 							</ul>	
 							<div class="tab-content admin-home-content">
-								<div class="tab-pane active all-small-conversations" id="all-students">
+								<div class="tab-pane active" id="all-students">
 									<% if(!students.blank?) %>	
 										<% students.each do |student| %>
 											<%= render partial: "conversations/contact", locals: {contact: student}	 %>	
@@ -312,12 +312,6 @@
 		
 	});
 	
-
-	if(!App.isChannelSubscribed("ConversationsChannel", {conversation_id: <%= @conversation.id %>})){
-		alert("subscribe_to: " + "<%= @conversation.id %>");
-		App.subscribe_to("ConversationsChannel", {conversation_id: <%= @conversation.id %>});
-	}
-
 	var pageNo = 2;
 	var resultLoaded = {};
 	$('.load-earlier-messages-button').click(function(event){
