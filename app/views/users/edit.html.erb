@@ -163,14 +163,15 @@
 
 
 <script>
-	$('#profile-pic-uploadBtn').on('change', function(event) {
+	$('#new-group-profile-pic-uploadBtn').on('change', function(event) {
+		alert("changed");
 		var files = event.target.files;
 		var image = files[0]
 		var reader = new FileReader();
 		reader.onload = function(file) {
 		  var img = new Image();
 		  img.src = file.target.result;
-		  $('#user-profile-picture-target').html(img);
+		  $('#new-group-profile-picture-inner-target').html(img);
 		}
 		reader.readAsDataURL(image);
 	});
