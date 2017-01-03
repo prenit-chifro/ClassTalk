@@ -237,7 +237,7 @@
 							
 							<label class="pull-right file-label" for="conversation-chat-image" style="width:10%;">
 								<p class="" style="width:100%;border-left:1px solid #cacaca;"><i class="material-icons">&#xE3B0;</i></p>
-								<%= file_field_tag "attached_files[]",:id=>"conversation-chat-image", :class=>"custom-file-input", multiple: true %>	
+								<%= file_field_tag "attached_files[]",:id=>"conversation-chat-image", :class=>"custom-file-input", multiple: true, onchange: "fileChanged(this);" %>	
 							</label>
 							
 							<button class="btn btn-danger send-message-button-index" type="submit">Send</button>
@@ -702,4 +702,48 @@
 
 			return false;
 		});
+
+
+	function fileChanged(event){
+				
+		var files = event.files;
+		
+		if(files.length > 0){
+						
+			$.each( files, function( i, file ) {
+				var reader = new FileReader();
+				reader.onload = function(file) {
+								
+					var fileType = file.target.result.split(";")[0].split(":")[1];
+
+					var fileMarkup;
+					
+					if(fileType.split('/')[0] == "video"){
+						
+						fileMarkup = [ '<video width="50" height="50" controls class="video-js vjs-default-skin">',
+											'<source src="', file.target.result, '" type="video/' + fileType.split('/')[1] +'" >',
+											
+											'Your browser does not support the video tag.',
+										'</video>'].join('');
+
+					}else{
+						if(fileType.split('/')[0] == "image"){
+							fileMarkup = ['<img  height="50" width = "50" src=', file.target.result, '>'].join('');
+						}else{
+							fileMarkup = ['<span class="inner-many-type-media" style="height: 50px; width: 50px; border: 1px solid; margin: inherit; display: block;" >Doc</span>'].join('');
+						}
+					}
+
+					
+					var innerFileMarkup = [
+						'<p style="display: inline-block; margin: 3px; vertical-align: middle;"  class="temp-message">', fileMarkup , '</p>'
+					];
+					$(innerFileMarkup.join('')).insertBefore("div.attachment-send-button");
+				}
+				reader.readAsDataURL(file);
+			});
+			
+			
+		}		
+	}
 </script>

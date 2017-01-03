@@ -358,61 +358,61 @@
 			
 			files = $('.custom-file-input')[0].files;
 			if(files.length >= 1){
-				var reader = new FileReader();
-				reader.onload = function(file) {
-									
-					var fileType = file.target.result.split(";")[0].split(":")[1];
-
-					var fileMarkup;
-					
-					if(fileType.split('/')[0] == "video"){
-						
-						fileMarkup = [ '<video width="200" height="200" controls class="video-js vjs-default-skin">',
-	  										'<source src="', file.target.result, '" type="video/' + fileType.split('/')[1] +'" >',
-	  										
-	  										'Your browser does not support the video tag.',
-										'</video>'].join('');
-
-					}
-
-					if(fileType.split('/')[0] == "image"){
-						fileMarkup = ['<img  height="200" width = "200" src=', file.target.result, '>'].join('');
-					}
-
-
-					
-					messageMarkup = [
-						'<div class="messages-media temp-message" >',
-							'<div class="media main-media">',
-								'<div class="media-left pull-right">',
-									'<a href="javascript:void(0)">',
-										'<img src="<%= current_user.profile_picture.media.url(:thumb) %>" class="img-circle img-xs" >',
-									'</a>',	
-								'</div>',
-								'<div class="media-body media-middle">',
-									'<h5 class="media-heading text-muted"><%= current_user.details %></h5>',
-									'<span class="pull-left"><%= current_user.first_name %></span>',
-								'</div>',
-							'</div>',
-							'<div class="media-content text-muted">', message , '</div>',
-							'<p>', fileMarkup, '</p>',
-						'</div>'				
-					];
-					
-					$(".Messages-category-messages").prepend(messageMarkup.join(''));
-					if($('#all-Messages').attr("class").indexOf("active") <= 0){
-						$(".Media-category-messages").append(messageMarkup.join(''));
-						if($('#all-Media').attr("class").indexOf("active") <= 0){
-							$($('li.active a').attr('href')).find('.messages').append(messageMarkup.join(''));		
-						}
-						
-					}
-					
-					//App.scrollToBottomOfPage();
-					
-				}
 
 				$.each( files, function( i, file ) {
+					var reader = new FileReader();
+					reader.onload = function(file) {
+										
+						var fileType = file.target.result.split(";")[0].split(":")[1];
+
+						var fileMarkup;
+						
+						if(fileType.split('/')[0] == "video"){
+							
+							fileMarkup = [ '<video width="200" height="200" controls class="video-js vjs-default-skin">',
+		  										'<source src="', file.target.result, '" type="video/' + fileType.split('/')[1] +'" >',
+		  										
+		  										'Your browser does not support the video tag.',
+											'</video>'].join('');
+
+						}
+
+						if(fileType.split('/')[0] == "image"){
+							fileMarkup = ['<img  height="200" width = "200" src=', file.target.result, '>'].join('');
+						}
+
+
+						
+						messageMarkup = [
+							'<div class="messages-media temp-message" >',
+								'<div class="media main-media">',
+									'<div class="media-left pull-right">',
+										'<a href="javascript:void(0)">',
+											'<img src="<%= current_user.profile_picture.media.url(:thumb) %>" class="img-circle img-xs" >',
+										'</a>',	
+									'</div>',
+									'<div class="media-body media-middle">',
+										'<h5 class="media-heading text-muted"><%= current_user.details %></h5>',
+										'<span class="pull-left"><%= current_user.first_name %></span>',
+									'</div>',
+								'</div>',
+								'<div class="media-content text-muted">', message , '</div>',
+								'<p>', fileMarkup, '</p>',
+							'</div>'				
+						];
+						
+						$(".Messages-category-messages").prepend(messageMarkup.join(''));
+						if($('#all-Messages').attr("class").indexOf("active") <= 0){
+							$(".Media-category-messages").append(messageMarkup.join(''));
+							if($('#all-Media').attr("class").indexOf("active") <= 0){
+								$($('li.active a').attr('href')).find('.messages').append(messageMarkup.join(''));		
+							}
+							
+						}
+						
+						//App.scrollToBottomOfPage();
+						
+					}
 					reader.readAsDataURL(file);
 				});
 				
@@ -465,33 +465,37 @@
 			var files = event.files;
 			
 			if(files.length > 0){
-				
-				var reader = new FileReader();
-				reader.onload = function(file) {
-									
-					var fileType = file.target.result.split(";")[0].split(":")[1];
-
-					var fileMarkup;
-					
-					if(fileType.split('/')[0] == "video"){
-						
-						fileMarkup = [ '<video width="50" height="50" controls class="video-js vjs-default-skin">',
-											'<source src="', file.target.result, '" type="video/' + fileType.split('/')[1] +'" >',
-											
-											'Your browser does not support the video tag.',
-										'</video>'].join('');
-
-					}
-
-					if(fileType.split('/')[0] == "image"){
-						fileMarkup = ['<img  height="50" width = "50" src=', file.target.result, '>'].join('');
-					}
-					var innerFileMarkup = [
-						'<p style="clear:both;" class="temp-message">', fileMarkup , '</p>'
-					];
-					$(innerFileMarkup.join('')).insertBefore("div.attachment-send-button");
-				}
+							
 				$.each( files, function( i, file ) {
+					var reader = new FileReader();
+					reader.onload = function(file) {
+									
+						var fileType = file.target.result.split(";")[0].split(":")[1];
+
+						var fileMarkup;
+						
+						if(fileType.split('/')[0] == "video"){
+							
+							fileMarkup = [ '<video width="50" height="50" controls class="video-js vjs-default-skin">',
+												'<source src="', file.target.result, '" type="video/' + fileType.split('/')[1] +'" >',
+												
+												'Your browser does not support the video tag.',
+											'</video>'].join('');
+
+						}else{
+							if(fileType.split('/')[0] == "image"){
+								fileMarkup = ['<img  height="50" width = "50" src=', file.target.result, '>'].join('');
+							}else{
+								fileMarkup = ['<span class="inner-many-type-media" style="height: 50px; width: 50px; border: 1px solid; margin: inherit; display: block;" >Doc</span>'].join('');
+							}
+						}
+
+						
+						var innerFileMarkup = [
+							'<p style="display: inline-block; margin: 3px; vertical-align: middle;"  class="temp-message">', fileMarkup , '</p>'
+						];
+						$(innerFileMarkup.join('')).insertBefore("div.attachment-send-button");
+					}
 					reader.readAsDataURL(file);
 				});
 				
