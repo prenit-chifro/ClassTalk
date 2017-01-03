@@ -167,7 +167,7 @@ $(document).on("turbolinks:load", function(){
 		var animateMainMenu = $("#navbar");
 		
 		animateMainMenu.animate({
-			right: parseInt(animateMainMenu.css('right'),10) == 0 ? -animateMainMenu.outerWidth() :0
+			right: parseInt(animateMainMenu.css('right')) == 0 ? -(animateMainMenu.outerWidth()) :0
 		});
 		e.stopPropagation();
 		e.preventDefault();
