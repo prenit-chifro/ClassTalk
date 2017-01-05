@@ -62,13 +62,6 @@
 									</a>									
 								</li>
 								
-								<% if(user_signed_in?) %>
-									<li class="log-out" style="list-style: none;">
-										<%= link_to destroy_user_session_path, method: :delete do %>
-											<button type="button" class="btn btn-danger" style="padding:0px;color: #2ad;background:none; border:none;">LogOut</button>
-										<% end %>
-									</li>
-								<% end %>
 							</ul>						
 						</li>							
 					</ul>

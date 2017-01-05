@@ -169,6 +169,7 @@ class AttendanceRecordsController < ApplicationController
 			@todays_attendance_record.update(present_student_ids: params[:present_student_ids].join(", "))
 			
 		end
+		PublishAttendanceWorker.perform_async(@todays_attendance_record.id)
 		@class_students =  @section.get_members_with_given_roles_for_institute_and_grade_with_role(@institute, @grade, "Student")
 	end
 

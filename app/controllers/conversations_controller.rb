@@ -456,4 +456,12 @@ class ConversationsController < ApplicationController
 	    end
 	    
  	end
+
+ 	def destroy
+ 		if(!@conversation.blank?)
+ 			@conversation.destroy
+ 			redirect_to root_path, format: :js
+ 		end
+ 	end
+
 end

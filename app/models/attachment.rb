@@ -9,6 +9,16 @@ class Attachment < ApplicationRecord
 								
 	validates_attachment_content_type :media, :content_type => [/\Aimage\/.*\Z/, /\Avideo\/.*\Z/, /\Aaudio\/.*\Z/, /\Aapplication\/.*\Z/ ]
 	
+	def file_path
+		if self.is_image_type?
+			"public/attachments/original/#{self.attachable_type}/#{self.attachable_id}"
+		elsif self.is_video_type?
+			"public/attachments/original/#{self.attachable_type}/#{self.attachable_id}"
+		else
+			"public/attachments/#{self.attachable_type}/#{self.attachable_id}"
+		end
+	end
+
 	def save_attachment_media_from_url media_url
 		self.media = open(media_url)
 		content_type = self.media_content_type.split("/").last

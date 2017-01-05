@@ -4,10 +4,10 @@
 	<%= hidden_field_tag :institute_id, @institute.id %>
 	
 	<div class="form-group">
-		<%= text_field_tag :title, nil, placeholder: :Title, class: "form-control" %>
+		<%= text_field_tag :title, nil, placeholder: :Title, class: "form-control", required: true %>
 	</div>
 	<div class="form-group">
-		<%= text_area_tag :description, nil, placeholder: :Description, class: "form-control" %>
+		<%= text_area_tag :description, nil, placeholder: :Description, class: "form-control", required: true %>
 	</div>
 	<div class="form-group">
 		<label>Start Date-Time:</label>

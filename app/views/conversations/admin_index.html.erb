@@ -1080,5 +1080,7 @@
 	$('#customMessageModal').on('hidden.bs.modal', function () {
 	  $("input[name='attached_files[]']").val("");
 	  $(".temp-message").remove();
+	  $("#new-message-text-field").val("");
+	  $(".send-message-button-index").attr("disabled", false).html("Send");
 	})
 </script>

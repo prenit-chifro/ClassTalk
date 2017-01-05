@@ -6,7 +6,7 @@
 			</a>
 		</div>
 		<div class="media-body media-middle">
-			<h5 class="media-heading text-muted"><%= message.message_creator.first_name %><span class="pull-right"><%= get_am_pm_time(message.created_at) %></span></h5>
+			<h5 class="media-heading text-muted"><%= message.message_creator.first_name %><span class="pull-right"><%= get_am_pm_time(message.created_at) %>, <%= get_month_date_year(message.created_at) %></span></h5>
 			<span class="pull-left"><%= message.message_creator.details %></span>
 			
 			<% if (message.creator_id == current_user.id or current_user.role=="Institute Admin" or current_user.role=="Principal")%>
@@ -44,22 +44,31 @@
 			<% end %>
 		</div>
 	</div>
-	<div class="media-content text-muted">
+	<div class="media-content text-muted show-message-body">
 		<%= message.content %>
 	</div>					
 	<% if(!message.attachments.blank?) %>
 		<% message.attachments.each do |attachment| %>
-			<div class="many-type-media download-attachment-button" style="max-width: 300px; margin: 3px auto;" data-href="https://docs.google.com/gview?url=https://classtalk.in<%= attachment.media.url %>&embedded=true&chrome=true">
-				<% if(attachment.is_image_type?) %>
-					<p class="inner-many-type-media">Image <i class="material-icons" style="color: #fff;vertical-align: middle;">&#xE884;</i></p>
-				<% end %>
-				<% if(attachment.is_document_type?) %>
-					<p class="inner-many-type-media">Document <i class="material-icons" style="color: #fff; vertical-align: middle;">&#xE884;</i></p>
-				<% end %>
-				<% if(attachment.is_video_type?) %>
-					<p class="inner-many-type-media">Video <i class="material-icons" style="color: #fff; vertical-align: middle;">&#xE884;</i></p>
-				<% end %>
-			</div>
+			<div class="text-center" style="max-width: 300px; margin: 3px auto; ">
+				<div class="many-type-media view-attachment-button" style="display: inline-block;" data-href="https://docs.google.com/gview?url=https://classtalk.in<%= attachment.media.url %>&embedded=true&chrome=true">
+					<a>
+						<% if(attachment.is_image_type?) %>
+							<p class="inner-many-type-media">View Image</p>
+						<% end %>
+						<% if(attachment.is_document_type?) %>
+							<p class="inner-many-type-media">View Document</p>
+						<% end %>
+						<% if(attachment.is_video_type?) %>
+							<p class="inner-many-type-media">View Video</p>
+						<% end %>
+					</a>
+				</div>
+				<div style="display: inline-block;">
+					<%= link_to download_attachment_path(attachment), target: "_blank" do %>
+						<p class="inner-many-type-media" style="padding: 7px; line-height: 1.9;"><i class="material-icons" style="color: #fff;vertical-align: middle;">&#xE884;</i></p>
+					<% end %>	
+				</div>
+			</div>	
 		<% end %>	
 	<% end %>
 </div>

@@ -103,6 +103,12 @@ Rails.application.routes.draw do
       end  
     end
 
+    resources :attachments do
+      member do
+        get "download"
+      end
+    end
+
   	resources :android_devices
     resources :ios_devices
     resources :web_notification_subscriptions

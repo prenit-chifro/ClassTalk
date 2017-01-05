@@ -51,8 +51,9 @@ class EventsController < ApplicationController
         end
 
         @event.save
+        PublishEventWorker.perform_async(@event.id)
     else
-
+      head :ok
     end
   
   end

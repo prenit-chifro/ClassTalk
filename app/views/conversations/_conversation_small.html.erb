@@ -45,9 +45,9 @@
 				<% end %>	
 				<span class="pull-right">
 					<% if(!conversation.last_message_id.blank?) %>
-						<%= get_am_pm_time(conversation.last_message.created_at) %>
+						<%= get_am_pm_time(conversation.last_message.created_at) %>, <%= get_month_date_year(conversation.last_message.created_at) %>
 					<% else %>
-						<%= get_am_pm_time(conversation.created_at) %>
+						<%= get_am_pm_time(conversation.created_at) %>, <%= get_month_date_year(conversation.created_at) %>
 					<% end %>
 					
 				</span>

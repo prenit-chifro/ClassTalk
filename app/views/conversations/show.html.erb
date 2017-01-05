@@ -19,6 +19,14 @@
 							<span>Add Participient</span><i class="material-icons">&#xE7FE;</i>
 						</div>
 					<% end %>
+					<% if(@conversation.is_group and @conversation.is_custom_group) %>
+						<%= link_to conversation_path(@conversation), method: :delete, remote: true, data: {confirm: "Are you sure you want to Delete This Group"} do %>
+							<div class="pull-right add-member">
+								<span>Delete Group</span><i class="material-icons">&#xE92B;</i>
+							</div>
+						<% end %>
+					<% end %>
+					
 				<% end %>
 				<div class="clearfix mar-btm"></div>
 				<div class="conversation-partial classRoute" style="max-width:600px;margin: 0 auto;">
@@ -129,6 +137,8 @@
 						<%= render partial: "messages/message", locals: {conversation: @conversation, message: message} %>
 					<% end %>
 					<%= paginate @Messages_category_messages, window: 1, params: {anchor: "all-Messages"} %>
+				<% else %>
+					<div class="nothing-posted"> No Text Messages ! </div>	
 				<% end %>
 
 			</div>
@@ -138,6 +148,8 @@
 						<%= render partial: "messages/message", locals: {conversation: @conversation, message: message} %>
 					<% end %>
 					<%= paginate @Media_category_messages, window: 1, params: {anchor: "all-Media"} %>
+				<% else %>
+					<div class="nothing-posted"> No Media ! </div>	
 				<% end %>
 
 			</div>
@@ -152,6 +164,8 @@
 								<%= render partial: "messages/message", locals: {conversation: @conversation, message: message} %>
 							<% end %>
 							<%= paginate category_messages, window: 1, params: {anchor: "all-" + category.split(" ").join("_")} %>
+						<% else %>	
+							<div class="nothing-posted"> No <%= category %> messages ! </div>
 						<% end %>
 						
 					</div>
@@ -267,7 +281,7 @@
 								<%= file_field_tag "attached_files[]",:id=>"conversation-chat-image", :class=>"custom-file-input", multiple: true, onchange: "fileChanged(this);" %>	
 							</label>
 							
-							<button class="btn btn-danger" type="submit" data-disable-with="Sending">Send</button>
+							<button class="btn btn-danger send-message-button-show" type="submit" data-disable-with="Sending">Send</button>
 						</div>
 					<% end %>	
 					
@@ -397,20 +411,15 @@
 									'</div>',
 								'</div>',
 								'<div class="media-content text-muted">', message , '</div>',
-								'<p>', fileMarkup, '</p>',
+								'<p class="text-center" style="max-width: 300px; margin: 3px auto; ">', fileMarkup, '</p>',
 							'</div>'				
 						];
 						
-						$(".Messages-category-messages").prepend(messageMarkup.join(''));
-						if($('#all-Messages').attr("class").indexOf("active") <= 0){
-							$(".Media-category-messages").append(messageMarkup.join(''));
-							if($('#all-Media').attr("class").indexOf("active") <= 0){
-								$($('li.active a').attr('href')).find('.messages').append(messageMarkup.join(''));		
+						$.each($('.messages'), function(index, element){
+							if($(element).attr("class").indexOf("active") > -1){
+								$(element).prepend(messageMarkup.join(''));
 							}
-							
-						}
-						
-						//App.scrollToBottomOfPage();
+						});
 						
 					}
 					reader.readAsDataURL(file);
@@ -444,15 +453,13 @@
 						'</div>'								
 					];
 				}
-				$(".Messages-category-messages").prepend(messageMarkup.join(''));
-				if($('#all-Messages').attr("class").indexOf("active") <= 0){
-					$($('li.active a').attr('href')).find('.messages').append(messageMarkup.join(''));	
-				}			
-				
-				
-				//App.scrollToBottomOfPage();
-			
-				
+
+				$.each($('.messages'), function(index, element){
+					if($(element).attr("class").indexOf("active") <= 0){
+						$(element).prepend(messageMarkup.join(''));
+					}
+				});
+								
 				submitForm = true;
 				
 			}
@@ -492,7 +499,7 @@
 
 						
 						var innerFileMarkup = [
-							'<p style="display: inline-block; margin: 3px; vertical-align: middle;"  class="temp-message">', fileMarkup , '</p>'
+							'<p style="display: inline-block; margin: 3px; vertical-align: middle;"  class="temp-message-small">', fileMarkup , '</p>'
 						];
 						$(innerFileMarkup.join('')).insertBefore("div.attachment-send-button");
 					}
@@ -505,7 +512,9 @@
 
 		$('#customMessageModal').on('hidden.bs.modal', function () {
 		  $("input[name='attached_files[]']").val("");
-		  $(".temp-message").remove();
+		  $(".temp-message-small").remove();
+		  $("#new-message-text-field").val("");
+		  $(".send-message-button-show").attr("disabled", false).html("Send");
 		})
 
 	<% end %>
@@ -552,5 +561,11 @@ $(".checkmark").on("click", function(){
 	$("#submissionStatusModal").modal('show');
 });
 
+$.each($(".show-message-body"), function(index, element){
+	
+	if($(element).html()){
+		$(element).html($(element).html().linkify());
+	}
+});
 
 </script>
