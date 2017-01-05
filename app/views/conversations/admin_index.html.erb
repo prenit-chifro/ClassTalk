@@ -668,38 +668,22 @@
 	    var value = $(this).val();
 	    if(value){
 	    	$(".students-manage-page li").hide().filter(function () {
-				if($(".media-heading", this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0 || $(".role-small", this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0 ){					
-					if($(this).parents('.class-tab-students-list-custom').css("display") == "none"){
-						$(this).parents('.class-tab-students-list-custom').css("display", "block");
-						
+				var mediaHeading = $(this).find(".media-heading");
+				var roleSmall = $(this).find(".role-small");
+				if(mediaHeading.text().toLowerCase().indexOf(value.toLowerCase()) >= 0 || roleSmall.text().toLowerCase().indexOf(value.toLowerCase()) >= 0 ){					
+					//alert($(this).attr("class") + " in if condition ");
+					if(mediaHeading.parents('.class-tab-students-list-custom').css("display") == "none"){						
+						mediaHeading.parents('.class-tab-students-list-custom').css("display", "block");						
 					}
 					return true;
 				}else{
-					if($(this).parents('.class-tab-students-list-custom').css("display") == "block"){
-						$(this).parents('.class-tab-students-list-custom').css("display", "none");
-						
-					}
+					//alert($(this).attr("class") + " in else condition ");
 					return false;
 				}			    
 			}).show();
 	    }else{
 	    	$(".students-manage-page li").show();
-	    }    
-	});
-	$('.search-conversation-parents-page').on("keyup keydown", function() {
-		
-	    var value = $(this).val();
-	    if(value){
-	    	$(".parents-manage-page li").hide().filter(function () {
-				if($(".media-heading", this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0 || $(".role-small", this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0 ){					
-
-					return true;
-				}else{
-					return false;
-				}			    
-			}).show();
-	    }else{
-	    	$(".parents-manage-page li").show();
+			$('.class-tab-students-list-custom').css("display", "none");
 	    }    
 	});
 	$('.search-conversation-staff-page').on("keyup keydown", function() {
