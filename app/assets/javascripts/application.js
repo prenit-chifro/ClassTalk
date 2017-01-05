@@ -469,21 +469,21 @@ $(document).on("turbolinks:load", function(){
 	    var value = $(this).val();
 	    if(value){
 	    	$("ul.search-index-conversation-modal li").hide().filter(function () {
-			    if($(".media-heading", this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0 || $(".role-small", this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0 ){
+			    var mediaHeading = $(this).find(".media-heading");
+				var roleSmall = $(this).find(".role-small");
+				if(mediaHeading.text().toLowerCase().indexOf(value.toLowerCase()) >= 0 || roleSmall.text().toLowerCase().indexOf(value.toLowerCase()) >= 0 ){
 					
-					if($(this).parents('.class-students-list-custom').css("display") == "none"){
-						$(this).parents('.class-students-list-custom').css("display", "block");
+					if(mediaHeading.parents('.class-students-list-custom').css("display") == "none"){
+						mediaHeading.parents('.class-students-list-custom').css("display", "block");
 					}
 					return true;
 				} else{
-					if($(this).parents('.class-students-list-custom').css("display") == "block"){
-						$(this).parents('.class-students-list-custom').css("display", "none");
-					}
 					return false;
 				}
 			}).show();
 	    }else{
 	    	$("ul.search-index-conversation-modal li").show();
+			$('.class-tab-students-list-custom').css("display", "none");
 	    }    
 	});
 	$('.search-conversation-new-page').on("keyup keydown", function() {
