@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   	# For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
   
   	root to: "conversations#index"
+    get "help" => "home#help"
   
   	devise_for :users, controllers: { sessions: 'my_devise/sessions', registrations: 'my_devise/registrations', omniauth_callbacks: 'my_devise/omniauth_callbacks', passwords: 'my_devise/passwords', unlocks: 'my_devise/unlocks' }
     

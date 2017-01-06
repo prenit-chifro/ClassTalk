@@ -49,28 +49,36 @@
 		<div class="clearfix mar-btm"></div>
 		<div class="col-sm-6 col-xs-6">
 			<div class="form-group">
-				<% options = [["Set Teacher", ""]] %>
-				<% @teachers.each do |teacher| %>
-					<% options << [teacher.first_name + " " + teacher.last_name, teacher.id] %>
-				<% end %>
-				<%= select_tag :teacher_id, options_for_select(options, ["Set Teacher", ""]),class: "form-control", required: :true %>
-
-			</div>
-		</div>	
-		<div class="col-sm-6 col-xs-6">
-			<div class="form-group">
 				<% options = [["Set Subject", ""]] %>
 				<% @subjects.each do |subject| %>
 					<% options << [subject.subject_name, subject.id] %>
 				<% end %>
-				<%= select_tag :subject_id, options_for_select(options, ["Set Subject", ""]), class: "form-control",required: :true %>
+				<%= select_tag :subject_id, options_for_select(options, ["Set Subject", ""]), class: "form-control subject-select-field",required: :true %>
 				
 			</div>
 		</div>
+		<div class="col-sm-6 col-xs-6 teacher-select-div" style="display: none;">
+			<div class="form-group">
+				<% options = [["Set Teacher", ""]] %>
+				<% @teachers.each do |teacher| %>
+					<% options << [teacher.first_name + " " + teacher.last_name, teacher.id] %>
+				<% end %>
+				<%= select_tag :teacher_id, options_for_select(options, ["Set Teacher", ""]),class: "form-control teacher-select-field", required: :true %>
+
+			</div>
+		</div>	
+		
 		<div class="col-sm-12 col-xs-12">
 			<button type="submit" class="btn btn-success" style="width: 100%;"> Save </button>
 		</div>
 	<% end %>
 	<div class="clearfix mar-btm"></div>
+
+	<script type="text/javascript">
+		var subjectTeacherArray = [];
+		$('.subject-select-field').change(function(){
+			$('teacher-select-div').show();
+		});
+	</script>>
 <% end %>
 

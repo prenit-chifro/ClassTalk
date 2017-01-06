@@ -14,7 +14,7 @@ class ApplicationController < ActionController::Base
 	private # before_action :check_login
 	def check_login
 		if(params[:controller] != nil)
-			if(params[:controller].include?("my_devise") or params[:controller].include?("android_devices") or params[:controller].include?("safari_web_push"))
+			if(params[:controller].include?("home") or params[:controller].include?("my_devise") or params[:controller].include?("android_devices") or params[:controller].include?("safari_web_push"))
 				Rails.logger.debug "BeforeFilter: Login is not required with this request"
 			else
 				if(user_signed_in?)
@@ -26,7 +26,12 @@ class ApplicationController < ActionController::Base
 					@institute = current_user.institutes.first
 					
 				else
-					authenticate_user!
+					if(params[:controller].include?("conversations") and params[:action].include?("index"))
+
+					else
+						authenticate_user!	
+					end
+					
 				end
 			end
 		end		
@@ -264,9 +269,11 @@ class ApplicationController < ActionController::Base
 
 	def layout_by_resource
 	    if params[:controller].include?("my_devise")
-	      "devise"
-	    else
-	      "application"
+	      	"devise"
+	    elsif(params[:controller].include?("home"))
+	    	"home"
+	    else	
+	    	"application"
 	    end
   	end
 

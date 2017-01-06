@@ -10,6 +10,12 @@ class ConversationsController < ApplicationController
 	end
 
 	def index
+
+		if(!user_signed_in?)
+			render "home/index", layout: "home"
+			return
+		end
+
 		@conversations = current_user.participating_conversations.order(updated_at: :desc)
 			
 		inbox_conversations_array = []
