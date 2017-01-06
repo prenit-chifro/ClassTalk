@@ -13,7 +13,7 @@
 		
 		<div class="tab-content">
 			<div class="tab-pane active" id="all-participants">
-				<% if(!current_user.role.include?("Student") and !current_user.role.include?("Parent")) %>
+				<% if(current_user.role.include?("Principal") or current_user.role.include?("Institute Admin")) %>
 					<%= link_to new_conversation_path(conversation_id: @conversation.id) do %>
 						<div class="pull-left add-member">
 							<span>Add Participient</span><i class="material-icons">&#xE7FE;</i>
