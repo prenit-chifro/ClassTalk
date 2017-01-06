@@ -1,5 +1,5 @@
 class TimetableSlotsController < ApplicationController
-    before_action :set_timezone
+    #before_action :set_timezone
     def set_timezone
         Time.zone = "UTC"
     end
@@ -135,8 +135,21 @@ class TimetableSlotsController < ApplicationController
                 teacher_id = @teacher.id
             end
             @grade_section_model = GradeSection.find_by(id: params[:grade_section_id])
-            @subject = Subject.find_by(id: params[:subject_id])
-            @timetable_slot = @section.timetable_slots.create(institute_id: @institute.id, grade_id: @grade_section_model.grade_id, section_id: @grade_section_model.section_id, subject_id: @subject.id, teacher_id: teacher_id, start_time: Time.parse(params[:start_time]), end_time: Time.parse(params[:end_time]))
+
+            if(!params[:subject_id].blank?) 
+                @subject = Subject.find_by(id: params[:subject_id])
+                subject_id = @subject.id
+            else
+                if(!@teacher.blank?)
+                    @subject = @section.get_subject_for_institute_and_grade_and_teacher(@institute, @grade, @teacher) 
+                    subject_id = @subject.id
+                else
+                    subject_id = ""
+                end
+                
+            end
+            
+            @timetable_slot = @section.timetable_slots.create(institute_id: @institute.id, grade_id: @grade_section_model.grade_id, section_id: @grade_section_model.section_id, subject_id: subject_id, teacher_id: teacher_id, start_time: Time.parse(params[:start_time]), end_time: Time.parse(params[:end_time]))
         end
 
         if(!params[:subject_id].blank?)
