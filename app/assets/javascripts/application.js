@@ -114,6 +114,7 @@ $(document).ajaxComplete(function( event, xhr, requestOptions ) {
 });
 
 $(document).on("turbolinks:load", function(){
+	
 	$(".alert").delay(4000).slideUp(200, function() {
 		$(this).alert('close');
 	});
@@ -130,6 +131,7 @@ $(document).on("turbolinks:load", function(){
 		window.location.replace(('' + window.location).split('#')[0] + targetAchieve);
 	});
 	$(function(){
+		
 		var hash = window.location.hash;		
 		
 		if(hash){

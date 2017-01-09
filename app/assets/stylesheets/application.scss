@@ -2104,6 +2104,193 @@ div.calendar div.fc-agendaWeek-view tbody.fc-body div.fc-bg > table >tbody>tr>td
 #navbar li.active-navigation a, .active-navigation-footer a{
 	background: #6bbfdd !important;	
 }
+/*download page*/
+.wrapper-parallex{
+	  font-family: 'Julius Sans One', sans-serif;
+text-shadow:none;
+}
+.menu-scroll li{
+	text-shadow:none !important;
+}
+.header-parallex{
+  background: #fff;
+  box-shadow: 1px 1px 5px #a59f9f;
+  position: fixed;
+  left: 0;
+  right: 0;
+  z-index:10;
+  top:0;
+}
+.burger-menu-div{
+	width: 96px;
+    height: 81px;
+    right: 0;
+    cursor: pointer;
+	float:right;
+}
+span.burger-menu{
+	width:30px;
+	height:4px;
+	display:block;
+	background:#6d6b6b;
+	position:absolute;
+	right:0;
+	margin:40px;
+}
+span.burger-menu::before,span.burger-menu::after{
+	width:30px;
+	content:"";
+	position:absolute;
+	height:4px;
+	display:block;
+	top:-9px;
+	background:#6d6b6b;
+}
+span.burger-menu::after{
+	top:9px;
+}
+.brand-header{
+  float: left;
+}
+.brand-header h1{
+  margin: 0;
+  padding: 12px;
+  font-size: 25px;
+}
+.brand-header h1 img{
+	width:60px;
+	vertical-align:middle;
+}
+.header-parallex ul{
+  margin: 0;
+  padding: 0;
+  float: right;
+}
+.header-parallex ul li{
+  list-style: none;
+  display: inline-block;
+}
+
+.header-parallex ul li a{
+    padding: 7px;
+    display: block;
+    color: #a5a2a2;
+    text-decoration: none;
+    font-weight: 900;
+    padding-top: 16.5px;
+    padding-bottom: 16.5px;
+}
+
+.features-content h1{
+	color:#fea634;
+}
+.feature-left{
+	text-align:center;
+}
+.feature-left img{
+	height:350px;
+}
+.main-content-left{
+	float:left;
+	padding:60px;
+	padding-bottom:0px;
+	width:40%;
+	padding-left:20px;
+}
+.main-content-right{
+	float:right;
+	width:46%;
+}
+
+.main-content-left h1{
+	font-size:36px;
+	word-wrap:break-word;
+	color:#fea634;
+}
+.main-content-left p{
+	text-align:justify;
+}
+.android-image{
+	text-align:left;
+}
+section.module.parallax-2{
+	
+	height: 400px;
+	background-position: 50% 50%;
+	background-repeat: no-repeat;
+	background-size: cover;
+}
+.image-heading{
+    position: absolute;
+    right: 15%;
+    padding-top: 80px;
+}
+.image-heading ul{
+	margin:0;
+	padding:0;
+}
+.image-heading ul li{
+	list-style:none;
+	padding:6px;
+}
+.image-heading ul li img{
+	vertical-align:middle;
+}
+
+.footer-web{
+	box-shadow: 1px 1px 10px #585858;
+	background:#d1d1d1;
+}
+.footer-main{
+	float:left;
+	padding:16px;
+}
+.footer-download-link{
+	float:right;
+	padding-top: 50px;
+}
+.footer-web-inner{
+	max-width:900px;
+	margin:0 auto;
+	min-height: 200px;
+}
+.footer-quick-links ul{
+	margin:0;
+	padding:0;
+}
+.footer-quick-links ul li{
+	list-style:none;
+	color:#fea634;
+	padding:8px;
+	font-weight:bold;
+}
+.footer-quick-links ul li a{
+	color:#fea634;
+}
+.footer-logo img{
+	width: 150px;
+}
+.footer-quick-links{
+	margin-left: 46px;
+}
+.footer-logo,.footer-quick-links{
+	float:left;
+}
+.footer-quick-links ul li a{
+	text-decoration:none;
+}
+    .swiper-container {
+        width: 100%;
+        padding-top: 50px;
+        padding-bottom: 50px;
+    }
+    .swiper-slide {
+        background-position: center;
+        background-size: cover;
+        width: 300px !important;
+        height: 500px !important;
+    }
+
 @media (max-width:515px){
 	.search-form-main div.form-group{
 		float: none !important;
@@ -2411,5 +2598,23 @@ div.calendar div.fc-agendaWeek-view tbody.fc-body div.fc-bg > table >tbody>tr>td
 		font-size: 16px;
 		line-height:3.5;
 	}
+
+}
+@media only screen and (min-width:880px){
+	.burger-menu-div{
+		display:none;
+	}
+}
+@media only screen and (max-width:880px){
+	.header-parallex ul li{
+		display:block;
+	}
+	.header-parallex ul{
+		position: absolute;
+		right: 0px;
+		top: 81px;
+		background: #dadada;
+		box-shadow: 5px 0px 0px #000;
+	}   
 
 }
