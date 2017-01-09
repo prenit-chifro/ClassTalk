@@ -2164,6 +2164,14 @@ div.calendar div.fc-agendaWeek-view tbody.fc-body div.fc-bg > table >tbody>tr>td
 		overflow:hidden;
 	}
 }
+@media only screen and (min-device-width: 481px) and (max-device-width: 992px) and (orientation: portrait){
+	.truncate{
+		width:150px;
+		text-overflow:ellipsis;
+		white-space:nowrap;
+		overflow:hidden;
+	}	
+}
 @media only screen and (max-width:350px){
 	.main-navbar-brand a i{
 	    font-size: 19px;

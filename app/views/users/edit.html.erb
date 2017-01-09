@@ -48,11 +48,6 @@
 						<div class="form-group">
 							<%= number_field_tag :pincode, @user.address, placeholder: "Pin Code", class:"form-control", "autocomplete"=>"off" %>
 						</div>
-						<label for="transport-checkbox">
-							<div class="nothing-posted" style="font-size:12px;margin-bottom:10px;">
-								<span style="vertical-align:middle;">Is using School Transport</span> <%= check_box_tag :is_using_transport, true, @user.is_using_transport,style:"vertical-align:middle", id: "transport-checkbox" %> 
-							</div>
-						</label>
 						
 						<% if(!@section_member_models.blank?) %>
 							<% @section_member_models.each do |section_member_model| %>
@@ -89,7 +84,7 @@
 						</div>
 						<label for="transport-checkbox">
 							<div class="nothing-posted" style="font-size:12px;margin-bottom:10px;">
-								<span style="vertical-align:middle;">Is using School Transport</span> <%= check_box_tag :is_using_transport, true, @user.is_using_transport,style:"vertical-align:middle", id: "transport-checkbox" %> 
+								<span style="vertical-align:middle;">School Transport?</span> <%= check_box_tag :is_using_transport, true, @user.is_using_transport,style:"vertical-align:middle", id: "transport-checkbox" %> 
 							</div>
 						</label>
 						
@@ -130,11 +125,6 @@
 						<div class="form-group">
 							<%= number_field_tag :pincode, @user.pincode, placeholder: "Pin Code", class:"form-control", "autocomplete"=>"off" %>
 						</div>
-						<label for="transport-checkbox">
-							<div class="nothing-posted" style="font-size:12px;margin-bottom:10px;">
-								<span style="vertical-align:middle;">Is using School Transport</span> <%= check_box_tag :is_using_transport, true, @user.is_using_transport,style:"vertical-align:middle", id: "transport-checkbox" %> 
-							</div>
-						</label>
 						
 					<% end %>
 				<% end %>

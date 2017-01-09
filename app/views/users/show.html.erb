@@ -59,7 +59,6 @@
 									<% if(@user.role == "Parent") %>
 										<p>Address : <span class="pull-right"> <%= @user.address %> </span> </p>
 										<p>Pin Code : <span class="pull-right"> <%= @user.pincode %> </span> </p>
-										<p>Using School Transport ? : <span class="pull-right"> <%= @user.is_using_transport ? "Yes" : "No" %> </span> </p>
 										<% if(!@user.child_ids.blank?) %>
 											<h4> Children </h4>
 											<% @user.children.each do |child| %>
@@ -73,8 +72,7 @@
 										<p>Staff ID : <span class="pull-right"> <%= @user.staff_id %> </span> </p>
 										<p>Address : <span class="pull-right"> <%= @user.address %> </span> </p>
 										<p>Pin Code : <span class="pull-right"> <%= @user.pincode %> </span> </p>
-										<p>Using School Transport ? : <span class="pull-right"> <%= @user.is_using_transport ? "Yes" : "No" %> </span> </p>
-										
+
 									<% end %>
 								<% end %>
 								
