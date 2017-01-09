@@ -12,7 +12,7 @@ module ClassNest
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
 	
-	config.time_zone = 'UTC'
+	config.time_zone = 'New Delhi'
 	config.active_record.default_timezone = :local	
 
   end
