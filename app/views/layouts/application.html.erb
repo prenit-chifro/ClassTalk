@@ -43,26 +43,14 @@
 		    <nav class="navbar navbar-default navbar-fixed-top" style="height: 54px;">
 				<div class="container-width">
 					<div class="navbar-header pull-left">						
-						<span class="navbar-brand main-navbar-brand truncate"><%= yield :heading %></span>
+						<span class="navbar-brand main-navbar-brand"><%= yield :heading %></span>
 					</div>
 					
 					<ul class="nav navbar-nav navbar-right pull-right right-self-image" style="margin-right: 3px;">
 						<li>
-							<a class="navbar-brand right-menu text-center" href="javascript:void(0)" style="padding: 15px;padding-left:4px;padding-right: 4px;width:200px;"><%= @institute.institute_name.truncate(20) if !@institute.blank? %></a>
 							<button type="button" class="navbar-toggle collapsed pull-left hamburger-menu hamburger-menu-left-arrow" data-toggle="collapse" id="navbar-toggle-button">
 								<span></span>
 							</button>
-							<ul class="right-menu-toggle" id="right-menu-toggle-id" style="display:none;">
-								<li class="main-image text-center" style="border-bottom: 1px solid #cccaca;">
-									<a href="/users/<%= current_user.id %>">
-										<img src="<%= current_user.profile_picture.media.url(:thumb) %>" class="img-circle img-xs" >
-										<br>
-										<span><%= current_user.first_name.capitalize %></span><br>
-										<span><%= current_user.role %></span>
-									</a>									
-								</li>
-								
-							</ul>						
 						</li>							
 					</ul>
 					<div id="navbar" class="navbar-collapse pull-right navbar-fixed-small-screen">
