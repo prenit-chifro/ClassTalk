@@ -1,7 +1,7 @@
 <div class="wrapper-parallex">
 	<div class="header-parallex">
 		<div class="brand-header" style="float:left;">
-			<h1><%= image_tag "" %><span style="color:green;">Class</span><span style="color:#fea634;">Talk</span></h1>
+			<h1><span style="color:#fff;">Class</span><span style="color:#777;">Talk</span></h1>
 		</div>  
 		<div class="burger-menu-div">
 			<span class="burger-menu"></span>
@@ -18,16 +18,16 @@
 		</ul>  
 	</div>
 	<div class="clear" style="clear:both;"></div>
-	<div id="home" style="margin-top:90px;">
+	<div id="home">
 		<section class="module parallax parallax-1">
 			<div class="first-image">
                 <div class="overlay">
 
                     <div class="container">
                         <div class="row relative">
-                            <img src="" alt="ClassTalk" class="intro-mobile img-responsive" />
-                            <div class="col-md-6 col-md-offset-6">
-                                <h1>
+							<%= image_tag "8.png", class: "intro-mobile img-responsive" %>
+                            <div class="col-md-6 col-md-offset-6 text-center">
+                                <h1 class="letter-spacing">
                                     Easiest And Most Natural Way For Parents to connect with their child’s school. 
                                 </h1>
 
@@ -49,12 +49,12 @@
 		</section>
 	</div>		
 	<div class="clear" style="clear:both;"></div>
-	<div id="why-for-parents" style="padding: 100px 0px;">
+	<div id="why-for-parents" class="section">
 		<section class="module parallax parallax-2" style="background-image:url('')";>
 			 <div class="container">
                 <div class="row">
                     <div class="col-md-12">
-                        <div class="titleSection text-center" style="margin-bottom: 80px;">
+                        <div class="titleSection text-center">
                             <h2>How does it benefit <span class="bold">Parents </span>?</h2>
                        
                             <div class="coloredLine"></div>
@@ -65,7 +65,7 @@
                 <div class="row">
                     <div class="col-md-4 leftFeatures">
                         <div class="text-right space100">
-                            <i class="icon-chat bigIcon"></i>
+                            <i class="fa fa-comment bigIcon"></i>
                             <h4 class="bold">Easy Chat with Teachers</h4>
                             <p>
                                 No more waiting till Parent Teacher Meeting for feedback. Ask for your child's progess to the teachers at a single click!
@@ -85,7 +85,7 @@
                     </div>
 
                     <div class="col-md-4">
-                        <img src="" class="img-responsive wow bounceIn" alt="features" data-wow-duration="1s" data-wow-offset="50" data-wow-delay="0s" />
+                        <%= image_tag "7.png" , class: "img-responsive" %>
                     </div>
 
                     <div class="col-md-4 rightFeatures">
@@ -150,7 +150,7 @@
                     </div>
 
                     <div class="col-md-4">
-                        <img src="https://hp.azureedge.net/Assests/images/features-mob_1.png" class="img-responsive wow bounceIn" alt="features" data-wow-duration="1s" data-wow-offset="50" data-wow-delay="0s" />
+						<%= image_tag "12.png", class: "img-responsive" %>
                     </div>
 
                     <div class="col-md-4 rightFeatures">
@@ -217,7 +217,7 @@
                     </div>
 
                     <div class="col-md-4">
-                        <i class="icon-chat bigIcon"></i>
+                        <i class="fa fa-comment bigIcon"></i>
                         <h4 class="bold">Moderated Messaging</h4>
                         <p>
                             Institutes can send messages to all the parents but parents can send message only to the school.
@@ -229,60 +229,75 @@
 		</section>
 	</div>
 	<div class="clear" style="clear:both;"></div>
-	<div class="screenshotSlider relative">
-		<div class="container">
-			<div class="row">
-				<div class="col-xs-12">
-					<div class="swiper-container">
-						<div class="swiper-wrapper">
-							<div class="swiper-slide" style="background-image:url('<%= image_url "3.png" %>')"></div>
-							<div class="swiper-slide" style="background-image:url('<%= image_url "3.png" %>')"></div>
-							<div class="swiper-slide" style="background-image:url('<%= image_url "3.png" %>')"></div>
-							<div class="swiper-slide" style="background-image:url('<%= image_url "3.png" %>')"></div>
-							<div class="swiper-slide" style="background-image:url('<%= image_url "3.png" %>')"></div>
-							<div class="swiper-slide" style="background-image:url('<%= image_url "3.png" %>')"></div>
-							<div class="swiper-slide" style="background-image:url('<%= image_url "3.png" %>')"></div>
-							<div class="swiper-slide" style="background-image:url('<%= image_url "3.png" %>')"></div>
-							<div class="swiper-slide" style="background-image:url('<%= image_url "3.png" %>')"></div>
-							<div class="swiper-slide" style="background-image:url('<%= image_url "3.png" %>')"></div>
+	<div id="screenshots" style="padding: 100px 0px;">
+		<div class="screenshotSlider relative">
+			<div class="container">
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="swiper-container">
+							<div class="swiper-wrapper">
+								<div class="swiper-slide" style="background-image:url('<%= image_url "8.png" %>')"></div>
+								<div class="swiper-slide" style="background-image:url('<%= image_url "7.png" %>')"></div>
+								<div class="swiper-slide" style="background-image:url('<%= image_url "3.png" %>')"></div>
+								<div class="swiper-slide" style="background-image:url('<%= image_url "5.png" %>')"></div>
+								<div class="swiper-slide" style="background-image:url('<%= image_url "6.png" %>')"></div>
+								<div class="swiper-slide" style="background-image:url('<%= image_url "9.png" %>')"></div>
+								<div class="swiper-slide" style="background-image:url('<%= image_url "24.png" %>')"></div>
+								<div class="swiper-slide" style="background-image:url('<%= image_url "29.png" %>')"></div>
+								<div class="swiper-slide" style="background-image:url('<%= image_url "22.png" %>')"></div>
+								<div class="swiper-slide" style="background-image:url('<%= image_url "4.png" %>')"></div>
+							</div>
+							<div class="swiper-pagination"></div>
 						</div>
-						<div class="swiper-pagination"></div>
 					</div>
 				</div>
 			</div>
 		</div>
-	</div>
-	<div class="footer-web">
-		<div class="footer-web-inner">
-			<div class="footer-main">
-				<div class="footer-logo">
-					<%= image_tag "" %>
-				</div>				
-				<div class="footer-quick-links">
-					<ul class="menu-scroll">
-						<li class="to-scroll"><a href="#home">Home</a></li>
-						<li class="to-scroll"><a href="#why-for-parents">Why For Parents?</a></li>
-						<li class="to-scroll"><a href="#why-for-schools">Why For Schools?</a></li>
-						<li class="to-scroll"><a href="#more-benefits">More Benefits</a></li>
-						<li class="to-scroll"><a href="#screenshots">Screenshots</a></li>						
-						<li class="to-scroll"><a href="#contact">Contact</a></li>
-						<li class="not-to-scroll"><%= link_to "help", help_path %></li>
-						<li class="not-to-scroll"><%= link_to "login or Register", new_user_session_path %></li>						
-						<li>
-							<%= link_to "https://play.google.com/store/apps/details?id=app.android.family.location.emergency.safety.familynest", "data-ajax" => "false" do %>
-								Download App
-							<% end %>
-						</li>								
-					</ul>
+	</div>	
+	<div id="contact" class="section" style="background:#f9f9f9;">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="titleSection">
+						<h2>Get In Touch with<span class="bold"> CLASSTALK</span></h2>
+						<div class="coloredLine"></div>
+					</div>
 				</div>
-			</div>	
-			<div class="footer-download-link">
-				<%= link_to "https://play.google.com/store/apps/details?id=app.android.family.location.emergency.safety.familynest", "data-ajax" => "false" do %>
-					<%= image_tag "" %>
-				<% end %>
 			</div>
-		</div>	
+
+			<div class="row">
+				<form id="contactForm">
+					<div class="col-md-6 col-md-offset-3">
+						<input id="name" type="text" class="form-control" name="name" placeholder="Your Name" required>
+						<input id="email" type="email" class="form-control" name="email" placeholder="Your Email" required>
+						<input type="text" pattern="^([0|\+[0-9]{1,5})?([1-9][0-9]{9})$" class="form-control" name="mobile"  placeholder="Your Mobile Number (format:valid 10 digit number)" required="required">
+						<textarea class="form-control" id="message" rows="5" placeholder="Message"></textarea>
+
+						<button class="btn-new" type="submit" id="submit" name="submit">Send Message</button>
+					</div>
+				</form>
+			</div>
+		</div>
 	</div>
+	<footer>
+		<div class="container">
+			<div class="col-md-12" >
+				<div id="footerLogo"><a href="#page-top" class="page-scroll" style="font-size: 53px;"><span style="color: #fff;">CLASS</span>TALK</a></div>
+				<div class="space50"></div>
+				<ul class="clearlist socialList">
+					<li style="margin-right: 20px;"><a href="#" target="_blank"><i class="fa fa-facebook" style="margin-right: 2px;"></i><span> Facebook </span></a></li>
+					<li><a href="#"><i class="fa fa-twitter" style="margin-right: 2px;"></i><span>Twitter</span></a></li>
+					
+				</ul>
+				<hr>
+				<p>
+					&copy; CLASSTALK | <a href="/Home/PrivacyPolicy">Privacy Policy</a> | <a href="/Home/TermsOfService">Terms Of Service</a> 
+			   
+				</p>
+			</div>
+		</div>
+	</footer>
+	
 </div>
 
 <script>
