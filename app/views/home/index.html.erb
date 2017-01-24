@@ -25,7 +25,7 @@
 
                     <div class="container">
                         <div class="row relative">
-							<%= image_tag "8.png", class: "intro-mobile img-responsive" %>
+							<%= image_tag "8.png", class: "intro-mobile img-responsive", alt: "ClassTalk" %>
                             <div class="col-md-6 col-md-offset-6 text-center">
                                 <h1 class="letter-spacing">
                                     Easiest And Most Natural Way For Parents to connect with their child’s school. 
@@ -37,8 +37,8 @@
                                     allows both parents to stay updated with their child’s progress.
                                 </p>
                                 <div class="downloads space10">
-                                    <a href=""><img src="" alt="apple" /></a>
-                                    <a href="" target="_blank"><img src="" alt="android" /></a>
+                                    <a href=""><%= image_tag "apple.png" %></a>
+                                    <a href="" target="_blank"><%= image_tag "android.png" %></a>
                                 </div> 
                                 
                             </div>
@@ -248,6 +248,8 @@
 								<div class="swiper-slide" style="background-image:url('<%= image_url "4.png" %>')"></div>
 							</div>
 							<div class="swiper-pagination"></div>
+							<div class="swiper-button-next swiper-button-black"></div>
+							<div class="swiper-button-prev swiper-button-black"></div>
 						</div>
 					</div>
 				</div>
@@ -307,6 +309,11 @@
         grabCursor: true,
         centeredSlides: true,
         slidesPerView: 'auto',
+		initialSlide: 4,
+		paginationClickable: true,
+		nextButton: '.swiper-button-next',
+        prevButton: '.swiper-button-prev',
+		loop: true,
         coverflow: {
             rotate: 50,
             stretch: 0,

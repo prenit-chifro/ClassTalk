@@ -2374,12 +2374,12 @@ ul.help-pills li a{
 }
 ul.help-pills > li.active > a, ul.help-pills > li.active > a:hover, ul.help-pills > li.active > a:focus{
 	border-radius: 0;
-    background-color: #8a8d8e;
+    background: none;
 	border-bottom: 4px solid #fff;
     
 }
 ul.help-pills > li > a:hover, ul.help-pills > li > a:focus{
-	background-color: #8a8d8e;
+	background: none;
 	border-radius: 0;
 	border-bottom: 4px solid #fff;
 }
