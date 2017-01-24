@@ -50,7 +50,16 @@
 	<% if(!message.attachments.blank?) %>
 		<% message.attachments.each do |attachment| %>
 			<div class="text-center" style="max-width: 300px; margin: 3px auto; ">
-				<div class="many-type-media view-attachment-button" style="display: inline-block;" data-href="https://docs.google.com/gview?url=https://classtalk.in<%= attachment.media.url %>&embedded=true&chrome=true">
+				<% if(attachment.is_image_type?) %>
+					 <% attachment_type = "Image" %>
+				<% end %>
+				<% if(attachment.is_document_type?) %>
+					<% attachment_type = "Document" %>
+				<% end %>
+				<% if(attachment.is_video_type?) %>
+					<% attachment_type = "Video" %>
+				<% end %>
+				<div class="many-type-media view-attachment-button" style="display: inline-block;" data-href="https://docs.google.com/gview?url=https://classtalk.in<%= attachment.media.url %>&embedded=true&chrome=true" data-attachment-type="<%= attachment_type %>" data-attachment-url="<%= attachment.media.url %>" data-attachment-extension="<% attachment.media_content_type %>">
 					<a>
 						<% if(attachment.is_image_type?) %>
 							<p class="inner-many-type-media">View Image</p>

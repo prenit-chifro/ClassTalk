@@ -314,12 +314,38 @@ $(document).on("turbolinks:load", function(){
 	});
 	$(".view-attachment-button").on("click", function(){
 		$(this).html("");
-		var linkMedia = $(this).attr("data-href");
-		var markupArryForMedia=[
-			'<p style="max-width: 300px; margin: 0 auto;">',
-				'<iframe style="width: 100%;" height= "200" src="' +  linkMedia + '"></iframe>',
-			'</p>' 
-		];
+		attachmentType = $(this).attr("data-attachment-type");
+		if(attachmentType == "Image"){
+			var linkMedia = $(this).attr("data-attachment-url");
+			var markupArryForMedia=[
+				'<p style="max-width: 300px; margin: 0 auto;">',
+					'<img style="width: 100%;" height= "200" src="' +  linkMedia + '"></img>',
+				'</p>' 
+			];
+		}
+
+		if(attachmentType == "Video"){
+			var linkMedia = $(this).attr("data-attachment-url");
+			var fileType = $(this).attr("data-attachment-extension");
+			var markupArryForMedia=[
+				'<p style="max-width: 300px; margin: 0 auto;">',
+					'<video width="300" height="200" controls class="video-js vjs-default-skin">',
+							'<source src="' + linkMedia + '" type="' + fileType +'" >',
+							
+							'Your browser does not support the video tag.',
+					'</video>',
+				'</p>' 
+			];
+		}
+		if(attachmentType == "Document"){
+			var linkMedia = $(this).attr("data-href");
+			var markupArryForMedia=[
+				'<p style="max-width: 300px; margin: 0 auto;">',
+					'<iframe style="width: 100%;" height= "200" src="' +  linkMedia + '"></iframe>',
+				'</p>' 
+			];
+		}
+
 		$(this).html(markupArryForMedia.join(''));
 	});
 
