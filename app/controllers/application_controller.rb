@@ -27,7 +27,7 @@ class ApplicationController < ActionController::Base
 					
 				else
 					if(params[:controller].include?("conversations") and params[:action].include?("index"))
-						authenticate_user!	
+						#authenticate_user!	
 					else
 						authenticate_user!	
 					end
