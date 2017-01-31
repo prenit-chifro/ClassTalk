@@ -1,8 +1,8 @@
 <% if(!params[:slot_for].blank? and params[:slot_for] == "Teacher") %>
 	<%= form_tag institute_timetable_slot_path(@institute, @timetable_slot), method: :patch, remote: true do %>
 		<%= hidden_field_tag :slot_for, :Teacher %>
-		<%= hidden_field_tag :start_time, @timetable_slot.start_time %>
-		<%= hidden_field_tag :end_time, @timetable_slot.end_time %>
+		<%= hidden_field_tag :start_time, @timetable_slot.start_time.strftime('%a, %d %b %Y %H:%M:%S') %>
+		<%= hidden_field_tag :end_time, @timetable_slot.end_time.strftime('%a, %d %b %Y %H:%M:%S') %>
 		<h3>
 			<%= @teacher.first_name %> <%= @teacher.last_name %> (<%= @teacher.details %>)
 			<span class="pull-right" style="font-size:17px; color:#d9535f"> <%= get_am_pm_time(@timetable_slot.start_time) %> to <%= get_am_pm_time(@timetable_slot.end_time) %></span>
@@ -44,8 +44,8 @@
 <% else %>
 	<%= form_tag institute_timetable_slot_path(@institute, @timetable_slot), method: :patch, remote: true do %>
 		<%= hidden_field_tag :slot_for, :Others %>
-		<%= hidden_field_tag :start_time, @timetable_slot.start_time %>
-		<%= hidden_field_tag :end_time, @timetable_slot.end_time %>
+		<%= hidden_field_tag :start_time, @timetable_slot.start_time.strftime('%a, %d %b %Y %H:%M:%S') %>
+		<%= hidden_field_tag :end_time, @timetable_slot.end_time.strftime('%a, %d %b %Y %H:%M:%S') %>
 	
 		<h3>
 			Class <%= @grade.grade_name %><%= @section.section_name %>

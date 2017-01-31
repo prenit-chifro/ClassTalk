@@ -1,8 +1,8 @@
 <% if(!params[:teacher_id].blank?) %>
 	<%= form_tag institute_timetable_slots_path(@institute), method: :post, remote: true do %>
 		<%= hidden_field_tag :teacher_id, @teacher.id %>
-		<%= hidden_field_tag :start_time, Time.parse(params[:start_time]) %>
-		<%= hidden_field_tag :end_time, Time.parse(params[:end_time]) %>
+		<%= hidden_field_tag :start_time, Time.parse(params[:start_time]).strftime('%a, %d %b %Y %H:%M:%S') %>
+		<%= hidden_field_tag :end_time, Time.parse(params[:end_time]).strftime('%a, %d %b %Y %H:%M:%S') %>
 		<h3>
 			<%= @teacher.first_name %> <%= @teacher.last_name %> (<%= @teacher.details %>)
 			<span class="pull-right" style="font-size:17px; color:#d9535f"> <%= get_am_pm_time(Time.parse(params[:start_time])) %> to <%= get_am_pm_time(Time.parse(params[:end_time])) %></span>
@@ -79,8 +79,8 @@
 	<%= form_tag institute_timetable_slots_path(@institute), method: :post, remote: true do %>
 		<%= hidden_field_tag :grade_id, @grade.id %>
 		<%= hidden_field_tag :section_id, @section.id %>
-		<%= hidden_field_tag :start_time, Time.parse(params[:start_time]) %>
-		<%= hidden_field_tag :end_time, Time.parse(params[:end_time]) %>
+		<%= hidden_field_tag :start_time, Time.parse(params[:start_time]).strftime('%a, %d %b %Y %H:%M:%S') %>
+		<%= hidden_field_tag :end_time, Time.parse(params[:end_time]).strftime('%a, %d %b %Y %H:%M:%S') %>
 		<h3>
 			Class <%= @grade.grade_name %><%= @section.section_name %>
 			<span class="pull-right" style="font-size:17px; color:#d9535f"> <%= get_am_pm_time(Time.parse(params[:start_time])) %> to <%= get_am_pm_time(Time.parse(params[:end_time])) %></span>
