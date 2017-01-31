@@ -303,17 +303,20 @@
 </div>
 
 <script>
+
+$(document).ready(function(){
     var swiper = new Swiper('.swiper-container', {
         pagination: '.swiper-pagination',
         effect: 'coverflow',
+        autoplay: 5000,
         grabCursor: true,
         centeredSlides: true,
         slidesPerView: 'auto',
-		initialSlide: 4,
-		paginationClickable: true,
-		nextButton: '.swiper-button-next',
+        initialSlide: 4,
+        paginationClickable: true,
+        nextButton: '.swiper-button-next',
         prevButton: '.swiper-button-prev',
-		loop: true,
+        loop: true,
         coverflow: {
             rotate: 50,
             stretch: 0,
@@ -322,10 +325,7 @@
             slideShadows : true
         }
     });
-</script>
-<script>
-$(document).ready(function () {
-    
+
     $('ul.menu-scroll li.to-scroll a').on('click', function (e) {
         e.preventDefault();
         var target = this.hash;
@@ -336,9 +336,7 @@ $(document).ready(function () {
             window.location.hash = target;
         });
     });
-});
 
-$(document).ready(function(){
 	var eventFired = 0;
 
 	if ($(window).width() > 880) {

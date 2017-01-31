@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161206112343) do
+ActiveRecord::Schema.define(version: 20170131064101) do
 
   create_table "android_devices", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "gcm_registration_id"
@@ -155,8 +155,9 @@ ActiveRecord::Schema.define(version: 20161206112343) do
     t.integer  "institute_id"
     t.integer  "grade_id"
     t.integer  "creator_id"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
+    t.string   "custom_grade_name", default: ""
     t.index ["creator_id"], name: "index_institute_grades_on_creator_id", using: :btree
     t.index ["grade_id"], name: "index_institute_grades_on_grade_id", using: :btree
     t.index ["institute_id"], name: "index_institute_grades_on_institute_id", using: :btree

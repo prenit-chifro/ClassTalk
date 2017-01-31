@@ -23,5 +23,13 @@ class Grade < ApplicationRecord
 	def get_grade_creator_for_institute institute
 		self.grades_institutes.find_by(institute_id: institute.id).grade_creator
 	end
+
+	def custom_name_for_institute institute
+		if(self.grades_institutes.find_by(institute_id: institute.id).custom_grade_name.blank?)
+			"Class #{self.grade_name}"
+		else
+			self.grades_institutes.find_by(institute_id: institute.id).custom_grade_name
+		end
+	end
 	
 end

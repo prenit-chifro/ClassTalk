@@ -28,6 +28,9 @@
 						</ul>	
 						<div class="division-criterias" style="display:none;">
 							<div class="division-section">
+								<%= text_field_tag "grade_ids_for_grade_name[#{grade.id}][grade_name]", nil, placeholder: "Custom Class Name" %>	
+							</div>
+							<div class="division-section">
 								<span class="text-muted division-criteria-style division-criteria-subject-style">All Sections: </span>
 								<input type="checkbox" name="subject-selector" class="all-sections" id="all-sections"/>
 								<div class="division-upper-sections">	

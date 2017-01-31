@@ -112,7 +112,7 @@
 							<li class="find-teacher-list find-tab-teacher-list" style="margin-bottom:10px;position:relative;">
 								
 								<h6 class="teachers-list-heading-inner" style="background: #d1cece;margin: 0;padding: 10px; color: #dd223d;">
-									Class <%= grade.grade_name + section.section_name %>																		
+									<%= grade.custom_name_for_institute(@institute) + " " + section.section_name %>																		
 									<i class="material-icons arrow-up-icon pull-right" style="margin-top:-5px;">&#xE316;</i>
 								</h6>
 								<div class="container-width classRoute class-tab-students-list-custom" style="display: none; box-shadow:rgb(175, 172, 172) 1px 1px 10px;margin-bottom:10px;">
@@ -169,7 +169,7 @@
 						<li class="find-teacher-list find-tab-teacher-list" style="margin-bottom:10px;position:relative;">
 								
 							<h6 class="teachers-list-heading-inner" style="background: #d1cece;margin: 0;padding: 10px; color: #dd223d;">
-								Class <%= grade.grade_name %>																		
+								<%= grade.custom_name_for_institute(@institute) %>																		
 								<i class="material-icons arrow-up-icon pull-right" style="margin-top:-5px;">&#xE316;</i>
 							</h6>
 

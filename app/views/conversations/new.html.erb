@@ -49,7 +49,12 @@
 													<% students = section.get_members_with_given_roles_for_institute_and_grade_with_role(@institute, grade, ["Student"]) %>
 													<li class="find-teacher-list" style="margin-bottom:10px;position:relative;">
 														
-														<div style="color:#f00;padding-left:10px; padding-top: 9px; font-size:10px;position: absolute; left: 26px;">
+														<h6 class="teachers-list-heading-inner" style="background: #d1cece;margin: 0;padding: 10px; cursor:pointer;color: #dd223d;">
+															<%= grade.grade_name + section.section_name %>																		
+															<i class="material-icons arrow-up-icon pull-right" style="margin-top:-5px;margin-right: -10px;">&#xE316;</i>
+														</h6>
+
+														<div class="class-individual-selector">
 															<label for="select-all-class-students-<%= grade.grade_name + section.section_name %>">
 																<input type="checkbox" class="all-students all-upper-checkbox-students" style="vertical-align: middle; margin-top:-2px;" id="select-all-class-students-<%= grade.grade_name + section.section_name %>"> 
 																All Students
@@ -59,10 +64,7 @@
 																All Parents
 															</label>
 														</div>
-														<h6 class="teachers-list-heading-inner" style="background: #d1cece;margin: 0;padding: 10px; cursor:pointer;color: #dd223d;">
-															<%= grade.grade_name + section.section_name %>																		
-															<i class="material-icons arrow-up-icon pull-right" style="margin-top:-5px;margin-right: -10px;">&#xE316;</i>
-														</h6>
+
 														<div class="container-width classRoute class-students-list-custom" style="display: none; box-shadow:rgb(175, 172, 172) 1px 1px 10px;margin-bottom:10px;">
 															
 															<ul class="list-unstyled index-conversation-modal search-index-conversation-modal" style="box-shadow: none;    max-height: 200px !important;">

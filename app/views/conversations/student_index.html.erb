@@ -127,7 +127,7 @@
 									
 									<% if(!grade.blank? and !section.blank?) %>
 										<li>
-											<h6 class="teachers-list-heading" style="background:#b0b0b0;">Class <%= grade.grade_name %><%= section.section_name %><i class="material-icons arrow-up-icon pull-right">&#xE316;</i></h6>
+											<h6 class="teachers-list-heading" style="background:#b0b0b0;"><%= grade.custom_name_for_institute(@institute) %> <%= section.section_name %><i class="material-icons arrow-up-icon pull-right">&#xE316;</i></h6>
 											<div class="container-width classRoute">
 												<div class="calendar class-calendar" data-grade-id="<%= grade.id %>" data-section-id="<%= section.id %>">
 												</div>

@@ -25,7 +25,7 @@ if(current_user.role == "Institute Admin")
 			subject = timetable_slot.subject
 
 			json.id timetable_slot.id
-			json.title grade.grade_name + section.section_name if !grade.blank? and !section.blank?
+			json.title grade.custom_name_for_institute(@institute) + section.section_name if !grade.blank? and !section.blank?
 			json.start timetable_slot.start_time.strftime(date_format)
 			json.end timetable_slot.end_time.strftime(date_format)
 			json.dow [timetable_slot.start_time.wday]
@@ -48,7 +48,7 @@ if(current_user.role == "Teacher")
 			subject = timetable_slot.subject
 
 			json.id timetable_slot.id
-			json.title grade.grade_name + section.section_name if !grade.blank? and !section.blank?
+			json.title grade.custom_name_for_institute(@institute) + " " + section.section_name if !grade.blank? and !section.blank?
 			json.start timetable_slot.start_time.strftime(date_format)
 			json.end timetable_slot.end_time.strftime(date_format)
 			json.dow [timetable_slot.start_time.wday]

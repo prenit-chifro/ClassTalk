@@ -33,8 +33,15 @@ class GradesController < ApplicationController
 			  @grade_section_models = []
 	          params[:grade_ids].each do |grade_id, grade_extras|
 	            grade = Grade.find_by(id: grade_id)
-	            @institute.institutes_grades.create(grade_id: grade.id, creator_id: current_user.id) if !grade.blank?
+	            custom_name = ""
+	            if(!params[:grade_ids_for_grade_name].blank?)
+	            	if(!params[:grade_ids_for_grade_name][grade_id].blank?)
+	            		custom_name = params[:grade_ids_for_grade_name][grade_id][:grade_name]
+	            	end
+	            end
+	            @institute.institutes_grades.create(custom_grade_name: custom_name, grade_id: grade.id, creator_id: current_user.id) if !grade.blank?
 	          end
+
 
 	          if(!params[:grade_ids_for_section].blank?)
 	          	params[:grade_ids_for_section].each do |grade_id, grade_extras|

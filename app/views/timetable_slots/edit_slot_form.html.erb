@@ -13,9 +13,9 @@
 			<div class="form-group">
 				<% options = [["Set Class", ""]] %>
 				<% @grade_section_models.each do |grade_section_model| %>
-					<% options << ["Class #{grade_section_model.grade.grade_name}#{grade_section_model.section.section_name}", grade_section_model.id] %>
+					<% options << ["#{grade_section_model.grade.custom_name_for_institute(@institute)} #{grade_section_model.section.section_name}", grade_section_model.id] %>
 				<% end %>
-				<%= select_tag :grade_section_id, options_for_select(options, ["Class #{@timetable_slot.grade.grade_name}#{@timetable_slot.section.section_name}", @grade_section_model.id]), class: "form-control",required: :true %>
+				<%= select_tag :grade_section_id, options_for_select(options, ["#{@timetable_slot.grade.custom_name_for_institute(@institute)} #{@timetable_slot.section.section_name}", @grade_section_model.id]), class: "form-control",required: :true %>
 			</div>
 		</div>
 		<div class="col-sm-6 col-xs-6">
@@ -48,7 +48,7 @@
 		<%= hidden_field_tag :end_time, @timetable_slot.end_time.strftime('%a, %d %b %Y %H:%M:%S') %>
 	
 		<h3>
-			Class <%= @grade.grade_name %><%= @section.section_name %>
+			<%= @grade.custom_name_for_institute(@institute) %> <%= @section.section_name %>
 			<span class="pull-right" style="font-size:17px;color:#d9535f"> <%= get_am_pm_time(@timetable_slot.start_time) %> to <%= get_am_pm_time(@timetable_slot.end_time) %></span>
 		</h3>
 		<span>Assign Teacher and Subject </span>
