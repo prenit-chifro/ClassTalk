@@ -51,7 +51,7 @@ class GradesController < ApplicationController
 	          	  	  section = Section.find_by(id: section_id)
 		              grade_section_model = @institute.institutes_grades_sections_models.create(grade_id: grade.id, section_id: section.id, creator_id: current_user.id) if !grade.blank? and !section.blank?
 		              @grade_section_models << grade_section_model
-		              section_conversation = current_user.created_conversations.create(conversation_name: "Class #{grade.grade_name} #{section.section_name}".truncate(20), institute_id: @institute.id, grade_id: grade.id, section_id: section.id, message_categories: "HomeWork", is_custom_group: false) if !grade.blank? and !section.blank?
+		              section_conversation = current_user.created_conversations.create(conversation_name: "#{grade.custom_name_for_institute(@institute)} #{section.section_name}".truncate(30), institute_id: @institute.id, grade_id: grade.id, section_id: section.id, message_categories: "HomeWork", is_custom_group: false) if !grade.blank? and !section.blank?
 
 	          	  	end	
 	          	  end
@@ -94,7 +94,7 @@ class GradesController < ApplicationController
                 				section = Section.find_by(id: section_id)
                 				subject = Subject.find_by(id: subject_id)
 			                    @institute.institutes_sections_subjects_models.create(institute_id: @institute.id, grade_id: grade.id, section_id: section.id, subject_id: subject.id, creator_id: current_user.id) if !grade.blank? and !section.blank? and !subject.blank?
-			                    subject_conversation = current_user.created_conversations.create(conversation_name: "#{subject.subject_name}, #{grade.grade_name} #{section.section_name}, #{@institute.short_name}".truncate(20), institute_id: @institute.id, grade_id: grade.id, section_id: section.id, subject_id: subject.id, message_categories: "HomeWork", is_custom_group: false) if !grade.blank? and !section.blank? and !subject.blank?
+			                    subject_conversation = current_user.created_conversations.create(conversation_name: "#{subject.subject_name}, #{grade.custom_name_for_institute(@institute)} #{section.section_name}}".truncate(30), institute_id: @institute.id, grade_id: grade.id, section_id: section.id, subject_id: subject.id, message_categories: "HomeWork", is_custom_group: false) if !grade.blank? and !section.blank? and !subject.blank?
 			                    
                 			end
                 		end	

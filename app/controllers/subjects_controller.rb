@@ -37,7 +37,7 @@ class SubjectsController < ApplicationController
             
           	subject = Subject.find_by(id: subject_id)
             @institute.institutes_sections_subjects_models.create(institute_id: @institute.id, grade_id: @grade.id, section_id: @section.id, subject_id: subject.id, creator_id: current_user.id) if !@grade.blank? and !@section.blank? and !subject.blank?
-            @subject_conversation = current_user.created_conversations.create(conversation_name: "#{subject.subject_name}, #{@grade.grade_name}#{@section.section_name}".truncate(20), institute_id: @institute.id, grade_id: @grade.id, section_id: @section.id, subject_id: subject.id, message_categories: "HomeWork", is_custom_group: false) if !@grade.blank? and !@section.blank? and !subject.blank?
+            @subject_conversation = current_user.created_conversations.create(conversation_name: "#{subject.subject_name}, #{@grade.custom_name_for_institute(@institute)} #{@section.section_name}".truncate(30), institute_id: @institute.id, grade_id: @grade.id, section_id: @section.id, subject_id: subject.id, message_categories: "HomeWork", is_custom_group: false) if !@grade.blank? and !@section.blank? and !subject.blank?
             
           end
           if(!params[:subject_ids_for_subject_teacher].blank?)
