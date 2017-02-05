@@ -1,6 +1,6 @@
 <% content_for :heading do %>
 	<a class="mybtn btn btn-link btn-xs pull-left" href="<%= institute_grade_section_path(@institute, @grade, @section) %>"><i class="material-icons">&#xE317;</i></a>
-	<%= @subject.subject_name %>, <%= @grade.grade_name %> <%= @section.section_name %>
+	<%= @subject.subject_name %>, <%= @grade.custom_name_for_institute(@institute) %> <%= @section.section_name %>
 <% end %>
 
 <div class="container-width classRoute tabs-container" style="margin-top:50px; margin-bottom: 0;">
@@ -78,7 +78,7 @@
 	<div class="modal-content">
 	  <div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal">&times;</button>
-		<h4 class="modal-title">Set or Update ClassTeacher of Class <%= @grade.grade_name %><%= @section.section_name %></h4>
+		<h4 class="modal-title">Set or Update ClassTeacher of <%= @grade.custom_name_for_institute(@institute) %> <%= @section.section_name %></h4>
 	  </div>
 	  <div class="modal-body">
 		

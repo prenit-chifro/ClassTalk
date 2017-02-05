@@ -8,4 +8,8 @@ class HomeController < ApplicationController
 	
 	end
 
+	def download_institute_data_template
+		send_file File.join(Rails.root, "public", "institute_data_template.xls")
+	end
+
 end

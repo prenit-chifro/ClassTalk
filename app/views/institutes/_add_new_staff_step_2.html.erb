@@ -12,7 +12,7 @@
 						<% if(!@grades.blank?) %>
 							<% options = [["Select Class", ""]] %>
 							<% @grades.each do |grade| %>
-								<% options << ["Class #{grade.grade_name}", grade.id] %>
+								<% options << ["#{grade.custom_name_for_institute(@institute)}", grade.id] %>
 							<% end %>
 							<%= select_tag :classteacher_grade_id, options_for_select(options, ["Select Class", ""]), class:"form-control" %>
 						<% end %>
@@ -38,7 +38,7 @@
 									<div class="checkbox">
 										<label for="teachers-grades-division-<%= grade.id %>" class="grades-division">
 											<%= check_box_tag "grade_names[]", grade.grade_name, false, { class: "checkbox teachers-grade-names-input", id:"teachers-grades-division-#{grade.id}"} %>
-											<span>Grade <%= grade.grade_name %></span>											
+											<span>Grade <%= grade.custom_name_for_institute(@institute) %></span>											
 										</label>	
 									</div>
 								</li>

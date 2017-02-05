@@ -1,4 +1,4 @@
-$("#attendance-modal").find(".modal-title").html('Class <%= @grade.grade_name %><%= @section.section_name %> Attendance <span><%= get_month_date_year(@date) %></span>');
+$("#attendance-modal").find(".modal-title").html('<%= @grade.custom_name_for_institute(@institute) %> <%= @section.section_name %> Attendance <span><%= get_month_date_year(@date) %></span>');
 $("#attendance-modal").find(".modal-body").html('<%= j render partial: "attendance_records/new_attendance_form", locals: {institute: @institute, grade: @grade, section: @section, class_students: @class_students, attendance_record: @attendance_record} %>');
 $("#attendance-modal").modal('show');
 

@@ -234,7 +234,7 @@
 																		<div class="media-body media-middle">
 																			<h5 class="media-heading student-name-in-message"><%= teacher.first_name %> <%= teacher.last_name %></h5>
 
-																			<small class="role-small"><%= teacher.details %> <%= ", #{teacher.staff_id}" if !teacher.staff_id.blank? %></small>
+																			<small class="role-small"><%= teacher.details %> </small>
 																			
 																		</div>				
 																	</div>
@@ -371,13 +371,25 @@
 			  ignoreTimezone: true,
 			  displayEventTime : false,
 			  eventSources: [
+			  	{ 
+			      googleCalendarApiKey: 'AIzaSyBygb2VxPHEs8rV8j7dgreRvpowydmGrow',
+			      url: 'https://www.google.com/calendar/feeds/indian__en%40holiday.calendar.google.com/public/basic',
+
+			      color: '#ea5b31',   // an option!
+		  		  textColor: '#fff' // an option!
+
+
+			    },
 			    {
 			        url: '/institutes/<%= @institute.id %>/timetable_slots?grade_id='+gradeId + '&section_id='+sectionId,
 			        color: '#4646a7',   // an option!
 	    		    textColor: '#fff' // an option!
 			    }
 
-			  ]
+			],
+			eventClick: function(event, jsEvent, view) {
+				return false;
+			}
 			  
 			});
 		});

@@ -68,13 +68,13 @@ class ConversationsController < ApplicationController
 			end
 		end
 
-		@homework_conversations = @conversations.where("message_categories LIKE ?", "HomeWork%")
+		@homework_conversations = @conversations.where("message_categories LIKE ?", "Homework%")
 		homework_messages_array = []
 
 		if(current_user.role.include?("Teacher"))
 			if(!@homework_conversations.blank?)
 				@homework_conversations.each do |conversation|					
-				    conversation_homework_messages = conversation.messages.where(category: "HomeWork", creator_id: current_user.id).order(created_at: :desc)
+				    conversation_homework_messages = conversation.messages.where(category: "Homework", creator_id: current_user.id).order(created_at: :desc)
 					if(!conversation_homework_messages.blank?)
 						conversation_homework_messages.each do |message|
 							homework_messages_array << message
@@ -85,7 +85,7 @@ class ConversationsController < ApplicationController
 	    else
 	    	if(!@homework_conversations.blank?)
 				@homework_conversations.each do |conversation|					
-				    conversation_homework_messages = conversation.messages.where(category: "HomeWork").order(created_at: :desc)
+				    conversation_homework_messages = conversation.messages.where(category: "Homework").order(created_at: :desc)
 					if(!conversation_homework_messages.blank?)
 						conversation_homework_messages.each do |message|
 							homework_messages_array << message
@@ -427,13 +427,13 @@ class ConversationsController < ApplicationController
 
 	def homework
 
-		@homework_conversations = current_user.participating_conversations.where("message_categories LIKE ?", "HomeWork%").order(updated_at: :desc)
+		@homework_conversations = current_user.participating_conversations.where("message_categories LIKE ?", "Homework%").order(updated_at: :desc)
 		homework_messages_array = []
 
 		if(current_user.role == "Teacher")
 			if(!@homework_conversations.blank?)
 				@homework_conversations.each do |conversation|					
-				    conversation_homework_messages = conversation.messages.where(category: "HomeWork", creator_id: current_user.id).order(created_at: :desc)
+				    conversation_homework_messages = conversation.messages.where(category: "Homework", creator_id: current_user.id).order(created_at: :desc)
 					if(!conversation_homework_messages.blank?)
 						conversation_homework_messages.each do |message|
 							homework_messages_array << message
@@ -444,7 +444,7 @@ class ConversationsController < ApplicationController
 	    else
 	    	if(!@homework_conversations.blank?)
 				@homework_conversations.each do |conversation|					
-				    conversation_homework_messages = conversation.messages.where(category: "HomeWork").order(created_at: :desc)
+				    conversation_homework_messages = conversation.messages.where(category: "Homework").order(created_at: :desc)
 					if(!conversation_homework_messages.blank?)
 						conversation_homework_messages.each do |message|
 							homework_messages_array << message

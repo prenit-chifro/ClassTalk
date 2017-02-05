@@ -1,6 +1,6 @@
 <% content_for :heading do %>
 	<a class="mybtn btn btn-link btn-xs pull-left" href="<%= institute_path(@institute) + '#all-classes' %>"><i class="material-icons">&#xE317;</i></a>
-	Class <%= @grade.grade_name %> <%= @section.section_name %>
+	<%= @grade.custom_name_for_institute(@institute) %> <%= @section.section_name %>
 <% end %>
 
 <div class="container-width classRoute tabs-container" style="margin-top:50px; margin-bottom: 0;">
@@ -99,7 +99,7 @@
 						<li class="find-teacher-list find-tab-teacher-list" style="margin-bottom:10px;position:relative;">
 								
 							<h6 class="teachers-list-heading-inner" style="background: #d1cece;margin: 0;padding: 10px; color: #dd223d;">
-								<%= subject.subject_name %>, <%= @grade.grade_name + @section.section_name %> 																	
+								<%= subject.subject_name %>, <%= @grade.custom_name_for_institute(@institute) + " " + @section.section_name %> 																	
 								<i class="material-icons arrow-up-icon pull-right" style="margin-top:-5px;">&#xE316;</i>
 							</h6>
 							<div class="container-width classRoute class-tab-students-list-custom" style="display: none; box-shadow:rgb(175, 172, 172) 1px 1px 10px;margin-bottom:10px; padding: 4px;">
@@ -132,7 +132,7 @@
 	<div class="modal-content">
 	  <div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal">&times;</button>
-		<h4 class="modal-title">Set or Update ClassTeacher of Class <%= @grade.grade_name %><%= @section.section_name %></h4>
+		<h4 class="modal-title">Set or Update ClassTeacher of <%= @grade.custom_name_for_institute(@institute) %> <%= @section.section_name %></h4>
 	  </div>
 	  <div class="modal-body">
 		
@@ -182,7 +182,7 @@
       		method: "GET",
         	complete: function(data){
         		if(data.status == "200"){
-        			$("#setSubjectteacherModal").find(".modal-title").html("Set or Update Subject Teacher of " + subjectName + ", <%= @grade.grade_name %><%= @section.section_name %>");
+        			$("#setSubjectteacherModal").find(".modal-title").html("Set or Update Subject Teacher of " + subjectName + ", <%= @grade.custom_name_for_institute(@institute) %> <%= @section.section_name %>");
         			$("#setSubjectteacherModal").find(".modal-body").html(data.responseText);
         			$("#setSubjectteacherModal").modal('show');
         		}

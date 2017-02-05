@@ -119,3 +119,5 @@ end
 # For Bootstrap
 	gem 'bootstrap-sass', '~> 3.3.6'
 	
+# For Excel Files and spreadsheets
+	gem 'spreadsheet'	

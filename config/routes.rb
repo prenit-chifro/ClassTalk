@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   
   	root to: "conversations#index"
     get "help" => "home#help"
+    get "download_institute_data_template" => "home#download_institute_data_template"
   
   	devise_for :users, controllers: { sessions: 'my_devise/sessions', registrations: 'my_devise/registrations', omniauth_callbacks: 'my_devise/omniauth_callbacks', passwords: 'my_devise/passwords', unlocks: 'my_devise/unlocks' }
     

@@ -6,53 +6,73 @@
 	<div class="tab-content admin-home-content">
 		<div class="tab-pane all-small-conversations" id="all-submitted-users">
 			<% if(!@acted_users.blank?) %>
-				<% @acted_users.each do |user| %>
-					<%= render partial: "conversations/contact", locals: {contact: user} %>
+				<% if(@message.creator_id == current_user.id or current_user.role.include?("Institute Admin")) %>
+					<% @acted_users.each do |user| %>
+						<%= render partial: "conversations/contact", locals: {contact: user} %>
+					<% end %>
+				<% else %>
+					<% if(@acted_users.include?(current_user)) %>
+						<%= render partial: "conversations/contact", locals: {contact: current_user} %>
+					<% else %>
+						<h1 class="nothing-posted">	No Submission from you yet ! </h1>
+					<% end %>
 				<% end %>
+				
 			<% else %>
 				<h1 class="nothing-posted">	No Submission yet ! </h1>
 			<% end %>
 
 		</div>
-		<div class="tab-pane active all-small-conversations" id="all-pending-users">						
+		<div class="tab-pane active all-small-conversations" id="all-pending-users">					
 			<% if(!@pending_users.blank?) %>
-				<%= form_tag set_acted_user_ids_conversation_message_path(@conversation, @message), method: :post, remote: true do %>
+				<% if(@message.creator_id == current_user.id or current_user.role.include?("Institute Admin")) %>
+					<%= form_tag set_acted_user_ids_conversation_message_path(@conversation, @message), method: :post, remote: true do %>
 					
-					<button type="submit" class="btn btn-success mar-btm" style="width: 100%;"> Mark Submission </button>
+						<button type="submit" class="btn btn-success mar-btm" style="width: 100%;"> Mark Submission </button>
 
-					<% @pending_users.each do |user| %>
-						
-							<div class="well well-sm">
-								<label for="contact-new-group-<%= user.id %>" class="modal-label"  style="vertical-align: middle;">
-									<%= check_box_tag "acted_user_ids[]", user.id, false,class:"contact-new-group-page", id:"contact-new-group-#{user.id}"  %>
-									<div class="media jumbotron-media">
-										<div class="media-left media-middle">
-											
-											<img src="<%= user.profile_picture.media.url(:thumb) %>" class="img-rounded img-xs">
-											
-										</div>
-										<div class="media-body media-middle">
-											<h5 class="media-heading student-name-in-message"><%= user.first_name %> <%= user.last_name %></h5>
-
-											<small class="role-small"><%= user.details %></small>
-											
-										</div>				
-									</div>
-									<span class="uncheckbox-style-block uncheckbox-style-block-<%= user.id %>"></span>		
-									<span class="checkbox-style-block checkbox-style-block-<%= user.id %>"></span>
-								</label>
-
-								
-								
-								
-							</div>
+						<% @pending_users.each do |user| %>
 							
-						
+								<div class="well well-sm">
+									<label for="contact-new-group-<%= user.id %>-<%= user.role %>" class="modal-label"  style="vertical-align: middle;">
+										<%= check_box_tag "acted_user_ids[]", user.id, false,class:"contact-new-group-page", id:"contact-new-group-#{user.id}-#{user.role}"  %>
+										<div class="media jumbotron-media">
+											<div class="media-left media-middle">
+												
+												<img src="<%= user.profile_picture.media.url(:thumb) %>" class="img-rounded img-xs">
+												
+											</div>
+											<div class="media-body media-middle">
+												<h5 class="media-heading student-name-in-message"><%= user.first_name %> <%= user.last_name %></h5>
+
+												<small class="role-small"><%= user.details %></small>
+												
+											</div>				
+										</div>
+										<span class="uncheckbox-style-block uncheckbox-style-block-<%= user.id %>"></span>		
+										<span class="checkbox-style-block checkbox-style-block-<%= user.id %>"></span>
+									</label>
+
+									
+									
+									
+								</div>
+								
+							
+						<% end %>
+					<% end %>
+				<% else %>
+					<% if(@pending_users.include?(current_user)) %>
+						<%= render partial: "conversations/contact", locals: {contact: current_user} %>
+					<% else %>
+						<h1 class="nothing-posted">	You have Submitted </h1>
 					<% end %>
 				<% end %>
+				
 			<% else %>
 				<h1 class="nothing-posted"> No Pending Users </h1>	
 			<% end %>
+		
+			
 		</div>
 	</div>	
 </div>	

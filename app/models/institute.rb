@@ -26,6 +26,8 @@ class Institute < ApplicationRecord
 	
 	has_many :timetable_slots, class_name: :TimetableSlot, foreign_key: :institute_id, inverse_of: :institute, dependent: :destroy
 
+	has_one :institute_data_file, class_name: :Attachment, dependent: :destroy, as: :attachable
+
 	def short_name
 		non_text_characterless_string = self.institute_name.gsub(/[^0-9a-z ]/i, '')
 		split_array = non_text_characterless_string.split(" ")

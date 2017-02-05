@@ -77,14 +77,14 @@ class User < ApplicationRecord
 			grade = section_member_model.grade
 			section = section_member_model.section
 
-			return "#{'Class ' + grade.grade_name if !grade.blank?}#{section.section_name if !section.blank?}#{', ' + self.roll_no if !self.roll_no.blank?}"
+			return "#{grade.custom_name_for_institute(self.institutes.first) if !grade.blank?} #{section.section_name if !section.blank?}#{', ' + self.roll_no if !self.roll_no.blank?}"
 		end
 		if(self.role == "Parent")
 			section_member_model = self.members_sections.first if !self.members_sections.blank?
 			grade = section_member_model.grade
 			section = section_member_model.section
 			children = self.children
-			return "Parent#{' of ' + children.first.first_name if !children.blank?} #{'in ' + grade.grade_name if !grade.blank?}#{section.section_name if !section.blank?}"
+			return "Parent#{' of ' + children.first.first_name if !children.blank?} #{'in ' + grade.custom_name_for_institute(self.institutes.first) if !grade.blank?}#{section.section_name if !section.blank?}"
 		end
 	end
 

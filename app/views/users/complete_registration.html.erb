@@ -26,6 +26,20 @@
 				<div id="map"></div>
 				<div class="form-group">
 					<%= select_tag :role, options_for_select([["My role", ""], ["Principal", "Principal"], ["Institute Admin", "Institute Admin"], ["Teacher", "Teacher"], ["Student", "Student"], ["Parent", "Parent"]],[@user.role, @user.role]), required: true, id: "role-input",class: "form-control"  %>
+					<br>
+					<%= link_to :download_institute_data_template, target: "_blank" do %>
+						<div class="form-control add-member pull-left" style="width: 50%">
+							Download Data File
+						</div>
+					<% end %>
+					
+					<div class="form-control add-member pull-right" style="width: 50%">
+						<label for="institute-data-uploadBtn">
+							<span id="institute-data-file-text"> Upload Data File </span>
+							<%= file_field_tag :institute_data_file, accept: ".xls", :id=>"institute-data-uploadBtn", style: "display: none" %>
+						</label>
+						
+					</div>
 				</div>
 				<%= hidden_field_tag :institute_latitude, nil, id: "institute_latitude-field" %>
 				<%= hidden_field_tag :institute_longitude, nil, id: "institute_longitude-field" %>
@@ -34,6 +48,7 @@
 				<div class="form-group">
 					<%= text_field_tag :institute_contact_info, nil, placeholder: "Email or Mobile no of Institute Contact Person", id: "school_contact_info-input",class: "form-control", style: "display: none" %>
 				</div>
+				
 			</div>
 			<div class="text-center col-md-6 col-md-offset-3">
 				<div class="form-group form-button-register">
@@ -41,7 +56,7 @@
 						Save
 					<% end %>
 				</div>
-			</div>	
+			</div>
 		<% end %>
 	</div>
 </div>	
@@ -58,8 +73,7 @@
 		if($(this).val() == ""){
 			
 			$("#school_contact_info-input").hide();
-			$("#school_contact_info-input").attr("required", false);
-			
+			$("#school_contact_info-input").attr("required", false);		
 			
 		}
 		if($(this).val() == "Institute Admin" || $(this).val() == "Principal"){
@@ -153,6 +167,14 @@
 			reader.readAsDataURL(image);
 		});
 		
+		$('#institute-data-uploadBtn').on('change', function(event) {
+			var files = event.target.files;
+			if(files.length > 0){
+				$("#institute-data-file-text").html("Data File Attached !");
+			}else{
+				$("#institute-data-file-text").html("Upload Data File");
+			}
+		});
 	});	
 	
 </script>

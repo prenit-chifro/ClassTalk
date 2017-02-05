@@ -50,7 +50,7 @@
 													<li class="find-teacher-list" style="margin-bottom:10px;position:relative;">
 														
 														<h6 class="teachers-list-heading-inner" style="background: #d1cece;margin: 0;padding: 10px; cursor:pointer;color: #dd223d;">
-															<%= grade.grade_name + section.section_name %>																		
+															<%= grade.custom_name_for_institute(@institute) + " " + section.section_name %>																		
 															<i class="material-icons arrow-up-icon pull-right" style="margin-top:-5px;margin-right: -10px;">&#xE316;</i>
 														</h6>
 
@@ -169,7 +169,7 @@
 																	<div class="media-body media-middle">
 																		<h5 class="media-heading student-name-in-message"><%= teacher.first_name %> <%= teacher.last_name %></h5>
 
-																		<small class="role-small"><%= teacher.details %> <%= ", #{teacher.staff_id}" if !teacher.staff_id.blank? %></small>
+																		<small class="role-small"><%= teacher.details %></small>
 																		
 																	</div>				
 																</div>
@@ -199,7 +199,7 @@
 																	<div class="media-body media-middle">
 																		<h5 class="media-heading student-name-in-message"><%= admin.first_name %> <%= admin.last_name %></h5>
 
-																		<small class="role-small"><%= admin.details %> <%= ", #{admin.staff_id}" if !admin.staff_id.blank? %></small>
+																		<small class="role-small"><%= admin.details %></small>
 																		
 																	</div>				
 																</div>

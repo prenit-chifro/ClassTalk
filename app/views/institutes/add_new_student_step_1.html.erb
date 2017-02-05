@@ -41,7 +41,7 @@
 				<% options = [["Select Class", ""]] %>
 				<% default_option = ["Select Class", ""] %>
 				<% @grades.each do |grade| %>
-					<% options << ["Class #{grade.grade_name}", grade.id] %>
+					<% options << ["#{grade.custom_name_for_institute(@institute)}", grade.id] %>
 					<% if(!params[:grade_id].blank? and params[:grade_id].to_i == grade.id) %>
 						<% default_option = [grade.grade_name, grade.id] %>
 					<% end %>
