@@ -217,28 +217,32 @@ class UsersController < ApplicationController
                     staff_id = teacher_row[8]
                     classteacher_grade_name = teacher_row[9]
                     classteacher_section_name = teacher_row[10]
-                    if(!first_name.blank? or !email.blank? or !mobile_no.blank?)
-                      staff = User.new(role: "Teacher")
-                      staff.password = password
-                      staff.first_name = first_name
-                      staff.last_name = last_name
-                      staff.mobile_no = mobile_no
-                      staff.isd_code = "91"
-                      staff.email = email
-                      staff.gender = gender
-                    
-                      staff.address = address
-                      staff.pincode = pincode.to_s if !pincode.blank?
+                    if(!first_name.blank? or !last_name.blank? or !email.blank? or !mobile_no.blank?)
+                      staff = User.where(email: email).first if !email.blank?
+                      staff = User.where(mobile_no: mobile_no) if email.blank? and !mobile_no.blank?
+                      if(staff.blank?)
+                        staff = User.new(role: "Teacher")
+                        staff.password = password
+                        staff.first_name = first_name
+                        staff.last_name = last_name
+                        staff.mobile_no = mobile_no
+                        staff.isd_code = "91"
+                        staff.email = email
+                        staff.gender = gender
                       
-                      staff.staff_id = staff_id.to_s if !staff_id.blank?
+                        staff.address = address
+                        staff.pincode = pincode.to_s if !pincode.blank?
+                        
+                        staff.staff_id = staff_id.to_s if !staff_id.blank?
+                        
+                        staff.is_registration_complete = true
                       
-                      staff.is_registration_complete = true
-                    
-                      staff.save
-                      save_user_password_with_system_encryption_key(staff, password)
-                      send_user_account_password_through_email(staff, password) if !staff.email.blank?
-                      send_user_account_password_through_sms(staff, password) if !staff.mobile_no.blank?
-
+                        staff.save
+                        save_user_password_with_system_encryption_key(staff, password)
+                        send_user_account_password_through_email(staff, password) if !staff.email.blank?
+                        send_user_account_password_through_sms(staff, password) if !staff.mobile_no.blank?
+                      end
+                      
                       @institute.add_member(staff.id, current_user.id, :Teacher)
                       @institute_conversation = Conversation.find_by(institute_id: @institute.id, grade_id: nil, section_id: nil, subject_id: nil, is_custom_group: false)
                       @institute_conversation.add_participant(staff.id, current_user.id) if !@institute_conversation.blank? and !staff.blank? 
@@ -319,6 +323,7 @@ class UsersController < ApplicationController
                 students_fields = students_sheet.row(0)
                 students_sheet.rows[1..(students_sheet.rows.length-1)].each do |student_row|
                   if(!student_row.blank?)
+
                     first_name = student_row[0]; first_name = first_name.capitalize if !first_name.blank?
                     last_name = student_row[1]; last_name = last_name.capitalize if !last_name.blank?
                     email = student_row[2]
@@ -343,28 +348,32 @@ class UsersController < ApplicationController
 
 
 
-                    if(!first_name.blank? or !email.blank? or !mobile_no.blank?)
-                      student = User.new(role: "Student")
-                      student.password = password
-                      student.first_name = first_name
-                      student.last_name = last_name
-                      student.mobile_no = mobile_no.to_i.to_s 
-                      student.isd_code = "91"
-                      student.email = email
-                      student.gender = gender
-                      student.date_of_birth = Time.parse(date_of_birth.to_s) if !date_of_birth.blank?
-                      student.address = address
-                      student.pincode = pincode.to_s if !pincode.blank?
-                            
-                      student.roll_no = roll_no.to_s if !roll_no.blank?
-                      
-                      student.is_registration_complete = true
-                    
-                      student.save
-                      save_user_password_with_system_encryption_key(student, password)
-                      send_user_account_password_through_email(student, password) if !student.email.blank?
-                      send_user_account_password_through_sms(student, password) if !student.mobile_no.blank?
+                    if(!first_name.blank? or !last_name.blank? or !email.blank? or !mobile_no.blank?)
+                      student = User.find_by(email: email) if !email.blank?
+                      student = User.find_by(mobile_no: mobile_no) if email.blank? and !mobile_no.blank?
 
+                      if(student.blank?)
+                        student = User.new(role: "Student")
+                        student.password = password
+                        student.first_name = first_name
+                        student.last_name = last_name
+                        student.mobile_no = mobile_no.to_i.to_s 
+                        student.isd_code = "91"
+                        student.email = email
+                        student.gender = gender
+                        student.date_of_birth = Time.parse(date_of_birth.to_s) if !date_of_birth.blank?
+                        student.address = address
+                        student.pincode = pincode.to_s if !pincode.blank?
+                              
+                        student.roll_no = roll_no.to_s if !roll_no.blank?
+                        
+                        student.is_registration_complete = true
+                      
+                        student.save
+                        save_user_password_with_system_encryption_key(student, password)
+                        send_user_account_password_through_email(student, password) if !student.email.blank?
+                        send_user_account_password_through_sms(student, password) if !student.mobile_no.blank?
+                      end
 
                       @institute.add_member(student.id, current_user.id, :Student)
                       @institute_conversation = Conversation.find_by(institute_id: @institute.id, grade_id: nil, section_id: nil, subject_id: nil, is_custom_group: false)
@@ -372,26 +381,31 @@ class UsersController < ApplicationController
 
                       father = nil; mother = nil
                       if(!fathers_first_name.blank? or !fathers_email.blank? or !fathers_mobile_no.blank?)
-                        father = User.new(role: "Parent")
-                        father.password = fathers_password
-                        father.first_name = fathers_first_name;
-                        father.last_name = last_name
-                        father.mobile_no = fathers_mobile_no.to_i.to_s 
-                        father.isd_code = "91"
-                        father.email = fathers_email
-                        father.gender = :male
-                      
-                        father.address = address
-                        father.pincode = pincode.to_s if !pincode.blank?
+                        father = User.where(email: fathers_email) if !fathers_email.blank?
+                        father = User.where(mobile_no: fathers_mobile_no) if fathers_email.blank? and !fathers_mobile_no.blank?
+                        if(father.blank?)
+                          father = User.new(role: "Parent")
+                          father.password = fathers_password
+                          father.first_name = fathers_first_name;
+                          father.last_name = last_name
+                          father.mobile_no = fathers_mobile_no.to_i.to_s 
+                          father.isd_code = "91"
+                          father.email = fathers_email
+                          father.gender = :male
                         
+                          father.address = address
+                          father.pincode = pincode.to_s if !pincode.blank?
+                          
+                          
+                          
+                          father.is_registration_complete = true
                         
+                          father.save
+                          save_user_password_with_system_encryption_key(father, fathers_password)
+                          send_user_account_password_through_email(father, fathers_password) if !father.email.blank?
+                          send_user_account_password_through_sms(father, fathers_password) if !father.mobile_no.blank?
+                        end
                         
-                        father.is_registration_complete = true
-                      
-                        father.save
-                        save_user_password_with_system_encryption_key(father, fathers_password)
-                        send_user_account_password_through_email(father, fathers_password) if !father.email.blank?
-                        send_user_account_password_through_sms(father, fathers_password) if !father.mobile_no.blank?
 
                         @institute.add_member(father.id, current_user.id, :Parent)
                         @institute_conversation = Conversation.find_by(institute_id: @institute.id, grade_id: nil, section_id: nil, subject_id: nil, is_custom_group: false)
@@ -400,23 +414,27 @@ class UsersController < ApplicationController
                       end
 
                       if(!mothers_first_name.blank? or !mothers_email.blank? or !mothers_email.blank?)
-                        mother = User.new(role: "Parent")
-                        mother.password = mothers_password
-                        mother.first_name = mothers_first_name
-                        mother.last_name = last_name
-                        mother.mobile_no = mothers_mobile_no.to_i.to_s 
-                        mother.isd_code = "91"
-                        mother.email = mothers_email
-                        mother.gender = :female
-                      
-                        mother.address = address
-                        mother.pincode = pincode.to_s if !pincode.blank?
-                        mother.is_registration_complete = true
-                      
-                        mother.save
-                        save_user_password_with_system_encryption_key(mother, mothers_password)
-                        send_user_account_password_through_email(mother, mothers_password) if !mother.email.blank?
-                        send_user_account_password_through_sms(mother, mothers_password) if !mother.mobile_no.blank?
+                        mother = User.where(email: mothers_email) if !mothers_email.blank?
+                        mother = User.where(mobile_no: mothers_mobile_no) if mothers_email.blank? and !mothers_mobile_no.blank?
+                        if(father.blank?)
+                          mother = User.new(role: "Parent")
+                          mother.password = mothers_password
+                          mother.first_name = mothers_first_name
+                          mother.last_name = last_name
+                          mother.mobile_no = mothers_mobile_no.to_i.to_s 
+                          mother.isd_code = "91"
+                          mother.email = mothers_email
+                          mother.gender = :female
+                        
+                          mother.address = address
+                          mother.pincode = pincode.to_s if !pincode.blank?
+                          mother.is_registration_complete = true
+                        
+                          mother.save
+                          save_user_password_with_system_encryption_key(mother, mothers_password)
+                          send_user_account_password_through_email(mother, mothers_password) if !mother.email.blank?
+                          send_user_account_password_through_sms(mother, mothers_password) if !mother.mobile_no.blank?
+                        end
 
                         @institute.add_member(mother.id, current_user.id, :Parent)
                         @institute_conversation = Conversation.find_by(institute_id: @institute.id, grade_id: nil, section_id: nil, subject_id: nil, is_custom_group: false)
