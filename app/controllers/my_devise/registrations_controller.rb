@@ -53,7 +53,7 @@ class MyDevise::RegistrationsController < Devise::RegistrationsController
           flash[:notice] = flash[:notice] + " mobile no is not valid or already taken."
         end
         
-        if(key == :password)
+        if(key == :password_confirmation)
           flash[:notice] = flash[:notice] + " #{key}: #{value}"
         end
       end
