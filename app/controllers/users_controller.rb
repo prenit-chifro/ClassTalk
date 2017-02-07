@@ -210,11 +210,11 @@ class UsersController < ApplicationController
                     last_name = teacher_row[1]; last_name = last_name.capitalize if !last_name.blank?
                     email = teacher_row[2]
                     mobile_no = teacher_row[3]; mobile_no = mobile_no.to_i.to_s if !mobile_no.blank?
-                    password = teacher_row[4]; password = password.to_s if !password.blank?; password = Random.new.rand(1000..9999).to_s if password.blank?
+                    password = teacher_row[4]; password = password.to_i if password.is_a?(Float); password = password.to_s if !password.blank?; password = Random.new.rand(1000..9999).to_s if password.blank?
                     gender = teacher_row[5]
                     address = teacher_row[6]
                     pincode = teacher_row[7]
-                    staff_id = teacher_row[8]
+                    staff_id = teacher_row[8]; staff_id = staff_id.to_i if staff_id.is_a?(Float); 
                     classteacher_grade_name = teacher_row[9]
                     classteacher_section_name = teacher_row[10]
                     if(!first_name.blank? or !last_name.blank? or !email.blank? or !mobile_no.blank?)
@@ -328,25 +328,23 @@ class UsersController < ApplicationController
                     last_name = student_row[1]; last_name = last_name.capitalize if !last_name.blank?
                     email = student_row[2]
                     mobile_no = student_row[3]; mobile_no = mobile_no.to_i.to_s if !mobile_no.blank?
-                    password = student_row[4]; password = password.to_s if !password.blank?; password = Random.new.rand(1000..9999).to_s if password.blank?
+                    password = student_row[4]; password = password.to_i if password.is_a?(Float); password = password.to_s if !password.blank?; password = Random.new.rand(1000..9999).to_s if password.blank?
                     gender = student_row[5]
                     date_of_birth = student_row[6]
                     address = student_row[7]
                     pincode = student_row[8]
                     student_grade_name = student_row[9]
                     student_section_name = student_row[10]
-                    roll_no = student_row[11]
+                    roll_no = student_row[11]; roll_no = roll_no.to_i if roll_no.is_a?(Float); 
                     is_using_transport = student_row[12]
                     fathers_first_name = student_row[13]; fathers_first_name = fathers_first_name.capitalize if !fathers_first_name.blank?
                     fathers_email = student_row[14]; 
                     fathers_mobile_no = student_row[15]; fathers_mobile_no = fathers_mobile_no.to_i.to_s if !fathers_mobile_no.blank?
-                    fathers_password = student_row[16]; fathers_password = fathers_password.to_s if !fathers_password.blank?; fathers_password = Random.new.rand(1000..9999).to_s if fathers_password.blank?
+                    fathers_password = student_row[16]; fathers_password = fathers_password.to_i if fathers_password.is_a?(Float); fathers_password = fathers_password.to_s if !fathers_password.blank?; fathers_password = Random.new.rand(1000..9999).to_s if fathers_password.blank?
                     mothers_first_name = student_row[17]; mothers_first_name = mothers_first_name.capitalize if !mothers_first_name.blank?
                     mothers_email = student_row[18]
                     mothers_mobile_no = student_row[19]; mothers_mobile_no = mothers_mobile_no.to_i.to_s if !mothers_mobile_no.blank?
-                    mothers_password = student_row[20]; mothers_password = mothers_password.to_s if !mothers_password.blank?; mothers_password = Random.new.rand(1000..9999).to_s if mothers_password.blank?
-
-
+                    mothers_password = student_row[20]; mothers_password = mothers_password.to_i if mothers_password.is_a?(Float); mothers_password = mothers_password.to_s if !mothers_password.blank?; mothers_password = Random.new.rand(1000..9999).to_s if mothers_password.blank?
 
                     if(!first_name.blank? or !last_name.blank? or !email.blank? or !mobile_no.blank?)
                       student = User.find_by(email: email) if !email.blank?

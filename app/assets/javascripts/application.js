@@ -24,9 +24,12 @@
 this.App || (this.App = {});
 
 App.checkIsAndroidNativeApp = function (){
+	alert("checking android native appp");
 	if(navigator.userAgent.indexOf("CLASSTALK_ANDROID_APP") > -1){
+		alert("android native appp");
 		return true;
 	}
+	alert("not in android native appp");
 	return false;
 }
 
@@ -815,7 +818,9 @@ App.checkEmptyString = function(string) {
 App.sendGCMRegistraionIdToBackend = function(){
 	
 	if(App.isAndroidNativeApp){
+		alert("checking gcm id androdi");
 		androidGCMRegistrationId = Android.getAndroidGCMRegistratioId();
+		alert(androidGCMRegistrationId);
 		notifyGCMRegistrationId(androidGCMRegistrationId);	
 	}
 }
@@ -833,7 +838,7 @@ App.sendIosDeviceTokenToBackend = function(){
 
 function notifyGCMRegistrationId(androidGCMRegistrationId){
 	if(App.checkEmptyString(androidGCMRegistrationId)){
-		
+		alert("god gcm id " + androidGCMRegistrationId);
 		currentUserId = $("meta[name='current-user-id']").attr("content");
 		csfrToken = $('meta[name="csrf-token"]').attr('content');
 		if(!currentUserId) {
