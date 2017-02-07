@@ -6,7 +6,7 @@ class MyDevise::RegistrationsController < Devise::RegistrationsController
   # def new
   #   super
   # end
-  layout "application"
+  layout "devise"
   $current_user_id = nil
 
   # POST /resource
@@ -19,20 +19,21 @@ class MyDevise::RegistrationsController < Devise::RegistrationsController
     end
 
     resource.save
-    resource.remember_me!
-
-    save_user_password_with_system_encryption_key(resource, params[:user][:password])
-
-    send_user_account_password_through_email(resource, resource.get_user_password) if !resource.email.blank?
-    send_user_account_password_through_sms(resource, resource.get_user_password) if !resource.mobile_no.blank?
-
-    set_current_user_id(resource.id)
-
+    
     yield resource if block_given?
     if resource.persisted?
       if resource.active_for_authentication?
         set_flash_message! :notice, :signed_up
         sign_up(resource_name, resource)
+        resource.remember_me!
+
+    		save_user_password_with_system_encryption_key(resource, params[:user][:password])
+
+    		send_user_account_password_through_email(resource, resource.get_user_password) if !resource.email.blank?
+    		send_user_account_password_through_sms(resource, resource.get_user_password) if !resource.mobile_no.blank?
+
+    		set_current_user_id(resource.id)
+
         respond_with resource, location: complete_registration_user_path(resource)
       else
         set_flash_message! :notice, :"signed_up_but_#{resource.inactive_message}"
@@ -42,6 +43,18 @@ class MyDevise::RegistrationsController < Devise::RegistrationsController
     else
       clean_up_passwords resource
       set_minimum_password_length
+      flash[:notice] = ""
+      resource.errors.each do |key, value|
+        if(key == :email)
+          flash[:notice] = flash[:notice] + " email is not valid or already taken."
+        end
+
+        if(key == :mobile_no)
+          flash[:notice] = flash[:notice] + " mobile no is not valid or already taken."
+        end
+        
+      end
+      
       respond_with resource
     end
   end
