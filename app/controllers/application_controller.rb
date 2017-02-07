@@ -21,10 +21,15 @@ class ApplicationController < ActionController::Base
 					Rails.logger.debug "BeforeFilter: User Signed In. Login is not required"
 					
 					if(!current_user.is_registration_complete and request.fullpath != complete_registration_user_path(current_user))
-						redirect_to complete_registration_user_path(current_user)
+						redirect_to complete_registration_user_path(current_user) and return
 					end
-					@institute = current_user.institutes.first
 					
+					@institute = current_user.institutes.first
+					if(@institute.blank?  and request.fullpath != complete_registration_user_path(current_user)) 
+						current_user.update(is_registration_complete: false)
+						redirect_to complete_registration_user_path(current_user) and return
+					end
+
 				else
 					if(params[:controller].include?("conversations") and params[:action].include?("index"))
 						#authenticate_user!	

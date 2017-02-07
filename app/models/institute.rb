@@ -2,7 +2,7 @@ class Institute < ApplicationRecord
 
 	belongs_to :institute_creator, class_name: :User, foreign_key: :creator_id, inverse_of: :created_institutes
 	
-	has_many :members, class_name: :User, through: :institutes_members, source: :member
+	has_many :members, class_name: :User, through: :institutes_members, source: :member, dependent: :destroy
 
 	has_many :institutes_members, class_name: :InstituteMember, foreign_key: :institute_id, inverse_of: :institute, dependent: :destroy
 	
@@ -95,6 +95,13 @@ class Institute < ApplicationRecord
 			self.save
 		end
 		
+	end
+
+	def delete_members
+		members = self.members
+		members.each do |member|
+			member.destroy
+		end
 	end
 
 	after_create :add_creator_as_admin

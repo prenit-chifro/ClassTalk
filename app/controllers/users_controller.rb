@@ -381,8 +381,8 @@ class UsersController < ApplicationController
 
                       father = nil; mother = nil
                       if(!fathers_first_name.blank? or !fathers_email.blank? or !fathers_mobile_no.blank?)
-                        father = User.where(email: fathers_email) if !fathers_email.blank?
-                        father = User.where(mobile_no: fathers_mobile_no) if fathers_email.blank? and !fathers_mobile_no.blank?
+                        father = User.find_by(email: fathers_email) if !fathers_email.blank?
+                        father = User.find_by(mobile_no: fathers_mobile_no) if fathers_email.blank? and !fathers_mobile_no.blank?
                         if(father.blank?)
                           father = User.new(role: "Parent")
                           father.password = fathers_password
@@ -414,9 +414,9 @@ class UsersController < ApplicationController
                       end
 
                       if(!mothers_first_name.blank? or !mothers_email.blank? or !mothers_email.blank?)
-                        mother = User.where(email: mothers_email) if !mothers_email.blank?
-                        mother = User.where(mobile_no: mothers_mobile_no) if mothers_email.blank? and !mothers_mobile_no.blank?
-                        if(father.blank?)
+                        mother = User.find_by(email: mothers_email) if !mothers_email.blank?
+                        mother = User.find_by(mobile_no: mothers_mobile_no) if mothers_email.blank? and !mothers_mobile_no.blank?
+                        if(mother.blank?)
                           mother = User.new(role: "Parent")
                           mother.password = mothers_password
                           mother.first_name = mothers_first_name
