@@ -167,7 +167,7 @@
 		var gradeId = $(this).attr("data-grade-id");
 		var sectionId = $(this).attr("data-section-id");
 		$.ajax({
-  			url: '<%= section_attendance_record_form_institute_attendance_records_path(@institute) %>.js?grade_id='+gradeId + '&section_id='+sectionId + '&date=' + date,
+  			url: '<%= section_attendance_record_form_institute_attendance_records_path(@institute) %>.js?grade_id='+gradeId + '&section_id='+sectionId + '&date=' + date + '&from_index=true',
       		method: "GET",
         	complete: function(data){
         		if(data.status == "200"){

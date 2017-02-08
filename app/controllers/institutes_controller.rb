@@ -26,7 +26,7 @@ class InstitutesController < ApplicationController
       if(!@institute.blank?)
           @institute_conversation = Conversation.find_by(institute_id: @institute.id, grade_id: nil, section_id: nil, subject_id: nil, is_custom_group: false)
           @principals = @institute.get_members_with_given_roles(["Principal"])
-          @admins = @institute.get_members_with_given_roles(["Institute Admin"])
+          @admins = @institute.members.where("role LIKE ? or role LIKE ?", "%, Institute Admin", "Institute Admin")
           @teachers = @institute.get_members_with_given_roles(["Teacher"])
           @institutes_grades_sections_models = @institute.institutes_grades_sections_models
           if(current_user.role.include?("Principal") or current_user.role.include?("Institute Admin"))

@@ -121,5 +121,3 @@ end
 	
 # For Excel Files and spreadsheets
 	gem 'spreadsheet'	
-
-#	gem 'net-http-persistent', '2.9.4'

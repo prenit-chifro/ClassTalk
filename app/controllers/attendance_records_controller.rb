@@ -161,10 +161,15 @@ class AttendanceRecordsController < ApplicationController
 		@grade = Grade.find_by(id: params[:grade_id])
 		@section = Section.find_by(id: params[:section_id])
 		
+		if(params[:date].blank?)
+			@date = Date.today	
+		else
+			@date = Date.parse(params[:date]) 	
+		end
 
-		@todays_attendance_record = @institute.attendance_records.find_by(date: Date.today, grade_id: @grade.id, section_id: @section.id) 
+		@todays_attendance_record = @institute.attendance_records.find_by(date: @date, grade_id: @grade.id, section_id: @section.id) 
 		if(@todays_attendance_record.blank?)
-			@todays_attendance_record = @institute.attendance_records.create(present_student_ids: params[:present_student_ids].join(", "), date: Date.today, grade_id: @grade.id, section_id: @section.id, creator_id: current_user.id)
+			@todays_attendance_record = @institute.attendance_records.create(present_student_ids: params[:present_student_ids].join(", "), date: @date, grade_id: @grade.id, section_id: @section.id, creator_id: current_user.id)
 		else
 			@todays_attendance_record.update(present_student_ids: params[:present_student_ids].join(", "))
 			

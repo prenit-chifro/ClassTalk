@@ -14,18 +14,11 @@ class PublishEventWorker
 
         @institute = Institute.find_by(id: @event.institute_id)
         @institute_members = @institute.members
-        participants_android_devices = []
+        
         @institute_members.each do |member|
             participant_android_devices = member.android_devices
-            if(!participant_android_devices.blank?)
-                participant_android_devices.each do |d|
-                    participants_android_devices << d
-                end
-            end
-            
                 
-                
-            android_device_ids = participants_android_devices.map{|d| d.gcm_registration_id}
+            android_device_ids = participant_android_devices.map{|d| d.gcm_registration_id}
             send_gcm_notification(@notification, android_device_ids)
 
             ios_devices = member.ios_devices.where(is_ios_device_user_signed_in: true)

@@ -174,16 +174,10 @@ class Conversation < ApplicationRecord
 		if(self.is_custom_group == false)
 			if(user.role == "Parent" or user.role == "Student")
 				return self.participants.where.not(role: ["Student", "Parent"], id: user.id)
-			else
-				return self.participants.where.not(id: user.id)
 			end
-		else
-			if(user.role == "Parent" or user.role == "Student")
-				return self.participants.where.not(role: ["Student", "Parent"], id: user.id)
-			else
-				return self.participants.where.not(id: user.id)
-			end 
 		end
+
+		return self.participants.where.not(id: user.id) 
 		
 	end
 	

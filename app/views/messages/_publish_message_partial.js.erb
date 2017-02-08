@@ -7,6 +7,7 @@ if(conversationBigDiv.length != 0){
 		messagesDiv =  $('.conversation-big[data-conversation-id=' + '<%= conversation.id %>' + ']').find('.Messages-category-messages');
 		if(messagesDiv){
 			messagesDiv.prepend('<%= j render( partial: "messages/message", locals: {conversation: conversation, message: message} ) %> ');
+			$('ul.nav a[href="' + '#all-Messages' + '"]').tab('show');		
 		}
 	<% end %>
 
@@ -14,6 +15,7 @@ if(conversationBigDiv.length != 0){
 		meediaMessagesDiv = $('.conversation-big[data-conversation-id=' + '<%= conversation.id %>' + ']').find('.Media-category-messages');
 		if(meediaMessagesDiv){
 			meediaMessagesDiv.prepend('<%= j render( partial: "messages/message", locals: {conversation: conversation, message: message} ) %> ');
+			$('ul.nav a[href="' + '#all-Media' + '"]').tab('show');		
 		}
 	<% end %>	
 
@@ -21,6 +23,7 @@ if(conversationBigDiv.length != 0){
 		categoryMessagesDiv = $('.conversation-big[data-conversation-id=' + '<%= conversation.id %>' + ']').find('.<%= message.category.split(" ").join("_") %>-category-messages');
 		if(categoryMessagesDiv){
 			categoryMessagesDiv.prepend('<%= j render( partial: "messages/message", locals: {conversation: conversation, message: message} ) %> ');
+			$('ul.nav a[href="' + '#all-<%= message.category.split(" ").join("_")%>' + '"]').tab('show');		
 		}
 	<% end %>
 

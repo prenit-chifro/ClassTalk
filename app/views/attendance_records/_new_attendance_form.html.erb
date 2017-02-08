@@ -1,6 +1,9 @@
 <%= form_tag institute_attendance_records_path(institute), remote: true, id: "attendance_form" do %>
 	<%= hidden_field_tag :grade_id, grade.id %>
 	<%= hidden_field_tag :section_id, section.id %>
+	<% if(!params[:from_index].blank?) %>
+		<%= hidden_field_tag :from_index, true %>
+	<% end %>
 	<div class="modal-body attendance-body">
 		<ul class="list-inline student-in-attendance">
 			<% class_students.each do |student| %>

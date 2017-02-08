@@ -10,7 +10,7 @@ class AttendanceRecord < ApplicationRecord
 
 	def present_students
 		if(!self.present_student_ids.blank?)
-			return present_students = User.where(id: self.present_student_ids.spilt(", "))
+			return present_students = User.where(id: self.present_student_ids.split(", "))
 		else
 			return []	
 		end
@@ -19,7 +19,7 @@ class AttendanceRecord < ApplicationRecord
 
 	def absent_students
 		institute = self.institute
-		grade = self.grade_id
+		grade = self.grade
 		section = self.section
 		
 		all_students = section.get_members_with_given_roles_for_institute_and_grade_with_role(institute, grade, ["Student"])
