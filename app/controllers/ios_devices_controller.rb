@@ -1,6 +1,6 @@
 class IosDevicesController < ApplicationController
 
-	before_action :check_if_requested_from_ios_app
+	before_action :check_if_requested_from_ios_app, only: :create
 	
 	def check_if_requested_from_ios_app
 		if(!check_whether_requested_from_ios_webview)

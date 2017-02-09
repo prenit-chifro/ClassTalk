@@ -1,6 +1,6 @@
 class AndroidDevicesController < ApplicationController
 
-	before_action :check_if_requested_from_android_app
+	before_action :check_if_requested_from_android_app, only: :create
 	
 	def check_if_requested_from_android_app
 		if(!check_whether_requested_from_android_webview)
