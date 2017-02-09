@@ -74,7 +74,7 @@ Rails.application.configure do
   Rails.application.config.active_job.queue_adapter = :sidekiq
   
   # Host for websocket connection with active cable
-  config.action_cable.url = "ws://192.168.137.1:3000/cable"
-  config.action_cable.allowed_request_origins = [ 'http://192.168.137.1:3000', 'http://192.168.1.12:3000', 'http://localhost:3000' ]
+  # config.action_cable.url = "ws://192.168.137.1:3000/cable"
+  # config.action_cable.allowed_request_origins = [ 'http://192.168.137.1:3000', 'http://192.168.1.12:3000', 'http://localhost:3000' ]
   
 end
