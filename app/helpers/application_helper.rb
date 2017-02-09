@@ -173,7 +173,7 @@ module ApplicationHelper
 				n.alert = notification.title
 				n.badge = notification.id
 				n.sound = 'default'
-				n.data = notification.as_json
+				#n.data = notification.as_json
 				n.save!
 			end
 			
