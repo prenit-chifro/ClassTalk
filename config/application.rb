@@ -15,5 +15,8 @@ module ClassNest
 	config.time_zone = 'UTC'
 	config.active_record.default_timezone = :local	
 
+	# Action cable mount path
+	config.action_cable.mount_path = '/cable'
+
   end
 end
