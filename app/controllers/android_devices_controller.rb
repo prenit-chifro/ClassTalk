@@ -28,6 +28,8 @@ class AndroidDevicesController < ApplicationController
 	
 	after_action :add_android_device_to_users_android_device_list
 	
+	after_action :set_is_android_device_user_signed_in
+	
 	private
 	def add_android_device_to_users_android_device_list
 		
@@ -52,8 +54,6 @@ class AndroidDevicesController < ApplicationController
 			
 		end
 	end
-	
-	after_action :set_is_android_device_user_signed_in
 	
 	def set_is_android_device_user_signed_in
 		if(user_signed_in? and $android_device != nil)

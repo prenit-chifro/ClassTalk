@@ -281,8 +281,36 @@ class ConversationsController < ApplicationController
 			
 	end
 
-	def add_new_member
-		@institutes = current_user.institutes
+	def remove_participants
+		if(request.get?)
+			@participants = @conversation.other_participants(current_user)
+
+			@principals = @institute.get_members_with_given_roles(["Principal"]); @principals = @principals.select{|member| @participants.include?(member)} if !@principals.blank?
+			@admins = @institute.get_members_with_given_roles(["Institute Admin"]); @admins = @admins.select{|member| @participants.include?(member)} if !@admins.blank?
+			@teachers = @institute.get_members_with_given_roles(["Teacher"]); @teachers = @teachers.select{|member| @participants.include?(member)} if !@teachers.blank?
+			if(current_user.role.include?("Principal") or current_user.role.include?("Institute Admin"))			
+				@institutes_grades_sections_models = @institute.institutes_grades_sections_models
+			end
+
+			if(current_user.role == "Teacher")
+				@teaching_section_subject_models = current_user.teaching_sections_subjects_models
+			end
+			render	
+
+		elsif(request.post?)
+			Rails.logger.debug("############## Post Request ##W############################")
+			if(!params[:participant_ids].blank?)
+				params[:participant_ids].each do |participant_id|
+
+					@conversation.remove_participant(participant_id)
+				end	
+				flash[:notice] = "Participants removed !"
+				redirect_to conversation_path(@conversation), format: :js
+			else
+
+			end
+		end
+		
 	end
 
 	def show

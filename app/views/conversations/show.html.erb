@@ -16,9 +16,16 @@
 				<% if(current_user.role.include?("Principal") or current_user.role.include?("Institute Admin")) %>
 					<%= link_to new_conversation_path(conversation_id: @conversation.id) do %>
 						<div class="pull-left add-member">
-							<span>Add Participient</span><i class="material-icons">&#xE7FE;</i>
+							<span>Add Participants</span><i class="material-icons">&#xE7FE;</i>
 						</div>
 					<% end %>
+
+					<%= link_to remove_participants_conversation_path(@conversation) do %>
+						<div class="pull-left add-member">
+							<span>Remove Participants</span><i class="material-icons">&#xE7FE;</i>
+						</div>
+					<% end %>
+
 					<% if(@conversation.is_group and @conversation.is_custom_group) %>
 						<%= link_to conversation_path(@conversation), method: :delete, remote: true, data: {confirm: "Are you sure you want to Delete This Group"} do %>
 							<div class="pull-right add-member">

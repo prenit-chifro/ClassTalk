@@ -1,0 +1,421 @@
+<% content_for :heading do %>
+
+  <a class="mybtn btn btn-link btn-xs pull-left" href="<%= params[:conversation_id].blank? ? conversation_path(@conversation) : conversation_path(id: params[:conversation_id]) %>"><i class="material-icons">&#xE317;</i></a>
+  Remove Participants
+<% end %>
+
+<div class="container-width conversation-new-container new-group-member-container" style="max-width:600px; margin: 0 auto;margin-top:80px;margin-bottom:60px;">
+	<%= form_tag remove_participants_conversation_path(@conversation), method: :post, remote: true, id: "new-conversation-form" do %>
+		<div class="">
+			<ul class="list-inline list-conversation-group-search " style="margin:10px;">
+				<% if(current_user.role != "Student" and current_user.role != "Parent") %>
+					
+					<div class="pull-left">
+						<button type="submit" class="btn btn-success">Save</button>
+					</div>
+
+					<form onsubmit="return false;" class="search-form search-conversation-new-group">
+						<div class="pull-right form-group has-feedback">
+							<input type="text" class="form-control search-conversation-new-page" name="search" placeholder="Search..." id="search" autocomplete="off">
+						</div>
+					</form>
+				<% end %>
+				<div class="clearfix mar-btm"></div>
+				<ul class="list-unstyled teachers-list new-group-class" style="overflow:inherit;">
+					<% if(current_user.role.include?("Principal") or current_user.role.include?("Institute Admin")) %>
+						<li>
+							<h6 class="teachers-list-heading" style="padding: 2px;"><span class="checkbox-counter-normal" style="color:#fff;margin-left:0;line-height:4;">Select</span> <span style="font-size:11px;color:#fff;">Participants</span><i class="material-icons arrow-up-icon pull-right" style="margin-top: 9px;">&#xE316;</i></h6>
+							<div class="container-width classRoute" style="display: block;">
+								<ul class="nav nav-tabs" role="tablist" id="tablist">
+									<li class="active"><a data-toggle="tab" href="#all-students">Students</a></li>	
+									<li><a data-toggle="tab" href="#all-staff">Staff</a></li>
+																				
+								</ul>
+								<div class="tab-content" style="">
+									<div class="tab-pane active" id="all-students" style="max-height: 100%;">
+										<ul class="list-unstyled index-conversation-modal">
+											<% if(!@institutes_grades_sections_models.blank?) %>
+												<label for="all-select-students-bottom" class="pull-left" style="background:#c24343; color:#fff; padding:5px;font-weight: normal;">
+													<input type="checkbox" class="all-select-students-bottom" id="all-select-students-bottom" style="vertical-align: middle; margin-top:-2px;"> 
+													All Students
+												</label>
+												<label for="all-select-parents-bottom" class="pull-right" style="background:#c24343; color:#fff; padding:5px;font-weight: normal;">
+													<input type="checkbox" class="all-select-parents-bottom" id="all-select-parents-bottom" style="vertical-align: middle; margin-top:-2px;"> 
+													All Parents
+												</label>
+												<div class="clearfix"></div>
+												<% @institutes_grades_sections_models.each do |grade_section_model|%>
+													<% grade = grade_section_model.grade %>
+													<% section = grade_section_model.section %>
+													<% students = section.get_members_with_given_roles_for_institute_and_grade_with_role(@institute, grade, ["Student"]); students = students.select{|member| @participants.include?(member)} if !students.blank? %>
+													<li class="find-teacher-list" style="margin-bottom:10px;position:relative;">
+														
+														<h6 class="teachers-list-heading-inner" style="background: #d1cece;margin: 0;padding: 10px; cursor:pointer;color: #dd223d;">
+															<%= grade.custom_name_for_institute(@institute) + " " + section.section_name %>																		
+															<i class="material-icons arrow-up-icon pull-right" style="margin-top:-5px;margin-right: -10px;">&#xE316;</i>
+														</h6>
+
+														<div class="class-individual-selector">
+															<label for="select-all-class-students-<%= grade.grade_name + section.section_name %>">
+																<input type="checkbox" class="all-students all-upper-checkbox-students" style="vertical-align: middle; margin-top:-2px;" id="select-all-class-students-<%= grade.grade_name + section.section_name %>"> 
+																All Students
+															</label>
+															<label for="select-all-class-parents-<%= grade.grade_name + section.section_name %>">
+																<input type="checkbox" class="all-parents all-upper-checkbox-parents" style="vertical-align: middle; margin-top:-2px;margin-left: 7px;" id="select-all-class-parents-<%= grade.grade_name + section.section_name %>"> 
+																All Parents
+															</label>
+														</div>
+
+														<div class="container-width classRoute class-students-list-custom" style="display: none; box-shadow:rgb(175, 172, 172) 1px 1px 10px;margin-bottom:10px;">
+															
+															<ul class="list-unstyled index-conversation-modal search-index-conversation-modal" style="box-shadow: none;    max-height: 200px !important;">
+																<% if(!students.blank?) %>
+																	<% students.each do |student| %>
+																		<% if(student.id != current_user.id) %>
+																			<li>
+																					
+																					<div class="well well-sm">
+																						<label for="contact-new-group-<%= student.id %>" class="modal-label" style="width: 60%; display: inline-block; border-right: 1px solid #fff; vertical-align: middle;">
+																							<%= check_box_tag "participant_ids[]", student.id, false,class:"contact-new-group-page all-inner-checkbox", id:"contact-new-group-#{student.id}" %>
+																					
+																							<div class="media jumbotron-media">
+																								<div class="media-left media-middle">
+																									
+																									<img src="<%= student.profile_picture.media.url(:thumb) %>" class="img-rounded img-xs">
+																									
+																								</div>
+																								<div class="media-body media-middle">
+																									<h5 class="media-heading student-name-in-message"><%= student.first_name %> <%= student.last_name %></h5>
+
+																									<small class="role-small"><%= student.details %></small>
+																									
+																								</div>				
+																							</div>
+																							<span class="uncheckbox-style-block uncheckbox-style-block-<%= student.id %>"></span>		
+																							<span class="checkbox-style-block checkbox-style-block-<%= student.id %>"></span>
+																						</label>
+
+																						<div class="media jumbotron-media" style="width: 38%; display: inline-block; vertical-align: middle;">
+																							<% if(!student.father_id.blank?) %>
+																								<% father = student.father %>
+																								<% if(@participants.include?(father)) %>
+																									<label for="contact-new-group-<%= father.id %>" class="modal-label">
+																										<%= check_box_tag "participant_ids[]", father.id, false,class:"contact-new-group-page-parent all-inner-checkbox-parent", id:"contact-new-group-#{father.id}" %>
+																							
+																										<div class="media-body media-middle parent-media">
+																											<h5 class="media-heading student-name-in-message"><%= father.first_name %> <%= father.last_name %> ( Father )</h5>
+
+																						
+																											
+																										</div>	
+																										<span class="uncheckbox-style-block uncheckbox-style-block-<%= father.id %>" style="top:0; right:-4px;left: inherit;"></span>		
+																										<span class="checkbox-style-block checkbox-style-block-<%= father.id %>" style="top:0; right:-4px;left: inherit;"></span>	
+																									</label>	
+																								<% end %>
+																								
+																							<% end %>
+																							<br>
+																							<% if(!student.mother_id.blank?) %>
+																								<% mother = student.mother %>
+																								<% if(@participants.include?(father)) %>
+																									<label for="contact-new-group-<%= mother.id %>" class="modal-label">
+																										<%= check_box_tag "participant_ids[]", mother.id, false,class:"contact-new-group-page-parent all-inner-checkbox-parent", id:"contact-new-group-#{mother.id}" %>
+																								
+																										<div class="media-body media-middle parent-media">
+																											<h5 class="media-heading student-name-in-message"><%= mother.first_name %> <%= mother.last_name %> ( Mother )</h5>
+
+																											
+																											
+																										</div>
+																										<span class="uncheckbox-style-block uncheckbox-style-block-<%= mother.id %>" style="top:0; right:-4px;left: inherit;"></span>		
+																										<span class="checkbox-style-block checkbox-style-block-<%= mother.id %>" style="top:0; right:-4px;left: inherit;"></span>		
+																									</label>	
+																								<% end %>
+																								
+																							<% end %>
+																							
+																							
+																						</div>
+																						
+																						
+																					</div>
+																					
+																			</li>
+																		<% end %>	
+																	<% end %>
+																<% else %>
+																	<h1 class="nothing-posted"> No Students added yet ! </h1>	
+																<% end %>															
+															</ul>
+														</div>
+													</li>
+												<% end %>
+											<% end %>			
+										</ul>
+									</div>												
+									<div class="tab-pane" id="all-staff" style="max-height: 100%;">
+										<ul class="list-unstyled index-conversation-modal">
+											<label for="all-select-staff-members" class="pull-right" style="background:#c24343; color:#fff; padding:5px;font-weight: normal;">
+												<input type="checkbox" class="all-select-staff-members" id="all-select-staff-members" style="vertical-align: middle; margin-top:-2px;"> 
+												Select All
+											</label>
+											<div class="clearfix"></div>
+											<% if(!@teachers.blank?) %>
+												<% @teachers.each do |teacher| %>															
+													<li class="all-staff-list">
+														<div class="well well-sm">
+															<label for="contact-new-group-<%= teacher.id %>" class="modal-label" style="vertical-align: middle;">
+																<%= check_box_tag "participant_ids[]", teacher.id, false,class:"all-staff-members-inner-checkbox", id:"contact-new-group-#{teacher.id}" %>
+														
+																<div class="media jumbotron-media">
+																	<div class="media-left media-middle">
+																		
+																		<img src="<%= teacher.profile_picture.media.url(:thumb) %>" class="img-rounded img-xs">
+																		
+																	</div>
+																	<div class="media-body media-middle">
+																		<h5 class="media-heading student-name-in-message"><%= teacher.first_name %> <%= teacher.last_name %></h5>
+
+																		<small class="role-small"><%= teacher.details %></small>
+																		
+																	</div>				
+																</div>
+																<span class="uncheckbox-style-block uncheckbox-style-block-<%= teacher.id %>"></span>		
+																<span class="checkbox-style-block checkbox-style-block-<%= teacher.id %>"></span>
+															</label>
+														</div>	
+													</li>															
+												<% end %>
+											<% else %>
+												<h1 class="nothing-posted"> No Teachers added yet ! </h1>		
+											<% end %>									
+
+											<% if(!@admins.blank?) %>
+												<% @admins.each do |admin| %>				
+													<li class="all-staff-list">
+														<div class="well well-sm">
+															<label for="contact-new-group-<%= admin.id %>" class="modal-label" style="vertical-align: middle;">
+																<%= check_box_tag "participant_ids[]", admin.id, false,class:"all-staff-members-inner-checkbox", id:"contact-new-group-#{admin.id}" %>
+														
+																<div class="media jumbotron-media">
+																	<div class="media-left media-middle">
+																		
+																		<img src="<%= admin.profile_picture.media.url(:thumb) %>" class="img-rounded img-xs">
+																		
+																	</div>
+																	<div class="media-body media-middle">
+																		<h5 class="media-heading student-name-in-message"><%= admin.first_name %> <%= admin.last_name %></h5>
+
+																		<small class="role-small"><%= admin.details %></small>
+																		
+																	</div>				
+																</div>
+																<span class="uncheckbox-style-block uncheckbox-style-block-<%= admin.id %>"></span>		
+																<span class="checkbox-style-block checkbox-style-block-<%= admin.id %>"></span>
+															</label>
+														</div>	
+													</li>
+												
+												<% end %>
+											<% else %>	
+												<h1 class="nothing-posted"> No Admins added yet ! </h1>	
+											<% end %>														
+										</ul>
+									</div>	
+									
+								</div>
+							</div>
+						</li>
+
+					<% end %>
+				</ul>
+			</ul>
+		</div>		
+	<% end %>
+</div>	
+
+<script type="text/javascript">
+	$(".main-app-conversation-new-header").parents("div.wrapper").find(".navbar-default").css("box-shadow", "none");
+	$("#new-conversation-form").submit(checkIfInputPresent);
+	function checkIfInputPresent() {
+		var submit = false;
+		$.each($('input[type="checkbox"]'), function(index, element){
+			if($(element).prop("checked") == true){
+				submit = true;
+				return false;
+			}
+		});
+		return submit;
+	}
+
+	$(".modal-label").on("click", function(e){
+		updateCheckboxCounter();
+	});
+	
+	function updateCheckboxCounter(){
+		var len = $("input[name='participant_ids[]']:checked").length;	
+		if(len>0){
+			$(".checkbox-counter-normal").text(len);
+		}else{
+			$(".checkbox-counter-normal").text('Select');
+		}	
+	}
+	$('.search-conversation-new-page').on("keyup keydown", function() {
+		
+	    var value = $(this).val();
+	    if(value){
+	    	$(".staff-admin-page li").hide().filter(function () {
+				if($(".media-heading", this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0 || $(".role-small", this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0 ){					
+					return true;
+				}else{
+					return false;
+				}			    
+			}).show();
+	    }else{
+	    	$(".staff-admin-page li").show();
+	    }    
+	});
+	$('.search-conversation-new-page').on("keyup keydown", function() {
+		
+	    var value = $(this).val();
+	    if(value){
+	    	$(".staff-parent-page li").hide().filter(function () {
+				if($(".media-heading", this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0 || $(".role-small", this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0 ){					
+					return true;
+				}else{
+					return false;
+				}			    
+			}).show();
+	    }else{
+	    	$(".staff-parent-page li").show();
+	    }    
+	});
+	$('.search-conversation-new-page').on("keyup keydown", function() {
+		
+	    var value = $(this).val();
+	    if(value){
+	    	$(".staff-principal-page").hide().filter(function () {
+				if($(".media-heading", this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0 || $(".role-small", this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0 ){					
+					return true;
+				}else{
+					return false;
+				}			    
+			}).show();
+	    }else{
+	    	$(".staff-principal-page").show();
+	    }    
+	});
+	
+	$('.search-conversation-new-page').on("keyup keydown", function() {
+		
+	    var value = $(this).val();
+	    if(value){
+	    	$(".staff-student-page li").hide().filter(function () {
+				if($(".media-heading", this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0 || $(".role-small", this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0 ){					
+					return true;
+				}else{
+					return false;
+				}			    
+			}).show();
+	    }else{
+	    	$(".staff-student-page li").show();
+	    }    
+	});
+	
+	$('.search-conversation-new-page').on("keyup keydown", function() {
+		
+	    var value = $(this).val();
+	    if(value){
+	    	$(".staff-teacher-page li").hide().filter(function () {
+				if($(".media-heading", this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0 || $(".role-small", this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0 ){					
+					return true;
+				}else{
+					return false;
+				}			    
+			}).show();
+	    }else{
+	    	$(".staff-teacher-page li").show();
+	    }    
+	});
+
+	$(".all-select-students-bottom").change(function(e){
+		$(this).parents("#all-students").find("li.find-teacher-list").find("input.all-students:checkbox").prop('checked', $(this).prop("checked"));
+		$(this).parents("#all-students").find("li.find-teacher-list").find("input.contact-new-group-page:checkbox").prop('checked', $(this).prop("checked"));
+		updateCheckboxCounter();
+		e.preventDefault();
+	});
+	
+	$(".all-select-parents-bottom").change(function(e){
+		$(this).parents("#all-students").find("li.find-teacher-list").find("input.all-parents:checkbox").prop('checked', $(this).prop("checked"));
+		$(this).parents("#all-students").find("li.find-teacher-list").find("input.contact-new-group-page-parent:checkbox").prop('checked', $(this).prop("checked"));
+		updateCheckboxCounter();
+		e.preventDefault();
+	});
+	
+	$(".all-upper-checkbox-students").change(function(e){
+		if($(".all-upper-checkbox-students").length ==  $(".all-upper-checkbox-students:checked").length){
+			$(".all-select-students-bottom").prop('checked', $(this).prop("checked"));
+		}else{
+			$(".all-select-students-bottom").prop('checked', false);
+		}
+	});
+	$(".all-upper-checkbox-parents").change(function(e){
+		if($(".all-upper-checkbox-parents").length ==  $(".all-upper-checkbox-parents:checked").length){
+			$(".all-select-parents-bottom").prop('checked', $(this).prop("checked"));
+		}else{
+			$(".all-select-parents-bottom").prop('checked', false);
+		}
+	});
+	
+	$(".all-select-staff-members").change(function(e){
+		$(this).parents("#all-staff").find("li.all-staff-list").find(".all-staff-members-inner-checkbox").prop('checked', $(this).prop("checked"));
+		updateCheckboxCounter();
+		e.preventDefault();
+	});
+	
+	
+	$(".all-staff-members-inner-checkbox").change(function(e){
+		if($(".all-staff-members-inner-checkbox").length == $(".all-staff-members-inner-checkbox:checked").length){
+			$(".all-select-staff-members").prop('checked', $(this).prop("checked"));
+		}else{
+			$(".all-select-staff-members").prop('checked', false);
+		}
+	});
+	
+	function allStudents(){
+		$(".all-students").change(function (e) {
+			$(this).parents("li.find-teacher-list").find("input.contact-new-group-page:checkbox").prop('checked', $(this).prop("checked"));
+			updateCheckboxCounter();
+			e.preventDefault();
+		});
+	}
+	function allParents(){
+		$(".all-parents").change(function (e) {
+			$(this).parents("li.find-teacher-list").find("input.contact-new-group-page-parent:checkbox").prop('checked', $(this).prop("checked"));
+			updateCheckboxCounter();
+			e.preventDefault();
+		});
+	}
+	allStudents();
+	allParents();
+	
+	$(".all-inner-checkbox").change(function(e){
+		if($(".all-inner-checkbox").length == $(".all-inner-checkbox:checked").length){
+			$(".all-inner-checkbox").parents("li.find-teacher-list").find(".all-students").prop('checked', $(this).prop("checked"));
+			$(".all-select-students-bottom").prop('checked', $(this).prop("checked"));
+		}else{
+			$(".all-inner-checkbox").parents("li.find-teacher-list").find(".all-students").prop('checked' , false);
+			$(".all-select-students-bottom").prop('checked', false);
+		}				
+	});
+	
+	$("all-inner-checkbox-parent").change(function(e){
+		if($("input.contact-new-group-page-parent").length == $("input.contact-new-group-page-parent:checked").length){
+			$("input.contact-new-group-page-parent").parents("li.find-teacher-list").find(".all-parents").prop('checked', $(this).prop("checked"));
+			$(".all-select-parents-bottom").prop('checked', $(this).prop("checked"));
+		}else{
+			$("input.contact-new-group-page-parent").parents("li.find-teacher-list").find(".all-parents").prop('checked', false);
+			$(".all-select-parents-bottom").prop('checked', false);			
+		}
+	});
+</script>

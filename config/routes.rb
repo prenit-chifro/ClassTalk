@@ -94,6 +94,8 @@ Rails.application.routes.draw do
         end
       end
       member do
+        get "remove_participants"
+        post "remove_participants"
         post "add_message_category"
         delete "delete_message_category"
       end

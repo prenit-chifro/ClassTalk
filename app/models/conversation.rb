@@ -133,6 +133,15 @@ class Conversation < ApplicationRecord
 			self.conversation_participant_models.create(participant_id: participant_id, participant_adder_id: participant_adder_id, is_admin: is_admin)
 		end
 	end
+
+	def remove_participant participant_id
+		if(!self.conversation_participant_models.where(participant_id: participant_id).blank?)
+			Rails.logger.debug "partciciopant id #{participant_id}"
+			self.conversation_participant_models.find_by(participant_id: participant_id).destroy
+		else
+			Rails.logger.debug "partciciopant id #{participant_id} not present"	
+		end
+	end
 		
 	def institute
 		Institute.find_by(id: self.institute_id)
